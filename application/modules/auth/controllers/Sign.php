@@ -14,7 +14,7 @@
 
         public function signin(){
             $username = trim((string) $this->input->post("username", true));
-            $password = (string) $this->input->post("password");
+            $password = encodedata($this->input->post("password"));
 
             if ($username === "" || $password === "") {
                 return $this->jsonResponse(array(

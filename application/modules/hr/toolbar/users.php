@@ -1,0 +1,1 @@
+<a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal_add_user"><i class="bi bi-person-add"></i> Add User</a>

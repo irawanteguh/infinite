@@ -43,7 +43,7 @@
 			</div>
 		</div>
 		<?php
-			$drawer = APPPATH.'views/template/drawer/';
+			$drawer = APPPATH.'views/drawer/';
 			if (is_dir($drawer)) {
 				$files = glob($drawer . '*.php');
 				foreach ($files as $file){
@@ -51,7 +51,7 @@
 				}
 			}
 
-			$explore = APPPATH.'views/template/explore/';
+			$explore = APPPATH.'views/explore/';
 			if (is_dir($explore)) {
 				$files = glob($explore . '*.php');
 				foreach ($files as $file){
@@ -59,7 +59,7 @@
 				}
 			}
 
-			$dirmodal = APPPATH.'views/template/modal/';
+			$dirmodal = APPPATH.'views/modal/';
 			if (is_dir($dirmodal)) {
 				$files = glob($dirmodal . '*.php');
 				foreach ($files as $file){

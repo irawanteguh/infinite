@@ -4,7 +4,7 @@
     $autoload['packages']  = array(APPPATH.'third_party/MX/');
     $autoload['libraries'] = array('session','database','template','getavatar','routingsystem');
     $autoload['drivers']   = array();
-    $autoload['helper']    = array('url','file');
+    $autoload['helper']    = array('url','file','rootsystem');
     $autoload['config']    = array();
     $autoload['language']  = array();
     $autoload['model']     = array();

@@ -62,51 +62,79 @@ function datausers() {
                 const avatar = `${url}assets/media/avatars/${result[i].user_id}.jpg`;
                 const avatarDefault = `${url}assets/media/avatars/blank.png`;
 
+                const avatarcreatedby = `${url}assets/media/avatars/${result[i].created_by}.jpg`;
+                const avatarDefaultcreatedby = `${url}assets/media/avatars/blank.png`;
+
+                let btnaction = "";
+
+                btnaction += "<a href='#' class='dropdown-item'><i class='ki-outline ki-eye fs-6 me-2'></i>Detail</a>";
+                btnaction += "<a href='#' class='dropdown-item'><i class='ki-outline ki-pencil fs-6 me-2'></i>Edit</a>";
+                btnaction += "<a href='#' class='dropdown-item text-danger'><i class='ki-outline ki-trash fs-6 me-2'></i>Delete</a>";
+
                 tableresult += "<tr>";
-
                 tableresult += "<td class='ps-4'>" + (parseInt(i) + 1) + "</td>";
-
                 tableresult += "<td>" + (result[i].username || "-") + "</td>";
 
-                tableresult += `
-                    <td class="d-flex align-items-center">
-
-                        <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                            <div class="symbol-label">
-                                <img src="${avatar}"
-                                    class="w-100"
-                                    alt="${result[i].name || ''}"
-                                    onerror="this.onerror=null;this.src='${avatarDefault}';">
-                            </div>
-                        </div>
-
-                        <div class="d-flex flex-column">
-                            <span class="text-gray-800 fw-bold mb-1">
-                                ${result[i].name || "-"}
-                            </span>
-                            <span class="text-muted">
-                                ${result[i].email || "-"}
-                            </span>
-                        </div>
-
-                    </td>
-                `;
+                tableresult += "<td>";
+                    tableresult += "<div class='d-flex align-items-center'>";
+                        tableresult += "<div class='symbol symbol-circle symbol-50px overflow-hidden me-3'>";
+                            tableresult += "<div class='symbol-label'>";
+                                tableresult += "<img ";
+                                tableresult += "src='" + avatar + "' ";
+                                tableresult += "class='w-100' ";
+                                tableresult += "alt='" + (result[i].name || "") + "' ";
+                                tableresult += "onerror=\"this.onerror=null;this.src='" + avatarDefault + "';\">";
+                            tableresult += "</div>";
+                        tableresult += "</div>";
+                        tableresult += "<div class='d-flex flex-column'>";
+                            tableresult += "<span class='text-gray-800 fw-bold'>";
+                            tableresult += (result[i].name || "-");
+                            tableresult += "</span>";
+                            tableresult += "<span class='text-muted'>";
+                            tableresult += (result[i].email || "-");
+                            tableresult += "</span>";
+                        tableresult += "</div>";
+                    tableresult += "</div>";
+                tableresult += "</td>";
 
                 tableresult += "<td>" + (result[i].email || "-") + "</td>";
 
-                tableresult += `
-                    <td class="text-end">
+                tableresult += "<td>";
+                    tableresult += "<div class='d-flex align-items-center'>";
+                        tableresult += "<div class='symbol symbol-circle symbol-50px overflow-hidden me-3'>";
+                            tableresult += "<div class='symbol-label'>";
+                                tableresult += "<img ";
+                                tableresult += "src='" + avatarcreatedby + "' ";
+                                tableresult += "class='w-100' ";
+                                tableresult += "alt='" + (result[i].dibuatoleh || "") + "' ";
+                                tableresult += "onerror=\"this.onerror=null;this.src='" + avatarDefaultcreatedby + "';\">";
+                            tableresult += "</div>";
+                        tableresult += "</div>";
+                        tableresult += "<div class='d-flex flex-column'>";
+                            tableresult += "<span class='text-gray-800 fw-bold'>";
+                            tableresult += (result[i].dibuatoleh || "-");
+                            tableresult += "</span>";
+                            tableresult += "<span class='text-muted'>";
+                            tableresult += (result[i].dibuattgl || "-");
+                            tableresult += "</span>";
+                        tableresult += "</div>";
+                    tableresult += "</div>";
+                tableresult += "</td>";
 
-                        <button class="btn btn-icon btn-sm btn-light-primary me-1" title="Edit">
-                            <i class="ki-outline ki-pencil fs-5"></i>
-                        </button>
-
-                        <button class="btn btn-icon btn-sm btn-light-danger" title="Delete">
-                            <i class="ki-outline ki-trash fs-5"></i>
-                        </button>
-
-                    </td>
-                `;
+                tableresult += "<td class='text-end pe-4'>";
+                    tableresult += "<div class='btn-group'>";
+                        tableresult += "<button ";
+                        tableresult += "type='button' ";
+                        tableresult += "class='btn btn-light-primary btn-sm dropdown-toggle' ";
+                        tableresult += "data-bs-toggle='dropdown'>";
+                        tableresult += "Actions";
+                        tableresult += "</button>";
+                        tableresult += "<div class='dropdown-menu dropdown-menu-end'>";
+                        tableresult += btnaction;
+                        tableresult += "</div>";
+                    tableresult += "</div>";
+                tableresult += "</td>";
+                tableresult += "</tr>";
 
                 tableresult += "</tr>";
             }

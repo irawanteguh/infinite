@@ -1,18 +1,18 @@
 <?php
-    class Modeldepartment extends CI_Model{
+    class Modelperiodepelaporan extends CI_Model{
         
-        function datadepartment($groupid,$orgid){
+        function dataperiodepelaporan($groupid,$orgid){
             $query =
                     "
-                        select a.department_id, department, user_id, created_by, date_format(a.created_date, '%d.%m.%Y %H:%i:%s')dibuattgl, active,
+                        select a.periode_id, created_by, active, tahun, date_format(a.created_date, '%d.%m.%Y %H:%i:%s')dibuattgl,
                             (select name from dt01_gen_user_data where user_id=a.user_id)pic,
                             (select email from dt01_gen_user_data where user_id=a.user_id)emailpic,
                             (select name from dt01_gen_user_data where user_id=a.created_by)dibuatoleh
-                        from dt01_gen_department_ms a
+                        from dt01_qi_periode_mutu a
                         where a.active='1'
                         and   a.group_id='".$groupid."'
                         and   a.org_id='".$orgid."'
-                        order by department asc
+                        order by tahun desc
                     ";
 
             $recordset = $this->db->query($query);
@@ -20,10 +20,6 @@
             return $recordset;
         }
 
-        function insertdepartment($data){           
-            $sql =   $this->db->insert("dt01_gen_department_ms",$data);
-            return $sql;
-        }
 
     }
 ?>

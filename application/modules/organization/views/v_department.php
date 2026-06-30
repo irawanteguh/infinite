@@ -15,15 +15,15 @@
 
     <div class="card-body pt-0">
         <div class="table-responsive">
-            <table class="table align-middle table-row-dashed" id="datadepartment_table">
+            <table class="table align-middle table-row-dashed gy-2" id="datadepartment_table">
                 <thead>
-                    <tr class="text-gray-400 fw-bolder text-uppercase gs-0">
-                        <th class="text-start ps-4">#</th>
+                    <tr class="fw-bolder text-muted bg-light">
+                        <th class="text-start ps-4 rounded-start">#</th>
                         <th>Department</th>
                         <th>Personal In Charge</th>
                         <th>Active</th>
                         <th>Created By</th>
-                        <th class="text-end ps-4">Actions</th>
+                        <th class="text-end ps-4 rounded-end">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="fw-bold text-gray-600" id="resultdatadepartment"></tbody>

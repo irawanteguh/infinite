@@ -15,15 +15,15 @@
 
     <div class="card-body pt-0">
         <div class="table-responsive">
-            <table class="table align-middle table-row-dashed" id="datausers_table">
+            <table class="table align-middle table-row-dashed gy-2" id="datausers_table">
                 <thead>
-                    <tr class="text-start text-gray-400 fw-bolder">
-                        <th>#</th>
+                    <tr class="fw-bolder text-muted bg-light">
+                        <th class="text-start ps-4 rounded-start">#</th>
                         <th>Username</th>
                         <th>Name</th>
-                        <th>Email</th>
+                        <th>Status</th>
                         <th>Created By</th>
-                        <th class="text-end">Actions</th>
+                        <th class="text-end ps-4 rounded-end">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="fw-bold text-gray-600" id="resultdatausers"></tbody>

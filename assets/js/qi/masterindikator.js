@@ -132,7 +132,6 @@ function dataindikator() {
 
                 // Status
                 tableresult += "<td>";
-
                 if (result[i].active == "1") {
                     tableresult += "<span class='badge badge-light-success'>";
                     tableresult += "Active";
@@ -142,7 +141,6 @@ function dataindikator() {
                     tableresult += "Inactive";
                     tableresult += "</span>";
                 }
-
                 tableresult += "</td>";
 
                 tableresult += "<td>";

@@ -59,10 +59,9 @@ function datausers() {
 
             for (var i in result) {
 
-                const avatar = `${url}assets/media/avatars/${result[i].user_id}.jpg`;
-                const avatarDefault = `${url}assets/media/avatars/blank.png`;
-
-                const avatarcreatedby = `${url}assets/media/avatars/${result[i].created_by}.jpg`;
+                const avatar                 = `${url}assets/media/avatars/${result[i].user_id}.jpg`;
+                const avatarDefault          = `${url}assets/media/avatars/blank.png`;
+                const avatarcreatedby        = `${url}assets/media/avatars/${result[i].created_by}.jpg`;
                 const avatarDefaultcreatedby = `${url}assets/media/avatars/blank.png`;
 
                 let btnaction = "";
@@ -97,7 +96,17 @@ function datausers() {
                     tableresult += "</div>";
                 tableresult += "</td>";
 
-                tableresult += "<td>" + (result[i].email || "-") + "</td>";
+                tableresult += "<td>";
+                if (result[i].active == "1") {
+                    tableresult += "<span class='badge badge-light-success'>";
+                    tableresult += "Active";
+                    tableresult += "</span>";
+                } else {
+                    tableresult += "<span class='badge badge-light-danger'>";
+                    tableresult += "Inactive";
+                    tableresult += "</span>";
+                }
+                tableresult += "</td>";
 
                 tableresult += "<td>";
                     tableresult += "<div class='d-flex align-items-center'>";

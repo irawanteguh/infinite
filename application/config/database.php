@@ -6,7 +6,7 @@
 
 	$db['localhost'] = array(
 		'dsn'          => '',
-		'hostname'     => 'localhost',
+		'hostname'     => '10.12.120.58',
 		'username'     => 'root',
 		'password'     => '',
 		'database'     => 'infinite',

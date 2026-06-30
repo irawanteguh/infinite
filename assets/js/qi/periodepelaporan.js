@@ -1,10 +1,10 @@
 let table = null;
 
-datadepartment();
+dataperiodepelaporan();
 
-function datadepartment() {
+function dataperiodepelaporan() {
     $.ajax({
-        url: url + "index.php/organization/department/datadepartment",
+        url: url + "index.php/qi/periodepelaporan/dataperiodepelaporan",
         type: "POST",
         dataType: "json",
 
@@ -19,11 +19,11 @@ function datadepartment() {
                 didOpen: () => Swal.showLoading()
             });
 
-            if ($.fn.DataTable.isDataTable('#datadepartment_table')) {
-                $('#datadepartment_table').DataTable().destroy();
+            if ($.fn.DataTable.isDataTable('#dataperiodepelaporan_table')) {
+                $('#dataperiodepelaporan_table').DataTable().destroy();
             }
 
-            $("#resultdatadepartment").empty();
+            $("#resultperiodepelaporan").empty();
         },
 
         success: function (response) {
@@ -54,7 +54,7 @@ function datadepartment() {
 
                 tableresult += "<tr>";
                 tableresult += "<td class='text-start ps-4'>"+(parseInt(i) + 1)+"</td>";
-                tableresult += "<td>"+(result[i].department || "-")+"</td>";
+                tableresult += "<td>"+(result[i].tahun || "-")+"</td>";
 
                 tableresult += "<td>";
                     tableresult += "<div class='d-flex align-items-center'>";
@@ -79,6 +79,7 @@ function datadepartment() {
                 tableresult += "</td>";
 
                 tableresult += "<td>"+(result[i].active == 1 ? '<span class=\"badge badge-light-success\">Active</span>' : '<span class=\"badge badge-light-danger\">Inactive</span>')+"</td>";
+                
                 tableresult += "<td>";
                     tableresult += "<div class='d-flex align-items-center'>";
                         tableresult += "<div class='symbol symbol-circle symbol-50px overflow-hidden me-3'>";
@@ -101,7 +102,7 @@ function datadepartment() {
                     tableresult += "</div>";
                 tableresult += "</td>";
 
-                tableresult += "<td class='text-end pe-4'>";
+                tableresult += "<td class='text-end'>";
                     tableresult += "<div class='btn-group'>";
                         tableresult += "<button type='button' class='btn btn-light-primary dropdown-toggle btn-sm' data-bs-toggle='dropdown'>Actions</button>";
                         tableresult += "<div class='dropdown-menu'>";
@@ -112,8 +113,8 @@ function datadepartment() {
                 tableresult += "</tr>";
             }
 
-            $("#resultdatadepartment").html(tableresult);
-            table = $('#datadepartment_table').DataTable({
+            $("#resultperiodepelaporan").html(tableresult);
+            table = $('#dataperiodepelaporan_table').DataTable({
                 responsive: true,
                 pageLength: 10,
                 order: [],
@@ -124,7 +125,7 @@ function datadepartment() {
                 }
             });
 
-            initTableSearch('#datadepartment_table', '#searchtable');
+            initTableSearch('#dataperiodepelaporan_table', '#searchtable');
 
         },
 

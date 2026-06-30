@@ -1,7 +1,7 @@
 <?php
-$name = trim((string) $this->session->userdata('name'));
+$name        = trim((string) $this->session->userdata('name'));
 $displayName = $name !== '' ? $name : 'Guest';
-$hour = (int) date('G');
+$hour        = (int) date('G');
 
 if ($hour >= 5 && $hour < 12) {
 
@@ -29,7 +29,7 @@ if ($hour >= 5 && $hour < 12) {
     $badgeBorder    = 'rgba(0,0,0,.08)';
     $badgeColor     = '#1E293B';
 
-} elseif ($hour >= 17 && $hour < 21) {
+} elseif ($hour >= 16 && $hour < 19) {
 
     // Evening
     $greeting = 'Good Evening';

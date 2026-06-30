@@ -130,7 +130,7 @@ function datausers() {
                     tableresult += "</div>";
                 tableresult += "</td>";
 
-                tableresult += "<td class='text-end pe-4'>";
+                tableresult += "<td class='text-end'>";
                     tableresult += "<div class='btn-group'>";
                         tableresult += "<button ";
                         tableresult += "type='button' ";

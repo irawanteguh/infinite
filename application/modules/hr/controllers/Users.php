@@ -99,6 +99,97 @@
             echo json_encode($json);
         }
 
+        public function edituser(){
+
+            $userid       = $this->input->post("userid-edit");
+            $username     = $this->input->post("username-edit");
+            $nikrs        = $this->input->post("nikrs-edit");
+            $namakaryawan = $this->input->post("namakaryawan-edit");
+            $email        = $this->input->post("email-edit");
+
+            $json = [];
+
+            // Upload avatar jika ada
+            if(isset($_FILES['avataredit']) && $_FILES['avataredit']['error'] != 4){
+
+                $config['upload_path']      = './assets/media/avatars/';
+                $config['allowed_types']    = 'jpg|jpeg';
+                $config['file_ext_tolower'] = TRUE;
+                $config['file_name']        = $userid.".jpg";
+                $config['overwrite']        = TRUE;
+
+                $this->load->library('upload');
+                $this->upload->initialize($config);
+
+            
+
+                if(!$this->upload->do_upload('avataredit')){
+
+                    $json['responCode'] = "01";
+                    $json['responHead'] = "error";
+                    $json['responDesc'] = strip_tags($this->upload->display_errors());
+
+                    echo json_encode($json);
+                    return;
+
+                }else{
+
+                    $uploadData = $this->upload->data();
+                    $full_path  = $uploadData['full_path'];
+
+                    $image = @imagecreatefromjpeg($full_path);
+
+                    if($image){
+
+                        $rgb = imagecreatetruecolor(imagesx($image), imagesy($image));
+                        imagecopy($rgb, $image, 0, 0, 0, 0, imagesx($image), imagesy($image));
+                        imagejpeg($rgb, $full_path, 95);
+
+                        imagedestroy($image);
+                        imagedestroy($rgb);
+
+                    }else{
+
+                        @unlink($full_path);
+
+                        $json['responCode'] = "01";
+                        $json['responHead'] = "error";
+                        $json['responDesc'] = "File tidak valid.";
+
+                        echo json_encode($json);
+                        return;
+                    }
+                }
+            }
+
+            $dataupdate = [
+                'username'   => $username,
+                'nik'        => !empty($nikrs) ? $nikrs : null,
+                'name'       => $namakaryawan,
+                'email'      => $email
+            ];
+
+            $resultcheckemail = $this->md->checkemail($userid,$email);
+
+            if(empty($resultcheckemail)){
+                if($this->md->updateuser($userid,$dataupdate)){
+                    $json['responCode'] = "00";
+                    $json['responHead'] = "success";
+                    $json['responDesc'] = "Data Updated Successfully";
+                }else{
+                    $json['responCode'] = "01";
+                    $json['responHead'] = "info";
+                    $json['responDesc'] = "Data failed to update";
+                }
+            }else{
+                $json['responCode'] = "01";
+                $json['responHead'] = "info";
+                $json['responDesc'] = "Email is already in use";
+            }
+
+            echo json_encode($json);
+        }
+
         public function datausers(){
             $result = $this->md->datausers();
             

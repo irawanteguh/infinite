@@ -15,20 +15,21 @@
 
     <div class="card-body pt-0">
         <div class="table-responsive">
-            <table class="table align-middle table-row-dashed gy-2" id="dataindikator_table">
+            <table class="table align-middle table-row-dashed gy-2" id="dataindikatorunit_table">
                 <thead>
                     <tr class="fw-bolder text-muted bg-light">
                         <th class="text-start ps-4 rounded-start">#</th>
                         <th>Indikator</th>
-                        <th>Dasar Pemikiran / Tujuan</th>
-                        <th>Numerator / Denumerator</th>
-                        <th>Inklusi / Eksklusi</th>
-                        <th>Status</th>
-                        <th>Created By</th>
-                        <th class="text-end ps-4 rounded-end">Actions</th>
+                        <th>Kategori</th>
+                        <th>Periode</th>
+                        <th>Department</th>
+                        <th>Target</th>
+                        <th>AVG Pencapaian</th>
+                        <th>PIC Indikator</th>
+                        <th class="text-end pe-4 rounded-end">Actions</th>
                     </tr>
                 </thead>
-                <tbody class="fw-bold text-gray-600" id="resultdataindikator"></tbody>
+                <tbody class="fw-bold text-gray-600" id="resultdataindikatorunit"></tbody>
             </table>
         </div>
     </div>

@@ -4,7 +4,7 @@
         function datausers(){
             $query =
                     "
-                        select a.user_id, username, name, email, created_by, active, date_format(a.created_date, '%d.%m.%Y %H:%i:%s')dibuattgl,
+                        select a.user_id, username, name, email, created_by, nik, active, date_format(a.created_date, '%d.%m.%Y %H:%i:%s')dibuattgl,
                                (select name from dt01_gen_user_data where user_id=a.created_by)dibuatoleh
                         from dt01_gen_user_data a
                     ";
@@ -31,6 +31,11 @@
 
         function insertuser($data){           
             $sql =   $this->db->insert("dt01_gen_user_data",$data);
+            return $sql;
+        }
+
+        function updateuser($userid, $data){           
+            $sql =   $this->db->update("dt01_gen_user_data",$data,array("user_id"=>$userid));
             return $sql;
         }
 

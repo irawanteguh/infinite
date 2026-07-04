@@ -23,7 +23,7 @@
                         <th>Name</th>
                         <th>Status</th>
                         <th>Created By</th>
-                        <th class="text-end ps-4 rounded-end">Actions</th>
+                        <th class="text-end pe-4 rounded-end">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="fw-bold text-gray-600" id="resultdatausers"></tbody>

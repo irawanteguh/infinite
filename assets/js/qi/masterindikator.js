@@ -145,7 +145,7 @@ function dataindikator() {
 
                 tableresult += "<td>";
                     tableresult += "<div class='d-flex align-items-center'>";
-                        tableresult += "<div class='symbol symbol-circle symbol-50px overflow-hidden me-3'>";
+                        tableresult += "<div class='symbol symbol-circle symbol-35px overflow-hidden me-3'>";
                             tableresult += "<div class='symbol-label'>";
                                 tableresult += "<img ";
                                 tableresult += "src='" + avatar + "' ";
@@ -179,6 +179,7 @@ function dataindikator() {
                         tableresult += "</div>";
                     tableresult += "</div>";
                 tableresult += "</td>";
+                
                 tableresult += "</tr>";
 
             }

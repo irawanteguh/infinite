@@ -58,7 +58,7 @@ function dataperiodepelaporan() {
 
                 tableresult += "<td>";
                     tableresult += "<div class='d-flex align-items-center'>";
-                        tableresult += "<div class='symbol symbol-circle symbol-50px overflow-hidden me-3'>";
+                        tableresult += "<div class='symbol symbol-circle symbol-35px overflow-hidden me-3'>";
                             tableresult += "<div class='symbol-label'>";
                                 tableresult += "<img ";
                                 tableresult += "src='" + avatarpic + "' ";
@@ -78,11 +78,13 @@ function dataperiodepelaporan() {
                     tableresult += "</div>";
                 tableresult += "</td>";
 
+                tableresult += "<td>" + renderPIC(result[i].picindikator, 4) + "</td>";
+
                 tableresult += "<td>"+(result[i].active == 1 ? '<span class=\"badge badge-light-success\">Active</span>' : '<span class=\"badge badge-light-danger\">Inactive</span>')+"</td>";
                 
                 tableresult += "<td>";
                     tableresult += "<div class='d-flex align-items-center'>";
-                        tableresult += "<div class='symbol symbol-circle symbol-50px overflow-hidden me-3'>";
+                        tableresult += "<div class='symbol symbol-circle symbol-35px overflow-hidden me-3'>";
                             tableresult += "<div class='symbol-label'>";
                                 tableresult += "<img ";
                                 tableresult += "src='" + avatar + "' ";
@@ -114,12 +116,19 @@ function dataperiodepelaporan() {
             }
 
             $("#resultperiodepelaporan").html(tableresult);
-            table = $('#dataperiodepelaporan_table').DataTable({
+
+            if ($.fn.DataTable.isDataTable("#dataperiodepelaporan_table")) {
+                $("#dataperiodepelaporan_table").DataTable().destroy();
+            }
+
+            const table = $("#dataperiodepelaporan_table").DataTable({
                 responsive: true,
                 pageLength: 10,
-                order: [],
-                destroy: true,
-                autoWidth: false,
+                autoWidth : false,
+                destroy   : true,
+                ordering  : false,
+                searching : true,
+                info      : true,
                 language: {
                     emptyTable: "No data available"
                 }
@@ -144,6 +153,48 @@ function dataperiodepelaporan() {
         }
     });
 
+}
+
+function renderPIC(picindikator, maxShow = 5) {
+    const avatarDefault = `${url}assets/media/avatars/blank.png`;
+
+    if (!picindikator) return "-";
+
+    const arr = picindikator.split(";").filter(x => x.trim() !== "");
+
+    let html = "<div class='symbol-group symbol-hover'>";
+
+    arr.slice(0, maxShow).forEach(function(item){
+
+        const data   = item.split(":");
+        const userid = data[0] || "";
+        const nama   = data[1] || "-";
+        const avatar = `${url}assets/media/avatars/${userid}.jpg`;
+
+        html += `
+            <div class="symbol symbol-35px symbol-circle"
+                 data-bs-toggle="tooltip"
+                 title="${nama}">
+                <img src="${avatar}"
+                     alt="${nama}"
+                     onerror="this.onerror=null;this.src='${avatarDefault}';">
+            </div>
+        `;
+    });
+
+    if (arr.length > maxShow) {
+        html += `
+            <div class="symbol symbol-35px symbol-circle">
+                <span class="symbol-label bg-light-primary text-primary fw-bold">
+                    +${arr.length - maxShow}
+                </span>
+            </div>
+        `;
+    }
+
+    html += "</div>";
+
+    return html;
 }
 
 $(document).on("submit", "#formadddepartment", function (e) {

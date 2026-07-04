@@ -19,8 +19,8 @@ function datadepartment() {
                 didOpen: () => Swal.showLoading()
             });
 
-            if ($.fn.DataTable.isDataTable('#datadepartment_table')) {
-                $('#datadepartment_table').DataTable().destroy();
+            if ($.fn.DataTable.isDataTable("#datadepartment_table")) {
+                $("#datadepartment_table").DataTable().clear().destroy();
             }
 
             $("#resultdatadepartment").empty();
@@ -53,78 +53,87 @@ function datadepartment() {
                 let btnaction = "";
 
                 tableresult += "<tr>";
-                tableresult += "<td class='text-start ps-4'>"+(parseInt(i) + 1)+"</td>";
-                tableresult += "<td>"+(result[i].department || "-")+"</td>";
+                    tableresult += "<td class='text-start ps-4'>"+(parseInt(i) + 1)+"</td>";
+                    tableresult += "<td>"+(result[i].department || "-")+"</td>";
 
-                tableresult += "<td>";
-                    tableresult += "<div class='d-flex align-items-center'>";
-                        tableresult += "<div class='symbol symbol-circle symbol-50px overflow-hidden me-3'>";
-                            tableresult += "<div class='symbol-label'>";
-                                tableresult += "<img ";
-                                tableresult += "src='" + avatarpic + "' ";
-                                tableresult += "class='w-100' ";
-                                tableresult += "alt='" + (result[i].pic || "") + "' ";
-                                tableresult += "onerror=\"this.onerror=null;this.src='" + avatarDefaultpic + "';\">";
+                    tableresult += "<td>";
+                        tableresult += "<div class='d-flex align-items-center'>";
+                            tableresult += "<div class='symbol symbol-circle symbol-35px overflow-hidden me-3'>";
+                                tableresult += "<div class='symbol-label'>";
+                                    tableresult += "<img ";
+                                    tableresult += "src='" + avatarpic + "' ";
+                                    tableresult += "class='w-100' ";
+                                    tableresult += "alt='" + (result[i].pic || "") + "' ";
+                                    tableresult += "onerror=\"this.onerror=null;this.src='" + avatarDefaultpic + "';\">";
+                                tableresult += "</div>";
+                            tableresult += "</div>";
+                            tableresult += "<div class='d-flex flex-column'>";
+                                tableresult += "<span class='text-gray-800 fw-bold'>";
+                                tableresult += (result[i].pic || "-");
+                                tableresult += "</span>";
+                                tableresult += "<span class='text-muted'>";
+                                tableresult += (result[i].emailpic || "-");
+                                tableresult += "</span>";
                             tableresult += "</div>";
                         tableresult += "</div>";
-                        tableresult += "<div class='d-flex flex-column'>";
-                            tableresult += "<span class='text-gray-800 fw-bold'>";
-                            tableresult += (result[i].pic || "-");
-                            tableresult += "</span>";
-                            tableresult += "<span class='text-muted'>";
-                            tableresult += (result[i].emailpic || "-");
-                            tableresult += "</span>";
-                        tableresult += "</div>";
-                    tableresult += "</div>";
-                tableresult += "</td>";
+                    tableresult += "</td>";
 
-                tableresult += "<td>"+(result[i].active == 1 ? '<span class=\"badge badge-light-success\">Active</span>' : '<span class=\"badge badge-light-danger\">Inactive</span>')+"</td>";
-                tableresult += "<td>";
-                    tableresult += "<div class='d-flex align-items-center'>";
-                        tableresult += "<div class='symbol symbol-circle symbol-50px overflow-hidden me-3'>";
-                            tableresult += "<div class='symbol-label'>";
-                                tableresult += "<img ";
-                                tableresult += "src='" + avatar + "' ";
-                                tableresult += "class='w-100' ";
-                                tableresult += "alt='" + (result[i].dibuatoleh || "") + "' ";
-                                tableresult += "onerror=\"this.onerror=null;this.src='" + avatarDefault + "';\">";
+                    tableresult += "<td>"+(result[i].active == 1 ? '<span class=\"badge badge-light-success\">Active</span>' : '<span class=\"badge badge-light-danger\">Inactive</span>')+"</td>";
+                    tableresult += "<td>";
+                        tableresult += "<div class='d-flex align-items-center'>";
+                            tableresult += "<div class='symbol symbol-circle symbol-35px overflow-hidden me-3'>";
+                                tableresult += "<div class='symbol-label'>";
+                                    tableresult += "<img ";
+                                    tableresult += "src='" + avatar + "' ";
+                                    tableresult += "class='w-100' ";
+                                    tableresult += "alt='" + (result[i].dibuatoleh || "") + "' ";
+                                    tableresult += "onerror=\"this.onerror=null;this.src='" + avatarDefault + "';\">";
+                                tableresult += "</div>";
+                            tableresult += "</div>";
+                            tableresult += "<div class='d-flex flex-column'>";
+                                tableresult += "<span class='text-gray-800 fw-bold'>";
+                                tableresult += (result[i].dibuatoleh || "-");
+                                tableresult += "</span>";
+                                tableresult += "<span class='text-muted'>";
+                                tableresult += (result[i].dibuattgl || "-");
+                                tableresult += "</span>";
                             tableresult += "</div>";
                         tableresult += "</div>";
-                        tableresult += "<div class='d-flex flex-column'>";
-                            tableresult += "<span class='text-gray-800 fw-bold'>";
-                            tableresult += (result[i].dibuatoleh || "-");
-                            tableresult += "</span>";
-                            tableresult += "<span class='text-muted'>";
-                            tableresult += (result[i].dibuattgl || "-");
-                            tableresult += "</span>";
-                        tableresult += "</div>";
-                    tableresult += "</div>";
-                tableresult += "</td>";
+                    tableresult += "</td>";
 
-                tableresult += "<td class='text-end pe-4'>";
-                    tableresult += "<div class='btn-group'>";
-                        tableresult += "<button type='button' class='btn btn-light-primary dropdown-toggle btn-sm' data-bs-toggle='dropdown'>Actions</button>";
-                        tableresult += "<div class='dropdown-menu'>";
-                            tableresult += btnaction;
+
+                    tableresult += "<td class='text-end'>";
+                        tableresult += "<div class='btn-group'>";
+                            tableresult += "<button type='button' class='btn btn-light-primary dropdown-toggle btn-sm' data-bs-toggle='dropdown'>Actions</button>";
+                            tableresult += "<div class='dropdown-menu'>";
+                                tableresult += btnaction;
+                            tableresult += "</div>";
                         tableresult += "</div>";
-                    tableresult += "</div>";
-                tableresult += "</td>";
+                    tableresult += "</td>";
+                    
                 tableresult += "</tr>";
             }
 
             $("#resultdatadepartment").html(tableresult);
-            table = $('#datadepartment_table').DataTable({
+
+            if ($.fn.DataTable.isDataTable("#datadepartment_table")) {
+                $("#datadepartment_table").DataTable().destroy();
+            }
+
+            const table = $("#datadepartment_table").DataTable({
                 responsive: true,
                 pageLength: 10,
-                order: [],
-                destroy: true,
-                autoWidth: false,
+                autoWidth : false,
+                destroy   : true,
+                ordering  : false,
+                searching : true,
+                info      : true,
                 language: {
                     emptyTable: "No data available"
                 }
             });
 
-            initTableSearch('#datadepartment_table', '#searchtable');
+            initTableSearch("#datadepartment_table", "#searchtable");
 
         },
 

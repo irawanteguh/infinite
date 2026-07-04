@@ -6,6 +6,16 @@
         if(file_exists($directory)){
             include($directory);
         }
+
+        $directory = APPPATH.'modules/'.$this->uri->segment(1).'/progress/'.$this->uri->segment(2).".php";
+        if(file_exists($directory)){
+            include($directory);
+        }
+
+        $directory = APPPATH.'modules/'.$this->uri->segment(1).'/team/'.$this->uri->segment(2).".php";
+        if(file_exists($directory)){
+            include($directory);
+        }
     ?>
 </div>
 

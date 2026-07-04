@@ -21,6 +21,7 @@
                         <th class="text-start ps-4 rounded-start">#</th>
                         <th>Periode</th>
                         <th>PJ / Ketua Komite Mutu</th>
+                        <th>PIC Indikator</th>
                         <th>Status</th>
                         <th>Created By</th>
                         <th class="text-end pe-4 rounded-end">Actions</th>

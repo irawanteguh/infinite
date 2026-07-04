@@ -20,10 +20,10 @@
                     <tr class="fw-bolder text-muted bg-light">
                         <th class="text-start ps-4 rounded-start">#</th>
                         <th>Department</th>
-                        <th>Personal In Charge</th>
+                        <th>Head Department</th>
                         <th>Active</th>
                         <th>Created By</th>
-                        <th class="text-end ps-4 rounded-end">Actions</th>
+                        <th class="text-end pe-4 rounded-end">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="fw-bold text-gray-600" id="resultdatadepartment"></tbody>

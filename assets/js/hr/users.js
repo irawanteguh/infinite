@@ -177,7 +177,7 @@ function datausers() {
             }
 
             const table = $("#datausers_table").DataTable({
-                responsive: true,
+                responsive: false,
                 pageLength: 10,
                 autoWidth : false,
                 destroy   : true,

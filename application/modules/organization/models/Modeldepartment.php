@@ -1,6 +1,22 @@
 <?php
     class Modeldepartment extends CI_Model{
         
+        function datauser($groupid,$orgid){
+            $query =
+                    "
+                        select a.user_id, name
+                        from dt01_gen_user_data a
+                        where a.active='1'
+                        and   a.group_id='".$groupid."'
+                        and   a.org_id='".$orgid."'
+                        order by name asc
+                    ";
+
+            $recordset = $this->db->query($query);
+            $recordset = $recordset->result();
+            return $recordset;
+        }
+
         function datadepartment($groupid,$orgid){
             $query =
                     "
@@ -12,7 +28,7 @@
                         where a.active='1'
                         and   a.group_id='".$groupid."'
                         and   a.org_id='".$orgid."'
-                        order by department asc
+                        order by created_date desc
                     ";
 
             $recordset = $this->db->query($query);

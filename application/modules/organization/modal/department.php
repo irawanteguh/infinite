@@ -1,5 +1,5 @@
 <div class="modal fade" id="modal_add_department" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header pb-0">
                 <h1 class="mb-3">Add Department</h1>
@@ -15,11 +15,21 @@
                         <div class="text-muted fw-bold fs-5">Please add the department data.</div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12 row">
+                        <div class="col-md-12 mb-5">
                             <label class="d-flex align-items-center fs-5 fw-bold mb-2">
                                 <span class="required">Department</span>
+                                <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Department"></i>
                             </label>
-                            <input type="text" class="form-control form-control-solid form-control-sm" id="department-add" name="department-add" required>
+                            <input type="text" class="form-control form-control-solid form-control-sm" id="modal_add_department_department" name="modal_add_department_department" required>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="d-flex align-items-center fs-5 fw-bold mb-2">
+                                <span class="required">Head Department</span>
+                                <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Head Department"></i>
+                            </label>
+                            <select data-control="select2" data-dropdown-parent="#modal_add_department" data-placeholder="Please Select User" class="form-select form-select-solid" name="modal_add_department_headdepartment" id="modal_add_department_headdepartment" required>
+                                <?php echo $masterdatauser;?>
+                            </select>
                         </div>
                     </div>
                 </div> 

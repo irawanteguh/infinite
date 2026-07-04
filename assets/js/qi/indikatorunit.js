@@ -166,7 +166,7 @@ function dataindikatorunit() {
             }
 
             const table = $("#dataindikatorunit_table").DataTable({
-                responsive: true,
+                responsive: false,
                 pageLength: 10,
                 autoWidth : false,
                 destroy   : true,

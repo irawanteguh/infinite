@@ -166,7 +166,7 @@ function dataindikator() {
                 tableresult += "</td>";
 
                 // Action
-                tableresult += "<td class='text-end pe-4'>";
+                tableresult += "<td class='text-end'>";
                     tableresult += "<div class='btn-group'>";
                         tableresult += "<button ";
                         tableresult += "type='button' ";
@@ -186,17 +186,21 @@ function dataindikator() {
 
             $("#resultdataindikator").html(tableresult);
 
-            table = $("#dataindikator_table").DataTable({
-                responsive: true,
+            if ($.fn.DataTable.isDataTable("#dataindikator_table")) {
+                $("#dataindikator_table").DataTable().destroy();
+            }
+
+            const table = $("#dataindikator_table").DataTable({
+                responsive: false,
                 pageLength: 10,
-                destroy: true,
-                autoWidth: false,
-                order: [],
+                autoWidth : false,
+                destroy   : true,
+                ordering  : false,
+                searching : true,
+                info      : true,
                 language: {
                     emptyTable: "No data available"
-
                 }
-
             });
 
             // Search

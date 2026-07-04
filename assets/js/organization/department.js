@@ -121,7 +121,7 @@ function datadepartment() {
             }
 
             const table = $("#datadepartment_table").DataTable({
-                responsive: true,
+                responsive: false,
                 pageLength: 10,
                 autoWidth : false,
                 destroy   : true,

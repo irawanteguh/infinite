@@ -80,7 +80,17 @@ function dataperiodepelaporan() {
 
                 tableresult += "<td>" + renderPIC(result[i].picindikator, 4) + "</td>";
 
-                tableresult += "<td>"+(result[i].active == 1 ? '<span class=\"badge badge-light-success\">Active</span>' : '<span class=\"badge badge-light-danger\">Inactive</span>')+"</td>";
+                tableresult += "<td>";
+                tableresult += `
+                    <span class="badge badge-light-${result[i].statuscolor}">
+                        <i class="${result[i].statusicon} text-${result[i].statuscolor} me-1"></i>
+                        ${result[i].status}
+                    </span>
+                    <div class="text-muted fs-8 mt-1">
+                        ${result[i].statusdescription || ""}
+                    </div>
+                `;
+                tableresult += "</td>";
                 
                 tableresult += "<td>";
                     tableresult += "<div class='d-flex align-items-center'>";
@@ -122,7 +132,7 @@ function dataperiodepelaporan() {
             }
 
             const table = $("#dataperiodepelaporan_table").DataTable({
-                responsive: true,
+                responsive: false,
                 pageLength: 10,
                 autoWidth : false,
                 destroy   : true,

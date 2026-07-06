@@ -1,6 +1,22 @@
 <?php
     class Modelperiodepelaporan extends CI_Model{
         
+        function datauser($groupid,$orgid){
+            $query =
+                    "
+                        select a.user_id, name
+                        from dt01_gen_user_data a
+                        where a.active='1'
+                        and   a.group_id='".$groupid."'
+                        and   a.org_id='".$orgid."'
+                        order by name asc
+                    ";
+
+            $recordset = $this->db->query($query);
+            $recordset = $recordset->result();
+            return $recordset;
+        }
+
         function dataperiodepelaporan($groupid,$orgid){
             $query =
                     "
@@ -59,6 +75,11 @@
             $recordset = $this->db->query($query);
             $recordset = $recordset->result();
             return $recordset;
+        }
+
+        function insertperiode($data){           
+            $sql =   $this->db->insert("dt01_qi_periode_mutu",$data);
+            return $sql;
         }
 
 

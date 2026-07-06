@@ -20,7 +20,7 @@
                                 <span class="required">Department</span>
                                 <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Department"></i>
                             </label>
-                            <input type="text" class="form-control form-control-solid form-control-sm" id="modal_add_department_department" name="modal_add_department_department" required>
+                            <input type="text" class="form-control form-control-solid" id="modal_add_department_department" name="modal_add_department_department" required>
                         </div>
                         <div class="col-md-12">
                             <label class="d-flex align-items-center fs-5 fw-bold mb-2">

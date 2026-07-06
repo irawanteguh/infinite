@@ -207,11 +207,11 @@ function renderPIC(picindikator, maxShow = 5) {
     return html;
 }
 
-$(document).on("submit", "#formadddepartment", function (e) {
+$(document).on("submit", "#formaddperiode", function (e) {
 	e.preventDefault();
 	var data = new  FormData(this);
 	$.ajax({
-        url        : url+'index.php/organization/department/adddepartment',
+        url        : url+'index.php/qi/periodepelaporan/addperiode',
         data       : data,
         method     : "POST",
         dataType   : "JSON",
@@ -244,12 +244,12 @@ $(document).on("submit", "#formadddepartment", function (e) {
                 return;
             }
 
-            $('#modal_add_department').modal('hide');
+            $('#modal_add_periodepelaporan').modal('hide');
             Swal.close();
 		},
         complete: function () {
             Swal.close();
-            datadepartment();
+            dataperiodepelaporan();
 		},
         error: function(xhr, status, error) {
             Swal.fire({

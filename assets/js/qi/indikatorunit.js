@@ -108,55 +108,59 @@ function dataindikatorunit() {
                 const badgeAvg = avg >= Number(result[i].target) ? "badge-light-success" : "badge-light-danger";
 
                 tableresult += `
-                <tr class="main-row" data-index="${i}" style="cursor:pointer">
-                    <td class="text-center">${i + 1}</td>
-                    <td>
-                        <div class="fw-bold">${result[i].indikator || "-"}</div>
-                        <div class="text-muted fst-italic">${result[i].definisi || "-"}</div>
-                    </td>
-                    <td>
-                        <span class="badge badge-light-info">
-                            ${result[i].jenis}
-                        </span>
-                    </td>
-                    <td>${result[i].tahun}</td>
-                    <td>${result[i].department}</td>
-                    <td>
-                        <span class="badge badge-light-info">
-                            ${result[i].target}%
-                        </span>
-                    </td>
-
-                    <td>
-                        <span class="badge ${badgeAvg}">
-                            ${avg.toFixed(2)}%
-                        </span>
-                    </td>
-
-                    <td>
-                        <div class="d-flex align-items-center">
-
-                            <div class="symbol symbol-circle symbol-35px me-2">
-                                <img
-                                    src="${avatar}"
-                                    class="w-100"
-                                    onerror="this.src='${avatarDefault}'">
-                            </div>
-
-                            <div>
-                                <div class="fw-bold">${result[i].picname}</div>
-                                <small class="text-muted">${result[i].dibuattgl}</small>
-                            </div>
-
-                        </div>
-                    </td>
-
-                    <td class="text-center">
-                        <i class="ki-outline ki-right fs-2 toggle-icon"></i>
-                    </td>
-
-                </tr>
-                `;
+                                    <tr class="main-row" data-index="${i}" style="cursor:pointer">
+                                        <td class="text-center">${i + 1}</td>
+                                        <td>
+                                            <div class="fw-bold">${result[i].indikator || "-"}</div>
+                                            <div class="text-muted fst-italic">${result[i].definisi || "-"}</div>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-light-info">
+                                                ${result[i].jenis}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="fw-bold">
+                                                ${result[i].tahun}
+                                                <span class="badge badge-light-${result[i].statuscolor}">
+                                                    <i class="${result[i].statusicon} text-${result[i].statuscolor} me-1"></i>
+                                                    ${result[i].status}
+                                                </span>
+                                            </div>
+                                            <div class="text-muted fs-8 mt-1">
+                                                ${result[i].statusdescription || ""}
+                                            </div>
+                                        </td>
+                                        <td>${result[i].department}</td>
+                                        <td>
+                                            <span class="badge badge-light-info">
+                                                ${result[i].target}%
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="badge ${badgeAvg}">
+                                                ${avg.toFixed(2)}%
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="symbol symbol-circle symbol-35px me-2">
+                                                    <img
+                                                        src="${avatar}"
+                                                        class="w-100"
+                                                        onerror="this.src='${avatarDefault}'">
+                                                </div>
+                                                <div>
+                                                    <div class="fw-bold">${result[i].picname}</div>
+                                                    <small class="text-muted">${result[i].dibuattgl}</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <i class="ki-outline ki-right fs-2 toggle-icon"></i>
+                                        </td>
+                                    </tr>
+                                    `;
             }
 
             $("#resultdataindikatorunit").html(tableresult);
@@ -211,8 +215,29 @@ function dataindikatorunit() {
         return "<span class='badge badge-light-" + color + " me-1 mb-1'>" + text + "</span>";
     }
 
-    function renderNilaiTarget(nilai, target) {
-        // Jika belum ada nilai
+    function renderNilaiTarget(nilai, target, status) {
+
+        // Status selain 2 -> tidak boleh muncul tombol
+        if (status != '2') {
+            if (nilai === null || nilai === "" || nilai === undefined) {
+                return "-";
+            }
+
+            const value = parseFloat(nilai);
+            const targetValue = parseFloat(target);
+
+            const badgeClass = value >= targetValue
+                ? "badge-light-success"
+                : "badge-light-danger";
+
+            return `
+                <span class="badge ${badgeClass}">
+                    ${value.toFixed(2)}%
+                </span>
+            `;
+        }
+
+        // Status = 2
         if (nilai === null || nilai === "" || nilai === undefined) {
             return `
                 <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
@@ -230,50 +255,71 @@ function dataindikatorunit() {
 
         return `
             <span class="badge ${badgeClass}">
-                ${value}%
+                ${value.toFixed(2)}%
             </span>
         `;
     }
 
     function createDetail(d){
+
+        // Status Draft / Belum Aktif
+        if (d.statuscode == '1') {
+            return `
+                <div class="pt-4 pb-4">
+                    <table class="table table-bordered table-sm mb-0">
+                        <tbody>
+                            <tr>
+                                <td colspan="12" class="text-center">
+                                    <div class="fw-bold"><span class='badge badge-light-info'><i class="${d.statusicon} text-${d.statuscolor} me-2"></i> ${d.status}</span></div>
+                                    <div class="text-muted">
+                                        ${d.statusdescription || "Belum dapat mengisi data indikator."}
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
         return `
-                    <div class="pt-4 pb-4">
-                        <table class="table table-bordered table-sm mb-0">
-                            <thead>
-                                <tr class="fw-bolder bg-primary">
-                                    <th class='text-center rounded-start'>Jan</th>
-                                    <th class='text-center'>Feb</th>
-                                    <th class='text-center'>Mar</th>
-                                    <th class='text-center'>Apr</th>
-                                    <th class='text-center'>Mei</th>
-                                    <th class='text-center'>Jun</th>
-                                    <th class='text-center'>Jul</th>
-                                    <th class='text-center'>Agu</th>
-                                    <th class='text-center'>Sep</th>
-                                    <th class='text-center'>Okt</th>
-                                    <th class='text-center'>Nov</th>
-                                    <th class='text-center rounded-end'>Des</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class='text-center'>${renderNilaiTarget(d.nilai01, d.target)}</td>
-                                    <td class='text-center'>${renderNilaiTarget(d.nilai02, d.target)}</td>
-                                    <td class='text-center'>${renderNilaiTarget(d.nilai03, d.target)}</td>
-                                    <td class='text-center'>${renderNilaiTarget(d.nilai04, d.target)}</td>
-                                    <td class='text-center'>${renderNilaiTarget(d.nilai05, d.target)}</td>
-                                    <td class='text-center'>${renderNilaiTarget(d.nilai06, d.target)}</td>
-                                    <td class='text-center'>${renderNilaiTarget(d.nilai07, d.target)}</td>
-                                    <td class='text-center'>${renderNilaiTarget(d.nilai08, d.target)}</td>
-                                    <td class='text-center'>${renderNilaiTarget(d.nilai09, d.target)}</td>
-                                    <td class='text-center'>${renderNilaiTarget(d.nilai10, d.target)}</td>
-                                    <td class='text-center'>${renderNilaiTarget(d.nilai11, d.target)}</td>
-                                    <td class='text-center'>${renderNilaiTarget(d.nilai12, d.target)}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                `;
+            <div class="pt-4 pb-4">
+                <table class="table table-bordered table-sm mb-0">
+                    <thead>
+                        <tr class="fw-bolder bg-primary">
+                            <th class="text-center rounded-start">Jan</th>
+                            <th class="text-center">Feb</th>
+                            <th class="text-center">Mar</th>
+                            <th class="text-center">Apr</th>
+                            <th class="text-center">Mei</th>
+                            <th class="text-center">Jun</th>
+                            <th class="text-center">Jul</th>
+                            <th class="text-center">Agu</th>
+                            <th class="text-center">Sep</th>
+                            <th class="text-center">Okt</th>
+                            <th class="text-center">Nov</th>
+                            <th class="text-center rounded-end">Des</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center">${renderNilaiTarget(d.nilai01,d.target,d.statuscode)}</td>
+                            <td class="text-center">${renderNilaiTarget(d.nilai02,d.target,d.statuscode)}</td>
+                            <td class="text-center">${renderNilaiTarget(d.nilai03,d.target,d.statuscode)}</td>
+                            <td class="text-center">${renderNilaiTarget(d.nilai04,d.target,d.statuscode)}</td>
+                            <td class="text-center">${renderNilaiTarget(d.nilai05,d.target,d.statuscode)}</td>
+                            <td class="text-center">${renderNilaiTarget(d.nilai06,d.target,d.statuscode)}</td>
+                            <td class="text-center">${renderNilaiTarget(d.nilai07,d.target,d.statuscode)}</td>
+                            <td class="text-center">${renderNilaiTarget(d.nilai08,d.target,d.statuscode)}</td>
+                            <td class="text-center">${renderNilaiTarget(d.nilai09,d.target,d.statuscode)}</td>
+                            <td class="text-center">${renderNilaiTarget(d.nilai10,d.target,d.statuscode)}</td>
+                            <td class="text-center">${renderNilaiTarget(d.nilai11,d.target,d.statuscode)}</td>
+                            <td class="text-center">${renderNilaiTarget(d.nilai12,d.target,d.statuscode)}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        `;
     }
 
 }
@@ -309,3 +355,59 @@ function datateam(){
     });
 
 }
+
+$(document).on("submit", "#formaddindikatorunit", function (e) {
+	e.preventDefault();
+	var data = new  FormData(this);
+	$.ajax({
+        url        : url+'index.php/qi/indikatorunit/addindikatorunit',
+        data       : data,
+        method     : "POST",
+        dataType   : "JSON",
+        cache      : false,
+        processData: false,
+        contentType: false,
+        beforeSend : function () {
+            Swal.fire({
+                title: 'Processing',
+                html : 'Please wait while the system displays the requested data.',
+                allowOutsideClick: false,
+                allowEscapeKey   : false,
+                showConfirmButton: false,
+                didOpen: () => Swal.showLoading()
+            });
+        },
+		success: function (response) {
+            if (response.responCode !== "00") {
+                Swal.fire({
+                    title            : "<h1 class='font-weight-bold'>For Your Information</h1>",
+                    html             : "<b>"+data.responDesc+"</b>",
+                    icon             : data.responHead,
+                    confirmButtonText: 'Please Try Again',
+                    customClass      : {confirmButton: 'btn btn-danger'},
+                    timerProgressBar : true,
+                    timer            : 5000,
+                    showClass        : {popup: "animate__animated animate__fadeInUp animate__faster"},
+                    hideClass        : {popup: "animate__animated animate__fadeOutDown animate__faster"}
+                });
+                return;
+            }
+
+            $('#modal_add_pengajuanindikatorunit').modal('hide');
+            Swal.close();
+		},
+        complete: function () {
+            Swal.close();
+            dataindikatorunit();
+            datateam();
+		},
+        error: function(xhr, status, error) {
+            Swal.fire({
+                icon : 'error',
+                title: 'System Error',
+                text : 'Failed to retrieve emergency visit data.'
+            });
+		}
+	});
+    return false;
+});

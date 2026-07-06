@@ -186,5 +186,10 @@
             return $sql;
         }
 
+        function insertnilaiindikator($data){           
+            $sql =   $this->db->insert("dt01_qi_indikator_it",$data);
+            return $sql;
+        }
+
     }
 ?>

@@ -4,6 +4,13 @@ let opened = null;
 dataindikatorunit();
 datateam();
 
+function showInputNilai(indikatorId, bulan){
+    $("#modal_input_nilai_indikator_indikatorid").val(indikatorId);
+    $("#modal_input_nilai_indikator_bulan").val(bulan);
+
+    $("#modal_input_nilai_indikator").modal("show");
+}
+
 function dataindikatorunit() {
     $.ajax({
         url: url + "index.php/qi/indikatorunit/dataindikatorunit",
@@ -215,50 +222,45 @@ function dataindikatorunit() {
         return "<span class='badge badge-light-" + color + " me-1 mb-1'>" + text + "</span>";
     }
 
-    function renderNilaiTarget(nilai, target, status) {
+    function renderNilaiTarget(nilai, target, status, indikatorId, bulan) {
 
-        // Status selain 2 -> tidak boleh muncul tombol
-        if (status != '2') {
+        if (status == '2') {
+
             if (nilai === null || nilai === "" || nilai === undefined) {
-                return "-";
+                return `
+                    <a href="javascript:void(0)"
+                    class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm"
+                    onclick="showInputNilai('${indikatorId}','${bulan}')">
+                        <i class="bi bi-plus-circle-dotted fs-4"></i>
+                    </a>
+                `;
             }
 
             const value = parseFloat(nilai);
             const targetValue = parseFloat(target);
 
-            const badgeClass = value >= targetValue
-                ? "badge-light-success"
-                : "badge-light-danger";
-
             return `
-                <span class="badge ${badgeClass}">
+                <span class="badge ${value >= targetValue ? 'badge-light-success':'badge-light-danger'}">
                     ${value.toFixed(2)}%
                 </span>
             `;
         }
 
-        // Status = 2
         if (nilai === null || nilai === "" || nilai === undefined) {
-            return `
-                <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
-                    <i class="bi bi-plus-circle-dotted fs-4"></i>
-                </a>
-            `;
+            return "-";
         }
 
         const value = parseFloat(nilai);
         const targetValue = parseFloat(target);
 
-        const badgeClass = value >= targetValue
-            ? "badge-light-success"
-            : "badge-light-danger";
-
         return `
-            <span class="badge ${badgeClass}">
+            <span class="badge ${value >= targetValue ? 'badge-light-success':'badge-light-danger'}">
                 ${value.toFixed(2)}%
             </span>
         `;
     }
+
+    
 
     function createDetail(d){
 
@@ -303,18 +305,18 @@ function dataindikatorunit() {
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="text-center">${renderNilaiTarget(d.nilai01,d.target,d.statuscode)}</td>
-                            <td class="text-center">${renderNilaiTarget(d.nilai02,d.target,d.statuscode)}</td>
-                            <td class="text-center">${renderNilaiTarget(d.nilai03,d.target,d.statuscode)}</td>
-                            <td class="text-center">${renderNilaiTarget(d.nilai04,d.target,d.statuscode)}</td>
-                            <td class="text-center">${renderNilaiTarget(d.nilai05,d.target,d.statuscode)}</td>
-                            <td class="text-center">${renderNilaiTarget(d.nilai06,d.target,d.statuscode)}</td>
-                            <td class="text-center">${renderNilaiTarget(d.nilai07,d.target,d.statuscode)}</td>
-                            <td class="text-center">${renderNilaiTarget(d.nilai08,d.target,d.statuscode)}</td>
-                            <td class="text-center">${renderNilaiTarget(d.nilai09,d.target,d.statuscode)}</td>
-                            <td class="text-center">${renderNilaiTarget(d.nilai10,d.target,d.statuscode)}</td>
-                            <td class="text-center">${renderNilaiTarget(d.nilai11,d.target,d.statuscode)}</td>
-                            <td class="text-center">${renderNilaiTarget(d.nilai12,d.target,d.statuscode)}</td>
+                            <td class="text-center">${renderNilaiTarget(d.nilai01,d.target,d.statuscode,d.transaksi_id,'01')}</td>
+                            <td class="text-center">${renderNilaiTarget(d.nilai02,d.target,d.statuscode,d.transaksi_id,'02')}</td>
+                            <td class="text-center">${renderNilaiTarget(d.nilai03,d.target,d.statuscode,d.transaksi_id,'03')}</td>
+                            <td class="text-center">${renderNilaiTarget(d.nilai04,d.target,d.statuscode,d.transaksi_id,'04')}</td>
+                            <td class="text-center">${renderNilaiTarget(d.nilai05,d.target,d.statuscode,d.transaksi_id,'05')}</td>
+                            <td class="text-center">${renderNilaiTarget(d.nilai06,d.target,d.statuscode,d.transaksi_id,'06')}</td>
+                            <td class="text-center">${renderNilaiTarget(d.nilai07,d.target,d.statuscode,d.transaksi_id,'07')}</td>
+                            <td class="text-center">${renderNilaiTarget(d.nilai08,d.target,d.statuscode,d.transaksi_id,'08')}</td>
+                            <td class="text-center">${renderNilaiTarget(d.nilai09,d.target,d.statuscode,d.transaksi_id,'09')}</td>
+                            <td class="text-center">${renderNilaiTarget(d.nilai10,d.target,d.statuscode,d.transaksi_id,'10')}</td>
+                            <td class="text-center">${renderNilaiTarget(d.nilai11,d.target,d.statuscode,d.transaksi_id,'11')}</td>
+                            <td class="text-center">${renderNilaiTarget(d.nilai12,d.target,d.statuscode,d.transaksi_id,'12')}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -394,6 +396,62 @@ $(document).on("submit", "#formaddindikatorunit", function (e) {
             }
 
             $('#modal_add_pengajuanindikatorunit').modal('hide');
+            Swal.close();
+		},
+        complete: function () {
+            Swal.close();
+            dataindikatorunit();
+            datateam();
+		},
+        error: function(xhr, status, error) {
+            Swal.fire({
+                icon : 'error',
+                title: 'System Error',
+                text : 'Failed to retrieve emergency visit data.'
+            });
+		}
+	});
+    return false;
+});
+
+$(document).on("submit", "#forminputnilaiindikator", function (e) {
+	e.preventDefault();
+	var data = new  FormData(this);
+	$.ajax({
+        url        : url+'index.php/qi/indikatorunit/inputnilaiindikator',
+        data       : data,
+        method     : "POST",
+        dataType   : "JSON",
+        cache      : false,
+        processData: false,
+        contentType: false,
+        beforeSend : function () {
+            Swal.fire({
+                title: 'Processing',
+                html : 'Please wait while the system displays the requested data.',
+                allowOutsideClick: false,
+                allowEscapeKey   : false,
+                showConfirmButton: false,
+                didOpen: () => Swal.showLoading()
+            });
+        },
+		success: function (response) {
+            if (response.responCode !== "00") {
+                Swal.fire({
+                    title            : "<h1 class='font-weight-bold'>For Your Information</h1>",
+                    html             : "<b>"+data.responDesc+"</b>",
+                    icon             : data.responHead,
+                    confirmButtonText: 'Please Try Again',
+                    customClass      : {confirmButton: 'btn btn-danger'},
+                    timerProgressBar : true,
+                    timer            : 5000,
+                    showClass        : {popup: "animate__animated animate__fadeInUp animate__faster"},
+                    hideClass        : {popup: "animate__animated animate__fadeOutDown animate__faster"}
+                });
+                return;
+            }
+
+            $('#modal_input_nilai_indikator').modal('hide');
             Swal.close();
 		},
         complete: function () {

@@ -114,5 +114,40 @@
             echo json_encode($json);
         }
 
+        public function inputnilaiindikator(){
+            $indikator   = $this->input->post("modal_input_nilai_indikator_indikatorid");
+            $bulan       = $this->input->post("modal_input_nilai_indikator_bulan");
+            $numerator   = $this->input->post("modal_add_pengajuanindikatorunit_numerator");
+            $denumerator = $this->input->post("modal_add_pengajuanindikatorunit_denumerator");
+            $alasan      = $this->input->post("modal_add_pengajuanindikatorunit_alasan");
+            $rtl         = $this->input->post("modal_add_pengajuanindikatorunit_rtl");
+
+            $datainsert = [
+                'group_id'     => $_SESSION['groupid'] ?? null,
+                'org_id'       => $_SESSION['orgid'] ?? null,
+                'referensi_id' => $indikator ?? null,
+                'bulan'        => $bulan ?? null,
+                'numerator'    => $numerator ?? 0,
+                'denumerator'  => $numerator ?? 0,
+                'reason'       => $alasan ?? null,
+                'rtl'          => $rtl ?? null,
+                'created_by'   => $_SESSION['userid'] ?? null
+            ];
+
+
+            if($this->md->insertnilaiindikator($datainsert)){
+                $json['responCode']="00";
+                $json['responHead']="success";
+                $json['responDesc']="Data Updated Successfully";
+            }else{
+                $json['responCode']="01";
+                $json['responHead']="info";
+                $json['responDesc']="Data failed to update";
+            }
+            
+
+            echo json_encode($json);
+        }
+
     }
 ?>

@@ -52,9 +52,9 @@ function dataindikator() {
 
                 let btnaction = "";
 
-                btnaction += "<a href='#' class='dropdown-item'><i class='ki-outline ki-eye fs-6 me-2'></i>Detail</a>";
-                btnaction += "<a href='#' class='dropdown-item'><i class='ki-outline ki-pencil fs-6 me-2'></i>Edit</a>";
-                btnaction += "<a href='#' class='dropdown-item text-danger'><i class='ki-outline ki-trash fs-6 me-2'></i>Delete</a>";
+                // btnaction += "<a href='#' class='dropdown-item'><i class='ki-outline ki-eye fs-6 me-2'></i>Detail</a>";
+                // btnaction += "<a href='#' class='dropdown-item'><i class='ki-outline ki-pencil fs-6 me-2'></i>Edit</a>";
+                // btnaction += "<a href='#' class='dropdown-item text-danger'><i class='ki-outline ki-trash fs-6 me-2'></i>Delete</a>";
 
                 tableresult += "<tr>";
 

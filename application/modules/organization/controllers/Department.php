@@ -71,5 +71,26 @@
             echo json_encode($json);
         }
 
+        public function activation(){
+            $departmentid = $this->input->post("departmentid");
+            $active = $this->input->post("active");
+
+            $dataupdate = [
+                'active'   => $active
+            ];
+
+            if($this->md->updatedepartment($departmentid,$dataupdate)){
+                $json['responCode'] = "00";
+                $json['responHead'] = "success";
+                $json['responDesc'] = "Data Updated Successfully";
+            }else{
+                $json['responCode'] = "01";
+                $json['responHead'] = "info";
+                $json['responDesc'] = "Data failed to update";
+            }
+
+            echo json_encode($json);
+        }
+
     }
 ?>

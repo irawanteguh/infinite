@@ -1,12 +1,14 @@
 <?php
     class Modelusers extends CI_Model{
         
-        function datausers(){
+        function datausers($groupid,$orgid){
             $query =
                     "
                         select a.user_id, username, name, email, created_by, nik, active, date_format(a.created_date, '%d.%m.%Y %H:%i:%s')dibuattgl,
                                (select name from dt01_gen_user_data where user_id=a.created_by)dibuatoleh
                         from dt01_gen_user_data a
+                        where a.group_id='".$groupid."'
+                        and a.org_id='".$orgid."'
                     ";
 
             $recordset = $this->db->query($query);

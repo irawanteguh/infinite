@@ -2,6 +2,79 @@ let table = null;
 
 datadepartment();
 
+function activation(el) {
+
+    let departmentid = el.data('departmentid');
+    let active = String(el.data('active'));
+
+    let isDeactive = active === "0";
+
+    Swal.fire({
+        title: isDeactive ? "Deactivate Department?" : "Reactivate Department?",
+        html: isDeactive
+            ? `
+                Department ini akan dinonaktifkan.<br>
+                <small class="text-muted">
+                    Dialog ini akan tertutup otomatis dalam <b>10 detik</b>.
+                </small>
+              `
+            : `
+                Department ini akan diaktifkan kembali.<br>
+                <small class="text-muted">
+                    Dialog ini akan tertutup otomatis dalam <b>10 detik</b>.
+                </small>
+              `,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: isDeactive ? "#d33" : "#50CD89",
+        cancelButtonColor: "#6c757d",
+        confirmButtonText: isDeactive
+            ? '<i class="bi bi-trash3 text-white"></i> Ya, Deactivate'
+            : '<i class="bi bi-check-circle text-white"></i> Ya, Reactivate',
+        cancelButtonText: "Batal",
+        reverseButtons: true,
+        timer: 10000,
+        timerProgressBar: true
+    }).then((result) => {
+
+        if (!result.isConfirmed) return;
+
+        $.ajax({
+            url: url + "index.php/organization/department/activation",
+            type: "POST",
+            dataType: "json",
+            data: {
+                departmentid: departmentid,
+                active: active
+            },
+            success: function (response) {
+
+                Swal.fire({
+                    icon: response.responHead,
+                    title: response.responDesc,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+
+                if (response.responCode === "00") {
+                    datadepartment();
+                }
+
+            },
+            error: function () {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "Terjadi kesalahan pada server."
+                });
+            }
+        });
+
+    });
+
+}
+
 function datadepartment() {
     $.ajax({
         url: url + "index.php/organization/department/datadepartment",
@@ -50,7 +123,15 @@ function datadepartment() {
                 const avatarpic        = `${url}assets/media/avatars/${result[i].user_id}.jpg`;
                 const avatarDefaultpic = `${url}assets/media/avatars/blank.png`;
 
+                getvariabel =   "data-departmentid='"+result[i].department_id+"'";
+
                 let btnaction = "";
+
+                if(result[i].active==="1"){
+                    btnaction += "<a class='dropdown-item btn btn-sm text-danger' "+getvariabel+" data-active='0' onclick='activation($(this));'><i class='bi bi-trash3 text-danger me-4'></i>Deactive</a>";
+                }else{
+                    btnaction += "<a class='dropdown-item btn btn-sm text-success' "+getvariabel+" data-active='1' onclick='activation($(this));'><i class='bi bi-bookmark-check text-success me-4'></i>Reactive</a>";
+                }
 
                 tableresult += "<tr>";
                     tableresult += "<td class='text-start ps-4'>"+(parseInt(i) + 1)+"</td>";
@@ -78,7 +159,7 @@ function datadepartment() {
                         tableresult += "</div>";
                     tableresult += "</td>";
 
-                    tableresult += "<td>"+(result[i].active == 1 ? '<span class=\"badge badge-light-success\">Active</span>' : '<span class=\"badge badge-light-danger\">Inactive</span>')+"</td>";
+                    tableresult += "<td>"+(result[i].active == 1 ? '<span class=\"badge badge-light-success\">Active</span>' : '<span class=\"badge badge-light-danger\">Deactive</span>')+"</td>";
                     tableresult += "<td>";
                         tableresult += "<div class='d-flex align-items-center'>";
                             tableresult += "<div class='symbol symbol-circle symbol-35px overflow-hidden me-3'>";

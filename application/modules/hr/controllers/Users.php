@@ -100,7 +100,6 @@
         }
 
         public function edituser(){
-
             $userid       = $this->input->post("userid-edit");
             $username     = $this->input->post("username-edit");
             $nikrs        = $this->input->post("nikrs-edit");
@@ -190,8 +189,29 @@
             echo json_encode($json);
         }
 
+        public function activation(){
+            $userid = $this->input->post("userid");
+            $active = $this->input->post("active");
+
+            $dataupdate = [
+                'active'   => $active
+            ];
+
+            if($this->md->updateuser($userid,$dataupdate)){
+                $json['responCode'] = "00";
+                $json['responHead'] = "success";
+                $json['responDesc'] = "Data Updated Successfully";
+            }else{
+                $json['responCode'] = "01";
+                $json['responHead'] = "info";
+                $json['responDesc'] = "Data failed to update";
+            }
+
+            echo json_encode($json);
+        }
+
         public function datausers(){
-            $result = $this->md->datausers();
+            $result = $this->md->datausers($_SESSION['groupid'],$_SESSION['orgid']);
             
 			if(!empty($result)){
                 $json["responCode"]="00";

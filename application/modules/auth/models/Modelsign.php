@@ -4,10 +4,9 @@
         function login($username,$password){
             $query =
                     "
-                        select a.user_id
+                        select a.user_id, active
                         from dt01_gen_user_data a
-                        where a.active='1'
-                        and   a.username='".$username."'
+                        where a.username='".$username."'
                         and   a.password='".$password."'
                     ";
 
@@ -20,7 +19,6 @@
             $query =
                     "
                         select a.group_id, org_id, user_id, name, email                        
-
                         from dt01_gen_user_data a
                         where a.active='1'
                         and   a.user_id='".$userid."'

@@ -1,9 +1,8 @@
 <?php
     defined("BASEPATH") OR exit("No direct script access allowed");
-    class Welcome extends MX_Controller{ 
+    class Deactive extends MX_Controller{ 
         public function index(){
-            $this->template->load("template/dashboard-light-aside","v_welcome");
+            $this->template->load("template/dashboard-light-blank","v_deactive");
         }
-
     }
 ?>

@@ -42,6 +42,7 @@ var KTSigninGeneral = (function () {
     };
 
     var signIn = function () {
+
         setLoading(true);
 
         $.ajax({
@@ -50,36 +51,68 @@ var KTSigninGeneral = (function () {
             data: $(form).serialize(),
             dataType: "json"
         })
-            .done(function (response) {
-                var isSuccess = response && response.responCode === "00";
-                var message = response && response.responDesc
-                    ? response.responDesc.replace(/<br\s*\/?>/gi, "\n")
-                    : "Username atau password tidak sesuai.";
+        .done(function (response) {
 
-                if (!isSuccess) {
-                    clearForm();
-                    showAlert(message, "error");
-                    return;
-                }
+            let code    = response.responCode || "01";
+            let icon    = response.responHead || "error";
+            let message = response.responDesc
+                ? response.responDesc.replace(/<br\s*\/?>/gi, "\n")
+                : "Terjadi kesalahan.";
+
+            if (code === "00") {
 
                 showAlert(message, "success", {
-                    confirmButtonText: "OK",
                     timer: 3000,
                     timerProgressBar: true
                 }).then(function () {
-                    window.location.href = response.url || form.dataset.redirectUrl || "/";
+                    window.location.href = response.url;
                 });
-            })
-            .fail(function () {
-                clearForm();
-                showAlert("Login belum berhasil diproses. Silakan coba lagi.", "error");
-            })
-            .always(function () {
-                setLoading(false);
-            });
+
+                return;
+            }
+
+            if (code === "02") {
+
+                showAlert(message, "warning", {
+                    confirmButtonText: "OK",
+                    timer: 10000,
+                    timerProgressBar: true
+                }).then(function (result) {
+
+                    if (
+                        result.isConfirmed ||
+                        result.dismiss === Swal.DismissReason.timer
+                    ) {
+                        window.location.href = response.url;
+                    }
+
+                });
+
+                return;
+            }
+
+            showAlert(message, icon);
+
+        })
+        .fail(function () {
+
+            showAlert(
+                "Login belum berhasil diproses. Silakan coba lagi.",
+                "error"
+            );
+
+        })
+        .always(function () {
+
+            clearForm();
+            setLoading(false);
+
+        });
+
     };
 
     var initValidation = function () {
+
         validator = FormValidation.formValidation(form, {
             fields: {
                 username: {
@@ -109,30 +142,41 @@ var KTSigninGeneral = (function () {
                 })
             }
         });
+
     };
 
     var handleSubmit = function () {
+
         form.addEventListener("submit", function (event) {
+
             event.preventDefault();
 
             validator.validate().then(function (status) {
+
                 if (status !== "Valid") {
-                    showAlert("Mohon lengkapi username dan password.", "error");
+                    showAlert(
+                        "Mohon lengkapi username dan password.",
+                        "error"
+                    );
                     return;
                 }
 
                 signIn();
+
             });
+
         });
 
         submitButton.addEventListener("click", function (event) {
             event.preventDefault();
-            form.dispatchEvent(new Event("submit", {cancelable: true}));
+            form.dispatchEvent(new Event("submit", { cancelable: true }));
         });
+
     };
 
     return {
         init: function () {
+
             form = document.querySelector("#kt_sign_in_form");
             submitButton = document.querySelector("#kt_sign_in_submit");
 
@@ -143,8 +187,10 @@ var KTSigninGeneral = (function () {
             initValidation();
             clearForm();
             handleSubmit();
+
         }
     };
+
 })();
 
 KTUtil.onDOMContentLoaded(function () {

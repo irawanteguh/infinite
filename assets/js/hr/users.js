@@ -2,7 +2,6 @@ let table = null;
 
 datausers();
 
-
 $('#modal_add_user').on('hidden.bs.modal', function () {
     datausers();
 });
@@ -11,13 +10,85 @@ $('#modal_edit_user').on('hidden.bs.modal', function () {
     datausers();
 });
 
-function getdata(btn){
-    var userid   = btn.attr("data-userid");
-    var nikrs    = btn.attr("data-nikrs");
-    var username = btn.attr("data-username");
-    var name     = btn.attr("data-name");
-    var email    = btn.attr("data-email");
+function activation(el) {
 
+    let userid = el.data('userid');
+    let active = String(el.data('active'));
+
+    let isDeactive = active === "0";
+
+    Swal.fire({
+        title: isDeactive ? "Deactivate Account?" : "Reactivate Account?",
+        html: isDeactive
+            ? `
+                User ini akan dinonaktifkan dan tidak dapat login ke sistem.<br>
+                <small class="text-muted">
+                    Dialog ini akan tertutup otomatis dalam <b>10 detik</b>.
+                </small>
+              `
+            : `
+                User ini akan diaktifkan kembali dan dapat login ke sistem.<br>
+                <small class="text-muted">
+                    Dialog ini akan tertutup otomatis dalam <b>10 detik</b>.
+                </small>
+              `,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: isDeactive ? "#d33" : "#50CD89",
+        cancelButtonColor: "#6c757d",
+        confirmButtonText: isDeactive
+            ? '<i class="bi bi-trash3 text-white"></i> Ya, Deactivate'
+            : '<i class="bi bi-check-circle text-white"></i> Ya, Reactivate',
+        cancelButtonText: "Batal",
+        reverseButtons: true,
+        timer: 10000,
+        timerProgressBar: true
+    }).then((result) => {
+
+        if (!result.isConfirmed) return;
+
+        $.ajax({
+            url: url + "index.php/hr/users/activation",
+            type: "POST",
+            dataType: "json",
+            data: {
+                userid: userid,
+                active: active
+            },
+            success: function (response) {
+
+                Swal.fire({
+                    icon: response.responHead,
+                    title: response.responDesc,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+
+                if (response.responCode === "00") {
+                    datausers();
+                }
+
+            },
+            error: function () {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "Terjadi kesalahan pada server."
+                });
+            }
+        });
+
+    });
+
+}
+
+function getdata(btn){
+    var userid        = btn.attr("data-userid");
+    var nikrs         = btn.attr("data-nikrs");
+    var username      = btn.attr("data-username");
+    var name          = btn.attr("data-name");
+    var email         = btn.attr("data-email");
     var avatar        = url+"assets/media/avatars/"+userid+".jpg";
     var avatarDefault = url+"assets/media/avatars/blank.png";
 
@@ -30,14 +101,11 @@ function getdata(btn){
 };
 
 function datausers() {
-
     $.ajax({
-        url: url + "index.php/hr/users/datausers",
-        type: "POST",
+        url     : url + "index.php/hr/users/datausers",
+        type    : "POST",
         dataType: "json",
-
         beforeSend: function () {
-
             Swal.fire({
                 title: "Processing",
                 html: "Loading data, please wait...",
@@ -47,14 +115,12 @@ function datausers() {
                 didOpen: () => Swal.showLoading()
             });
 
-            // Destroy DataTable jika sudah ada
             if ($.fn.DataTable.isDataTable('#datausers_table')) {
                 $('#datausers_table').DataTable().destroy();
             }
 
             $("#resultdatausers").empty();
         },
-
         success: function (response) {
 
             Swal.close();
@@ -89,7 +155,14 @@ function datausers() {
                 let btnaction = "";
 
                 btnaction += "<a class='dropdown-item btn btn-sm text-primary' data-bs-toggle='modal' data-bs-target='#modal_edit_user' "+getvariabel+" onclick='getdata($(this));'><i class='bi bi-pencil text-primary me-4'></i>Edit</a>";
-                // btnaction += "<a href='#' class='dropdown-item btn btn-sm text-danger'><i class='bi bi-trash3 text-danger me-2'></i>Delete</a>";
+                
+                if(result[i].active==="1"){
+                    btnaction += "<a class='dropdown-item btn btn-sm text-danger' "+getvariabel+" data-active='0' onclick='activation($(this));'><i class='bi bi-trash3 text-danger me-4'></i>Deactive</a>";
+                }else{
+                    btnaction += "<a class='dropdown-item btn btn-sm text-success' "+getvariabel+" data-active='1' onclick='activation($(this));'><i class='bi bi-bookmark-check text-success me-4'></i>Reactive</a>";
+                }
+                
+                
 
                 tableresult += "<tr>";
                 tableresult += "<td class='ps-4'>" + (parseInt(i) + 1) + "</td>";
@@ -124,7 +197,7 @@ function datausers() {
                     tableresult += "</span>";
                 } else {
                     tableresult += "<span class='badge badge-light-danger'>";
-                    tableresult += "Inactive";
+                    tableresult += "Deactive";
                     tableresult += "</span>";
                 }
                 tableresult += "</td>";
@@ -169,12 +242,7 @@ function datausers() {
                 tableresult += "</tr>";
             }
 
-            // Isi tbody
             $("#resultdatausers").html(tableresult);
-
-            if ($.fn.DataTable.isDataTable("#datausers_table")) {
-                $("#datausers_table").DataTable().destroy();
-            }
 
             const table = $("#datausers_table").DataTable({
                 responsive: false,
@@ -189,24 +257,17 @@ function datausers() {
                 }
             });
 
-
-            // Aktifkan search
             initTableSearch('#datausers_table', '#searchtable');
-
         },
-
         complete: function () {
             Swal.close();
         },
-
         error: function () {
-
             Swal.fire({
-                icon: "error",
+                icon : "error",
                 title: "Error",
-                text: "Unable to retrieve user data."
+                text : "Unable to retrieve user data."
             });
-
         }
     });
 

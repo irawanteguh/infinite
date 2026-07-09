@@ -24,7 +24,7 @@
                         <th>Periode</th>
                         <th>Department</th>
                         <th>Target</th>
-                        <th>AVG Pencapaian</th>
+                        <th>Pencapaian</th>
                         <th>PIC Indikator</th>
                         <th class="text-end pe-4 rounded-end">Actions</th>
                     </tr>

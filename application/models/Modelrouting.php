@@ -14,7 +14,5 @@
             $recordset = $recordset->result_array();
             return $recordset;
         }
-
-
     }
 ?>

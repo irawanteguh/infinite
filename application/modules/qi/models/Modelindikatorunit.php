@@ -85,6 +85,7 @@
                             j.jenis,
                             i.indikator,
                             i.definisi,
+                            i.dimensi_mutu_keselamatan, i.dimensi_mutu_waktu, i.dimensi_mutu_efektif, i.dimensi_mutu_efesien, i.dimensi_mutu_pasien, i.dimensi_mutu_integrasi,
 
                             s.code AS statuscode,
                             s.master_name AS status,

@@ -65,8 +65,9 @@ function activation(el) {
             error: function () {
                 Swal.fire({
                     icon: "error",
-                    title: "Error",
-                    text: "Terjadi kesalahan pada server."
+                    title: "Request Failed",
+                    text: "We were unable to process your request due to a server error. Please try again later. If the problem persists, contact your system administrator.",
+                    confirmButtonText: "OK"
                 });
             }
         });
@@ -223,13 +224,12 @@ function datadepartment() {
         },
 
         error: function () {
-
             Swal.fire({
                 icon: "error",
-                title: "Error",
-                text: "Unable to retrieve user data."
+                title: "Request Failed",
+                text: "We were unable to process your request due to a server error. Please try again later. If the problem persists, contact your system administrator.",
+                confirmButtonText: "OK"
             });
-
         }
     });
 
@@ -279,13 +279,14 @@ $(document).on("submit", "#formadddepartment", function (e) {
             Swal.close();
             datadepartment();
 		},
-        error: function(xhr, status, error) {
+        error: function () {
             Swal.fire({
-                icon : 'error',
-                title: 'System Error',
-                text : 'Failed to retrieve emergency visit data.'
+                icon: "error",
+                title: "Request Failed",
+                text: "We were unable to process your request due to a server error. Please try again later. If the problem persists, contact your system administrator.",
+                confirmButtonText: "OK"
             });
-		}
+        }
 	});
     return false;
 });

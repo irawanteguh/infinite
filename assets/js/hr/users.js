@@ -73,8 +73,9 @@ function activation(el) {
             error: function () {
                 Swal.fire({
                     icon: "error",
-                    title: "Error",
-                    text: "Terjadi kesalahan pada server."
+                    title: "Request Failed",
+                    text: "We were unable to process your request due to a server error. Please try again later. If the problem persists, contact your system administrator.",
+                    confirmButtonText: "OK"
                 });
             }
         });
@@ -264,9 +265,10 @@ function datausers() {
         },
         error: function () {
             Swal.fire({
-                icon : "error",
-                title: "Error",
-                text : "Unable to retrieve user data."
+                icon: "error",
+                title: "Request Failed",
+                text: "We were unable to process your request due to a server error. Please try again later. If the problem persists, contact your system administrator.",
+                confirmButtonText: "OK"
             });
         }
     });

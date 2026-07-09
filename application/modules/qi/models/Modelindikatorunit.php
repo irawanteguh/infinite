@@ -192,5 +192,10 @@
             return $sql;
         }
 
+        function updateindikatorunit($transaksiid, $data){           
+            $sql =   $this->db->update("dt01_qi_indikator_hd",$data,array("transaksi_id"=>$transaksiid));
+            return $sql;
+        }
+
     }
 ?>

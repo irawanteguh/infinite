@@ -1,6 +1,9 @@
+let indikatorUnitData = [];
+let indikatorUnitMap  = {};
+
 load();
 
-function load(){
+function load() {
     dataindikatorunit();
     datateam();
 }
@@ -84,6 +87,7 @@ function dataindikatorunit() {
         success: function (response) {
             Swal.close();
             const result = Array.isArray(response.responResult) ? response.responResult : [];
+            indikatorUnitData = result;
 
             if (response.responCode !== "00") {
                 Swal.fire({
@@ -95,13 +99,22 @@ function dataindikatorunit() {
             }
 
             let tableresult    = "";
-            let btnaction      = "";
             let totalAvg       = 0;
             let totalIndikator = 0;
 
-            
+            indikatorUnitMap = {};
+            result.forEach(function(item){
+                indikatorUnitMap[item.transaksi_id] = item;
+            });
+
+            if ($("#uuid").length > 0 && $("#uuid").val() !== "") {
+                loadIndikatorUnitSubmit();
+                return;
+            }
 
             for (var i in result) {
+                let btnaction      = "";
+
                 const avatar        = url+"assets/media/avatars/"+result[i].pic+".jpg";
                 const avatarDefault = url+"assets/media/avatars/blank.png";
 
@@ -122,20 +135,26 @@ function dataindikatorunit() {
 
                 getvariabel =   "data-transaksiid='"+result[i].transaksi_id+"'";
 
-                btnaction += "<a class='dropdown-item btn btn-sm text-danger' "+getvariabel+" data-active='0' onclick='activation($(this));'><i class='bi bi-trash3 text-danger me-4'></i>Deactive</a>";
+                if(result[i].status_id === "1"){
+                    btnaction += "<a class='dropdown-item btn btn-sm text-danger' "+getvariabel+" onclick='activation($(this));'><i class='bi bi-trash3 text-danger me-4'></i>Deactive</a>";
+                }
+
+                if(result[i].status_id === "2"){
+                    btnaction += "<a class='dropdown-item btn btn-sm text-primary' "+getvariabel+" href='"+url+"index.php/qi/indikatorunit?uuid="+result[i].transaksi_id+"'><i class='bi bi-pencil-square text-primary me-4'></i>Submit</a>";
+                }
 
                 tableresult += "<tr>";
-                tableresult += "<td class='ps-4'>" + (parseInt(i) + 1) + "</td>";
+                tableresult += "<td class='ps-4'>"+(parseInt(i) + 1)+"</td>";
 
                 tableresult += "<td>";
                     tableresult += "<div class='fw-bold'>" + result[i].indikator + "</div><div class='text-muted fst-italic'>" + result[i].definisi + "</div>";
                     tableresult += "<div>";
-                        tableresult += badgeDimensiMutu(result[i].dimensi_mutu_keselamatan, "Keselamatan Pasien", "success");
-                        tableresult += badgeDimensiMutu(result[i].dimensi_mutu_waktu, "Tepat Waktu", "success");
-                        tableresult += badgeDimensiMutu(result[i].dimensi_mutu_efektif, "Efektif", "success");
-                        tableresult += badgeDimensiMutu(result[i].dimensi_mutu_efesien, "Efisien", "success");
-                        tableresult += badgeDimensiMutu(result[i].dimensi_mutu_pasien, "Berorientasi Pada Pasien", "success");
-                        tableresult += badgeDimensiMutu(result[i].dimensi_mutu_integrasi, "Integrasi", "success");
+                        tableresult += badgeDimensiMutu(result[i].dimensi_mutu_keselamatan, "Keselamatan Pasien", "info");
+                        tableresult += badgeDimensiMutu(result[i].dimensi_mutu_waktu, "Tepat Waktu", "info");
+                        tableresult += badgeDimensiMutu(result[i].dimensi_mutu_efektif, "Efektif", "info");
+                        tableresult += badgeDimensiMutu(result[i].dimensi_mutu_efesien, "Efisien", "info");
+                        tableresult += badgeDimensiMutu(result[i].dimensi_mutu_pasien, "Berorientasi Pada Pasien", "info");
+                        tableresult += badgeDimensiMutu(result[i].dimensi_mutu_integrasi, "Integrasi", "info");
                     tableresult += "</div>";
                 tableresult += "</td>";
                     
@@ -277,3 +296,153 @@ function datateam(){
     });
 
 }
+
+function loadIndikatorUnitSubmit(){
+    const uuid = $("#uuid").val();
+
+    if(!uuid){
+        Swal.fire({
+            icon: "warning",
+            title: "Warning",
+            text: "UUID tidak ditemukan."
+        });
+        return;
+    }
+
+    const bulan       = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+    const data        = indikatorUnitMap[uuid];
+    let   tableresult = "";
+
+    const nilai = [
+        data.nilai01,
+        data.nilai02,
+        data.nilai03,
+        data.nilai04,
+        data.nilai05,
+        data.nilai06,
+        data.nilai07,
+        data.nilai08,
+        data.nilai09,
+        data.nilai10,
+        data.nilai11,
+        data.nilai12
+    ];
+
+    for (let i = 0; i < 12; i++) {
+        const pencapaian = nilai[i] == null ? 0 : parseFloat(nilai[i]);
+
+        tableresult += "<tr>";
+            tableresult += "<td class='ps-4'>"+(parseInt(i) + 1)+"</td>";
+            tableresult += "<td>"+bulan[i]+"</td>";
+            tableresult += "<td class='text-center'>"+data.target+"%</td>";
+            tableresult += "<td class='text-center'>"+data.numerator+"</td>";
+            tableresult += "<td class='text-center'>"+data.denumerator+"</td>";
+            tableresult += "<td>";
+                tableresult += "<span class='badge " + (pencapaian >= parseFloat(data.target) ? "badge-light-success" : "badge-light-danger") + "'>";
+                    tableresult += pencapaian.toFixed(2) + "%";
+                tableresult += "</span>";
+            tableresult += "</td>";
+            tableresult += "<td>";
+                tableresult += "<span class='badge " + (pencapaian >= parseFloat(data.target) ? "badge-light-success" : "badge-light-danger") + "'>";
+                if (pencapaian >= parseFloat(data.target)) {
+                    tableresult += "<i class='bi bi-check-circle-fill me-2 text-success'></i>Tercapai";
+                } else {
+                    tableresult += "<i class='bi bi-x-circle-fill me-2 text-danger'></i>Tidak Tercapai";
+                }
+                tableresult += "</span>";
+            tableresult += "</td>";
+        tableresult += "</tr>";
+    }
+
+    $("#resultdataindikatorunitsubmit").html(tableresult);
+}
+
+// function loadIndikatorUnitSubmit() {
+
+//     const uuid = $("#uuid").val();
+
+//     if (!uuid) {
+//         Swal.fire({
+//             icon: "warning",
+//             title: "Warning",
+//             text: "UUID tidak ditemukan."
+//         });
+//         return;
+//     }
+
+//     const data = indikatorUnitMap[uuid];
+
+//     console.log("Data Indikator Unit Submit:", uuid);
+//     console.log("Data Indikator Unit Submit:", data);
+
+//     if (!data) {
+//         Swal.fire({
+//             icon: "warning",
+//             title: "Information",
+//             text: "Data indikator tidak ditemukan."
+//         });
+//         return;
+//     }
+
+//     let tableresult = "";
+
+//     const bulan = [
+//         "Januari","Februari","Maret","April","Mei","Juni",
+//         "Juli","Agustus","September","Oktober","November","Desember"
+//     ];
+
+//     const nilai = [
+//         data.nilai01,
+//         data.nilai02,
+//         data.nilai03,
+//         data.nilai04,
+//         data.nilai05,
+//         data.nilai06,
+//         data.nilai07,
+//         data.nilai08,
+//         data.nilai09,
+//         data.nilai10,
+//         data.nilai11,
+//         data.nilai12
+//     ];
+
+//     for (let i = 0; i < 12; i++) {
+
+//         const pencapaian = nilai[i] == null ? 0 : parseFloat(nilai[i]);
+
+//         tableresult += `
+//             <tr>
+//                 <td>${i + 1}</td>
+//                 <td>${bulan[i]}</td>
+//                 <td>${data.target}%</td>
+//                 <td>
+//                     <input type="number"
+//                            class="form-control form-control-sm numerator"
+//                            data-bulan="${String(i + 1).padStart(2,'0')}">
+//                 </td>
+//                 <td>
+//                     <input type="number"
+//                            class="form-control form-control-sm denumerator"
+//                            data-bulan="${String(i + 1).padStart(2,'0')}">
+//                 </td>
+//                 <td>
+//                     <span class="badge ${pencapaian >= data.target ? 'badge-light-success':'badge-light-danger'}">
+//                         ${pencapaian.toFixed(2)}%
+//                     </span>
+//                 </td>
+//                 <td>
+//                     <span class="badge badge-light-info">
+//                         ${data.status}
+//                     </span>
+//                 </td>
+//                 <td class="text-end">
+//                     <button class="btn btn-sm btn-primary">
+//                         <i class="bi bi-save"></i>
+//                     </button>
+//                 </td>
+//             </tr>
+//         `;
+//     }
+
+//     $("#resultdataindikatorunitsubmit").html(tableresult);
+// }

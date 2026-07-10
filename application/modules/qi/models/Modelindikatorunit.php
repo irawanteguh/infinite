@@ -93,6 +93,9 @@
                             s.color AS statuscolor,
                             s.icon AS statusicon,
 
+                            it.numerator,
+                            it.denumerator,
+
                             ROUND(MAX(CASE WHEN it.bulan='01' THEN (it.numerator/NULLIF(it.denumerator,0))*100 END),2) AS nilai01,
                             ROUND(MAX(CASE WHEN it.bulan='02' THEN (it.numerator/NULLIF(it.denumerator,0))*100 END),2) AS nilai02,
                             ROUND(MAX(CASE WHEN it.bulan='03' THEN (it.numerator/NULLIF(it.denumerator,0))*100 END),2) AS nilai03,

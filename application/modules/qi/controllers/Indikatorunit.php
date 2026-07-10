@@ -9,8 +9,16 @@
         }
         
         public function index(){
+            $uuid = $this->input->get('uuid', TRUE);
             $data = $this->loadcombobox();
-            $this->template->load("template/dashboard-light-aside","v_indikatorunit",$data);
+
+            if(!empty($uuid)){
+                $data['uuid'] = $uuid;
+
+                $this->template->load("template/dashboard-light-aside","v_indikatorunitsubmit",$data);
+            }else{
+                $this->template->load("template/dashboard-light-aside","v_indikatorunit",$data);
+            }
         }
 
         public function loadcombobox(){

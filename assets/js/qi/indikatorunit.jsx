@@ -8,7 +8,7 @@ function showInputNilai(indikatorId, bulan){
     $("#modal_input_nilai_indikator_indikatorid").val(indikatorId);
     $("#modal_input_nilai_indikator_bulan").val(bulan);
     $("#modal_input_nilai_indikator").modal("show");
-}
+};
 
 function dataindikatorunit() {
     $.ajax({
@@ -323,7 +323,7 @@ function dataindikatorunit() {
         `;
     }
 
-}
+};
 
 function datateam(){
     $.ajax({
@@ -355,7 +355,7 @@ function datateam(){
         }
     });
 
-}
+};
 
 $(document).on("submit", "#formaddindikatorunit", function (e) {
 	e.preventDefault();

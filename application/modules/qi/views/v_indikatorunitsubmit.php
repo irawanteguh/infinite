@@ -1,3 +1,5 @@
+<input type="hidden" id="uuid" value="<?= $uuid ?>">
+
 <div class="card">
     <div class="card-header border-0 pt-6">
         <div class="card-title">
@@ -14,21 +16,20 @@
     </div>
     <div class="card-body pt-0">
         <div class="table-responsive">
-            <table class="table align-middle table-row-dashed gy-2" id="dataindikatorunit_table">
+            <table class="table align-middle table-row-dashed gy-2" id="dataindikatorunitsubmit_table">
                 <thead>
                     <tr class="fw-bolder text-muted bg-light">
                         <th class="text-start ps-4 rounded-start">#</th>
-                        <th>Indikator</th>
-                        <th>Kategori</th>
-                        <th>Periode</th>
-                        <th>Department</th>
-                        <th>Target</th>
+                        <th>Bulan</th>
+                        <th class="text-center">Target</th>
+                        <th class="text-center">Numerator</th>
+                        <th class="text-center">Denumerator</th>
                         <th>Pencapaian</th>
-                        <th>PIC Indikator</th>
+                        <th>Status</th>
                         <th class="text-end pe-4 rounded-end">Actions</th>
                     </tr>
                 </thead>
-                <tbody class="fw-bold text-gray-600" id="resultdataindikatorunit"></tbody>
+                <tbody class="fw-bold text-gray-600" id="resultdataindikatorunitsubmit"></tbody>
             </table>
         </div>
     </div>

@@ -29,9 +29,11 @@
 						</div>
 						<div class="post d-flex flex-column-fluid" id="kt_post">
 							<div id="kt_content_container" class="container-fluid fs-8">
-								<?php
-									echo $contents;
-								?>
+								<div class="row gy-5 g-xl-8 mb-xl-8">
+									<?php
+										echo $contents;
+									?>
+								</div>
 							</div>
 						</div>
 					</div>

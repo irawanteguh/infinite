@@ -113,8 +113,6 @@ function dataindikatorunit() {
             }
 
             for (var i in result) {
-                let btnaction      = "";
-
                 const avatar        = url+"assets/media/avatars/"+result[i].pic+".jpg";
                 const avatarDefault = url+"assets/media/avatars/blank.png";
 
@@ -134,6 +132,8 @@ function dataindikatorunit() {
                 }
 
                 getvariabel =   "data-transaksiid='"+result[i].transaksi_id+"'";
+
+                let btnaction      = "";
 
                 if(result[i].status_id === "1"){
                     btnaction += "<a class='dropdown-item btn btn-sm text-danger' "+getvariabel+" onclick='activation($(this));'><i class='bi bi-trash3 text-danger me-4'></i>Deactive</a>";
@@ -328,15 +328,77 @@ function loadIndikatorUnitSubmit(){
         data.nilai12
     ];
 
+    const numerator = [
+        data.numerator01,
+        data.numerator02,
+        data.numerator03,
+        data.numerator04,
+        data.numerator05,
+        data.numerator06,
+        data.numerator07,
+        data.numerator08,
+        data.numerator09,
+        data.numerator10,
+        data.numerator11,
+        data.numerator12
+    ];
+
+    const denumerator = [
+        data.denumerator01,
+        data.denumerator02,
+        data.denumerator03,
+        data.denumerator04,
+        data.denumerator05,
+        data.denumerator06,
+        data.denumerator07,
+        data.denumerator08,
+        data.denumerator09,
+        data.denumerator10,
+        data.denumerator11,
+        data.denumerator12
+    ];
+
+    const reason = [
+        data.reason01,
+        data.reason02,
+        data.reason03,
+        data.reason04,
+        data.reason05,
+        data.reason06,
+        data.reason07,
+        data.reason08,
+        data.reason09,
+        data.reason10,
+        data.reason11,
+        data.reason12
+    ];
+
+    const rtl = [
+        data.rtl01,
+        data.rtl02,
+        data.rtl03,
+        data.rtl04,
+        data.rtl05,
+        data.rtl06,
+        data.rtl07,
+        data.rtl08,
+        data.rtl09,
+        data.rtl10,
+        data.rtl11,
+        data.rtl12
+    ];
+
     for (let i = 0; i < 12; i++) {
+        let btnaction      = "";
+
         const pencapaian = nilai[i] == null ? 0 : parseFloat(nilai[i]);
 
         tableresult += "<tr>";
             tableresult += "<td class='ps-4'>"+(parseInt(i) + 1)+"</td>";
             tableresult += "<td>"+bulan[i]+"</td>";
             tableresult += "<td class='text-center'>"+data.target+"%</td>";
-            tableresult += "<td class='text-center'>"+data.numerator+"</td>";
-            tableresult += "<td class='text-center'>"+data.denumerator+"</td>";
+            tableresult += "<td class='text-center'>"+(numerator[i] ?? "")+"</td>";
+            tableresult += "<td class='text-center'>"+(denumerator[i] ?? "")+"</td>";
             tableresult += "<td>";
                 tableresult += "<span class='badge " + (pencapaian >= parseFloat(data.target) ? "badge-light-success" : "badge-light-danger") + "'>";
                     tableresult += pencapaian.toFixed(2) + "%";
@@ -351,98 +413,37 @@ function loadIndikatorUnitSubmit(){
                 }
                 tableresult += "</span>";
             tableresult += "</td>";
+            tableresult += "<td>"+(reason[i] ?? "")+"</td>";
+            tableresult += "<td>"+(rtl[i] ?? "")+"</td>";
+
+            tableresult += "<td class='text-end'>";
+                tableresult += "<div class='btn-group'>";
+                    tableresult += "<button ";
+                    tableresult += "type='button' ";
+                    tableresult += "class='btn btn-light-primary btn-sm dropdown-toggle' ";
+                    tableresult += "data-bs-toggle='dropdown'>";
+                    tableresult += "Actions";
+                    tableresult += "</button>";
+                    tableresult += "<div class='dropdown-menu dropdown-menu-end'>";
+                    tableresult += btnaction;
+                    tableresult += "</div>";
+                tableresult += "</div>";
+            tableresult += "</td>";
+
         tableresult += "</tr>";
     }
 
     $("#resultdataindikatorunitsubmit").html(tableresult);
+
+    renderAreaChart({
+        selector   : "#chartindikatormutu",
+        categories : bulan,
+        target     : data.target,
+        series : [{
+            name : "Pencapaian",
+            data : nilai.map(function(v){
+                return v == null ? 0 : parseFloat(v);
+            })
+        }]
+    });
 }
-
-// function loadIndikatorUnitSubmit() {
-
-//     const uuid = $("#uuid").val();
-
-//     if (!uuid) {
-//         Swal.fire({
-//             icon: "warning",
-//             title: "Warning",
-//             text: "UUID tidak ditemukan."
-//         });
-//         return;
-//     }
-
-//     const data = indikatorUnitMap[uuid];
-
-//     console.log("Data Indikator Unit Submit:", uuid);
-//     console.log("Data Indikator Unit Submit:", data);
-
-//     if (!data) {
-//         Swal.fire({
-//             icon: "warning",
-//             title: "Information",
-//             text: "Data indikator tidak ditemukan."
-//         });
-//         return;
-//     }
-
-//     let tableresult = "";
-
-//     const bulan = [
-//         "Januari","Februari","Maret","April","Mei","Juni",
-//         "Juli","Agustus","September","Oktober","November","Desember"
-//     ];
-
-//     const nilai = [
-//         data.nilai01,
-//         data.nilai02,
-//         data.nilai03,
-//         data.nilai04,
-//         data.nilai05,
-//         data.nilai06,
-//         data.nilai07,
-//         data.nilai08,
-//         data.nilai09,
-//         data.nilai10,
-//         data.nilai11,
-//         data.nilai12
-//     ];
-
-//     for (let i = 0; i < 12; i++) {
-
-//         const pencapaian = nilai[i] == null ? 0 : parseFloat(nilai[i]);
-
-//         tableresult += `
-//             <tr>
-//                 <td>${i + 1}</td>
-//                 <td>${bulan[i]}</td>
-//                 <td>${data.target}%</td>
-//                 <td>
-//                     <input type="number"
-//                            class="form-control form-control-sm numerator"
-//                            data-bulan="${String(i + 1).padStart(2,'0')}">
-//                 </td>
-//                 <td>
-//                     <input type="number"
-//                            class="form-control form-control-sm denumerator"
-//                            data-bulan="${String(i + 1).padStart(2,'0')}">
-//                 </td>
-//                 <td>
-//                     <span class="badge ${pencapaian >= data.target ? 'badge-light-success':'badge-light-danger'}">
-//                         ${pencapaian.toFixed(2)}%
-//                     </span>
-//                 </td>
-//                 <td>
-//                     <span class="badge badge-light-info">
-//                         ${data.status}
-//                     </span>
-//                 </td>
-//                 <td class="text-end">
-//                     <button class="btn btn-sm btn-primary">
-//                         <i class="bi bi-save"></i>
-//                     </button>
-//                 </td>
-//             </tr>
-//         `;
-//     }
-
-//     $("#resultdataindikatorunitsubmit").html(tableresult);
-// }

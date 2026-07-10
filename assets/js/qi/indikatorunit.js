@@ -1,5 +1,5 @@
-let indikatorUnitData = [];
-let indikatorUnitMap  = {};
+let   indikatorUnitData = [];
+let   indikatorUnitMap  = {};
 
 load();
 
@@ -7,6 +7,31 @@ function load() {
     dataindikatorunit();
     datateam();
 }
+
+function getdata(btn){
+    var transaksiid = btn.attr("data-transaksiid");
+    var bulan       = btn.attr("data-bulan");
+
+	$(":hidden[name='modal_input_nilai_indikator_indikatorid']").val(transaksiid);
+    $(":hidden[name='modal_input_nilai_indikator_bulan']").val(bulan);
+};
+
+$("#modal_add_pengajuanindikatorunit_numerator, #modal_add_pengajuanindikatorunit_denumerator").on("input", function () {
+    this.value = this.value.replace(/[^0-9]/g, "");
+});
+
+$("#modal_add_pengajuanindikatorunit_numerator, #modal_add_pengajuanindikatorunit_denumerator").on("paste", function (e) {
+    const paste = (e.originalEvent || e).clipboardData.getData("text");
+    if (!/^\d+$/.test(paste)) {
+        e.preventDefault();
+
+        Swal.fire({
+            icon: "warning",
+            title: "Invalid Input",
+            text: "Numerator dan Denumerator hanya boleh berisi angka."
+        });
+    }
+});
 
 function activation(el) {
     let transaksiid = el.data('transaksiid');
@@ -313,6 +338,8 @@ function loadIndikatorUnitSubmit(){
     const data        = indikatorUnitMap[uuid];
     let   tableresult = "";
 
+    console.log(data);
+
     const nilai = [
         data.nilai01,
         data.nilai02,
@@ -393,6 +420,11 @@ function loadIndikatorUnitSubmit(){
 
         const pencapaian = nilai[i] == null ? 0 : parseFloat(nilai[i]);
 
+        getvariabel =   "data-transaksiid='"+data.transaksi_id+"'"+
+                        "data-bulan='" + String(i + 1).padStart(2, '0') + "'";
+
+        btnaction += "<a class='dropdown-item btn btn-sm text-primary' data-bs-toggle='modal' data-bs-target='#modal_input_nilai_indikator' "+getvariabel+" onclick='getdata($(this));'><i class='bi bi-pencil text-primary me-4'></i>Submit</a>";
+
         tableresult += "<tr>";
             tableresult += "<td class='ps-4'>"+(parseInt(i) + 1)+"</td>";
             tableresult += "<td>"+bulan[i]+"</td>";
@@ -447,3 +479,181 @@ function loadIndikatorUnitSubmit(){
         }]
     });
 }
+
+$(document).on("submit", "#formaddindikatorunit", function (e) {
+	e.preventDefault();
+	var data = new  FormData(this);
+	$.ajax({
+        url        : url+'index.php/qi/indikatorunit/addindikatorunit',
+        data       : data,
+        method     : "POST",
+        dataType   : "JSON",
+        cache      : false,
+        processData: false,
+        contentType: false,
+        beforeSend : function () {
+            Swal.fire({
+                title: 'Processing',
+                html : 'Please wait while the system displays the requested data.',
+                allowOutsideClick: false,
+                allowEscapeKey   : false,
+                showConfirmButton: false,
+                didOpen: () => Swal.showLoading()
+            });
+        },
+		success: function (response) {
+            if (response.responCode !== "00") {
+                Swal.fire({
+                    title            : "<h1 class='font-weight-bold'>For Your Information</h1>",
+                    html             : "<b>"+data.responDesc+"</b>",
+                    icon             : data.responHead,
+                    confirmButtonText: 'Please Try Again',
+                    customClass      : {confirmButton: 'btn btn-danger'},
+                    timerProgressBar : true,
+                    timer            : 5000,
+                    showClass        : {popup: "animate__animated animate__fadeInUp animate__faster"},
+                    hideClass        : {popup: "animate__animated animate__fadeOutDown animate__faster"}
+                });
+                return;
+            }
+
+            $('#modal_add_pengajuanindikatorunit').modal('hide');
+            Swal.close();
+		},
+        complete: function () {
+            Swal.close();
+            dataindikatorunit();
+            datateam();
+		},
+        error: function(xhr, status, error) {
+            Swal.fire({
+                icon : 'error',
+                title: 'System Error',
+                text : 'Failed to retrieve emergency visit data.'
+            });
+		}
+	});
+    return false;
+});
+
+$(document).on("submit", "#forminputnilaiindikator", function (e) {
+    e.preventDefault();
+
+    const numerator   = $("#modal_add_pengajuanindikatorunit_numerator").val().trim();
+    const denumerator = $("#modal_add_pengajuanindikatorunit_denumerator").val().trim();
+
+    // Wajib diisi
+    if (numerator === "" || denumerator === "") {
+        Swal.fire({
+            icon: "warning",
+            title: "Validation",
+            text: "Numerator dan Denumerator wajib diisi."
+        });
+        return false;
+    }
+
+    // Harus angka
+    if (!$.isNumeric(numerator) || !$.isNumeric(denumerator)) {
+        Swal.fire({
+            icon: "warning",
+            title: "Validation",
+            text: "Numerator dan Denumerator harus berupa angka."
+        });
+        return false;
+    }
+
+    // Tidak boleh negatif
+    if (Number(numerator) < 0 || Number(denumerator) < 0) {
+        Swal.fire({
+            icon: "warning",
+            title: "Validation",
+            text: "Numerator dan Denumerator tidak boleh bernilai negatif."
+        });
+        return false;
+    }
+
+    // Denumerator tidak boleh 0
+    if (Number(denumerator) === 0) {
+        Swal.fire({
+            icon: "warning",
+            title: "Validation",
+            text: "Denumerator tidak boleh bernilai 0."
+        });
+        return false;
+    }
+
+    // Numerator tidak boleh lebih besar dari Denumerator
+    if (Number(numerator) > Number(denumerator)) {
+        Swal.fire({
+            icon: "warning",
+            title: "Validation",
+            text: "Numerator tidak boleh lebih besar dari Denumerator."
+        });
+        return false;
+    }
+
+    const data = new FormData(this);
+
+    $.ajax({
+        url         : url + "index.php/qi/indikatorunit/inputnilaiindikator",
+        data        : data,
+        method      : "POST",
+        dataType    : "JSON",
+        cache       : false,
+        processData : false,
+        contentType : false,
+
+        beforeSend: function () {
+            Swal.fire({
+                title: "Processing",
+                html: "Please wait while the system processes your request.",
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+                didOpen: () => Swal.showLoading()
+            });
+        },
+
+        success: function (response) {
+
+            if (response.responCode !== "00") {
+                Swal.fire({
+                    title: "<h1 class='font-weight-bold'>For Your Information</h1>",
+                    html: "<b>" + response.responDesc + "</b>",
+                    icon: response.responHead,
+                    confirmButtonText: "Please Try Again",
+                    customClass: {
+                        confirmButton: "btn btn-danger"
+                    },
+                    timerProgressBar: true,
+                    timer: 5000
+                });
+                return;
+            }
+
+            $("#modal_input_nilai_indikator").modal("hide");
+
+            Swal.fire({
+                icon: "success",
+                title: "Success",
+                text: response.responDesc,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+
+        complete: function () {
+            load();
+        },
+
+        error: function () {
+            Swal.fire({
+                icon: "error",
+                title: "System Error",
+                text: "Failed to process request."
+            });
+        }
+    });
+
+    return false;
+});

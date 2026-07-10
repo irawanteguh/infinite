@@ -84,7 +84,7 @@
                 <input type="hidden" id="modal_input_nilai_indikator_bulan" name="modal_input_nilai_indikator_bulan">
                 <div class="modal-body">
                     <div class="text-start mb-5">
-                        <div class="text-muted fw-bold fs-5">Please add unit indicator.</div>
+                        <div class="text-muted fw-bold fs-5">Please submit indicator.</div>
                     </div>
                     <div class="row">
                         <div class="col-md-2 mb-5">
@@ -107,14 +107,14 @@
                                     <span class="required">Alasan</span>
                                     <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Periode"></i>
                                 </label>
-                                <textarea name="modal_add_pengajuanindikatorunit_alasan" id="modal_add_pengajuanindikatorunit_alasan" class="form-control form-control-solid" rows="10" required></textarea>
+                                <textarea name="modal_add_pengajuanindikatorunit_alasan" id="modal_add_pengajuanindikatorunit_alasan" class="form-control form-control-solid" rows="5" required></textarea>
                             </div>
                             <div class="col-md-6 mb-5">
                                 <label class="d-flex align-items-center fs-5 fw-bold mb-2">
                                     <span class="required">Rencana Tindak Lanjut</span>
                                     <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Periode"></i>
                                 </label>
-                                <textarea name="modal_add_pengajuanindikatorunit_rtl" id="modal_add_pengajuanindikatorunit_rtl" class="form-control form-control-solid" rows="10" required></textarea>
+                                <textarea name="modal_add_pengajuanindikatorunit_rtl" id="modal_add_pengajuanindikatorunit_rtl" class="form-control form-control-solid" rows="5" required></textarea>
                             </div>
                         </div>
                     </div>

@@ -47,7 +47,7 @@ function dataindikator() {
 
             for (let i = 0; i < result.length; i++) {
 
-                const avatar = `${url}assets/media/avatars/${result[i].created_by}.jpg`;
+                const avatar        = `${url}assets/media/avatars/${result[i].created_by}.jpg`;
                 const avatarDefault = `${url}assets/media/avatars/blank.png`;
 
                 let btnaction = "";

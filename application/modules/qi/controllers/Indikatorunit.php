@@ -136,7 +136,7 @@
                 'referensi_id' => $indikator ?? null,
                 'bulan'        => $bulan ?? null,
                 'numerator'    => $numerator ?? 0,
-                'denumerator'  => $numerator ?? 0,
+                'denumerator'  => $denumerator ?? 0,
                 'reason'       => $alasan ?? null,
                 'rtl'          => $rtl ?? null,
                 'created_by'   => $_SESSION['userid'] ?? null

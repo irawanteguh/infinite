@@ -24,7 +24,7 @@
                         <th>Numerator / Denumerator</th>
                         <th>Inklusi / Eksklusi</th>
                         <th>Status</th>
-                        <th>Created By</th>
+                        <th>Update By</th>
                         <th class="text-end pe-4 rounded-end">Actions</th>
                     </tr>
                 </thead>

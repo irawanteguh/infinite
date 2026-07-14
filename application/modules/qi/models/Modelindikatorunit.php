@@ -197,7 +197,7 @@
                             ON i.indikator_id = a.indikator_id
 
                         LEFT JOIN dt01_qi_jenis_indikator_ms j
-                            ON j.jenis_indikator_id = i.jenis_indikator_id
+                            ON j.jenis_indikator_id = a.jenis_indikator_id
 
                         LEFT JOIN dt01_qi_indikator_it it
                             ON it.referensi_id = a.transaksi_id

@@ -2,6 +2,39 @@ let table = null;
 
 dataindikator();
 
+function getdata(btn){
+
+    $("#modal_indikator_id").val(btn.data("indikatorid"));
+    $("#modal_indikator").val(btn.data("indikator"));
+    $("#modal_dasar_pemikiran").val(btn.data("dasar_pemikiran"));
+    $("#modal_tujuan").val(btn.data("tujuan"));
+    $("#modal_definisi").val(btn.data("definisi"));
+    $("#modal_numerator").val(btn.data("numerator"));
+    $("#modal_denumerator").val(btn.data("denumerator"));
+    $("#modal_formula").val(btn.data("formula"));
+    $("#modal_populasi").val(btn.data("populasi"));
+    $("#modal_metode").val(btn.data("metode"));
+    $("#modal_inklusi").val(btn.data("inklusi"));
+    $("#modal_eksklusi").val(btn.data("eksklusi"));
+    $("#modal_instrument").val(btn.data("instrument"));
+
+    $("#modal_satuan_id").val(btn.data("satuan_id")).trigger("change");
+    $("#modal_frekuensi_id").val(btn.data("frekuensi_id")).trigger("change");
+    $("#modal_sumber_id").val(btn.data("sumber_id")).trigger("change");
+    $("#modal_donabedian_id").val(btn.data("donabedian_id")).trigger("change");
+    $("#modal_target_capaian").val(btn.data("target_capaian")).trigger("change");
+    $("#modal_benchmark_id").val(btn.data("benchmark_id")).trigger("change");
+    $("#modal_active").val(btn.data("active")).trigger("change");
+
+    $("input[name='dimensi_keselamatan']").prop("checked", btn.data("dimensi_keselamatan") == "Y");
+    $("input[name='dimensi_waktu']").prop("checked", btn.data("dimensi_waktu") == "Y");
+    $("input[name='dimensi_efektif']").prop("checked", btn.data("dimensi_efektif") == "Y");
+    $("input[name='dimensi_efesien']").prop("checked", btn.data("dimensi_efesien") == "Y");
+    $("input[name='dimensi_pasien']").prop("checked", btn.data("dimensi_pasien") == "Y");
+    $("input[name='dimensi_integrasi']").prop("checked", btn.data("dimensi_integrasi") == "Y");
+
+}
+
 function dataindikator() {
     $.ajax({
         url: url + "index.php/qi/masterindikator/dataindikator",
@@ -47,38 +80,57 @@ function dataindikator() {
 
             for (let i = 0; i < result.length; i++) {
 
-                const avatar        = `${url}assets/media/avatars/${result[i].created_by}.jpg`;
+                const avatar        = `${url}assets/media/avatars/${result[i].last_update_by}.jpg`;
                 const avatarDefault = `${url}assets/media/avatars/blank.png`;
+
+                var getvariabel = "";
+                    getvariabel += " data-indikatorid='" + result[i].indikator_id + "'";
+                    getvariabel += " data-indikator=\"" + result[i].indikator + "\"";
+                    getvariabel += " data-dasar_pemikiran=\"" + result[i].dasar_pemikiran + "\"";
+                    getvariabel += " data-tujuan=\"" + result[i].tujuan + "\"";
+                    getvariabel += " data-definisi=\"" + result[i].definisi + "\"";
+                    getvariabel += " data-numerator=\"" + result[i].numerator + "\"";
+                    getvariabel += " data-denumerator=\"" + result[i].denumerator + "\"";
+                    getvariabel += " data-formula=\"" + result[i].formula + "\"";
+                    getvariabel += " data-populasi=\"" + result[i].populasi + "\"";
+                    getvariabel += " data-metode=\"" + result[i].metode + "\"";
+                    getvariabel += " data-inklusi=\"" + result[i].inklusi + "\"";
+                    getvariabel += " data-eksklusi=\"" + result[i].eksklusi + "\"";
+                    getvariabel += " data-instrument=\"" + result[i].instrument + "\"";
+                    getvariabel += " data-satuan_id=\"" + result[i].satuan_id + "\"";
+                    getvariabel += " data-frekuensi_id=\"" + result[i].frekuensi_id + "\"";
+                    getvariabel += " data-sumber_id=\"" + result[i].sumber_id + "\"";
+                    getvariabel += " data-donabedian_id=\"" + result[i].donabedian_id + "\"";
+                    getvariabel += " data-target_capaian=\"" + result[i].target_capaian + "\"";
+                    getvariabel += " data-benchmark_id=\"" + result[i].benchmark_id + "\"";
+                    getvariabel += " data-active=\"" + result[i].active + "\"";
+                    getvariabel += " data-dimensi_keselamatan=\"" + result[i].dimensi_mutu_keselamatan + "\"";
+                    getvariabel += " data-dimensi_waktu=\"" + result[i].dimensi_mutu_waktu + "\"";
+                    getvariabel += " data-dimensi_efektif=\"" + result[i].dimensi_mutu_efektif + "\"";
+                    getvariabel += " data-dimensi_efesien=\"" + result[i].dimensi_mutu_efesien + "\"";
+                    getvariabel += " data-dimensi_pasien=\"" + result[i].dimensi_mutu_pasien + "\"";
+                    getvariabel += " data-dimensi_integrasi=\"" + result[i].dimensi_mutu_integrasi + "\"";
 
                 let btnaction = "";
 
-                // btnaction += "<a href='#' class='dropdown-item'><i class='ki-outline ki-eye fs-6 me-2'></i>Detail</a>";
-                // btnaction += "<a href='#' class='dropdown-item'><i class='ki-outline ki-pencil fs-6 me-2'></i>Edit</a>";
-                // btnaction += "<a href='#' class='dropdown-item text-danger'><i class='ki-outline ki-trash fs-6 me-2'></i>Delete</a>";
+                btnaction += "<a class='dropdown-item btn btn-sm text-primary' data-bs-toggle='modal' data-bs-target='#modal_edit_masterindikator' "+getvariabel+" onclick='getdata($(this));'><i class='bi bi-pencil text-primary me-4'></i>Edit</a>";
 
                 tableresult += "<tr>";
 
-                // No
-                tableresult += "<td class='text-start ps-4'>";
-                tableresult += (i + 1);
-                tableresult += "</td>";
+                tableresult += "<td class='ps-4'>"+(parseInt(i) + 1)+"</td>";
 
-                // Nama Indikator
-                tableresult += "<td>";
-                tableresult += "<div>"+(result[i].indikator || "-")+"</div>";
-                tableresult += "<div class='fst-italic'>"+(result[i].definisi || "-")+"</div>";
                 
-                tableresult += "<div>";
-                tableresult += badgeMutu(result[i].dimensi_mutu_keselamatan, "Keselamatan Pasien", "success");
-                tableresult += badgeMutu(result[i].dimensi_mutu_waktu, "Tepat Waktu", "success");
-                tableresult += badgeMutu(result[i].dimensi_mutu_efektif, "Efektif", "success");
-                tableresult += badgeMutu(result[i].dimensi_mutu_efesien, "Efisien", "success");
-                tableresult += badgeMutu(result[i].dimensi_mutu_pasien, "Berorientasi Pada Pasien", "success");
-                tableresult += badgeMutu(result[i].dimensi_mutu_integrasi, "Integrasi", "success");
-                tableresult += "</div>";
-
-                tableresult += "<br><div'><span class='badge badge-light-info'>"+(result[i].jenisindikator || "-")+"</span></div>";
-
+                tableresult += "<td>";
+                    tableresult += "<div>"+(result[i].indikator || "-")+"</div>";
+                    tableresult += "<div class='fst-italic'>"+(result[i].definisi || "-")+"</div>";
+                    tableresult += "<div>";
+                    tableresult += badgeMutu(result[i].dimensi_mutu_keselamatan, "Keselamatan Pasien", "success");
+                    tableresult += badgeMutu(result[i].dimensi_mutu_waktu, "Tepat Waktu", "success");
+                    tableresult += badgeMutu(result[i].dimensi_mutu_efektif, "Efektif", "success");
+                    tableresult += badgeMutu(result[i].dimensi_mutu_efesien, "Efisien", "success");
+                    tableresult += badgeMutu(result[i].dimensi_mutu_pasien, "Berorientasi Pada Pasien", "success");
+                    tableresult += badgeMutu(result[i].dimensi_mutu_integrasi, "Integrasi", "success");
+                    tableresult += "</div>";
                 tableresult += "</td>";
 
                 tableresult += "<td>";

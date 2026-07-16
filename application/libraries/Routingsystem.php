@@ -38,15 +38,15 @@
 
         private static function init(): void
         {
-            self::$children = [];
+            self::$children    = [];
             self::$activeCache = [];
-            self::$activeMenu = [];
-            self::$pageTitle = 'Infinite';
+            self::$activeMenu  = [];
+            self::$pageTitle   = 'Infinite';
 
             self::$app->load->model('Modelrouting');
 
-            self::$segment1 = (string) self::$app->uri->segment(1);
-            self::$segment2 = (string) self::$app->uri->segment(2);
+            self::$segment1   = (string) self::$app->uri->segment(1);
+            self::$segment2   = (string) self::$app->uri->segment(2);
             self::$resultmenu = self::$app->Modelrouting->menu() ?: [];
 
             self::buildIndex();
@@ -102,10 +102,11 @@
         private static function category(): void
         {
             self::$app->load->vars([
-                'menu'       => self::buildSidebar(),
-                'menunavbar' => self::buildNavbar(),
-                'pageTitle'  => self::e(self::$pageTitle),
-                'activeMenu' => self::$activeMenu
+                'menu'             => self::buildSidebar(),
+                'menunavbar'       => self::buildNavbar(),
+                'menuorganization' => self::buildOrganization(),
+                'pageTitle'        => self::e(self::$pageTitle),
+                'activeMenu'       => self::$activeMenu
             ]);
         }
 
@@ -140,6 +141,73 @@
             }
 
             return $html;
+        }
+
+        private static function buildOrganization(): string
+        {
+            $html = '';
+
+            $allowedPackage = ['organization', 'hr'];
+
+            foreach (self::$resultmenu as $menu) {
+
+                if (!in_array((string)$menu['package'], $allowedPackage, true)) {
+                    continue;
+                }
+
+                if (trim((string)$menu['def_controller']) === '') {
+                    continue;
+                }
+
+                if ((string)$menu['parent'] === 'H') {
+                    continue;
+                }
+
+                $active = self::menuActive($menu) ? 'active' : '';
+
+                $html .= '
+                    <li class="nav-item">
+                        <a class="nav-link text-active-primary me-6 '.$active.'"
+                            href="'.self::e(self::menuUrl($menu)).'">
+                            '.self::e($menu['modules_name']).'
+                        </a>
+                    </li>';
+            }
+
+            return $html;
+        }
+
+        private static function generateOrganization(array $menu): string
+        {
+            $id = self::menuId($menu);
+
+            if ($id === '') {
+                return '';
+            }
+
+            $children = self::$children[$id] ?? [];
+
+            // Jika masih mempunyai child, tampilkan seluruh child secara rekursif
+            if (!empty($children)) {
+
+                $html = '';
+
+                foreach ($children as $child) {
+                    $html .= self::generateOrganization($child);
+                }
+
+                return $html;
+            }
+
+            $active = self::menuActive($menu) ? 'active' : '';
+
+            return '
+                <li class="nav-item">
+                    <a class="nav-link text-active-primary me-6 '.$active.'"
+                        href="'.self::e(self::menuUrl($menu)).'">
+                        '.self::e($menu['modules_name']).'
+                    </a>
+                </li>';
         }
 
         private static function buildNavbar(): string

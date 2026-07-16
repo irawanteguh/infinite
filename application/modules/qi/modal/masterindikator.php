@@ -19,77 +19,39 @@
                     </div>
 
                     <div class="row">
-
-                        <!-- Nama Indikator -->
                         <div class="col-md-12 mb-5">
                             <label class="required form-label fw-bold">Nama Indikator</label>
-                            <input type="text"
-                                class="form-control form-control-solid"
-                                id="modal_indikator"
-                                name="modal_indikator"
-                                maxlength="1000"
-                                placeholder="Masukkan nama indikator mutu"
-                                required>
+                            <input type="text" class="form-control form-control-solid" id="modal_indikator" name="modal_indikator" maxlength="1000" placeholder="Masukkan nama indikator mutu" required>
                         </div>
 
-                        <!-- Dasar Pemikiran -->
                         <div class="col-md-12 mb-5">
                             <label class="form-label fw-bold">Dasar Pemikiran</label>
-                            <textarea class="form-control form-control-solid"
-                                    id="modal_dasar_pemikiran"
-                                    name="modal_dasar_pemikiran"
-                                    rows="3"
-                                    placeholder="Jelaskan latar belakang, regulasi, atau alasan pemilihan indikator."></textarea>
+                            <textarea class="form-control form-control-solid" id="modal_dasar_pemikiran" name="modal_dasar_pemikiran" rows="3" placeholder="Jelaskan latar belakang, regulasi, atau alasan pemilihan indikator."></textarea>
                         </div>
 
-                        <!-- Tujuan -->
                         <div class="col-md-6 mb-5">
                             <label class="form-label fw-bold">Tujuan</label>
-                            <textarea class="form-control form-control-solid"
-                                    id="modal_tujuan"
-                                    name="modal_tujuan"
-                                    rows="3"
-                                    placeholder="Jelaskan tujuan pengukuran indikator mutu."></textarea>
+                            <textarea class="form-control form-control-solid" id="modal_tujuan" name="modal_tujuan" rows="3" placeholder="Jelaskan tujuan pengukuran indikator mutu."></textarea>
                         </div>
 
-                        <!-- Definisi -->
                         <div class="col-md-6 mb-5">
                             <label class="form-label fw-bold">Definisi Operasional</label>
-                            <textarea class="form-control form-control-solid"
-                                    id="modal_definisi"
-                                    name="modal_definisi"
-                                    rows="3"
-                                    placeholder="Jelaskan definisi operasional indikator."></textarea>
+                            <textarea class="form-control form-control-solid" id="modal_definisi" name="modal_definisi" rows="3" placeholder="Jelaskan definisi operasional indikator."></textarea>
                         </div>
 
-                        <!-- Numerator -->
                         <div class="col-md-6 mb-5">
                             <label class="form-label fw-bold">Numerator</label>
-                            <input type="text"
-                                class="form-control form-control-solid"
-                                id="modal_numerator"
-                                name="modal_numerator"
-                                placeholder="Contoh: Jumlah pasien yang memenuhi indikator">
+                            <input type="text" class="form-control form-control-solid" id="modal_numerator" name="modal_numerator" placeholder="Contoh: Jumlah pasien yang memenuhi indikator">
                         </div>
 
-                        <!-- Denominator -->
                         <div class="col-md-6 mb-5">
                             <label class="form-label fw-bold">Denominator</label>
-                            <input type="text"
-                                class="form-control form-control-solid"
-                                id="modal_denumerator"
-                                name="modal_denumerator"
-                                placeholder="Contoh: Total pasien yang menjadi sasaran">
+                            <input type="text" class="form-control form-control-solid" id="modal_denumerator" name="modal_denumerator" placeholder="Contoh: Total pasien yang menjadi sasaran">
                         </div>
 
-                        <!-- Formula -->
                         <div class="col-md-12 mb-5">
                             <label class="form-label fw-bold">Formula</label>
-                            <input type="text"
-                                class="form-control form-control-solid"
-                                id="modal_formula"
-                                name="modal_formula"
-                                placeholder="Contoh: (Numerator / Denominator) × 100%">
+                            <input type="text" class="form-control form-control-solid" id="modal_formula" name="modal_formula" placeholder="Contoh: (Numerator / Denominator) × 100%">
                         </div>
 
                     </div>
@@ -150,47 +112,27 @@
 
                         <div class="col-md-6 mb-5">
                             <label class="form-label fw-bold">Populasi</label>
-                            <input type="text"
-                                class="form-control form-control-solid"
-                                id="modal_populasi"
-                                name="modal_populasi"
-                                placeholder="Contoh: Seluruh pasien rawat inap">
+                            <input type="text" class="form-control form-control-solid" id="modal_populasi" name="modal_populasi" placeholder="Contoh: Seluruh pasien rawat inap">
                         </div>
 
                         <div class="col-md-6 mb-5">
                             <label class="form-label fw-bold">Metode Pengumpulan</label>
-                            <input type="text"
-                                class="form-control form-control-solid"
-                                id="modal_metode"
-                                name="modal_metode"
-                                placeholder="Contoh: Observasi, Audit Rekam Medis, SIMRS">
+                            <input type="text" class="form-control form-control-solid" id="modal_metode" name="modal_metode" placeholder="Contoh: Observasi, Audit Rekam Medis, SIMRS">
                         </div>
 
                         <div class="col-md-6 mb-5">
                             <label class="form-label fw-bold">Kriteria Inklusi</label>
-                            <textarea class="form-control form-control-solid"
-                                    id="modal_inklusi"
-                                    name="modal_inklusi"
-                                    rows="3"
-                                    placeholder="Masukkan kriteria inklusi."></textarea>
+                            <textarea class="form-control form-control-solid" id="modal_inklusi" name="modal_inklusi" rows="3" placeholder="Masukkan kriteria inklusi."></textarea>
                         </div>
 
                         <div class="col-md-6 mb-5">
                             <label class="form-label fw-bold">Kriteria Eksklusi</label>
-                            <textarea class="form-control form-control-solid"
-                                    id="modal_eksklusi"
-                                    name="modal_eksklusi"
-                                    rows="3"
-                                    placeholder="Masukkan kriteria eksklusi."></textarea>
+                            <textarea class="form-control form-control-solid" id="modal_eksklusi" name="modal_eksklusi" rows="3" placeholder="Masukkan kriteria eksklusi."></textarea>
                         </div>
 
                         <div class="col-md-12 mb-5">
                             <label class="form-label fw-bold">Instrumen</label>
-                            <input type="text"
-                                class="form-control form-control-solid"
-                                id="modal_instrument"
-                                name="modal_instrument"
-                                placeholder="Contoh: Checklist Audit, Form Observasi, SIMRS">
+                            <input type="text" class="form-control form-control-solid" id="modal_instrument" name="modal_instrument" placeholder="Contoh: Checklist Audit, Form Observasi, SIMRS">
                         </div>
 
                     </div>

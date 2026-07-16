@@ -46,6 +46,8 @@
                     $sessiondata = array(
                         "groupid"  => $datasession->group_id,
                         "orgid"    => $datasession->org_id,
+                        "orgname"  => $datasession->organizationname,
+                        "website"  => $datasession->website,
                         "userid"   => $datasession->user_id,
                         "name"     => $datasession->name,
                         "email"    => $datasession->email,

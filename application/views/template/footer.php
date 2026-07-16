@@ -1,7 +1,7 @@
 <?php
-$website     = $_SESSION['website'] ?? '';
-$hospital    = $_SESSION['hospitalname'] ?? 'Teguh Irawan';
-$ipAddress   = $_SERVER['REMOTE_ADDR'] ?? '-';
+    $website     = $_SESSION['website'] ?? '';
+    $hospital    = $_SESSION['orgname'] ?? 'Teguh Irawan';
+    $ipAddress   = $_SERVER['REMOTE_ADDR'] ?? '-';
 ?>
 
 <div class="footer py-4 d-flex flex-lg-column" id="kt_footer">
@@ -11,7 +11,7 @@ $ipAddress   = $_SERVER['REMOTE_ADDR'] ?? '-';
             <div class="text-muted">
                 2026 &copy; Copyright Infinite For Use
 
-                <?php if (!empty($website) || !empty($hospital)) : ?>
+                <?php if (!empty($hospital)) : ?>
                     <a href="<?= htmlspecialchars($website); ?>" target="_blank">
                         <?= htmlspecialchars($hospital); ?>
                     </a> |

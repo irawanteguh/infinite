@@ -27,7 +27,7 @@
                                         </div>
                                         <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
                                             <i class="bi bi-pencil-fill fs-7"></i>
-                                            <input type="file" name="avataradd" id="avataradd" accept=".jpeg" />
+                                            <input type="file" name="modal_add_user_avatar" id="modal_add_user_avatar" accept=".jpeg .jpg" />
                                             <input type="hidden" name="avatar_remove" />
                                         </label>
                                         <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
@@ -44,26 +44,26 @@
                                     <label class="d-flex align-items-center fs-5 fw-bold mb-2">
                                         <span class="required">Username</span>
                                     </label>
-                                    <input type="text" class="form-control form-control-solid form-control-sm" id="username-add" name="username-add" required>
+                                    <input type="text" class="form-control form-control-solid form-control-sm" id="modal_add_user_username" name="modal_add_user_username" required>
                                 </div> 
                                 <div class="col-md-6 mb-5">
                                     <label class="d-flex align-items-center fs-5 fw-bold mb-2">
                                         <span>ID Internal Rumah Sakit</span>
                                     </label>
-                                    <input type="text" class="form-control form-control-solid form-control-sm" id="nikrs-add" name="nikrs-add">
+                                    <input type="text" class="form-control form-control-solid form-control-sm" id="modal_add_user_nikrs" name="modal_add_user_nikrs">
                                 </div>                                  
                                 <div class="col-md-6 mb-5">
                                     <label class="d-flex align-items-center fs-5 fw-bold mb-2">
                                         <span class="required">Nama Karyawan</span>
                                     </label>
-                                    <input type="text" class="form-control form-control-solid form-control-sm" id="namakaryawan-add" name="namakaryawan-add" required>
+                                    <input type="text" class="form-control form-control-solid form-control-sm" id="modal_add_user_name" name="modal_add_user_name" required>
                                 </div>                             
                                 <div class="col-md-6 mb-5">
                                     <label class="d-flex align-items-center fs-5 fw-bold mb-2">
                                         <span class="required">Email Address</span>
                                         <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Silakan alamat email anda yang aktif"></i>
                                     </label>
-                                    <input type="text" class="form-control form-control-solid form-control-sm" placeholder="Silakan Masukan Alamat Email Anda" id="email-add" name="email-add" required>
+                                    <input type="text" class="form-control form-control-solid form-control-sm" placeholder="Silakan Masukan Alamat Email Anda" id="modal_add_user_email" name="modal_add_user_email" required>
                                 </div>
                             </div>
                         </div>
@@ -89,7 +89,7 @@
                 </div>
             </div>
             <form action="<?php echo base_url();?>index.php/hr/users/edituser" id="formedituser">
-                <input type="hidden" id="userid-edit" name="userid-edit">
+                <input type="hidden" id="modal_edit_user_userid" name="modal_edit_user_userid">
                 <div class="modal-body">
                     <div class="text-start mb-5">
                         <div class="text-muted fw-bold fs-5">Please edit the employee data.</div>
@@ -105,7 +105,7 @@
                                         <div id="avatar-preview-edit" class="image-input-wrapper w-125px h-125px" style="background-image: url(<?php echo base_url()?>assets/media/avatars/blank.png)"></div>
                                         <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
                                             <i class="bi bi-pencil-fill fs-7"></i>
-                                            <input type="file" name="avataredit" id="avataredit" accept=".jpeg .jpg" />
+                                            <input type="file" name="modal_edit_user_avatar" id="modal_edit_user_avatar" accept=".jpeg .jpg" />
                                             <input type="hidden" name="avatar_remove" />
                                         </label>
                                         <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
@@ -122,26 +122,26 @@
                                     <label class="d-flex align-items-center fs-5 fw-bold mb-2">
                                         <span class="required">Username</span>
                                     </label>
-                                    <input type="text" class="form-control form-control-solid form-control-sm" id="username-edit" name="username-edit" readonly>
+                                    <input type="text" class="form-control form-control-solid form-control-sm" id="modal_edit_user_username" name="modal_edit_user_username" readonly>
                                 </div> 
                                 <div class="col-md-6 mb-5">
                                     <label class="d-flex align-items-center fs-5 fw-bold mb-2">
                                         <span>ID Internal Rumah Sakit</span>
                                     </label>
-                                    <input type="text" class="form-control form-control-solid form-control-sm" id="nikrs-edit" name="nikrs-edit">
+                                    <input type="text" class="form-control form-control-solid form-control-sm" id="modal_edit_user_nikrs" name="modal_edit_user_nikrs">
                                 </div>                                  
                                 <div class="col-md-6 mb-5">
                                     <label class="d-flex align-items-center fs-5 fw-bold mb-2">
                                         <span class="required">Nama Karyawan</span>
                                     </label>
-                                    <input type="text" class="form-control form-control-solid form-control-sm" id="namakaryawan-edit" name="namakaryawan-edit" required>
+                                    <input type="text" class="form-control form-control-solid form-control-sm" id="modal_edit_user_name" name="modal_edit_user_name" required>
                                 </div>                             
                                 <div class="col-md-6 mb-5">
                                     <label class="d-flex align-items-center fs-5 fw-bold mb-2">
                                         <span class="required">Email Address</span>
                                         <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Silakan alamat email anda yang aktif"></i>
                                     </label>
-                                    <input type="text" class="form-control form-control-solid form-control-sm" placeholder="Silakan Masukan Alamat Email Anda" id="email-edit" name="email-edit" required>
+                                    <input type="text" class="form-control form-control-solid form-control-sm" placeholder="Silakan Masukan Alamat Email Anda" id="modal_edit_user_email" name="modal_edit_user_email" required>
                                 </div>
                             </div>
                         </div>

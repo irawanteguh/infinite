@@ -1,0 +1,6 @@
+Swal.fire({
+    icon             : "error",
+    title            : "Request Failed",
+    text             : "We were unable to process your request due to a server error. Please try again later. If the problem persists, contact your system administrator.",
+    confirmButtonText: "OK"
+});

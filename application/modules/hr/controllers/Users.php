@@ -14,56 +14,59 @@
 
         public function adduser(){
             $userid       = generateuuid();
-            $username     = $this->input->post("username-add");
-            $nikrs        = $this->input->post("nikrs-add");
-            $namakaryawan = $this->input->post("namakaryawan-add");
-            $namaktp      = $this->input->post("namaktp-add");
-            $noktp        = $this->input->post("noktp-add");
-            $email        = $this->input->post("email-add");
-            $file         = (object)@$_FILES['avataradd'];
+            $username     = $this->input->post("modal_add_user_username");
+            $nikrs        = $this->input->post("modal_add_user_nikrs");
+            $namakaryawan = $this->input->post("modal_add_user_name");
+            $email        = $this->input->post("modal_add_user_email");
 
-            $config['upload_path']      = './assets/images/avatars/';
-			$config['allowed_types']    = 'jpeg';
-			$config['file_ext_tolower'] = TRUE;
-			$config['file_name']        = $userid;
-			$config['overwrite']        = TRUE;
+            if(isset($_FILES['modal_add_user_avatar']) && $_FILES['modal_add_user_avatar']['error'] != 4){
 
-            $this->load->library('upload', $config);
+                $config['upload_path']      = './assets/media/avatars/';
+                $config['allowed_types']    = 'jpg|jpeg';
+                $config['file_ext_tolower'] = TRUE;
+                $config['file_name']        = $userid.".jpg";
+                $config['overwrite']        = TRUE;
 
-            if (!$this->upload->do_upload('avataradd')){
-                $error_message = strip_tags($this->upload->display_errors());
-				log_message('error', 'File upload error: ' . $error_message);
+                $this->load->library('upload');
+                $this->upload->initialize($config);
 
-				$json['responDesc'] = $error_message;
-            }else{
-                $uploadData = $this->upload->data();
-				$full_path = $uploadData['full_path'];
+                if(!$this->upload->do_upload('modal_add_user_avatar')){
 
-				$ext = strtolower(pathinfo($uploadData['file_name'], PATHINFO_EXTENSION));
-				if ($ext !== 'jpeg') {
-					unlink($full_path);
-					$json['responDesc'] = "Hanya file .jpeg yang diizinkan!";
-					echo json_encode($json);
-					return;
-				}
+                    $json['responCode'] = "01";
+                    $json['responHead'] = "error";
+                    $json['responDesc'] = strip_tags($this->upload->display_errors());
 
-				$image = @imagecreatefromjpeg($full_path);
-				if (!$image) {
-					$image = @imagecreatefrompng($full_path);
-				}
+                    echo json_encode($json);
+                    return;
 
-				if ($image) {
-					$rgb_image = imagecreatetruecolor(imagesx($image), imagesy($image));
-					imagecopy($rgb_image, $image, 0, 0, 0, 0, imagesx($image), imagesy($image));
-					imagejpeg($rgb_image, $full_path, 95);
-					imagedestroy($image);
-					imagedestroy($rgb_image);
-				} else {
-					unlink($full_path);
-					$json['responDesc'] = "File tidak valid atau rusak. Pastikan format JPEG RGB 8bit.";
-					echo json_encode($json);
-					return;
-				}
+                }else{
+
+                    $uploadData = $this->upload->data();
+                    $full_path  = $uploadData['full_path'];
+
+                    $image = @imagecreatefromjpeg($full_path);
+
+                    if($image){
+
+                        $rgb = imagecreatetruecolor(imagesx($image), imagesy($image));
+                        imagecopy($rgb, $image, 0, 0, 0, 0, imagesx($image), imagesy($image));
+                        imagejpeg($rgb, $full_path, 95);
+
+                        imagedestroy($image);
+                        imagedestroy($rgb);
+
+                    }else{
+
+                        @unlink($full_path);
+
+                        $json['responCode'] = "01";
+                        $json['responHead'] = "error";
+                        $json['responDesc'] = "File tidak valid.";
+
+                        echo json_encode($json);
+                        return;
+                    }
+                }
             }
 
             $datainsert = [
@@ -100,16 +103,13 @@
         }
 
         public function edituser(){
-            $userid       = $this->input->post("userid-edit");
-            $username     = $this->input->post("username-edit");
-            $nikrs        = $this->input->post("nikrs-edit");
-            $namakaryawan = $this->input->post("namakaryawan-edit");
-            $email        = $this->input->post("email-edit");
+            $userid       = $this->input->post("modal_edit_user_userid");
+            $username     = $this->input->post("modal_edit_user_username");
+            $nikrs        = $this->input->post("modal_edit_user_nikrs");
+            $namakaryawan = $this->input->post("modal_edit_user_name");
+            $email        = $this->input->post("modal_edit_user_email");
 
-            $json = [];
-
-            // Upload avatar jika ada
-            if(isset($_FILES['avataredit']) && $_FILES['avataredit']['error'] != 4){
+            if(isset($_FILES['modal_edit_user_avatar']) && $_FILES['modal_edit_user_avatar']['error'] != 4){
 
                 $config['upload_path']      = './assets/media/avatars/';
                 $config['allowed_types']    = 'jpg|jpeg';
@@ -120,9 +120,7 @@
                 $this->load->library('upload');
                 $this->upload->initialize($config);
 
-            
-
-                if(!$this->upload->do_upload('avataredit')){
+                if(!$this->upload->do_upload('modal_edit_user_avatar')){
 
                     $json['responCode'] = "01";
                     $json['responHead'] = "error";

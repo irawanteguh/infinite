@@ -93,11 +93,11 @@ function getdata(btn){
     var avatar        = url+"assets/media/avatars/"+userid+".jpg";
     var avatarDefault = url+"assets/media/avatars/blank.png";
 
-	$(":hidden[name='userid-edit']").val(userid);
-    $("#username-edit").val(username);
-    $("#nikrs-edit").val(nikrs === "null" || nikrs === null ? "" : nikrs);
-    $("#namakaryawan-edit").val(name);
-    $("#email-edit").val(email);
+	$(":hidden[name='modal_edit_user_userid']").val(userid);
+    $("#modal_edit_user_username").val(username);
+    $("#modal_edit_user_nikrs").val(nikrs === "null" || nikrs === null ? "" : nikrs);
+    $("#modal_edit_user_name").val(name);
+    $("#modal_edit_user_email").val(email);
     $("<img>").attr("src",avatar).on("load",function(){$("#avatar-preview-edit").css("background-image","url('"+avatar+"')");}).on("error",function(){$("#avatar-preview-edit").css("background-image","url('"+avatarDefault+"')");});
 };
 
@@ -265,9 +265,9 @@ function datausers() {
         },
         error: function () {
             Swal.fire({
-                icon: "error",
-                title: "Request Failed",
-                text: "We were unable to process your request due to a server error. Please try again later. If the problem persists, contact your system administrator.",
+                icon             : "error",
+                title            : "Request Failed",
+                text             : "We were unable to process your request due to a server error. Please try again later. If the problem persists, contact your system administrator.",
                 confirmButtonText: "OK"
             });
         }

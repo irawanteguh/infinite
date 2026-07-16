@@ -1,5 +1,5 @@
 <div class="modal fade" id="modal_edit_masterindikator" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header pb-0">
                 <h1 class="mb-3">Edit Master Indikator Mutu</h1>
@@ -10,7 +10,7 @@
                 </div>
             </div>
             <form action="<?php echo base_url();?>index.php/qi/indikatorunit/inputnilaiindikator" id="forminputnilaiindikator">
-                <div class="modal-body">
+                <div class="modal-body" style="max-height:80vh; overflow-y:auto;">
 
                     <div class="text-start mb-7">
                         <div class="text-muted fw-bold fs-6">
@@ -143,8 +143,8 @@
 
                         <div class="col-md-4 mb-5">
                             <label class="required form-label fw-bold">Satuan</label>
-                            <select class="form-select form-select-solid" id="modal_satuan_id" name="modal_satuan_id">
-                                <option value="">Pilih satuan...</option>
+                            <select data-control="select2" data-dropdown-parent="#modal_edit_masterindikator" class="form-select form-select-solid" id="modal_satuan_id" name="modal_satuan_id" data-placeholder="Please Select Unit">
+                                <?php echo $mastersatuan;?>
                             </select>
                         </div>
 

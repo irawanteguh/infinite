@@ -18,6 +18,22 @@
             return $recordset;
         }
 
+        function datamastersatuan($groupid,$orgid){
+            $query =
+                    "
+                        select a.satuan_id, concat(satuan,' / ',keterangan)keterangan
+                        from dt01_qi_satuan_ms a
+                        where a.active='1'
+                        and   a.group_id='".$groupid."'
+                        and   a.org_id='".$orgid."'
+                        order by sort asc
+                    ";
+
+            $recordset = $this->db->query($query);
+            $recordset = $recordset->result();
+            return $recordset;
+        }
+
 
     }
 ?>

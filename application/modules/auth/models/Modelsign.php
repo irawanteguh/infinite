@@ -18,12 +18,24 @@
         function datasession($userid){
             $query =
                     "
-                        select a.group_id, org_id, user_id, name, email,
-                               (select org_name from dt01_gen_organization_ms where org_id=a.org_id)organizationname,
-                               (select website from dt01_gen_organization_ms where org_id=a.org_id)website                           
-                        from dt01_gen_user_data a
-                        where a.active='1'
-                        and   a.user_id='".$userid."'
+                        SELECT 
+                            a.group_id,
+                            a.org_id,
+                            a.user_id,
+                            a.name,
+                            a.email,
+                            b.org_name AS organizationname,
+                            b.website,
+                            b.address,
+                            b.email AS organizationemail,
+                            c.name AS pimpinan
+                        FROM dt01_gen_user_data a
+                        LEFT JOIN dt01_gen_organization_ms b
+                            ON b.org_id = a.org_id
+                        LEFT JOIN dt01_gen_user_data c
+                            ON c.user_id = b.user_id
+                        WHERE a.active = '1'
+                        AND a.user_id = '".$userid."';
                     ";
 
             $recordset = $this->db->query($query);

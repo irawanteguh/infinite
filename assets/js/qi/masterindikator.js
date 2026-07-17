@@ -4,34 +4,34 @@ dataindikator();
 
 function getdata(btn){
 
-    $("#modal_indikator_id").val(btn.data("indikatorid"));
-    $("#modal_indikator").val(btn.data("indikator"));
-    $("#modal_dasar_pemikiran").val(btn.data("dasar_pemikiran"));
-    $("#modal_tujuan").val(btn.data("tujuan"));
-    $("#modal_definisi").val(btn.data("definisi"));
-    $("#modal_numerator").val(btn.data("numerator"));
-    $("#modal_denumerator").val(btn.data("denumerator"));
-    $("#modal_formula").val(btn.data("formula"));
-    $("#modal_populasi").val(btn.data("populasi"));
-    $("#modal_metode").val(btn.data("metode"));
-    $("#modal_inklusi").val(btn.data("inklusi"));
-    $("#modal_eksklusi").val(btn.data("eksklusi"));
-    $("#modal_instrument").val(btn.data("instrument"));
+    $("#modal_edit_masterindikator_indikatorid").val(btn.data("indikatorid"));
+    $("#modal_edit_masterindikator_indikator").val(btn.data("indikator"));
+    $("#modal_edit_masterindikator_dasarpemikiran").val(btn.data("dasar_pemikiran"));
+    $("#modal_edit_masterindikator_tujuan").val(btn.data("tujuan"));
+    $("#modal_edit_masterindikator_definisi").val(btn.data("definisi"));
+    $("#modal_edit_masterindikator_numerator").val(btn.data("numerator"));
+    $("#modal_edit_masterindikator_denominator").val(btn.data("denominator"));
+    $("#modal_edit_masterindikator_formula").val(btn.data("formula"));
+    $("#modal_edit_masterindikator_populasi").val(btn.data("populasi"));
+    $("#modal_edit_masterindikator_metodepengumpulan").val(btn.data("metode"));
+    $("#modal_edit_masterindikator_kriteriainklusi").val(btn.data("inklusi"));
+    $("#modal_edit_masterindikator_kriteriaeksklusi").val(btn.data("eksklusi"));
+    $("#modal_edit_masterindikator_instrumen").val(btn.data("instrument"));
 
-    $("#modal_satuan_id").val(btn.data("satuan_id")).trigger("change");
-    $("#modal_frekuensi_id").val(btn.data("frekuensi_id")).trigger("change");
-    $("#modal_sumber_id").val(btn.data("sumber_id")).trigger("change");
-    $("#modal_donabedian_id").val(btn.data("donabedian_id")).trigger("change");
-    $("#modal_target_capaian").val(btn.data("target_capaian")).trigger("change");
-    $("#modal_benchmark_id").val(btn.data("benchmark_id")).trigger("change");
-    $("#modal_active").val(btn.data("active")).trigger("change");
+    $("#modal_edit_masterindikator_satuanid").val(btn.data("satuan_id")).trigger("change");
+    $("#modal_edit_masterindikator_frekuensiid").val(btn.data("frekuensi_id")).trigger("change");
+    $("#modal_edit_masterindikator_sumberid").val(btn.data("sumber_id")).trigger("change");
+    $("#modal_edit_masterindikator_donabedianid").val(btn.data("donabedian_id")).trigger("change");
+    $("#modal_edit_masterindikator_targetcapaian").val(btn.data("target_capaian")).trigger("change");
+    $("#modal_edit_masterindikator_benchmarkid").val(btn.data("benchmark_id")).trigger("change");
+    $("#modal_edit_masterindikator_active").val(btn.data("active")).trigger("change");
 
-    $("input[name='dimensi_keselamatan']").prop("checked", btn.data("dimensi_keselamatan") == "Y");
-    $("input[name='dimensi_waktu']").prop("checked", btn.data("dimensi_waktu") == "Y");
-    $("input[name='dimensi_efektif']").prop("checked", btn.data("dimensi_efektif") == "Y");
-    $("input[name='dimensi_efesien']").prop("checked", btn.data("dimensi_efesien") == "Y");
-    $("input[name='dimensi_pasien']").prop("checked", btn.data("dimensi_pasien") == "Y");
-    $("input[name='dimensi_integrasi']").prop("checked", btn.data("dimensi_integrasi") == "Y");
+    $("#modal_edit_masterindikator_dimensikeselamatan").prop("checked", btn.data("dimensi_keselamatan") === "Y");
+    $("#modal_edit_masterindikator_dimensiwaktu").prop("checked", btn.data("dimensi_waktu") === "Y");
+    $("#modal_edit_masterindikator_dimensiefektif").prop("checked", btn.data("dimensi_efektif") === "Y");
+    $("#modal_edit_masterindikator_dimensiefisien").prop("checked", btn.data("dimensi_efisien") === "Y");
+    $("#modal_edit_masterindikator_dimensipasien").prop("checked", btn.data("dimensi_pasien") === "Y");
+    $("#modal_edit_masterindikator_dimensiintegrasi").prop("checked", btn.data("dimensi_integrasi") === "Y");
 
 }
 
@@ -279,3 +279,58 @@ function dataindikator() {
     }
 
 }
+
+$(document).on("submit", "#formeditmasterindikator", function (e) {
+	e.preventDefault();
+	var data = new  FormData(this);
+	$.ajax({
+        url        : url+'index.php/qi/masterindikator/editmasterindikator',
+        data       : data,
+        method     : "POST",
+        dataType   : "JSON",
+        cache      : false,
+        processData: false,
+        contentType: false,
+        beforeSend : function () {
+            Swal.fire({
+                title: 'Processing',
+                html : 'Please wait while the system displays the requested data.',
+                allowOutsideClick: false,
+                allowEscapeKey   : false,
+                showConfirmButton: false,
+                didOpen: () => Swal.showLoading()
+            });
+        },
+		success: function (response) {
+            if (response.responCode !== "00") {
+                Swal.fire({
+                    title            : "<h1 class='font-weight-bold'>For Your Information</h1>",
+                    html             : "<b>"+data.responDesc+"</b>",
+                    icon             : data.responHead,
+                    confirmButtonText: 'Please Try Again',
+                    customClass      : {confirmButton: 'btn btn-danger'},
+                    timerProgressBar : true,
+                    timer            : 5000,
+                    showClass        : {popup: "animate__animated animate__fadeInUp animate__faster"},
+                    hideClass        : {popup: "animate__animated animate__fadeOutDown animate__faster"}
+                });
+                return;
+            }
+
+            $('#modal_edit_masterindikator').modal('hide');
+            Swal.close();
+		},
+        complete: function () {
+            Swal.close();
+            dataindikator();
+		},
+        error: function(xhr, status, error) {
+            Swal.fire({
+                icon : 'error',
+                title: 'System Error',
+                text : 'Failed to retrieve emergency visit data.'
+            });
+		}
+	});
+    return false;
+});

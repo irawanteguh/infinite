@@ -52,8 +52,6 @@
                             </a>
                         </div>
                     </div>
-                    <!--end::User-->
-                    <!--begin::Actions-->
                     <div class="d-flex my-4">
                         <a href="#" class="btn btn-sm btn-light me-2" id="kt_user_follow_button">
                             <!--begin::Svg Icon | path: icons/duotune/arrows/arr012.svg-->
@@ -155,10 +153,7 @@
                         </div>
                         <!--end::Menu-->
                     </div>
-                    <!--end::Actions-->
                 </div>
-                <!--end::Title-->
-                <!--begin::Stats-->
                 <div class="d-flex flex-wrap flex-stack">
                     <!--begin::Wrapper-->
                     <div class="d-flex flex-column flex-grow-1 pe-8">
@@ -240,9 +235,7 @@
                     </div>
                     <!--end::Progress-->
                 </div>
-                <!--end::Stats-->
             </div>
-            <!--end::Info-->
         </div>
         
         <div class="d-flex overflow-auto h-55px">

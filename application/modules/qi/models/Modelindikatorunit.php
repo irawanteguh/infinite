@@ -98,6 +98,8 @@
                             s.color AS statuscolor,
                             s.icon AS statusicon,
 
+                            sat.kode,
+
                             /* ===========================
                             NUMERATOR
                             =========================== */
@@ -201,6 +203,9 @@
 
                         LEFT JOIN dt01_qi_indikator_it it
                             ON it.referensi_id = a.transaksi_id
+                        
+                        LEFT JOIN dt01_qi_satuan_ms sat
+                            ON sat.satuan_id = i.satuan_id
 
                         WHERE a.active = '1'
                         AND a.group_id='".$groupid."'

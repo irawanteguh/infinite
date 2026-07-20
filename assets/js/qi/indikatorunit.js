@@ -187,7 +187,7 @@ function dataindikatorunit() {
                 tableresult += "<td><span class='badge badge-light-info'>"+result[i].jenis+"</span></td>";
                 tableresult += "<td><div>"+result[i].tahun+"<span class='badge badge-light-"+result[i].statuscolor+" ms-2'><i class='"+result[i].statusicon+" text-"+result[i].statuscolor+" me-1'></i>"+result[i].status+"</span></div><div class='text-muted fs-8 mt-1'>"+result[i].statusdescription+"</div></td>";
                 tableresult += "<td>"+result[i].department+"</td>";
-                tableresult += "<td><span class='badge badge-light-info'>"+result[i].target+"%</span></td>";    
+                tableresult += "<td><span class='badge badge-light-info'>"+result[i].target+(result[i].kode ||" ")+"</span></td>";    
                 tableresult += "<td><span class='badge "+badgeAvg+"'>"+avg.toFixed(2)+"%</span></td>";
 
                 tableresult += "<td>";

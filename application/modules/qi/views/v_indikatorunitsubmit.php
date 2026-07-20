@@ -1,6 +1,6 @@
 <input type="hidden" id="uuid" value="<?= $uuid ?>">
 
-<div class="col-sm-12 col-md-12 col-xl-6">
+<div class="col-sm-12 col-md-12 col-xl-6 mb-5">
     <div class="card">
         <div class="card-header border-0 pt-6">
             <h3 class="card-title align-items-start flex-column">
@@ -14,7 +14,7 @@
     </div>
 </div>
 
-<div class="col-sm-12 col-md-12 col-xl-6">
+<div class="col-sm-12 col-md-12 col-xl-6 mb-5">
     <div class="card">
         <div class="card-header border-0 pt-6">
             <div class="card-title">

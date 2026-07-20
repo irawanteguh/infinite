@@ -20,7 +20,8 @@
                     <tr class="fw-bolder text-muted bg-light">
                         <th class="text-start ps-4 rounded-start">#</th>
                         <th>Periode</th>
-                        <th>PJ / Ketua Komite Mutu</th>
+                        <th>Ketua Komite Mutu / PJ Mutu</th>
+                        <th>Anggota Mutu</th>
                         <th>PIC Indikator</th>
                         <th>Status</th>
                         <th>Created By</th>

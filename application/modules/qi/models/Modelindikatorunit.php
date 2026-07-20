@@ -249,12 +249,28 @@
         function datateam($groupid,$orgid,$userid){
             $query =
                     "
-                        select a.pic,
-                            (select name from dt01_gen_user_data where user_id=a.pic)picname
-                        from dt01_qi_indikator_hd a
-                        where a.active='1'
-                        and   a.department_id in (select department_id from dt01_gen_department_ms where active='1' and user_id='".$userid."')
-                        order by picname asc
+                        SELECT GROUP_CONCAT(
+                                    DISTINCT CONCAT(
+                                        a.pic, ':',
+                                        u.name
+                                    )
+                                    ORDER BY u.name ASC
+                                    SEPARATOR ';'
+                            ) AS pic_list
+                        FROM dt01_qi_indikator_hd a
+                        LEFT JOIN dt01_gen_user_data u
+                            ON u.user_id = a.pic
+                        WHERE a.active = '1'
+                        and   a.group_id='".$groupid."'
+                        and   a.org_id='".$orgid."'
+                        AND a.department_id IN (
+                            SELECT department_id
+                            FROM dt01_gen_department_ms
+                            WHERE active = '1'
+                            and group_id='".$groupid."'
+                            and org_id='".$orgid."'
+                            AND user_id = '".$userid."'
+                        );
                     ";
 
             $recordset = $this->db->query($query);

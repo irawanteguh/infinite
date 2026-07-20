@@ -12,6 +12,7 @@
                         where a.active='1'
                         and   a.group_id='".$groupid."'
                         and   a.org_id='".$orgid."'
+                        order by last_update_date desc
                     ";
 
             $recordset = $this->db->query($query);
@@ -102,6 +103,11 @@
             $recordset = $this->db->query($query);
             $recordset = $recordset->result();
             return $recordset;
+        }
+
+        function insertmasterindikator($data){           
+            $sql =   $this->db->insert("dt01_qi_indikator_ms",$data);
+            return $sql;
         }
 
         function updatemasterindikator($indikatorid, $data){           

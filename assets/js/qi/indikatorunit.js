@@ -298,17 +298,12 @@ function datateam(){
         dataType: "json",
         success : function(response){
             let html = "";
-            if(response.responCode === "00"){
-                $.each(response.responResult, function(i, row){
-                    const avatar = url + "assets/media/avatars/" + row.pic + ".jpg";
-                    const blank  = url + "assets/media/avatars/blank.png";
 
-                    html += `
-                        <div class="symbol symbol-circle symbol-35px" data-bs-toggle="tooltip" title="${row.picname}">
-                            <img src="${avatar}" alt="${row.picname}" onerror="this.onerror=null;this.src='${blank}';">
-                        </div>
-                    `;
-                });
+            if(response.responCode === "00"){
+                const result = Array.isArray(response.responResult) ? response.responResult : [];
+                for (var i in result) {
+                    html += renderteam(result[i].pic_list, 5);
+                }
             }
 
             $("#teamindikatorunit").html(html);

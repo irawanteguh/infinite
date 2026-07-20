@@ -134,5 +134,59 @@
             echo json_encode($json);
         }
 
+        public function addmasterindikator(){
+
+            $dataupdate = [
+                'GROUP_ID'                  => $_SESSION['groupid'],
+                'ORG_ID'                    => $_SESSION['orgid'],
+                'INDIKATOR'                 => $this->input->post("modal_add_masterindikator_indikator"),
+                'DASAR_PEMIKIRAN'           => $this->input->post("modal_add_masterindikator_dasarpemikiran"),
+
+                'DIMENSI_MUTU_KESELAMATAN'  => $this->input->post("modal_add_masterindikator_dimensikeselamatan") == "Y" ? "Y" : "N",
+                'DIMENSI_MUTU_WAKTU'        => $this->input->post("modal_add_masterindikator_dimensiwaktu") == "Y" ? "Y" : "N",
+                'DIMENSI_MUTU_EFEKTIF'      => $this->input->post("modal_add_masterindikator_dimensiefektif") == "Y" ? "Y" : "N",
+                'DIMENSI_MUTU_EFESIEN'      => $this->input->post("modal_add_masterindikator_dimensiefisien") == "Y" ? "Y" : "N",
+                'DIMENSI_MUTU_PASIEN'       => $this->input->post("modal_add_masterindikator_dimensipasien") == "Y" ? "Y" : "N",
+                'DIMENSI_MUTU_INTEGRASI'    => $this->input->post("modal_add_masterindikator_dimensiintegrasi") == "Y" ? "Y" : "N",
+
+                'TUJUAN'                    => $this->input->post("modal_add_masterindikator_tujuan"),
+                'DEFINISI'                  => $this->input->post("modal_add_masterindikator_definisi"),
+                'NUMERATOR'                 => $this->input->post("modal_add_masterindikator_numerator"),
+                'DENUMERATOR'               => $this->input->post("modal_add_masterindikator_denominator"),
+                'FORMULA'                   => $this->input->post("modal_add_masterindikator_formula"),
+
+                'SATUAN_ID'                 => $this->input->post("modal_add_masterindikator_satuanid"),
+                'FREKUENSI_ID'              => $this->input->post("modal_add_masterindikator_frekuensiid"),
+
+                'INKLUSI'                   => $this->input->post("modal_add_masterindikator_kriteriainklusi"),
+                'EKSKLUSI'                  => $this->input->post("modal_add_masterindikator_kriteriaeksklusi"),
+                'METODE'                    => $this->input->post("modal_add_masterindikator_metodepengumpulan"),
+                'INSTRUMENT'                => $this->input->post("modal_add_masterindikator_instrumen"),
+                'POPULASI'                  => $this->input->post("modal_add_masterindikator_populasi"),
+
+                'SUMBER_ID'                 => $this->input->post("modal_add_masterindikator_sumberid"),
+                'DONABEDIAN_ID'             => $this->input->post("modal_add_masterindikator_donabedianid"),
+                'TARGET_CAPAIAN'            => $this->input->post("modal_add_masterindikator_targetcapaian"),
+                'BENCHMARK_ID'              => $this->input->post("modal_add_masterindikator_benchmarkid"),
+
+                'CREATED_BY'                => $_SESSION['userid'],
+                'LAST_UPDATE_BY'            => $_SESSION['userid'],
+                'LAST_UPDATE_DATE'          => date('Y-m-d H:i:s')
+            ];
+
+            if($this->md->insertmasterindikator($dataupdate)){
+                $json['responCode']="00";
+                $json['responHead']="success";
+                $json['responDesc']="Data Updated Successfully";
+            }else{
+                $json['responCode']="01";
+                $json['responHead']="info";
+                $json['responDesc']="Data failed to update";
+            }
+            
+
+            echo json_encode($json);
+        }
+
     }
 ?>

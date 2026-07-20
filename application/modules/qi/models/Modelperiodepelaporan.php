@@ -51,7 +51,20 @@
                                     on b.user_id = x.pic
                                 where x.active = '1'
                                 and x.periode_id = a.periode_id
-                            ) as picindikator
+                            ) as picindikator,
+                            
+                            (
+                                select group_concat(
+                                    x.user_id, ':',
+                                    b.name
+                                    separator ';'
+                                )
+                                from dt01_qi_komite_mutu_hd x
+                                left join dt01_gen_user_data b
+                                    on b.user_id = x.user_id
+                                where x.active = '1'
+                                and x.periode_id = a.periode_id
+                            ) as komite
 
                         from dt01_qi_periode_mutu a
 

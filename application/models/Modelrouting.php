@@ -14,5 +14,20 @@
             $recordset = $recordset->result_array();
             return $recordset;
         }
+
+        function environment($groupid,$orgid){
+            $query =
+                    "
+                        select a.*
+                        from dt01_gen_enviroment_ms a
+                        where a.active='1'
+                        and   a.group_id='".$groupid."'
+                        and   a.org_id='".$orgid."'
+                    ";
+
+            $recordset = $this->db->query($query);
+            $recordset = $recordset->result_array();
+            return $recordset;
+        }
     }
 ?>

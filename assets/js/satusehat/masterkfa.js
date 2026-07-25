@@ -11,6 +11,105 @@ $(document).ready(function () {
         }
     });
 
+    $("#modal_import_kfa_harga_distributor, #modal_import_kfa_disc, #modal_import_kfa_ppn")
+    .on("change keyup", function () {
+        var nilai = $(this).val().replace(/\./g, "");
+        nilai = parseInt(nilai) || 0;
+
+        $(this).val(nilai.toLocaleString("id-ID"));
+
+        hitungTotal();
+    })
+    .on("keypress", function (e) {
+        if (e.which == 13) {
+            e.preventDefault();
+            hitungTotal();
+        }
+    });
+
+});
+
+$("#modal_import_kfa").on("show.bs.modal", function () {
+
+    $("#modal_import_kfa_kfaid").val("");
+    $("#modal_import_kfa_nama_obat").val("");
+    $("#modal_import_kfa_produsen").val("");
+    $("#modal_import_kfa_het").val("");
+    $("#modal_import_kfa_harga_distributor").val("0");
+    $("#modal_import_kfa_disc").val("0");
+    $("#modal_import_kfa_ppn").val("11");
+    $("#modal_import_kfa_total").val("0");
+
+});
+
+function getdata(index){
+    var item = window.kfaResult[index];
+
+    $("#modal_import_kfa_kfaid").val(item.kfa_code || "");
+    $("#modal_import_kfa_nama_obat").val(item.name || "");
+    $("#modal_import_kfa_produsen").val(item.manufacturer || "");
+    $("#modal_import_kfa_het").val("Rp. "+(item.het_price || "0"));
+
+    $("#modal_import_kfa_harga_distributor").val(0);
+    $("#modal_import_kfa_disc").val(0);
+    $("#modal_import_kfa_ppn").val(11);
+}
+
+function hitungTotal() {
+
+    var harga = parseFloat(
+        $("#modal_import_kfa_harga_distributor").val().replace(/\./g, "").replace(",", ".")
+    ) || 0;
+
+    var disc = parseFloat($("#modal_import_kfa_disc").val()) || 0;
+    var ppn  = parseFloat($("#modal_import_kfa_ppn").val()) || 0;
+
+    var subtotal = harga - (harga * disc / 100);
+    var total = subtotal + (subtotal * ppn / 100);
+
+    $("#modal_import_kfa_total").val(
+        total.toLocaleString("id-ID")
+    );
+
+}
+
+$("#modal_import_kfa_harga_distributor, #modal_import_kfa_disc, #modal_import_kfa_ppn")
+
+.on("input", function () {
+
+    // hanya angka dan titik desimal
+    this.value = this.value.replace(/[^0-9.]/g, "");
+
+    // hanya boleh satu titik
+    var arr = this.value.split(".");
+    if (arr.length > 2) {
+        this.value = arr[0] + "." + arr.slice(1).join("");
+    }
+
+    hitungTotal();
+
+})
+
+.on("change", function () {
+    hitungTotal();
+})
+
+.on("keypress", function (e) {
+
+    var key = e.which;
+
+    // Enter
+    if (key === 13) {
+        e.preventDefault();
+        hitungTotal();
+        return;
+    }
+
+    // hanya angka dan titik
+    if ((key < 48 || key > 57) && key !== 46) {
+        e.preventDefault();
+    }
+
 });
 
 function getallproductkfa() {
@@ -34,6 +133,7 @@ function getallproductkfa() {
         },
         success: function (response) {
             const result = Array.isArray(response.responResult) ? response.responResult : [];
+            window.kfaResult = result;
 
             if (response.responCode !== "00") {
                 $("#resultdatausers").html("");
@@ -66,7 +166,7 @@ function getallproductkfa() {
                     });
                 }
 
-                html += "<a href='#' class='list-group-item list-group-item-action py-3'>";
+                html += "<a href='#' data-bs-toggle='modal' data-bs-target='#modal_import_kfa' class='list-group-item list-group-item-action py-3' onclick='getdata("+parseInt(i)+");'>";
                     html += "<div class='d-flex align-items-start'>";
 
                         // ==========================
@@ -148,6 +248,14 @@ function getallproductkfa() {
                                 html += "Harga Eceran Tertinggi (HET)";
                             html += "</small>";
 
+                            html += "<div class='fw-bold text-primary fs-2 mb-1'>";
+                                html += "Rp. " + (result[i].distributor_price ? Number(result[i].distributor_price).toLocaleString('id-ID') : "-");
+                            html += "</div>";
+
+                            html += "<small class='text-muted mb-3'>";
+                                html += "Harga Distributor";
+                            html += "</small>";
+
                             // Status
                             html += "<div>";
 
@@ -175,15 +283,6 @@ function getallproductkfa() {
                                 html += "</div>";
                             }
 
-                            html += "<div class='mt-3'>";
-                                html += "<button type='button' ";
-                                html += "class='btn btn-sm btn-primary btn-update' ";
-                                html += "data-kfa='" + result[i].kfa_code + "' ";
-                                html += "data-name=\"" + result[i].name.replace(/"/g, '&quot;') + "\">";
-                                html += "<i class='fas fa-sync-alt me-2'></i>Update";
-                                html += "</button>";
-                            html += "</div>";
-
                         html += "</div>";
 
                     html += "</div>";
@@ -207,3 +306,59 @@ function getallproductkfa() {
     });
 
 }
+
+$(document).on("submit", "#formupdatekfa", function (e) {
+	e.preventDefault();
+	var data = new  FormData(this);
+	$.ajax({
+        url        : url+'index.php/satusehat/masterkfa/updatekfa',
+        data       : data,
+        method     : "POST",
+        dataType   : "JSON",
+        cache      : false,
+        processData: false,
+        contentType: false,
+        beforeSend : function () {
+            Swal.fire({
+                title            : 'Processing',
+                html             : 'Please wait while the system displays the requested data.',
+                allowOutsideClick: false,
+                allowEscapeKey   : false,
+                showConfirmButton: false,
+                didOpen          : () => Swal.showLoading()
+            });
+        },
+		success: function (response) {
+            if (response.responCode !== "00") {
+                Swal.fire({
+                    title            : "<h1 class='font-weight-bold'>For Your Information</h1>",
+                    html             : "<b>"+data.responDesc+"</b>",
+                    icon             : data.responHead,
+                    confirmButtonText: 'Please Try Again',
+                    customClass      : {confirmButton: 'btn btn-danger'},
+                    timerProgressBar : true,
+                    timer            : 5000,
+                    showClass        : {popup: "animate__animated animate__fadeInUp animate__faster"},
+                    hideClass        : {popup: "animate__animated animate__fadeOutDown animate__faster"}
+                });
+                return;
+            }
+
+            $('#modal_import_kfa').modal('hide');
+		},
+        complete: function () {
+            Swal.close();
+            dataindikatorunit();
+            datateam();
+		},
+        error: function(xhr, status, error) {
+            Swal.fire({
+                icon             : "error",
+                title            : "Request Failed",
+                text             : "We were unable to process your request due to a server error. Please try again later. If the problem persists, contact your system administrator.",
+                confirmButtonText: "OK"
+            });
+		}
+	});
+    return false;
+});

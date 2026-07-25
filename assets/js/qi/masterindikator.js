@@ -37,19 +37,17 @@ function getdata(btn){
 
 function dataindikator() {
     $.ajax({
-        url: url + "index.php/qi/masterindikator/dataindikator",
-        type: "POST",
-        dataType: "json",
-
+        url       : url + "index.php/qi/masterindikator/dataindikator",
+        type      : "POST",
+        dataType  : "JSON",
         beforeSend: function () {
-
             Swal.fire({
-                title: "Processing",
-                html: "Loading data, please wait...",
+                title            : "Processing",
+                html             : "Loading data, please wait...",
                 allowOutsideClick: false,
-                allowEscapeKey: false,
+                allowEscapeKey   : false,
                 showConfirmButton: false,
-                didOpen: () => Swal.showLoading()
+                didOpen          : () => Swal.showLoading()
             });
 
             if ($.fn.DataTable.isDataTable("#dataindikator_table")) {
@@ -61,9 +59,6 @@ function dataindikator() {
         },
 
         success: function (response) {
-
-            Swal.close();
-
             const result = Array.isArray(response.responResult) ? response.responResult : [];
 
             if (response.responCode !== "00") {
@@ -78,7 +73,7 @@ function dataindikator() {
 
             let tableresult = "";
 
-            for (let i = 0; i < result.length; i++) {
+            for (var i in result) {
 
                 const avatar        = `${url}assets/media/avatars/${result[i].last_update_by}.jpg`;
                 const avatarDefault = `${url}assets/media/avatars/blank.png`;
@@ -238,10 +233,6 @@ function dataindikator() {
 
             $("#resultdataindikator").html(tableresult);
 
-            if ($.fn.DataTable.isDataTable("#dataindikator_table")) {
-                $("#dataindikator_table").DataTable().destroy();
-            }
-
             const table = $("#dataindikator_table").DataTable({
                 responsive: false,
                 pageLength: 10,
@@ -265,9 +256,10 @@ function dataindikator() {
 
         error: function () {
             Swal.fire({
-                icon: "error",
-                title: "System Error",
-                text: "Unable to retrieve indicator data."
+                icon             : "error",
+                title            : "Request Failed",
+                text             : "We were unable to process your request due to a server error. Please try again later. If the problem persists, contact your system administrator.",
+                confirmButtonText: "OK"
             });
         }
 

@@ -7,7 +7,7 @@ if ($hour >= 5 && $hour < 12) {
 
     // Morning
     $greeting = 'Good Morning';
-    $background = 'pagi.jpg';
+    $background = 'morning-nature.png';
 
     $titleColor     = '#1F2937';
     $textColor      = '#4B5563';
@@ -20,7 +20,7 @@ if ($hour >= 5 && $hour < 12) {
 
     // Afternoon
     $greeting = 'Good Afternoon';
-    $background = 'siang.jpg';
+    $background = 'sunrise-nature.png';
 
     $titleColor     = '#1E293B';
     $textColor      = '#475569';
@@ -33,7 +33,7 @@ if ($hour >= 5 && $hour < 12) {
 
     // Evening
     $greeting = 'Good Evening';
-    $background = 'sore.jpg';
+    $background = 'sunset-nature.png';
 
     $titleColor     = '#FFFFFF';
     $textColor      = 'rgba(255,255,255,.88)';
@@ -46,7 +46,7 @@ if ($hour >= 5 && $hour < 12) {
 
     // Night
     $greeting = 'Good Night';
-    $background = 'malam.jpg';
+    $background = 'night-nature.png';
 
     $titleColor     = '#FFFFFF';
     $textColor      = 'rgba(255,255,255,.85)';
@@ -65,7 +65,7 @@ if ($hour >= 5 && $hour < 12) {
         min-height:220px;      /* sebelumnya 320px */
         border-radius:10px;
 
-        background-image:url('<?= base_url('assets/media/illustrations/'.$background); ?>');
+        background-image:url('<?= base_url('assets/media/ambient/'.$background); ?>');
         background-position:center;
         background-size:cover;
         background-repeat:no-repeat;

@@ -1,6 +1,6 @@
-<script src="<?= base_url('assets/plugins/routing/global/plugins.bundle.js') ?>"></script>
-<script src="<?= base_url('assets/plugins/routing/custom/datatables/datatables.bundle.js') ?>"></script>
-<script src="<?= base_url('assets/js/routing/scripts.bundle.js') ?>"></script>
+<script src="<?= base_url('assets/routingsystem/global/plugins.bundle.js') ?>"></script>
+<script src="<?= base_url('assets/routingsystem/custom/datatables/datatables.bundle.js') ?>"></script>
+<script src="<?= base_url('assets/routingsystem/scripts.bundle.js') ?>"></script>
 
 
 <?php

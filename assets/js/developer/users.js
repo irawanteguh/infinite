@@ -1,12 +1,10 @@
-let table = null;
-
 datausers();
 
 function datausers() {
     $.ajax({
-        url     : url + "index.php/hr/users/datausers",
+        url     : url + "index.php/developer/users/datausers",
         type    : "POST",
-        dataType: "JSON",
+        dataType: "json",
         beforeSend: function () {
             Swal.fire({
                 title            : "Processing",
@@ -32,8 +30,8 @@ function datausers() {
             }
 
             const result = Array.isArray(response.responResult) ? response.responResult : [];
-
             let tableresult = "";
+
             for (var i in result) {
 
                 const avatar                 = `${url}assets/media/avatars/${result[i].user_id}.jpg`;
@@ -56,8 +54,6 @@ function datausers() {
                 }else{
                     btnaction += "<a class='dropdown-item btn btn-sm text-success' "+getvariabel+" data-active='1' onclick='activation($(this));'><i class='bi bi-bookmark-check text-success me-4'></i>Reactive</a>";
                 }
-                
-                
 
                 tableresult += "<tr>";
                 tableresult += "<td class='ps-4'>" + (parseInt(i) + 1) + "</td>";
@@ -84,6 +80,8 @@ function datausers() {
                         tableresult += "</div>";
                     tableresult += "</div>";
                 tableresult += "</td>";
+
+                tableresult += "<td>" + (result[i].orgname || "-") + "</td>";
 
                 tableresult += "<td>";
                 if (result[i].active == "1") {
@@ -132,8 +130,6 @@ function datausers() {
                         tableresult += "</div>";
                     tableresult += "</div>";
                 tableresult += "</td>";
-                tableresult += "</tr>";
-
                 tableresult += "</tr>";
             }
 

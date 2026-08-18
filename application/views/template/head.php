@@ -14,7 +14,9 @@
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
 <link rel="shortcut icon" href="<?= base_url('assets/media/logos/infinite-transparant.png') ?>" />
-<link href="<?= base_url('assets/plugins/routing/custom/fullcalendar/fullcalendar.bundle.css') ?>" rel="stylesheet" type="text/css" />
-<link href="<?= base_url('assets/plugins/routing/global/plugins.bundle.css') ?>" rel="stylesheet" type="text/css" />
-<link href="<?= base_url('assets/plugins/bootstrap-icons/bootstrap-icons.css') ?>" rel="stylesheet" type="text/css" />
-<link href="<?= base_url('assets/css/routing/style.bundle.css') ?>" rel="stylesheet" type="text/css" />
+
+
+<link href="<?= base_url('assets/plugins/bootstrap-icons/css/bootstrap.css') ?>" rel="stylesheet" type="text/css" />
+<link href="<?= base_url('assets/routingsystem/custom/fullcalendar/fullcalendar.bundle.css') ?>" rel="stylesheet" type="text/css" />
+<link href="<?= base_url('assets/routingsystem/global/plugins.bundle.css') ?>" rel="stylesheet" type="text/css" />
+<link href="<?= base_url('assets/routingsystem/css/style.bundle.css') ?>" rel="stylesheet" type="text/css" />

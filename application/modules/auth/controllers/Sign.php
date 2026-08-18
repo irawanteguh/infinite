@@ -74,5 +74,10 @@
             echo json_encode($json); 
         }
 
+        public function logoutsystem(){                            
+            $this->session->sess_destroy();
+            redirect("auth/sign");
+        }
+
     }
 ?>

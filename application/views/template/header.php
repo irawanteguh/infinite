@@ -27,11 +27,11 @@
 		<div class="d-flex align-items-stretch flex-shrink-0">
 			<div class="d-flex align-items-stretch flex-shrink-0">
 				<?php  
-					include_once(APPPATH."views/template/search.php");
-					include_once(APPPATH."views/template/activity.php");
-					include_once(APPPATH."views/template/notification.php");
-					include_once(APPPATH."views/template/chat.php");
-					include_once(APPPATH."views/template/quickmenu.php");        
+					// include_once(APPPATH."views/template/search.php");
+					// include_once(APPPATH."views/template/activity.php");
+					// include_once(APPPATH."views/template/notification.php");
+					// include_once(APPPATH."views/template/chat.php");
+					// include_once(APPPATH."views/template/quickmenu.php");        
 					include_once(APPPATH."views/template/user.php");
 				?>
 				<div class="d-flex align-items-center d-lg-none ms-2 me-n3" title="Show header menu">

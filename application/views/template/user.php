@@ -19,7 +19,7 @@
         <div class="menu-item px-5">
             <a href="../../demo1/dist/account/overview.html" class="menu-link px-5">My Profile</a>
         </div>
-        <div class="menu-item px-5">
+        <!-- <div class="menu-item px-5">
             <a href="../../demo1/dist/pages/projects/list.html" class="menu-link px-5">
                 <span class="menu-text">My Projects</span>
                 <span class="menu-badge">
@@ -63,9 +63,9 @@
         <div class="separator my-2"></div>
         <div class="menu-item px-5 my-1">
             <a href="../../demo1/dist/account/settings.html" class="menu-link px-5">Account Settings</a>
-        </div>
+        </div> -->
         <div class="menu-item px-5">
-            <a href="../../demo1/dist/authentication/flows/basic/sign-in.html" class="menu-link px-5">Sign Out</a>
+            <a class="menu-link px-5" href="#" data-bs-toggle="modal" data-bs-target="#modal_logout">Sign Out</a>
         </div>
         <div class="separator my-2"></div>
         <div class="menu-item px-5">

@@ -47,12 +47,16 @@ function datausers() {
 
                 let btnaction = "";
 
-                btnaction += "<a class='dropdown-item btn btn-sm text-primary' data-bs-toggle='modal' data-bs-target='#modal_edit_user' "+getvariabel+" onclick='getdata($(this));'><i class='bi bi-pencil text-primary me-4'></i>Edit</a>";
+                btnaction += "<a class='dropdown-item btn btn-sm text-primary' data-bs-toggle='modal' data-bs-target='#modal_edit_user_root' "+getvariabel+" onclick='getdata($(this));'><i class='bi bi-pencil text-primary me-4'></i>Edit</a>";
                 
-                if(result[i].active==="1"){
-                    btnaction += "<a class='dropdown-item btn btn-sm text-danger' "+getvariabel+" data-active='0' onclick='activation($(this));'><i class='bi bi-trash3 text-danger me-4'></i>Deactive</a>";
+                if(result[i].suspend==="N"){
+                    btnaction += "<a class='dropdown-item btn btn-sm text-danger' "+getvariabel+" data-active='Y' onclick='activation($(this));'><i class='bi bi-person-slash text-danger me-4'></i>Suspend</a>";
                 }else{
-                    btnaction += "<a class='dropdown-item btn btn-sm text-success' "+getvariabel+" data-active='1' onclick='activation($(this));'><i class='bi bi-bookmark-check text-success me-4'></i>Reactive</a>";
+                    btnaction += "<a class='dropdown-item btn btn-sm text-success' "+getvariabel+" data-active='N' onclick='activation($(this));'><i class='bi bi-bookmark-check text-success me-4'></i>Reactive</a>";
+                }
+
+                if(result[i].active==="1"){
+                    btnaction += "<a class='dropdown-item btn btn-sm text-danger' "+getvariabel+" data-active='0' onclick='deleteuser($(this));'><i class='bi bi-trash-fill text-danger me-4'></i>Delete</a>";
                 }
 
                 tableresult += "<tr>";
@@ -84,13 +88,13 @@ function datausers() {
                 tableresult += "<td>" + (result[i].orgname || "-") + "</td>";
 
                 tableresult += "<td>";
-                if (result[i].active == "1") {
+                if (result[i].suspend == "N") {
                     tableresult += "<span class='badge badge-light-success'>";
                     tableresult += "Active";
                     tableresult += "</span>";
                 } else {
                     tableresult += "<span class='badge badge-light-danger'>";
-                    tableresult += "Deactive";
+                    tableresult += "Suspend";
                     tableresult += "</span>";
                 }
                 tableresult += "</td>";

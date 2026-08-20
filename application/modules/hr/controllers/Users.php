@@ -192,6 +192,27 @@
             $active = $this->input->post("active");
 
             $dataupdate = [
+                'suspend'   => $active
+            ];
+
+            if($this->md->updateuser($userid,$dataupdate)){
+                $json['responCode'] = "00";
+                $json['responHead'] = "success";
+                $json['responDesc'] = "Data Updated Successfully";
+            }else{
+                $json['responCode'] = "01";
+                $json['responHead'] = "info";
+                $json['responDesc'] = "Data failed to update";
+            }
+
+            echo json_encode($json);
+        }
+
+        public function deleteuser(){
+            $userid = $this->input->post("userid");
+            $active = $this->input->post("active");
+
+            $dataupdate = [
                 'active'   => $active
             ];
 

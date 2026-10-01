@@ -8,9 +8,39 @@ use CodeIgniter\Router\RouteCollection;
 
 $routes->get('/', '\Modules\Auth\Controllers\Auth::index');
 
-$routes->post('/auth/signin', '\Modules\Auth\Controllers\Auth::signin');
-$routes->get('/auth/logout', '\Modules\Auth\Controllers\Auth::logoutsystem');
+$routes->post('auth/signin', '\Modules\Auth\Controllers\Auth::signin');
+$routes->get('auth/logout', '\Modules\Auth\Controllers\Auth::logoutsystem');
 
-$routes->get('/additional/welcomepage', '\Modules\Additional\Controllers\Welcomepage::index');
+$routes->get('(:segment)/(:segment)', function ($module, $controller) {
+    $class = ucfirst($controller);
+    $namespace = 'Modules\\' . ucfirst($module) . '\\Controllers\\' . $class;
 
-$routes->get('/developer/testingpage', '\Modules\Developer\Controllers\Testingpage::index');
+    if (!class_exists($namespace)) {
+        throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+    }
+
+    $instance = new $namespace();
+
+    if (!method_exists($instance, 'index')) {
+        throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+    }
+
+    return $instance->index();
+});
+
+$routes->post('(:segment)/(:segment)/(:segment)', function ($module, $controller, $method) {
+    $class = ucfirst($controller);
+    $namespace = 'Modules\\' . ucfirst($module) . '\\Controllers\\' . $class;
+
+    if (!class_exists($namespace)) {
+        throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+    }
+
+    $instance = new $namespace();
+
+    if (!method_exists($instance, $method)) {
+        throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+    }
+
+    return $instance->$method();
+});

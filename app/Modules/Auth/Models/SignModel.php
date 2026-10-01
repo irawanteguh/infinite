@@ -1,50 +1,49 @@
 <?php
-    namespace Modules\Auth\Models;
-    use CodeIgniter\Model;
-    
-    class SignModel extends Model{
+namespace Modules\Auth\Models;
+use CodeIgniter\Model;
 
-        function login($username,$password){
-            $query =
-                    "
-                        select a.user_id, active
-                        from dt01_gen_user_data a
-                        where a.username='".$username."'
-                        and   a.password='".$password."'
-                    ";
+class SignModel extends Model{
 
-            $recordset = $this->db->query($query);
-            $recordset = $recordset->getRow();
-            return $recordset;
-        }
+    function login($username,$password){
+        $query =
+                "
+                    select a.user_id, active
+                    from dt01_gen_user_data a
+                    where a.username='".$username."'
+                    and   a.password='".$password."'
+                ";
 
-        function datasession($userid){
-            $query =
-                    "
-                        select 
-                            a.group_id,
-                            a.org_id,
-                            a.user_id,
-                            a.name,
-                            a.email,
-                            b.org_name AS organizationname,
-                            b.website,
-                            b.address,
-                            b.email AS organizationemail,
-                            c.name AS pimpinan
-                        from dt01_gen_user_data a
-                        left join dt01_gen_organization_ms b
-                            ON b.org_id = a.org_id
-                        left join dt01_gen_user_data c
-                            ON c.user_id = b.user_id
-                        where a.active = '1'
-                        and a.user_id = '".$userid."';
-                    ";
-
-            $recordset = $this->db->query($query);
-            $recordset = $recordset->getRow();
-            return $recordset;
-        }
-
+        $recordset = $this->db->query($query);
+        $recordset = $recordset->getRow();
+        return $recordset;
     }
-?>
+
+    function datasession($userid){
+        $query =
+                "
+                    select 
+                        a.group_id,
+                        a.org_id,
+                        a.user_id,
+                        a.name,
+                        a.email,
+                        b.org_name AS organizationname,
+                        b.website,
+                        b.address,
+                        b.email AS organizationemail,
+                        c.name AS pimpinan
+                    from dt01_gen_user_data a
+                    left join dt01_gen_organization_ms b
+                        ON b.org_id = a.org_id
+                    left join dt01_gen_user_data c
+                        ON c.user_id = b.user_id
+                    where a.active = '1'
+                    and a.user_id = '".$userid."';
+                ";
+
+        $recordset = $this->db->query($query);
+        $recordset = $recordset->getRow();
+        return $recordset;
+    }
+
+}

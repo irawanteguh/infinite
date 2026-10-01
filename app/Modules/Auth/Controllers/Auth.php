@@ -5,26 +5,22 @@ namespace Modules\Auth\Controllers;
 use CodeIgniter\Controller;
 use Modules\Auth\Models\SignModel;
 
-class Auth extends Controller
-{
+class Auth extends Controller{
     protected $session;
     protected $md;
 
-    public function __construct()
-    {
+    public function __construct(){
         $this->session = session();
         $this->md      = new SignModel();
     }
 
-    public function index()
-    {
+    public function index(){
         return view('template/dashboard-light-blank', [
             'contents' => view('Modules\Auth\Views\v_sign')
         ]);
     }
 
-    public function signin()
-    {
+    public function signin(){
         $username = trim((string) $this->request->getPost('username'));
         $password = encodedata($this->request->getPost('password'));
 
@@ -41,14 +37,12 @@ class Auth extends Controller
         if (!empty($checkauth)) {
 
             if ($checkauth->active === '0') {
-
                 return $this->response->setJSON([
                     'responCode' => '02',
                     'responHead' => 'failed',
                     'responDesc' => 'Your account is deactivated',
                     'url'        => site_url('additional/deactive')
                 ]);
-
             }
 
             $datasession = $this->md->datasession($checkauth->user_id);
@@ -93,13 +87,9 @@ class Auth extends Controller
         ]);
     }
 
-
-    public function logoutsystem()
-    {
+    public function logoutsystem(){
         $this->session->destroy();
-
         return redirect()->to(site_url('/'));
     }
-
 
 }

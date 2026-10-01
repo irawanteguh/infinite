@@ -82,7 +82,7 @@ if ($hour >= 5 && $hour < 12) {
                 class="form w-100"
                 novalidate="novalidate"
                 id="kt_sign_in_form"
-                action="<?= site_url('auth/sign/signin') ?>"
+                action="<?= site_url('auth/signin') ?>"
                 method="post"
             >
 

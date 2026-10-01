@@ -6,8 +6,46 @@
 
 $uri = service('uri');
 
-$segment1 = $uri->getSegment(1);
-$segment2 = $uri->getSegment(2);
+$segments = $uri->getSegments();
+
+$segment1 = $segments[0] ?? '';
+$segment2 = $segments[1] ?? '';
+
+/*
+|--------------------------------------------------------------------------
+| Root JS
+|--------------------------------------------------------------------------
+|
+| URL:
+| /
+|
+| Load:
+| assets/js/auth/sign.js
+|
+*/
+
+if ($segment1 === '' && $segment2 === '') {
+
+    $jsFile = FCPATH . 'assets/js/auth/sign.js';
+
+    if (file_exists($jsFile)) {
+
+        echo PHP_EOL
+            . '<!-- Load Auth Sign JS -->'
+            . PHP_EOL;
+
+        echo "\t\t<script type='text/javascript' src='"
+            . base_url('assets/js/auth/sign.js?v=' . time())
+            . "'></script>"
+            . PHP_EOL;
+    }
+}
+
+/*
+|--------------------------------------------------------------------------
+| Root System JS
+|--------------------------------------------------------------------------
+*/
 
 $jspathroot = FCPATH . 'assets/js/root/';
 
@@ -28,33 +66,55 @@ if (is_dir($jspathroot)) {
     }
 }
 
-$jspath = FCPATH
-    . 'assets/js/'
-    . $segment1
-    . '/'
-    . $segment2
-    . '.js';
+/*
+|--------------------------------------------------------------------------
+| Dynamic Page JS
+|--------------------------------------------------------------------------
+|
+| Contoh:
+|
+| /additional/welcomepage
+|
+| segment1 = additional
+| segment2 = welcomepage
+|
+| akan mencari:
+|
+| assets/js/additional/welcomepage.js
+|
+*/
 
-if (file_exists($jspath)) {
+if ($segment1 !== '' && $segment2 !== '') {
 
-    echo PHP_EOL
-        . '<!-- Load JS Files Folder '
+    $jspath = FCPATH
+        . 'assets/js/'
         . $segment1
         . '/'
         . $segment2
-        . ' -->'
-        . PHP_EOL;
+        . '.js';
 
-    echo "\t\t<script type='text/javascript' src='"
-        . base_url(
-            'assets/js/'
+    if (file_exists($jspath)) {
+
+        echo PHP_EOL
+            . '<!-- Load JS Files Folder '
             . $segment1
             . '/'
             . $segment2
-            . '.js?v='
-            . time()
-        )
-        . "'></script>"
-        . PHP_EOL;
+            . ' -->'
+            . PHP_EOL;
+
+        echo "\t\t<script type='text/javascript' src='"
+            . base_url(
+                'assets/js/'
+                . $segment1
+                . '/'
+                . $segment2
+                . '.js?v='
+                . time()
+            )
+            . "'></script>"
+            . PHP_EOL;
+    }
 }
+
 ?>

@@ -96,23 +96,17 @@ function loadbackuplist() {
 
             let tableResult = "";
 
-            if (result.length === 0) {
+            for (var i in result) {
                 tableResult += "<tr>";
-                tableResult += "<td colspan='4' class='text-center'><i class='bi bi-database-x fs-2x d-block mb-3'></i> No backup files found.</td>";
+                tableResult += "<td class='ps-4'>" + (parseInt(i)+1) + "</td>";
+                tableResult += "<td><i class='bi bi-filetype-sql fs-2x text-danger me-3'></i>"+(result[i].filename||"")+"</td>";
+                tableResult += "<td>"+(result[i].sizeFormatted||"")+"</td>";
+                tableResult += "<td>"+(result[i].created||"")+"</td>";
+                tableResult += "<td class='text-end'>";
+                tableResult += "<a href='"+url+"developer/backupdb/download/"+encodeURIComponent(result[i].filename || "")+"' target='_blank' class='btn btn-sm btn-light-primary me-2'><i class='bi bi-download me-1'></i> Download"+"</a>";
+                tableResult += "<button type='button' class='btn btn-sm btn-light-danger' onclick='deleteBackup(\""+(result[i].filename||"")+"\")'><i class='bi bi-trash me-1'></i> Delete</button>";
+                tableResult += "</td>";
                 tableResult += "</tr>";
-            }else{
-                for (var i in result) {
-                    tableResult += "<tr>";
-                    tableResult += "<td class='ps-4'>" + (parseInt(i)+1) + "</td>";
-                    tableResult += "<td><i class='bi bi-filetype-sql fs-2x text-danger me-3'></i>"+(result[i].filename||"")+"</td>";
-                    tableResult += "<td>"+(result[i].sizeFormatted||"")+"</td>";
-                    tableResult += "<td>"+(result[i].created||"")+"</td>";
-                    tableResult += "<td class='text-end'>";
-                    tableResult += "<a href='"+url+"developer/backupdb/download/"+encodeURIComponent(result[i].filename || "")+"' target='_blank' class='btn btn-sm btn-light-primary me-2'><i class='bi bi-download me-1'></i> Download"+"</a>";
-                    tableResult += "<button type='button' class='btn btn-sm btn-light-danger' onclick='deleteBackup(\""+(result[i].filename||"")+"\")'><i class='bi bi-trash me-1'></i> Delete</button>";
-                    tableResult += "</td>";
-                    tableResult += "</tr>";
-                }
             }
 
             $("#resultbackup").html(tableResult);

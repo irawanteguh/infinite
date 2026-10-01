@@ -16,22 +16,7 @@
             </div>
         </div>
         <div class="separator my-2"></div>
-        <!-- <div class="menu-item px-5">
-            <a href="../../demo1/dist/account/overview.html" class="menu-link px-5">My Profile</a>
-        </div>
-        <div class="menu-item px-5">
-            <a href="../../demo1/dist/pages/projects/list.html" class="menu-link px-5">
-                <span class="menu-text">My Projects</span>
-                <span class="menu-badge">
-                    <span class="badge badge-light-danger badge-circle fw-bolder fs-7">3</span>
-                </span>
-            </a>
-        </div> -->
         <div class="menu-item px-5" data-kt-menu-trigger="hover" data-kt-menu-placement="left-start">
-            <!-- <a href="#" class="menu-link px-5">
-                <span class="menu-title">My Subscription</span>
-                <span class="menu-arrow"></span>
-            </a> -->
             <div class="menu-sub menu-sub-dropdown w-175px py-4">
                 <div class="menu-item px-3">
                     <a href="../../demo1/dist/account/referrals.html" class="menu-link px-5">Referrals</a>
@@ -57,13 +42,6 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="menu-item px-5">
-            <a href="../../demo1/dist/account/statements.html" class="menu-link px-5">My Statements</a>
-        </div>
-        <div class="separator my-2"></div>
-        <div class="menu-item px-5 my-1">
-            <a href="../../demo1/dist/account/settings.html" class="menu-link px-5">Account Settings</a>
-        </div> -->
         <div class="menu-item px-5">
             <a class="menu-link px-5" href="#" data-bs-toggle="modal" data-bs-target="#modal_logout">Sign Out</a>
         </div>

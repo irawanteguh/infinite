@@ -1,5 +1,5 @@
 <div class="aside-logo flex-column-auto" id="kt_aside_logo">
-	<a href="../../demo1/dist/index.html">
+	<a href="<?= site_url('additional/welcomepage'); ?>">
 		<img alt="Logo" src="<?= base_url('assets/media/logos/infinite_landscape.png') ?>" class="h-80px logo" />
 	</a>
 	<div id="kt_aside_toggle" class="btn btn-icon w-auto px-0 btn-active-color-primary aside-toggle" data-kt-toggle="true" data-kt-toggle-state="active" data-kt-toggle-target="body" data-kt-toggle-name="aside-minimize">

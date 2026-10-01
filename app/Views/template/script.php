@@ -1,3 +1,4 @@
+<script>const logoutUrl = "<?= site_url('auth/logout'); ?>";</script>
 <script src="<?= base_url('assets/routingsystem/global/plugins.bundle.js') ?>"></script>
 <script src="<?= base_url('assets/routingsystem/custom/datatables/datatables.bundle.js') ?>"></script>
 <script src="<?= base_url('assets/routingsystem/scripts.bundle.js') ?>"></script>

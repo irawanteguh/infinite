@@ -93,10 +93,13 @@ class Auth extends Controller
         ]);
     }
 
+
     public function logoutsystem()
     {
         $this->session->destroy();
 
-        return redirect()->to(site_url('infinite'));
+        return redirect()->to(site_url('/'));
     }
+
+
 }

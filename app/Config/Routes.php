@@ -6,35 +6,9 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 
-// =====================================================
-// AUTH
-// =====================================================
+$routes->get('/', '\Modules\Auth\Controllers\Auth::index');
 
-// Halaman Login
-$routes->get(
-    '/',
-    '\Modules\Auth\Controllers\Auth::index'
-);
+$routes->post('/auth/signin', '\Modules\Auth\Controllers\Auth::signin');
+$routes->get('/auth/logout', '\Modules\Auth\Controllers\Auth::logoutsystem');
 
-// Proses Login
-$routes->post(
-    '/auth/signin',
-    '\Modules\Auth\Controllers\Auth::signin'
-);
-
-// Logout
-$routes->get(
-    '/auth/logout',
-    '\Modules\Auth\Controllers\Auth::logoutsystem'
-);
-
-
-// =====================================================
-// ADDITIONAL
-// =====================================================
-
-// Welcome Page
-$routes->get(
-    '/additional/welcomepage',
-    '\Modules\Additional\Controllers\Welcomepage::index'
-);
+$routes->get('/additional/welcomepage', '\Modules\Additional\Controllers\Welcomepage::index');

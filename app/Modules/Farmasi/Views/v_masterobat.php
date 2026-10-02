@@ -50,6 +50,7 @@
                             <th>TOTAL COST</th>
                             <th>INSURANCE PRICE</th>
                             <th>GENERAL PRICE</th>
+                            <th class="text-end rounded-end pe-4">TOTAL USAGE</th>
                         </tr>
                     </thead>
                     <tbody class="fw-bold text-gray-600" id="resultmasterobat"></tbody>

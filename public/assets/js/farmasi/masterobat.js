@@ -56,6 +56,7 @@ function masterobat() {
                 tableResult += "<td class='text-end'>"+todesimal(result[i].hrg_total||0)+"</td>";
                 tableResult += "<td class='text-end'>"+todesimal(result[i].hrg_asuransi||0)+"</td>";
                 tableResult += "<td class='text-end'>"+todesimal(result[i].hrg_umum||0)+"</td>";
+                tableResult += "<td class='text-end pe-4'>"+todesimal(result[i].total_pemakaian||0)+"</td>";
                 tableResult += "</tr>";
             }
 

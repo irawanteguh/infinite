@@ -3,28 +3,28 @@ loadbackuplist();
 $("#btnBackupDatabase").on("click", function (e) {
     e.preventDefault();
     Swal.fire({
-        title: "Backup Database",
-        text: "Create a new database backup?",
-        icon: "warning",
-        showCancelButton: true,
+        title            : "Backup Database",
+        text             : "Create a new database backup?",
+        icon             : "warning",
+        showCancelButton : true,
         confirmButtonText: "Backup",
-        cancelButtonText: "Cancel"
+        cancelButtonText : "Cancel"
     }).then(function (result) {
         if (!result.isConfirmed) {
             return;
         }
         $.ajax({
-            url: url + "developer/backupdb/backup",
-            type: "GET",
-            dataType: "JSON",
+            url       : url + "developer/backupdb/backup",
+            type      : "GET",
+            dataType  : "JSON",
             beforeSend: function () {
                 Swal.fire({
-                    title: "Creating Backup",
-                    html: "Please wait while the database backup is being created.",
+                    title            : "Creating Backup",
+                    html             : "Please wait while the database backup is being created.",
                     allowOutsideClick: false,
-                    allowEscapeKey: false,
+                    allowEscapeKey   : false,
                     showConfirmButton: false,
-                    didOpen: function () {
+                    didOpen          : function () {
                         Swal.showLoading();
                     }
                 });
@@ -32,27 +32,27 @@ $("#btnBackupDatabase").on("click", function (e) {
             success: function (response) {
                 if (response.responseCode !== "00") {
                     Swal.fire({
-                        icon: "error",
-                        title: "Backup Failed",
-                        text: response.responseDesc || "Failed to create database backup.",
+                        icon             : "error",
+                        title            : "Backup Failed",
+                        text             : response.responseDesc || "Failed to create database backup.",
                         confirmButtonText: "OK"
                     });
                     return;
                 }
                 loadbackuplist();
                 Swal.fire({
-                    icon: "success",
-                    title: "Backup Successful",
-                    text: response.responseDesc || "Database backup successfully created.",
+                    icon             : "success",
+                    title            : "Backup Successful",
+                    text             : response.responseDesc || "Database backup successfully created.",
                     showConfirmButton: false,
-                    timer: 2000
+                    timer            : 2000
                 });
             },
             error: function () {
                 Swal.fire({
-                    icon: "error",
-                    title: "Request Failed",
-                    text: "An error occurred while creating the database backup.",
+                    icon             : "error",
+                    title            : "Request Failed",
+                    text             : "An error occurred while creating the database backup.",
                     confirmButtonText: "OK"
                 });
             },
@@ -133,13 +133,13 @@ function deleteBackup(filename) {
     }
 
     Swal.fire({
-        icon: "warning",
-        title: "Delete Backup?",
-        html: "Backup file <strong>" + filename + "</strong> will be permanently deleted.",
-        showCancelButton: true,
+        icon             : "warning",
+        title            : "Delete Backup?",
+        html             : "Backup file <strong>" + filename + "</strong> will be permanently deleted.",
+        showCancelButton : true,
         confirmButtonText: "Yes, Delete",
-        cancelButtonText: "Cancel",
-        reverseButtons: true
+        cancelButtonText : "Cancel",
+        reverseButtons   : true
     }).then(function (result) {
 
         if (!result.isConfirmed) {
@@ -147,40 +147,38 @@ function deleteBackup(filename) {
         }
 
         Swal.fire({
-            title: "Deleting",
-            html: "Please wait while the backup file is being deleted.",
+            title            : "Deleting",
+            html             : "Please wait while the backup file is being deleted.",
             allowOutsideClick: false,
-            allowEscapeKey: false,
+            allowEscapeKey   : false,
             showConfirmButton: false,
-            didOpen: function () {
+            didOpen          : function () {
                 Swal.showLoading();
             }
         });
 
         $.ajax({
-            url: url + "developer/backupdb/delete/" + encodeURIComponent(filename),
-            type: "DELETE",
+            url     : url + "developer/backupdb/delete/" + encodeURIComponent(filename),
+            type    : "DELETE",
             dataType: "JSON",
-            success: function (response) {
+            success : function (response) {
 
                 if (response.responseCode === "00") {
-
                     Swal.fire({
-                        icon: "success",
-                        title: "Deleted",
-                        text: response.responseDesc || "Backup file has been deleted successfully.",
+                        icon             : "success",
+                        title            : "Deleted",
+                        text             : response.responseDesc || "Backup file has been deleted successfully.",
                         showConfirmButton: false,
-                        timer: 1500
+                        timer            : 1500
                     });
 
                     loadbackuplist();
 
                 } else {
-
                     Swal.fire({
-                        icon: "error",
-                        title: "Delete Failed",
-                        text: response.responseDesc || "Backup file could not be deleted.",
+                        icon             : "error",
+                        title            : "Delete Failed",
+                        text             : response.responseDesc || "Backup file could not be deleted.",
                         confirmButtonText: "OK"
                     });
                 }
@@ -194,9 +192,9 @@ function deleteBackup(filename) {
                 }
 
                 Swal.fire({
-                    icon: "error",
-                    title: "Request Failed",
-                    text: message,
+                    icon             : "error",
+                    title            : "Request Failed",
+                    text             : message,
                     confirmButtonText: "OK"
                 });
             },

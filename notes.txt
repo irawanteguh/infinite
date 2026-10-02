@@ -1,0 +1,1 @@
+mkdir app\Modules\Qi\Config app\Modules\Qi\Controllers app\Modules\Qi\Models app\Modules\Qi\Views app\Modules\Qi\Services

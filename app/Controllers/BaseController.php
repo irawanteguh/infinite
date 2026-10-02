@@ -57,6 +57,9 @@ abstract class BaseController extends Controller
             $logger
         );
 
+        // Initialize Request
+        $this->request = $request;
+
         // Initialize Routingsystem
         $this->routing = new Routingsystem();
     }

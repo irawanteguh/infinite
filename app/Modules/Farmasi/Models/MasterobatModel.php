@@ -14,6 +14,8 @@ class MasterobatModel extends Model{
                 a.name,
                 a.distributor,
                 a.kategori_id,
+                date_format(a.created_date, '%d.%m.%Y %H:%i:%s')dibuattgl,
+                (select name from dt01_gen_user_data where user_id=a.created_by)dibuatoleh,
 
                 -- Harga Modal
                 h.hrg_distributor,

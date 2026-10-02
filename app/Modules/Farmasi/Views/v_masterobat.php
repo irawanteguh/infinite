@@ -41,16 +41,17 @@
                     <thead class="align-middle">
                         <tr class="fw-bolder text-muted bg-light">
                             <th class="ps-4 rounded-start">#</th>
-                            <th>DRUG NAME</th>
-                            <th>CATEGORY</th>
-                            <th>PRINCIPAL</th>
-                            <th>DISTRIBUTOR PRICE</th>
-                            <th>DISCOUNT</th>
+                            <th>Drug Name</th>
+                            <th>Category</th>
+                            <th>Principal</th>
+                            <th>Distributor Price</th>
+                            <th>Discount</th>
                             <th>VAT</th>
-                            <th>TOTAL COST</th>
-                            <th>INSURANCE PRICE</th>
-                            <th>GENERAL PRICE</th>
-                            <th class="text-end rounded-end pe-4">TOTAL USAGE</th>
+                            <th>Total Cost</th>
+                            <th>Insurance Price</th>
+                            <th>General Price</th>
+                            <th>Total Usage</th>
+                            <th class="rounded-end">Created By</th>
                         </tr>
                     </thead>
                     <tbody class="fw-bold text-gray-600" id="resultmasterobat"></tbody>

@@ -6,16 +6,7 @@ use App\Controllers\BaseController;
 
 class Welcomepage extends BaseController
 {
-    protected $session;
-
-    public function __construct()
-    {
-        $this->session = session();
-    }
-
-    public function index()
-    {
-        // Pastikan user sudah login
+    public function index(){
         if (!$this->session->get('loggedin')) {
             return redirect()->to(site_url('/'));
         }

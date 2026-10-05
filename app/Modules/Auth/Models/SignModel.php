@@ -14,8 +14,7 @@ class SignModel extends Model{
                 ";
 
         $recordset = $this->db->query($query);
-        $recordset = $recordset->getRow();
-        return $recordset;
+        return $recordset->getRow();
     }
 
     function datasession($userid){
@@ -27,6 +26,7 @@ class SignModel extends Model{
                         a.user_id,
                         a.name,
                         a.email,
+                        b.kode_rs,
                         b.org_name AS organizationname,
                         b.website,
                         b.address,

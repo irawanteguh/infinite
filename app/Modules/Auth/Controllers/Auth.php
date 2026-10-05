@@ -61,6 +61,7 @@ class Auth extends Controller{
                 'orgname'  => $datasession->organizationname,
                 'website'  => $datasession->website,
                 'address'  => $datasession->address,
+                'koders'   => $datasession->kode_rs,
                 'emailorg' => $datasession->organizationemail,
                 'pimpinan' => $datasession->pimpinan,
                 'userid'   => $datasession->user_id,

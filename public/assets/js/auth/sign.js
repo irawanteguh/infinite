@@ -21,9 +21,9 @@ $(function () {
         if (!username) {
 
             Swal.fire({
-                icon: "warning",
-                title: "Username Required",
-                text: "Please enter your username.",
+                icon             : "warning",
+                title            : "Username Required",
+                text             : "Please enter your username.",
                 confirmButtonText: "OK"
             });
 
@@ -35,9 +35,9 @@ $(function () {
         if (!password) {
 
             Swal.fire({
-                icon: "warning",
-                title: "Password Required",
-                text: "Please enter your password.",
+                icon             : "warning",
+                title            : "Password Required",
+                text             : "Please enter your password.",
                 confirmButtonText: "OK"
             });
 
@@ -81,85 +81,47 @@ $(function () {
             // ==============================
 
             if (code === "00") {
-
                 Swal.fire({
-
-                    icon: "success",
-
-                    title: "Welcome Back!",
-
-                    text: message,
-
+                    icon             : "success",
+                    title            : "Welcome Back!",
+                    text             : message,
                     confirmButtonText: "Continue",
-
-                    timer: 2000,
-
-                    timerProgressBar: true,
-
+                    timer            : 2000,
+                    timerProgressBar : true,
                     allowOutsideClick: false,
-
-                    allowEscapeKey: false
-
+                    allowEscapeKey   : false,
+                    customClass      : {confirmButton: "btn btn-primary"},
+                    buttonsStyling   : false
                 }).then(function () {
-
                     if (response.url) {
-
                         window.location.href = response.url;
-
                     }
-
                 });
 
                 return;
             }
-
-            // ==============================
-            // ACCOUNT DEACTIVATED
-            // ==============================
 
             if (code === "02") {
-
                 Swal.fire({
-
-                    icon: "warning",
-
-                    title: "Account Deactivated",
-
-                    text: message,
-
+                    icon             : "warning",
+                    title            : "Account Deactivated",
+                    text             : message,
                     confirmButtonText: "OK",
-
                     allowOutsideClick: false
-
                 }).then(function () {
-
                     if (response.url) {
-
                         window.location.href = response.url;
-
                     }
-
                 });
-
                 return;
             }
 
-            // ==============================
-            // LOGIN FAILED
-            // ==============================
-
             Swal.fire({
-
-                icon: "error",
-
-                title: "Sign In Failed",
-
-                text: message,
-
+                icon             : "error",
+                title            : "Sign In Failed",
+                text             : message,
                 confirmButtonText: "Try Again"
-
             });
-
         })
 
         // ==============================

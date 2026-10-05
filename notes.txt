@@ -1,1 +1,1 @@
-mkdir app\Modules\Qi\Config app\Modules\Qi\Controllers app\Modules\Qi\Models app\Modules\Qi\Views app\Modules\Qi\Services
+mkdir -p app/Modules/Qi/{Config,Controllers,Models,Views,Services,Toolbar,Modal}

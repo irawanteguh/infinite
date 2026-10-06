@@ -774,6 +774,8 @@ function prosesImportTxtEklaim(data) {
                                 dataraweklaim();
                             } else if (secondSegment === "dataeklaim") {
                                 dataraweklaim();
+                            } else if (secondSegment === "casemixindex") {
+                                load();
                             }
                         }
                     });

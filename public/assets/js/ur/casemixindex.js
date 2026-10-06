@@ -1,12 +1,14 @@
-datakelompokkasus();
-dataseveritylevel();
-datacmg();
+load();
 
 $('#selectperiode').on('change', function () {
+    load();
+});
+
+function load(){
     datakelompokkasus();
     dataseveritylevel();
     datacmg();
-});
+};
 
 function datakelompokkasus(){
     let selectperiode = $("select[name='selectperiode']").val();

@@ -2,16 +2,15 @@
 
 namespace Modules\Auth\Controllers;
 
-use CodeIgniter\Controller;
+use App\Controllers\BaseController;
 use Modules\Auth\Models\SignModel;
 
-class Auth extends Controller{
-    protected $session;
+class Auth extends BaseController{
     protected $md;
 
     public function __construct(){
-        $this->session = session();
-        $this->md      = new SignModel();
+        parent::__construct();
+        $this->md = new SignModel();
     }
 
     public function index(){

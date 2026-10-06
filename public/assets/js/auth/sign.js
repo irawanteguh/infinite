@@ -117,11 +117,12 @@ $(function () {
             }
 
             Swal.fire({
-                icon             : "error",
-                title            : "Sign In Failed",
-                text             : message,
-                confirmButtonText: "Try Again"
-            });
+                icon              : "error",
+                title             : "Sign In Failed",
+                text              : message,
+                confirmButtonText : "Try Again",
+                confirmButtonColor: "#dc3545"
+            })
         })
 
         // ==============================
@@ -134,39 +135,21 @@ $(function () {
                 "Unable to process your sign-in request. Please try again.";
 
             if (xhr.responseJSON && xhr.responseJSON.responDesc) {
-
                 message = xhr.responseJSON.responDesc;
-
             }
 
             Swal.fire({
-
-                icon: "error",
-
-                title: "Connection Error",
-
-                text: message,
-
-                confirmButtonText: "Try Again"
-
+                icon              : "error",
+                title             : "Connection Error",
+                text              : message,
+                confirmButtonText : "Try Again",
+                confirmButtonColor: "#dc3545"
             });
 
         })
-
-        // ==============================
-        // FINISH
-        // ==============================
-
         .always(function () {
-
             form.trigger("reset");
-
-            button
-                .prop("disabled", false)
-                .removeAttr("data-kt-indicator");
-
+            button.prop("disabled", false).removeAttr("data-kt-indicator");
         });
-
     });
-
 });

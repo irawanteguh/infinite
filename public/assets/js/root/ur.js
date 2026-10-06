@@ -766,7 +766,15 @@ function prosesImportTxtEklaim(data) {
                             $("#headerPreviewtxtEklaim").empty();
                             $("#resultpreviewtxteklaim").empty();
                             $("#modal_upload_txt_eklaim").modal("hide");
-                            dataraweklaim();
+                            
+                            const pathSegments  = window.location.pathname.split("/").filter(Boolean);
+                            const secondSegment = pathSegments[2];
+
+                            if (secondSegment === "dashboard") {
+                                dataraweklaim();
+                            } else if (secondSegment === "dataeklaim") {
+                                dataraweklaim();
+                            }
                         }
                     });
                 }, 200);

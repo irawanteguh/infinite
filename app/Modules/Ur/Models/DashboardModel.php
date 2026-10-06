@@ -28,10 +28,10 @@ class DashboardModel extends Model{
 
     function dataraweklaim($koders,$periode){
         $query = "
-                    select a.sep, kelas_rawat, sl, tarif_rs, total_tarif, idrg_total_tarif, lpad(month(a.admission_date), 2, '0') as periode
+                    select a.sep, kelas_rawat, sl, tarif_rs, total_tarif, idrg_total_tarif, lpad(month(a.discharge_date), 2, '0') as periode
                     from dt01_bpjs_ur_dt a
                     where a.kode_rs='".$koders."'
-                    and   year(a.admission_date) = " . $periode;
+                    and   year(a.discharge_date) = " . $periode;
 
         $recordset = $this->db->query($query);
         return $recordset->getResult();

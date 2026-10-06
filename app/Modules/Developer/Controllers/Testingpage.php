@@ -10,6 +10,7 @@ class Testingpage extends BaseController{
     protected $md;
 
     public function __construct(){
+        parent::__construct();
         $this->md = new TestingpageModel();
     }
 

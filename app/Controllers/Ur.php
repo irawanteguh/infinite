@@ -10,7 +10,7 @@ class Ur extends BaseController{
     protected $md;
 
     public function __construct(){
-        $this->md = new DataeklaimModel();
+        $this->md = new Modelur();
     }
 
     public function importtxteklaim(){

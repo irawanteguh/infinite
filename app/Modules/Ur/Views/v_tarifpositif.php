@@ -11,28 +11,71 @@
                 <input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Search Data" id="searchtable">
             </div>
         </div>
+        <div class="card-toolbar m-0">
+            <ul class="nav nav-tabs nav-line-tabs nav-stretch fs-6 border-0 fw-bolder" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link justify-content-center text-active-gray-800 active" data-bs-toggle="tab" role="tab" href="#outpatient">Outpatient</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link justify-content-center text-active-gray-800" data-bs-toggle="tab" role="tab" href="#inpatient">Inpatient</a>
+                </li>
+            </ul>
+        </div>
     </div>
-
     <div class="card-body pt-0">
-        <div class="table-responsive">
-            <table class="table align-middle table-row-dashed gy-2" id="dataraweklaim_table">
-                <thead>
-                    <tr class="fw-bolder text-muted bg-light">
-                        <th class="text-start rounded-start ps-4">#</th>
-                        <th>SEP Number</th>
-                        <th>Card Number</th>
-                        <th>Medical Record</th>
-                        <th>Patient Name</th>
-                        <th>Admission Date</th>
-                        <th>Inpatient / Outpatient</th>
-                        <th class="text-end">Hospital Cost</th>
-                        <th class="text-end">INA-CBG</th>
-                        <th class="text-end">iDRG</th>
-                        <th class="text-end rounded-end pe-4">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="fw-bold text-gray-600" id="resultdataraweklaim"></tbody>
-            </table>
+        <div class="tab-content">
+            <div id="outpatient" class="card-body p-0 tab-pane fade show active" role="tabpanel">
+                <div class="table-responsive">
+                    <table class="table align-middle table-row-dashed gy-2" id="rawdataoutpatient_table">
+                        <thead>
+                            <tr class="fw-bolder text-muted bg-light">
+                                <th class="text-start rounded-start ps-4">#</th>
+                                <th>SEP Number</th>
+                                <th>Card Number</th>
+                                <th>Medical Record</th>
+                                <th>Patient Name</th>
+                                <th>DPJP</th>
+                                <th>Diagnosis</th>
+                                <th>Procedure</th>
+                                <th>Admission Date</th>
+                                <th>Discharge Date</th>
+                                <th class="text-end">Hospital Cost</th>
+                                <th class="text-end">INA-CBG</th>
+                                <th class="text-end">iDRG</th>
+                                <th class="text-end">Difference</th>
+                                <th class="text-end rounded-end pe-4">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="fw-bold text-gray-600" id="resultrawdataoutpatient"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="inpatient" class="card-body p-0 tab-pane fade" role="tabpanel">
+                <div class="table-responsive">
+                    <table class="table align-middle table-row-dashed gy-2" id="rawdatainpatient_table">
+                        <thead>
+                            <tr class="fw-bolder text-muted bg-light">
+                                <th class="text-start rounded-start ps-4">#</th>
+                                <th>SEP Number</th>
+                                <th>Card Number</th>
+                                <th>Medical Record</th>
+                                <th>Patient Name</th>
+                                <th>DPJP</th>
+                                <th>Diagnosis</th>
+                                <th>Procedure</th>
+                                <th>Admission Date</th>
+                                <th>Discharge Date</th>
+                                <th class="text-end">Hospital Cost</th>
+                                <th class="text-end">INA-CBG</th>
+                                <th class="text-end">iDRG</th>
+                                <th class="text-end">Difference</th>
+                                <th class="text-end rounded-end pe-4">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="fw-bold text-gray-600" id="resultrawdatainpatient"></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>

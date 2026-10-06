@@ -3,7 +3,7 @@
 namespace Modules\Ur\Controllers;
 
 use App\Controllers\BaseController;
-use Modules\Ur\Models\DataeklaimModel;
+use Modules\Ur\Models\TarifpositifModel;
 
 class Tarifpositif extends BaseController{
 
@@ -11,7 +11,7 @@ class Tarifpositif extends BaseController{
 
     public function __construct(){
         parent::__construct();
-        $this->md = new DataeklaimModel();
+        $this->md = new TarifpositifModel();
     }
 
     public function index(){
@@ -31,6 +31,25 @@ class Tarifpositif extends BaseController{
         }
 
         return $data;
+    }
+
+    public function rawdata(){
+        $periode  = request()->getPost('selectperiode');
+
+        $result = $this->md->rawdata($this->session->get('koders'),$periode);
+
+        if (!empty($result)) {
+            $json["responseCode"]   = "00";
+            $json["responseHead"]   = "success";
+            $json["responseDesc"]   = "Data found";
+            $json["responseResult"] = $result;
+        } else {
+            $json["responseCode"]   = "01";
+            $json["responseHead"]   = "info";
+            $json["responseDesc"]   = "No data found";
+        }
+
+        return response()->setJSON($json);
     }
 
 }

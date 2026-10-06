@@ -12,10 +12,9 @@
             </div>
         </div>
     </div>
-
     <div class="card-body pt-0">
         <div class="table-responsive">
-            <table class="table align-middle table-row-dashed gy-2" id="dataraweklaim_table">
+            <table class="table align-middle table-row-dashed gy-2" id="rawdatainpatient_table">
                 <thead>
                     <tr class="fw-bolder text-muted bg-light">
                         <th class="text-start rounded-start ps-4">#</th>
@@ -23,15 +22,20 @@
                         <th>Card Number</th>
                         <th>Medical Record</th>
                         <th>Patient Name</th>
+                        <th>DPJP</th>
+                        <th>Diagnosis</th>
+                        <th>Procedure</th>
                         <th>Admission Date</th>
-                        <th>Inpatient / Outpatient</th>
+                        <th>Discharge Date</th>
+                        <th>LOS</th>
                         <th class="text-end">Hospital Cost</th>
                         <th class="text-end">INA-CBG</th>
                         <th class="text-end">iDRG</th>
+                        <th class="text-end">Difference</th>
                         <th class="text-end rounded-end pe-4">Actions</th>
                     </tr>
                 </thead>
-                <tbody class="fw-bold text-gray-600" id="resultdataraweklaim"></tbody>
+                <tbody class="fw-bold text-gray-600" id="resultrawdatainpatient"></tbody>
             </table>
         </div>
     </div>

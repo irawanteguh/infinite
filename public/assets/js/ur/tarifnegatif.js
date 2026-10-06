@@ -61,21 +61,21 @@ function rawdata(){
                 row += "<td>" + (result[i].mrn || "") + "</td>";
                 row += "<td>" + (result[i].nama_pasien || "") + "</td>";
                 row += "<td>" + (result[i].dpjp || "") + "</td>";
-    row += "<td>" + (result[i].diaglist || "").split(";").join("<br>") + "</td>";
-    row += "<td>" + (result[i].proclist || "").split(";").join("<br>") + "</td>";
-    row += "<td>" + (result[i].admission_date || "") + "</td>";
-    row += "<td>" + (result[i].discharge_date || "") + "</td>";
-    row += "<td class='text-end'>" + todesimal(result[i].tarif_rs) + "</td>";
-    row += "<td class='text-end'>" + todesimal(result[i].total_tarif) + "</td>";
-    row += "<td class='text-end'>" + todesimal(result[i].idrg_total_tarif) + "</td>";
-    row += "<td class='text-end'>" + todesimal((parseFloat(result[i].total_tarif) || 0) - (parseFloat(result[i].tarif_rs) || 0)) + "</td>";
-    row += "<td class='text-end'>";
-    row += "<div class='btn-group'>";
-    row += "<button type='button' class='btn btn-light-primary dropdown-toggle btn-sm' data-bs-toggle='dropdown'>Actions</button>";
-    row += "<div class='dropdown-menu'>" + btnaction + "</div>";
-    row += "</div>";
-    row += "</td>";
-    row += "</tr>";
+                row += "<td>" + (result[i].diaglist || "").split(";").join("<br>") + "</td>";
+                row += "<td>" + (result[i].proclist || "").split(";").join("<br>") + "</td>";
+                row += "<td>" + (result[i].admission_date || "") + "</td>";
+                row += "<td>" + (result[i].discharge_date || "") + "</td>";
+                row += "<td class='text-end'>" + todesimal(result[i].tarif_rs) + "</td>";
+                row += "<td class='text-end'>" + todesimal(result[i].total_tarif) + "</td>";
+                row += "<td class='text-end'>" + todesimal(result[i].idrg_total_tarif) + "</td>";
+                row += "<td class='text-end'>" + todesimal((parseFloat(result[i].total_tarif) || 0) - (parseFloat(result[i].tarif_rs) || 0)) + "</td>";
+                row += "<td class='text-end'>";
+                row += "<div class='btn-group'>";
+                row += "<button type='button' class='btn btn-light-primary dropdown-toggle btn-sm' data-bs-toggle='dropdown'>Actions</button>";
+                row += "<div class='dropdown-menu'>" + btnaction + "</div>";
+                row += "</div>";
+                row += "</td>";
+                row += "</tr>";
 
     if (result[i].ptd == 1) {
         tableResultInpatient += row;

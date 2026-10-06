@@ -42,7 +42,7 @@ function dataraweklaim(){
             const jmlpendapatan = aggregate(result,"sum","periode",["total_tarif", "idrg_total_tarif"]);
 
             const severityMap = {
-                "0"  : "Rawat Jalan",
+                // "0"  : "Rawat Jalan",
                 "I"  : "Severity I",
                 "II" : "Severity II",
                 "III": "Severity III"
@@ -151,10 +151,10 @@ function dataraweklaim(){
                 "severitylevelmountly",
                 chartDataSeverityMonthly.map(item => item.periode),
                 [
-                    {
-                        name: "Rawat Jalan",
-                        data: chartDataSeverityMonthly.map(item => item.value_1)
-                    },
+                    // {
+                    //     name: "Rawat Jalan",
+                    //     data: chartDataSeverityMonthly.map(item => item.value_1)
+                    // },
                     {
                         name: "Severity I",
                         data: chartDataSeverityMonthly.map(item => item.value_2)

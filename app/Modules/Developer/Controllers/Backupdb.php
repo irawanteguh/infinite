@@ -81,6 +81,149 @@ class Backupdb extends BaseController{
         ]);
     }
 
+    public function backupics(){
+        $db = db_connect();
+
+        $backupPath = WRITEPATH . 'backups/';
+
+        if (!is_dir($backupPath)) {
+            mkdir($backupPath, 0755, true);
+        }
+
+        /*
+        * TABEL YANG AKAN DIBACKUP
+        *
+        * Jangan gunakan $db->listTables()
+        * karena akan membackup seluruh database.
+        */
+        $tables = [
+            'dt01_ics_source_document',
+            'dt01_ics_mdc',
+            'dt01_ics_icd_code',
+            'dt01_ics_ch3_section',
+            'dt01_ics_ch3_section_icd_scope',
+            'dt01_ics_coding_rule',
+            'dt01_ics_coding_rule_code',
+            'dt01_ics_case_example',
+            'dt01_ics_case_example_item',
+            'dt01_ics_idrg_dc',
+            'dt01_ics_special_code_group',
+            'dt01_ics_special_code_group_item',
+            'dt01_ics_special_code_group_dc',
+            'dt01_ics_idrg_error_code',
+            'dt01_ics_idrg_error_required_code',
+            'dt01_ics_drug_external_cause_map'
+        ];
+
+        $sql  = "-- =====================================================\n";
+        $sql .= "-- INFINITE DATABASE BACKUP\n";
+        $sql .= "-- Selected Tables Only\n";
+        $sql .= "-- Generated: " . date('Y-m-d H:i:s') . "\n";
+        $sql .= "-- =====================================================\n\n";
+
+        $sql .= "SET NAMES utf8mb4;\n";
+        $sql .= "SET FOREIGN_KEY_CHECKS = 0;\n\n";
+
+        foreach ($tables as $table) {
+
+            // Pastikan tabel memang ada
+            if (!$db->tableExists($table)) {
+                continue;
+            }
+
+            $sql .= "-- =====================================================\n";
+            $sql .= "-- Table: {$table}\n";
+            $sql .= "-- =====================================================\n\n";
+
+            $sql .= "DROP TABLE IF EXISTS `{$table}`;\n\n";
+
+            /*
+            * CREATE TABLE
+            */
+            $create = $db->query(
+                "SHOW CREATE TABLE `{$table}`"
+            )->getRowArray();
+
+            if (!empty($create)) {
+
+                $createTable = $create['Create Table'] ?? '';
+
+                if ($createTable !== '') {
+                    $sql .= $createTable . ";\n\n";
+                }
+            }
+
+            /*
+            * DATA
+            */
+            $rows = $db->query(
+                "SELECT * FROM `{$table}`"
+            )->getResultArray();
+
+            if (!empty($rows)) {
+
+                foreach ($rows as $row) {
+
+                    $columns = array_map(
+                        function ($column) {
+                            return "`{$column}`";
+                        },
+                        array_keys($row)
+                    );
+
+                    $values = array_map(
+                        function ($value) use ($db) {
+
+                            if ($value === null) {
+                                return 'NULL';
+                            }
+
+                            return "'" . $db->escapeString($value) . "'";
+                        },
+                        array_values($row)
+                    );
+
+                    $sql .= "INSERT INTO `{$table}` (";
+                    $sql .= implode(', ', $columns);
+                    $sql .= ") VALUES (";
+                    $sql .= implode(', ', $values);
+                    $sql .= ");\n";
+                }
+            }
+
+            $sql .= "\n";
+        }
+
+        $sql .= "SET FOREIGN_KEY_CHECKS = 1;\n";
+
+        $filename = 'infinite_backup_ics_' . date('Ymd_His') . '.sql';
+
+        $filepath = $backupPath . $filename;
+
+        $result = file_put_contents($filepath, $sql);
+
+        if ($result === false) {
+
+            return response()->setJSON([
+                'responseCode'   => '01',
+                'responseHead'   => 'error',
+                'responseDesc'   => 'Failed to create database backup.',
+                'responseResult' => []
+            ]);
+        }
+
+        return response()->setJSON([
+            'responseCode'   => '00',
+            'responseHead'   => 'success',
+            'responseDesc'   => 'Database backup successfully created.',
+            'responseResult' => [
+                'filename' => $filename,
+                'tables'   => count($tables),
+                'size'     => $result
+            ]
+        ]);
+    }
+
     public function listbackup(){
         $backupPath = WRITEPATH . 'backups/';
 

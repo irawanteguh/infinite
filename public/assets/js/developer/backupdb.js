@@ -63,6 +63,69 @@ $("#btnBackupDatabase").on("click", function (e) {
     });
 });
 
+$("#btnBackupDatabaseICS").on("click", function (e) {
+    e.preventDefault();
+    Swal.fire({
+        title            : "Backup Database ICS",
+        text             : "Create a new database ICS backup?",
+        icon             : "warning",
+        showCancelButton : true,
+        confirmButtonText: "Backup",
+        cancelButtonText : "Cancel"
+    }).then(function (result) {
+        if (!result.isConfirmed) {
+            return;
+        }
+        $.ajax({
+            url       : url + "developer/backupdb/backupics",
+            type      : "GET",
+            dataType  : "JSON",
+            beforeSend: function () {
+                Swal.fire({
+                    title            : "Creating Backup ICS",
+                    html             : "Please wait while the database backup is being created.",
+                    allowOutsideClick: false,
+                    allowEscapeKey   : false,
+                    showConfirmButton: false,
+                    didOpen          : function () {
+                        Swal.showLoading();
+                    }
+                });
+            },
+            success: function (response) {
+                if (response.responseCode !== "00") {
+                    Swal.fire({
+                        icon             : "error",
+                        title            : "Backup Failed",
+                        text             : response.responseDesc || "Failed to create database ICS backup.",
+                        confirmButtonText: "OK"
+                    });
+                    return;
+                }
+                loadbackuplist();
+                Swal.fire({
+                    icon             : "success",
+                    title            : "Backup Successful",
+                    text             : response.responseDesc || "Database ICS backup successfully created.",
+                    showConfirmButton: false,
+                    timer            : 2000
+                });
+            },
+            error: function () {
+                Swal.fire({
+                    icon             : "error",
+                    title            : "Request Failed",
+                    text             : "An error occurred while creating the database ICS backup.",
+                    confirmButtonText: "OK"
+                });
+            },
+            complete: function () {
+                Swal.close();
+            }
+        });
+    });
+});
+
 function loadbackuplist() {
     $.ajax({
         url       : url+"developer/backupdb/listbackup",

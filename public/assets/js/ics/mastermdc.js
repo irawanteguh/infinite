@@ -53,7 +53,7 @@ function datamastermdc(){
                     tableResult += "<div class='py-3 d-flex flex-stack flex-wrap'>";
             
                         // ---- Toggle ----
-                        tableResult += "<div class='d-flex align-items-center collapsible rotate" + (isFirst ? "" : " collapsed") + "' data-bs-toggle='collapse' href='#" + collapseId + "' role='button' aria-expanded='" + (isFirst ? "true" : "false") + "' aria-controls='" + collapseId + "'>";
+                        tableResult += "<div class='d-flex align-items-center collapsible rotate" + (isFirst ? " collapsed" : " collapsed") + "' data-bs-toggle='collapse' href='#" + collapseId + "' role='button' aria-expanded='" + (isFirst ? "true" : "false") + "' aria-controls='" + collapseId + "'>";
                             tableResult += "<div class='me-3 rotate-90'><i class='bi bi-chevron-right text-gray-700'></i></div>";
                             tableResult += "<div class='symbol symbol-40px me-3'><span class='symbol-label bg-light-primary text-primary fw-bolder'>" + esc(result[i].MDC_CODE) + "</span></div>";
                             tableResult += "<div class='me-3'>";
@@ -75,7 +75,7 @@ function datamastermdc(){
                     var perhatian = result[i].PERHATIAN_KHUSUS_INPUT ? esc(result[i].PERHATIAN_KHUSUS_INPUT) : "Belum ada perhatian khusus untuk MDC ini.";
                     var penjelasan = result[i].PENJELASAN_KHUSUS_ICD ? esc(result[i].PENJELASAN_KHUSUS_ICD) : "Belum ada penjelasan khusus untuk MDC ini.";
             
-                    tableResult += "<div id='" + collapseId + "' class='collapse" + (isFirst ? " show" : "") + " fs-6 ps-10' data-bs-parent='#kt_mdc_list'>";
+                    tableResult += "<div id='" + collapseId + "' class='collapse" + (isFirst ? "" : "") + " fs-6 ps-10' data-bs-parent='#kt_mdc_list'>";
                         tableResult += "<div class='py-5 pe-3'>";
             
                             // ---- Ringkasan (kotak statistik) ----

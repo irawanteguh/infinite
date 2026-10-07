@@ -1,0 +1,36 @@
+[ dt01_ics_source_document ] (Dokumen Induk ICS v1 2025)
+   │
+   ├──► [ dt01_ics_mdc ] (Bab/MDC: MDC 01 - MDC 36, 90)
+   │       │
+   │       ├──► [ dt01_ics_ch3_section ] (Sub-Bab / Topik Spesifik)
+   │       │       │
+   │       │       ├──► [ dt01_ics_ch3_section_icd_scope ] (Rentang Kode ICD Topik)
+   │       │       │       └──► [ dt01_icd_code ] (Master Kode ICD-10 / ICD-9-CM)
+   │       │       │
+   │       │       ├──► [ dt01_ics_coding_rule ] (Aturan Logika Koding per Topik)
+   │       │       │       │
+   │       │       │       └──► [ dt01_ics_coding_rule_code ] (Pemetaan Peran Kode ICD)
+   │       │       │               └──► [ dt01_icd_code ] (Role: Primary, Dagger, Asterisk, dll)
+   │       │       │
+   │       │       └──► [ dt01_ics_case_example ] (Contoh Kasus Klinis)
+   │       │               │
+   │       │               └──► [ dt01_ics_case_example_item ] (Kode Hasil Kasus)
+   │       │                       └──► [ dt01_icd_code ]
+   │       │
+   │       └──► [ dt01_ics_idrg_dc ] (Disease Cluster per MDC)
+   │
+   ├──► [ dt01_ics_special_code_group ] (Grup Kombinasi Prosedur/Kondisi Khusus)
+   │       │
+   │       ├──► [ dt01_ics_special_code_group_item ] (Item Kode dalam Grup Khusus)
+   │       │       └──► [ dt01_icd_code ]
+   │       │
+   │       └──► [ dt01_ics_special_code_group_dc ] (Pemetaan Hasil ke DC Khusus)
+   │               └──► [ dt01_ics_idrg_dc ]
+   │
+   ├──► [ dt01_ics_idrg_error_code ] (Daftar Kode Error / Ungroupable)
+   │       │
+   │       └──► [ dt01_ics_idrg_error_required_code ] (Kode Syarat Mencegah Error)
+   │               └──► [ dt01_icd_code ]
+   │
+   └──► [ dt01_ics_drug_external_cause_map ] (Pemetaan Efek Samping Obat / Keracunan)
+           └──► [ dt01_icd_code ]

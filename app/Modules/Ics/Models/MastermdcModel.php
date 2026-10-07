@@ -10,7 +10,7 @@ class MastermdcModel extends Model{
     function datamastersourcedocument(){
         $query = "
                     select a.id, title
-                    from dt01_source_document a
+                    from dt01_ics_source_document a
                 ";
 
         $recordset = $this->db->query($query);
@@ -23,8 +23,8 @@ class MastermdcModel extends Model{
                         a.*,
                         CONCAT(b.title, ', Version : ', b.version) AS titlereferensi,
                         b.publisher AS publisherreferensi
-                    FROM dt01_mdc a
-                    LEFT JOIN dt01_source_document b 
+                    FROM dt01_ics_mdc a
+                    LEFT JOIN dt01_ics_source_document b 
                         ON b.id = a.document_id;
                 ";
 
@@ -33,7 +33,7 @@ class MastermdcModel extends Model{
     }
 
     function insertmastermdc($data){
-        return $this->db->table('dt01_mdc')->insert($data);
+        return $this->db->table('dt01_ics_mdc')->insert($data);
     }
     
 }

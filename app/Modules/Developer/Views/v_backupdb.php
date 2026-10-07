@@ -1,6 +1,6 @@
 <div class="col-xl-12 mb-5">
     <div class="card card-flush">
-        <div class="card-header pt-5">
+        <div class="card-header border-0 pt-6">
             <div class="card-title">
                 <div class="d-flex align-items-center position-relative my-1">
                     <div>

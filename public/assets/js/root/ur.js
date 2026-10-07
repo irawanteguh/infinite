@@ -776,6 +776,8 @@ function prosesImportTxtEklaim(data) {
                                 dataraweklaim();
                             } else if (secondSegment === "casemixindex") {
                                 load();
+                            } else if (secondSegment === "biaya") {
+                                load();
                             }
                         }
                     });

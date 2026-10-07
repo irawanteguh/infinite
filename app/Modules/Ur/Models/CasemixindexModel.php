@@ -46,7 +46,7 @@ class CasemixindexModel extends Model{
                         sum(case when month(b.discharge_date) = 11 then 1 else 0 end) as nov,
                         sum(case when month(b.discharge_date) = 12 then 1 else 0 end) as des
 
-                    from dt01_bpjs_ref_case_group a
+                    from dt01_inacbg_casegroup_ms a
 
                     left join dt01_bpjs_ur_dt b 
                         on b.cg = a.id_cg
@@ -86,7 +86,7 @@ class CasemixindexModel extends Model{
                         sum(case when month(b.discharge_date) = 11 then 1 else 0 end) as nov,
                         sum(case when month(b.discharge_date) = 12 then 1 else 0 end) as des
 
-                    from dt01_bpjs_ref_casemix_main_group a
+                    from dt01_inacbg_cmg_ms a
 
                     left join dt01_bpjs_ur_dt b 
                         on b.cmg = a.group_code

@@ -2,6 +2,7 @@
 <script src="<?= base_url('assets/routingsystem/global/plugins.bundle.js') ?>"></script>
 <script src="<?= base_url('assets/routingsystem/custom/datatables/datatables.bundle.js') ?>"></script>
 <script src="<?= base_url('assets/routingsystem/scripts.bundle.js') ?>"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
 <?php
     $uri = service('uri');

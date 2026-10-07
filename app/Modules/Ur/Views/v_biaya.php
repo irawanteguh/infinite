@@ -11,27 +11,49 @@
                 <input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Search Data" id="searchtable">
             </div>
         </div>
+        <div class="card-toolbar m-0">
+            <button type="button" class="btn btn-clean btn-sm btn-icon btn-icon-primary btn-active-light-primary me-n3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                <span class="svg-icon svg-icon-3 svg-icon-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <rect x="5" y="5" width="5" height="5" rx="1" fill="#000000" />
+                            <rect x="14" y="5" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
+                            <rect x="5" y="14" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
+                            <rect x="14" y="14" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
+                        </g>
+                    </svg>
+                </span>
+            </button>
+            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-bold w-200px py-3" data-kt-menu="true">
+                <div class="menu-item px-3">
+                    <div class="menu-content text-muted pb-2 px-3 fs-7 text-uppercase">More Actions</div>
+                </div>
+                <div class="menu-item px-3">
+                    <a href="#" class="menu-link px-3" id="btndownloaddataraw_table">Download Excel</a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="card-body pt-0">
         <div class="table-responsive">
-            <table class="table align-middle table-row-dashed gy-2" id="dataraweklaim_table">
+            <table class="table align-middle table-row-dashed gy-2" id="dataraw_table">
                 <thead>
                     <tr class="fw-bolder text-muted bg-light">
                         <th class="text-start rounded-start ps-4">#</th>
-                        <th>SEP Number</th>
-                        <th>Card Number</th>
-                        <th>Medical Record</th>
-                        <th>Patient Name</th>
-                        <th>Admission Date</th>
-                        <th>Inpatient / Outpatient</th>
+                        <th>Attending Physician</th>
+                        <th class="text-center">Inpatient</th>
+                        <th class="text-center">Outpatient</th>
+                        <th class="text-center">Total Patients</th>
                         <th class="text-end">Hospital Cost</th>
                         <th class="text-end">INA-CBG</th>
-                        <th class="text-end">iDRG</th>
-                        <th class="text-end rounded-end pe-4">Actions</th>
+                        <th class="text-end">Difference</th>
+                        <th class="text-end">Efficiency</th>
+                        <th class="text-end">Avg. Hospital Cost</th>
+                        <th class="text-end rounded-end pe-4">Avg. INA-CBG</th>
                     </tr>
                 </thead>
-                <tbody class="fw-bold text-gray-600" id="resultdataraweklaim"></tbody>
+                <tbody class="fw-bold text-gray-600" id="resultdataraw"></tbody>
             </table>
         </div>
     </div>

@@ -65,7 +65,8 @@ function datamastermdc(){
                         // ---- Toolbar ----
                         tableResult += "<div class='d-flex my-3 ms-9'>";
                             tableResult += "<a href='#' class='btn btn-icon btn-active-light-primary w-30px h-30px me-3 btn-edit-mdc' data-id='" + result[i].ID + "' data-bs-toggle='tooltip' title='Edit'><i class='bi bi-pencil-square fs-5'></i></a>";
-                            tableResult += "<a href='#' class='btn btn-icon btn-active-light-primary w-30px h-30px btn-delete-mdc' data-id='" + result[i].ID + "' data-bs-toggle='tooltip' title='Hapus'><i class='bi bi-trash fs-5'></i></a>";
+                            tableResult += "<a href='#' class='btn btn-icon btn-active-light-info w-30px h-30px me-3 btn-view-document' data-filename='"+result[i].DOCUMENT_ID+"' data-page='"+result[i].PAGE_START+"' data-highlight='"+result[i].NAME_ID+"' data-id='" + result[i].ID + "' title='View Document' data-bs-toggle='modal' data-bs-target='#modal_view_document'><i class='bi bi-file-earmark-text fs-5'></i></a>";
+                            tableResult += "<a href='#' class='btn btn-icon btn-active-light-danger w-30px h-30px btn-delete-mdc' data-id='" + result[i].ID + "' data-bs-toggle='tooltip' title='Hapus'><i class='bi bi-trash fs-5'></i></a>";
                         tableResult += "</div>";
             
                     tableResult += "</div>";

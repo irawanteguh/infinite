@@ -39,7 +39,7 @@ class BiayaModel extends Model{
                         ROUND((x.tarifklaimrawatinap + x.tarifklaimrawatjalan) / NULLIF(x.jmlpasienrawatinap + x.jmlpasienrawatjalan, 0), 0) AS avg_tarif_klaim
                     FROM (
                         SELECT
-                            a.dpjp,
+                            upper(a.dpjp) as dpjp,
                             SUM(CASE WHEN a.ptd = '1' THEN 1 ELSE 0 END) AS jmlpasienrawatinap,
                             SUM(CASE WHEN a.ptd = '2' THEN 1 ELSE 0 END) AS jmlpasienrawatjalan,
                             SUM(CASE WHEN a.ptd = '1' THEN a.tarif_rs ELSE 0 END) AS tarifrsrawatinap,
@@ -49,9 +49,9 @@ class BiayaModel extends Model{
                         FROM dt01_bpjs_ur_dt a
                         where a.kode_rs='".$koders."'
                         and   year(a.admission_date) = ".$periode."
-                        GROUP BY a.dpjp
+                        GROUP BY upper(a.dpjp)
                     ) x
-                    ORDER BY efisiensi_persen DESC;
+                    ORDER BY selisihtotal desc, efisiensi_persen desc;
                 ";
 
         $recordset = $this->db->query($query);

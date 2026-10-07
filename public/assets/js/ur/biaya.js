@@ -94,9 +94,9 @@ function rawdata(){
                 tableResult += "<tr>";
                 tableResult += "<td class='text-start ps-4'>"+(parseInt(i) + 1)+"</td>";
                 tableResult += "<td>" + (result[i].dpjp || "") + "</td>";
-                tableResult += "<td class='text-center'>" + (result[i].jmlpasienrawatinap || 0) + "</td>";
-                tableResult += "<td class='text-center'>" + (result[i].jmlpasienrawatjalan || 0) + "</td>";
-                tableResult += "<td class='text-center'>" + (result[i].jmlpasientotal || 0) + "</td>";
+                tableResult += "<td class='text-center'>" + todesimal(result[i].jmlpasienrawatinap || 0) + "</td>";
+                tableResult += "<td class='text-center'>" + todesimal(result[i].jmlpasienrawatjalan || 0) + "</td>";
+                tableResult += "<td class='text-center'>" + todesimal(result[i].jmlpasientotal || 0) + "</td>";
                 tableResult += "<td class='text-end'>" + todesimal(result[i].tarifrstotal) + "</td>";
                 tableResult += "<td class='text-end'>" + todesimal(result[i].tarifklaimtotal) + "</td>";
                 tableResult += "<td class='text-end'>" + todesimal(result[i].selisihtotal) + "</td>";

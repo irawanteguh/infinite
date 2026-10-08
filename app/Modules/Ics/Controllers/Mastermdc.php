@@ -57,8 +57,8 @@ class Mastermdc extends BaseController{
         $data['chapter_no']             = request()->getPost('CHAPTER_NO');
         $data['page_start']             = request()->getPost('PAGE_START');
         $data['page_end']               = request()->getPost('PAGE_END');
-        $data['perhatian_khusus_input'] = request()->getPost('PERHATIAN_KHUSUS_INPUT');
-        $data['penjelasan_khusus_icd']  = request()->getPost('PENJELASAN_KHUSUS_ICD');
+        $data['EXPLANATION'] = request()->getPost('PERHATIAN_KHUSUS_INPUT');
+        $data['EXAMPLE']  = request()->getPost('CONTOH_KASUS_ICD');
         $data['created_by']             = $this->session->get('userid');
 
         if($this->md->insertmastermdc($data)){
@@ -69,6 +69,41 @@ class Mastermdc extends BaseController{
             $json['responCode']="01";
             $json['responHead']="info";
             $json['responDesc']="Data Failed to Add";
+        }
+
+        return response()->setJSON($json);
+    }
+
+    public function updatemastermdc(){
+        $id = request()->getPost('ID');
+
+        if(empty($id)){
+            $json['responCode']="01";
+            $json['responHead']="info";
+            $json['responDesc']="ID is required";
+
+            return response()->setJSON($json);
+        }
+
+        $data['document_id']            = request()->getPost('DOCUMENT_ID');
+        $data['mdc_code']               = request()->getPost('MDC_CODE');
+        $data['name_id']                = request()->getPost('NAME_ID');
+        $data['name_en']                = request()->getPost('NAME_EN');
+        $data['chapter_no']             = request()->getPost('CHAPTER_NO');
+        $data['page_start']             = request()->getPost('PAGE_START');
+        $data['page_end']               = request()->getPost('PAGE_END');
+        $data['EXPLANATION']            = request()->getPost('PERHATIAN_KHUSUS_INPUT');
+        $data['EXAMPLE']                = request()->getPost('CONTOH_KASUS_ICD');
+        $data['updated_by']             = $this->session->get('userid');
+
+        if($this->md->updatemastermcd($id, $data)){
+            $json['responCode']="00";
+            $json['responHead']="success";
+            $json['responDesc']="Data Updated Successfully";
+        } else {
+            $json['responCode']="01";
+            $json['responHead']="info";
+            $json['responDesc']="Data Failed to Update";
         }
 
         return response()->setJSON($json);

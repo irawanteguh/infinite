@@ -35,5 +35,9 @@ class MastermdcModel extends Model{
     function insertmastermdc($data){
         return $this->db->table('dt01_ics_mdc')->insert($data);
     }
+
+    public function updatemastermcd($id, $data){
+        return $this->db->table('dt01_ics_mdc')->where('id', $id)->update($data);
+    }
     
 }

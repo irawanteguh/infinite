@@ -150,3 +150,280 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal_edit_master_rules" tabindex="-1" aria-labelledby="title_modal_edit_master_rules" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header pb-0">
+                <h1 class="mb-3" id="title_modal_edit_master_rules">Edit Coding Rules</h1>
+                <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                    <span class="svg-icon svg-icon-1">
+                        <i class="bi bi-x-lg"></i>
+                    </span>
+                </div>
+            </div>
+            <form action="<?php echo base_url('Ics/mastermdc/updaterule'); ?>" method="post" id="formeditreules" autocomplete="off">
+                <div class="modal-body">
+                    <input type="hidden" id="coding_rule_id" name="ID">
+                    <input type="hidden" id="coding_rule_section_id" name="SECTION_ID">
+                    <div class="row g-5">
+                        <div class="col-md-3">
+                            <label for="coding_rule_type" class="form-label required fw-bold">Rule Type</label>
+                            <select class="form-select form-select-solid" id="coding_rule_type" name="RULE_TYPE" required>
+                                <option value="">Select Rule Type</option>
+                                <option value="PRIMARY_DX">Primary Diagnosis</option>
+                                <option value="SECONDARY_DX">Secondary Diagnosis</option>
+                                <option value="CODE_ALSO">Code Also</option>
+                                <option value="EXTERNAL_CAUSE">External Cause</option>
+                                <option value="SELECT_BY_CONDITION">Select by Condition</option>
+                                <option value="UNSPECIFIED_FALLBACK">Unspecified Fallback</option>
+                                <option value="OMIT_CODE">Omit Code</option>
+                                <option value="DO_NOT_CODE_SEPARATELY">Do Not Code Separately</option>
+                                <option value="INPUT_PROCEDURE">Input Procedure</option>
+                                <option value="DEFINITION">Definition</option>
+                                <option value="NOTE">Note</option>
+                                <option value="EXAMPLE">Example</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="coding_rule_mandatory" class="form-label fw-bold">Mandatory</label>
+                            <select class="form-select form-select-solid" id="coding_rule_mandatory" name="IS_MANDATORY">
+                                <option value="">Not Specified</option>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="coding_rule_sex" class="form-label fw-bold">Sex Condition</label>
+                            <select class="form-select form-select-solid" id="coding_rule_sex" name="SEX_CONDITION">
+                                <option value="">All</option>
+                                <option value="L">Male</option>
+                                <option value="P">Female</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="coding_rule_age" class="form-label fw-bold">Age Condition</label>
+                            <input type="text" class="form-control form-control-solid" id="coding_rule_age" name="AGE_CONDITION" maxlength="60" placeholder="e.g. Age >= 18 years">
+                        </div>
+                        <div class="col-12">
+                            <label for="coding_rule_condition" class="form-label fw-bold required">Condition Text</label>
+                            <textarea class="form-control form-control-solid" id="coding_rule_condition" name="CONDITION_TEXT" rows="4" required placeholder="Enter the condition for applying this rule"></textarea>
+                        </div>
+                        <div class="col-12">
+                            <label for="coding_rule_instruction" class="form-label fw-bold">Instruction Text</label>
+                            <textarea class="form-control form-control-solid" id="coding_rule_instruction" name="INSTRUCTION_TEXT" rows="4" placeholder="Enter the coding rule instruction"></textarea>
+                        </div>
+                        <div class="col-12">
+                            <label for="coding_rule_source" class="form-label fw-bold">Source Text</label>
+                            <textarea class="form-control form-control-solid" id="coding_rule_source" name="SOURCE_TEXT" rows="3" placeholder="Original text from the reference document"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="coding_rule_page_printed" class="form-label fw-bold">Printed Page</label>
+                            <input type="number" class="form-control form-control-solid" id="coding_rule_page_printed" name="PAGE_PRINTED">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="coding_rule_page_pdf" class="form-label fw-bold">PDF Page</label>
+                            <input type="number" class="form-control form-control-solid" id="coding_rule_page_pdf" name="PAGE_PDF">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer p-1">
+                    <button class="btn btn-light-primary" id="modal_edit_master_rules_btn" type="submit" name="update">UPDATE</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_add_master_rules" tabindex="-1" aria-labelledby="title_modal_add_master_rules" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header pb-0">
+                <h1 class="mb-3" id="title_modal_add_master_rules">Add Coding Rules</h1>
+                <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                    <span class="svg-icon svg-icon-1">
+                        <i class="bi bi-x-lg"></i>
+                    </span>
+                </div>
+            </div>
+            <form action="<?php echo base_url('Ics/mastermdc/insertmasterrule'); ?>" method="post" id="formaddrules" autocomplete="off">
+                <?= csrf_field() ?>
+                <div class="modal-body">
+                    <input type="hidden" id="add_coding_rule_id" name="ID">
+                    <input type="hidden" id="add_coding_rule_section_id" name="SECTION_ID">
+                    <div class="row g-5">
+                        <div class="col-md-3">
+                            <label for="add_coding_rule_type" class="form-label required fw-bold">Rule Type</label>
+                            <select class="form-select form-select-solid" id="add_coding_rule_type" name="RULE_TYPE" required>
+                                <option value="">Select Rule Type</option>
+                                <option value="PRIMARY_DX">Primary Diagnosis</option>
+                                <option value="SECONDARY_DX">Secondary Diagnosis</option>
+                                <option value="CODE_ALSO">Code Also</option>
+                                <option value="EXTERNAL_CAUSE">External Cause</option>
+                                <option value="SELECT_BY_CONDITION">Select by Condition</option>
+                                <option value="UNSPECIFIED_FALLBACK">Unspecified Fallback</option>
+                                <option value="OMIT_CODE">Omit Code</option>
+                                <option value="DO_NOT_CODE_SEPARATELY">Do Not Code Separately</option>
+                                <option value="INPUT_PROCEDURE">Input Procedure</option>
+                                <option value="DEFINITION">Definition</option>
+                                <option value="NOTE">Note</option>
+                                <option value="EXAMPLE">Example</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="add_coding_rule_mandatory" class="form-label fw-bold">Mandatory</label>
+                            <select class="form-select form-select-solid" id="add_coding_rule_mandatory" name="IS_MANDATORY">
+                                <option value="">Not Specified</option>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="add_coding_rule_sex" class="form-label fw-bold">Sex Condition</label>
+                            <select class="form-select form-select-solid" id="add_coding_rule_sex" name="SEX_CONDITION">
+                                <option value="">All</option>
+                                <option value="L">Male</option>
+                                <option value="P">Female</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="add_coding_rule_age" class="form-label fw-bold">Age Condition</label>
+                            <input type="text" class="form-control form-control-solid" id="add_coding_rule_age" name="AGE_CONDITION" maxlength="60" placeholder="e.g. Age >= 18 years">
+                        </div>
+                        <div class="col-12">
+                            <label for="add_coding_rule_condition" class="form-label fw-bold required">Condition Text</label>
+                            <textarea class="form-control form-control-solid" id="add_coding_rule_condition" name="CONDITION_TEXT" rows="4" required placeholder="Enter the condition for applying this rule"></textarea>
+                        </div>
+                        <div class="col-12">
+                            <label for="add_coding_rule_instruction" class="form-label fw-bold">Instruction Text</label>
+                            <textarea class="form-control form-control-solid" id="add_coding_rule_instruction" name="INSTRUCTION_TEXT" rows="4" placeholder="Enter the coding rule instruction"></textarea>
+                        </div>
+                        <div class="col-12">
+                            <label for="add_coding_rule_source" class="form-label fw-bold">Source Text</label>
+                            <textarea class="form-control form-control-solid" id="add_coding_rule_source" name="SOURCE_TEXT" rows="3" placeholder="Original text from the reference document"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="add_coding_rule_page_printed" class="form-label fw-bold">Printed Page</label>
+                            <input type="number" class="form-control form-control-solid" id="add_coding_rule_page_printed" name="PAGE_PRINTED" min="1">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="add_coding_rule_page_pdf" class="form-label fw-bold">PDF Page</label>
+                            <input type="number" class="form-control form-control-solid" id="add_coding_rule_page_pdf" name="PAGE_PDF" min="1">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer p-1">
+                    <input class="btn btn-light-primary" id="modal_add_master_rules_btn" type="submit" value="SUBMIT" name="simpan" >
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_add_rule_notes" tabindex="-1"
+    aria-labelledby="title_modal_add_rule_notes" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+
+            <!-- HEADER -->
+            <div class="modal-header pb-0">
+                <h1 class="mb-3 fs-3" id="title_modal_add_rule_notes">
+                    Add Notes
+                </h1>
+
+                <button type="button"
+                    class="btn btn-sm btn-icon btn-active-color-primary"
+                    data-bs-dismiss="modal"
+                    aria-label="Close">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+
+            <!-- FORM -->
+            <form id="formaddrulenotes" autocomplete="off">
+                <div class="modal-body">
+
+                    <input type="hidden" id="notes_rule_id" name="RULE_ID">
+                    <input type="hidden" id="notes_section_id" name="SECTION_ID">
+
+                    <!-- RULE INFORMATION -->
+                    <div class="notice d-flex bg-light-primary rounded border-primary border border-dashed p-4 mb-5">
+                        <i class="bi bi-info-circle fs-2x text-primary me-4"></i>
+
+                        <div class="d-flex flex-column">
+                            <h5 class="mb-1 text-gray-900">Coding Rule</h5>
+                            <span class="text-gray-700 fs-7" id="notes_rule_condition">
+                                Select a coding rule to add notes.
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- NOTES -->
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <label class="form-label fw-bold mb-0">
+                            Notes Details
+                        </label>
+
+                        <button type="button"
+                            class="btn btn-sm btn-light-primary"
+                            id="btn_add_note_item">
+                            <i class="bi bi-plus-lg me-1"></i>
+                            Add Item
+                        </button>
+                    </div>
+
+                    <div id="rule_notes_container">
+
+                        <div class="rule-note-item mb-3">
+                            <div class="d-flex align-items-start gap-3">
+
+                                <span class="badge badge-light-primary mt-3">1</span>
+
+                                <div class="flex-grow-1">
+                                    <textarea
+                                        class="form-control form-control-solid rule-note-text"
+                                        name="NOTES[]"
+                                        rows="2"
+                                        placeholder="Enter note details..."
+                                        required></textarea>
+                                </div>
+
+                                <button type="button"
+                                    class="btn btn-sm btn-icon btn-light-danger btn-remove-note mt-1"
+                                    title="Remove note">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="text-muted fs-7 mt-3">
+                        Each item will be displayed as a separate list item (li).
+                    </div>
+
+                </div>
+
+                <!-- FOOTER -->
+                <div class="modal-footer p-3">
+                    <button type="button"
+                        class="btn btn-light"
+                        data-bs-dismiss="modal">
+                        CANCEL
+                    </button>
+
+                    <button type="submit"
+                        class="btn btn-light-primary"
+                        id="modal_add_rule_notes_btn">
+                        <i class="bi bi-check-lg me-1"></i>
+                        SAVE NOTES
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

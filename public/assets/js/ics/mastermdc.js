@@ -38,6 +38,175 @@ $(document).on("click", ".btn-edit-mdc", function (e) {
     $("#title_modal_edit_master_mdc").text("Edit Master MDC " + (row.MDC_CODE || ""));
 });
 
+$(document).on("click", ".btn-edit-coding-rule", function () {
+    const index = Number($(this).attr("data-rule-index"));
+    const rule  = window.codingRulesData?.[index];
+
+    if (!rule) {
+        Swal.fire("Error", "Coding rule data not found.", "error");
+        return;
+    }
+
+    const ruleType = (rule.RULE_TYPE ?? "").trim().toUpperCase().replace(/\s+/g, "_");
+
+    $("#coding_rule_id").val(rule.ID ?? rule.RULE_ID ?? "");
+    $("#coding_rule_section_id").val(rule.SECTION_ID ?? "");
+    $("#coding_rule_type").val(ruleType);
+    $("#coding_rule_mandatory").val(rule.IS_MANDATORY ?? rule.MANDATORY ?? "");
+    $("#coding_rule_sex").val(rule.SEX_CONDITION ?? rule.SEX ?? "");
+    $("#coding_rule_age").val(rule.AGE_CONDITION ?? rule.AGE ?? "");
+    $("#coding_rule_condition").val(rule.CONDITION_TEXT ?? rule.CONDITION ?? "");
+    $("#coding_rule_instruction").val(rule.INSTRUCTION_TEXT ?? rule.INSTRUCTION ?? "");
+    $("#coding_rule_source").val(rule.SOURCE_TEXT ?? rule.SOURCE ?? "");
+    $("#coding_rule_page_printed").val(rule.PAGE_PRINTED ?? "");
+    $("#coding_rule_page_pdf").val(rule.PAGE_PDF ?? "");
+
+    $("#title_modal_edit_master_rules").text("Edit Coding Rules");
+
+    const modalElement = document.getElementById("modal_edit_master_rules");
+    bootstrap.Modal.getOrCreateInstance(modalElement).show();
+});
+
+$(document).on("click", ".btn-add-coding-rule", function (e) {
+    e.preventDefault();
+
+    const sectionId = $(this).attr("data-section-id");
+
+    // Reset form Add Coding Rules
+    const form = $("#formaddrules")[0];
+
+    if (!form) {
+        Swal.fire("Error", "Add Coding Rules form not found.", "error");
+        return;
+    }
+
+    form.reset();
+
+    // Set Section ID
+    $("#add_coding_rule_id").val("");
+    $("#add_coding_rule_section_id").val(sectionId);
+
+    // Set title dan tombol
+    $("#title_modal_add_master_rules").text("Add Coding Rules");
+
+    $("#modal_add_master_rules_btn").html(
+        "<i class='bi bi-plus-lg me-1'></i> ADD RULES"
+    );
+
+    // Tampilkan modal
+    const modalElement = document.getElementById("modal_add_master_rules");
+
+    bootstrap.Modal.getOrCreateInstance(modalElement).show();
+});
+
+// Open modal Add Notes
+$(document).on("click", ".btn_add_note_item", function (e) {
+    e.preventDefault();
+
+    const index = Number($(this).attr("data-rule-index"));
+    const rule = window.codingRulesData?.[index];
+
+    if (!rule) {
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Coding Rule data not found."
+        });
+        return;
+    }
+
+    // Set Rule ID and Section ID
+    $("#notes_rule_id").val(rule.RULE_ID ?? rule.ID ?? "");
+    $("#notes_section_id").val(rule.SECTION_ID ?? "");
+
+    // Display selected Coding Rule
+    const condition =
+        rule.CONDITION ||
+        rule.CONDITION_TEXT ||
+        rule.INSTRUCTION ||
+        rule.INSTRUCTION_TEXT ||
+        "Coding Rule";
+
+    $("#notes_rule_condition").text(condition);
+
+    // Reset notes to one empty item
+    $("#rule_notes_container").html(`
+        <div class="rule-note-item mb-3">
+            <div class="d-flex align-items-start gap-3">
+                <span class="badge badge-light-primary mt-3">1</span>
+
+                <div class="flex-grow-1">
+                    <textarea
+                        class="form-control form-control-solid rule-note-text"
+                        name="NOTES[]"
+                        rows="2"
+                        placeholder="Enter note details..."
+                        required></textarea>
+                </div>
+
+                <button type="button"
+                    class="btn btn-sm btn-icon btn-light-danger btn-remove-note mt-1"
+                    title="Remove note">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        </div>
+    `);
+
+    // Show modal
+    bootstrap.Modal
+        .getOrCreateInstance(document.getElementById("modal_add_rule_notes"))
+        .show();
+});
+
+// Add note item
+$(document).on("click", "#btn_add_note_item", function () {
+    const item = `
+        <div class="rule-note-item mb-3">
+            <div class="d-flex align-items-start gap-3">
+                <span class="badge badge-light-primary mt-3"></span>
+
+                <div class="flex-grow-1">
+                    <textarea
+                        class="form-control form-control-solid rule-note-text"
+                        name="NOTES[]"
+                        rows="2"
+                        placeholder="Enter note details..."
+                        required></textarea>
+                </div>
+
+                <button type="button"
+                    class="btn btn-sm btn-icon btn-light-danger btn-remove-note mt-1"
+                    title="Remove note">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        </div>`;
+
+    $("#rule_notes_container").append(item);
+    updateNoteNumbers();
+});
+
+// Remove note item
+$(document).on("click", ".btn-remove-note", function () {
+    const items = $("#rule_notes_container .rule-note-item");
+
+    if (items.length <= 1) {
+        $(this).closest(".rule-note-item").find("textarea").val("");
+        return;
+    }
+
+    $(this).closest(".rule-note-item").remove();
+    updateNoteNumbers();
+});
+
+// Update numbering
+function updateNoteNumbers() {
+    $("#rule_notes_container .rule-note-item").each(function (index) {
+        $(this).find(".badge").first().text(index + 1);
+    });
+}
+
 function datamastermdc(){
     $.ajax({
         url      : url + "ics/mastermdc/datamastermdc",
@@ -176,169 +345,370 @@ function datamastersection(){
 
             $("#resultdatasection").empty();
         },
+        
         success: function (response) {
-
             if (!response || response.responseCode !== "00") {
                 Swal.fire({
-                    icon             : 'warning',
-                    title            : 'No Records Found',
-                    text             : 'No records are available for the selected period.',
+                    icon: "warning",
+                    title: "No Records Found",
+                    text: "No records are available for the selected period.",
                     showConfirmButton: false,
-                    timer            : 2000
+                    timer: 2000
                 });
+                $("#resultdatasection").empty();
                 return;
             }
 
             const result = Array.isArray(response.responseResult) ? response.responseResult : [];
 
-            let tableResult = "";
-            for (var i in result) {
-                tableResult += "<div class='bg-white rounded p-3 mb-2 shadow-sm'>";
-                tableResult += "<div class='d-flex align-items-center'>";
-                tableResult += "<div class='me-3'>";
-                tableResult += "<span class='badge badge-light-primary fw-bold px-3 py-2'>";
-                tableResult += esc(result[i].SECTION_CODE);
-                tableResult += "</span>";
-                tableResult += "</div>";
-                tableResult += "<div class='flex-grow-1'>";
-                tableResult += "<div class='fw-bolder text-gray-900 fs-6 mb-1'>";
-                tableResult += esc(result[i].TITLE_IND);
-                tableResult += "</div>";
-                tableResult += "<div class='fst-italic text-gray-600 fs-7 mb-2'>";
-                tableResult += esc(result[i].TITLE_ENG);
-                tableResult += "</div>";
-                tableResult += "<div class='d-flex align-items-center'>";
-                tableResult += "<i class='bi bi-code-square text-primary me-2'></i>";
-                tableResult += "<span class='text-muted fs-8 me-2'>ICD Range</span>";
-                tableResult += "<span class='badge badge-light-info fw-semibold'>";
-                tableResult += esc(result[i].ICD_RANGE_TEXT);
-                tableResult += "</span>";
-                tableResult += "</div>";
+            const codingRulesData = [];
+            const escHtml = typeof esc === "function"
+                ? esc
+                : function (value) {
+                    return String(value ?? "").replace(/[&<>"']/g, function (char) {
+                        return {
+                            "&": "&amp;",
+                            "<": "&lt;",
+                            ">": "&gt;",
+                            '"': "&quot;",
+                            "'": "&#39;"
+                        }[char];
+                    });
+                };
 
-                if (result[i].CODING_RULES) {
-                    tableResult += "<div class='separator separator-dashed my-2'></div>";
-                    tableResult += "<div class='d-flex align-items-center mb-2'>";
-                    tableResult += "<i class='bi bi-journal-text text-primary me-2'></i>";
-                    tableResult += "<span class='text-muted fs-8 me-2'>Coding Rules</span>";
-                    tableResult += "</div>";
+            // PARSE CODING RULE
+            function parseRule(raw, sectionId) {
+                const rule = {
+                    SECTION_ID: sectionId
+                };
 
-                    var rules = result[i].CODING_RULES.split(";");
+                raw.split("|").forEach(function (part) {
+                    const pos = part.indexOf("=");
 
-                    for (var r = 0; r < rules.length; r++) {
-                        if (!rules[r].trim()) {
-                            continue;
-                        }
+                    if (pos < 0) return;
 
-                        var ruleData = {};
-                        var ruleParts = rules[r].split("|");
+                    const key = part.substring(0, pos).trim();
+                    const value = part.substring(pos + 1).trim();
 
-                        for (var p = 0; p < ruleParts.length; p++) {
-                            var separatorIndex = ruleParts[p].indexOf("=");
+                    rule[key] = value;
+                });
 
-                            if (separatorIndex > -1) {
-                                var key = ruleParts[p].substring(0, separatorIndex);
-                                var value = ruleParts[p].substring(separatorIndex + 1);
+                return rule;
+            }
 
-                                ruleData[key] = value;
-                            }
-                        }
+            // PARSE HIERARCHICAL NOTES
+            function parseNotes(raw) {
+                const detailMap = {};
+                const roots = [];
 
-                        tableResult += "<div class='bg-light-primary rounded p-2 mb-2'>";
-                        tableResult += "<div class='d-flex align-items-start'>";
+                if (!raw) return roots;
 
-                        if (ruleData.RULE_TYPE === "SELECT_BY_CONDITION") {
+                raw.split("~").forEach(function (entry) {
+                    if (!entry.trim()) return;
 
-                            tableResult += "<div class='rounded px-3 py-2 me-2 flex-shrink-0'>";
-                            tableResult += "<span class='text-primary fw-bold fs-8'>";
-                            tableResult += "CONDITION";
-                            tableResult += "</span>";
-                            tableResult += "</div>";
+                    const item = {
+                        id: "",
+                        parentId: "0",
+                        seq: 0,
+                        text: "",
+                        children: []
+                    };
 
-                            tableResult += "<div class='flex-grow-1'>";
+                    entry.split("^").forEach(function (field) {
+                        const pos = field.indexOf(":");
 
-                            tableResult += "<div class='text-gray-900 fw-semibold fs-8 mb-1'>";
-                            tableResult += esc(ruleData.CONDITION || "");
-                            tableResult += "</div>";
+                        if (pos < 0) return;
 
-                            if (ruleData.INSTRUCTION) {
-                                tableResult += "<div class='text-gray-700 fs-8'>";
-                                tableResult += esc(ruleData.INSTRUCTION);
-                                tableResult += "</div>";
-                            }
+                        const key = field.substring(0, pos).trim();
+                        const value = field.substring(pos + 1).trim();
 
-                            tableResult += "</div>";
+                        if (key === "ID") item.id           = value;
+                        if (key === "PARENT") item.parentId = value;
+                        if (key === "SEQ") item.seq         = parseInt(value, 10) || 0;
+                        if (key === "TEXT") item.text       = value.replace(/^\*\*/, "");
+                    });
 
-                        } else if (ruleData.RULE_TYPE) {
+                    if (item.id && item.text) {
+                        detailMap[item.id] = item;
+                    }
+                });
 
-                            tableResult += "<div class='rounded px-3 py-2 me-2 flex-shrink-0'>";
-                            tableResult += "<span class='text-primary fw-bold fs-8'>";
-                            tableResult += esc(ruleData.RULE_TYPE.replace(/_/g, " "));
-                            tableResult += "</span>";
-                            tableResult += "</div>";
+                Object.keys(detailMap).forEach(function (id) {
+                    const item = detailMap[id];
 
-                            tableResult += "<div class='flex-grow-1'>";
+                    if (item.parentId !== "0" && detailMap[item.parentId]) {
+                        detailMap[item.parentId].children.push(item);
+                    } else {
+                        roots.push(item);
+                    }
+                });
 
-                            tableResult += "<div class='text-gray-900 fw-semibold fs-8 mb-1'>";
-                            tableResult += esc(ruleData.CONDITION || "");
-                            tableResult += "</div>";
+                function sortTree(items) {
+                    items.sort(function (a, b) {
+                        return a.seq - b.seq;
+                    });
 
-                            if (ruleData.INSTRUCTION) {
-                                tableResult += "<div class='text-gray-700 fs-8'>";
-                                tableResult += esc(ruleData.INSTRUCTION);
-                                tableResult += "</div>";
-                            }
+                    items.forEach(function (item) {
+                        sortTree(item.children);
+                    });
+                }
 
-                            tableResult += "</div>";
-                        }
+                sortTree(roots);
+                return roots;
+            }
 
-                        tableResult += "</div>";
+            // RENDER NOTES
+            function renderNotes(items) {
+                let html = "";
 
-                        if (
-                            ruleData.MANDATORY === "1" ||
-                            ruleData.AGE ||
-                            ruleData.SEX
-                        ) {
+                items.forEach(function (item) {
+                    html += "<li class='mb-2'>";
+                    html += escHtml(item.text);
 
-                            tableResult += "<div class='d-flex align-items-center flex-wrap gap-2 mt-2'>";
+                    if (item.children.length) {
+                        html += "<ul class='text-gray-600 fs-8 ps-5 mt-2 mb-0'>";
+                        html += renderNotes(item.children);
+                        html += "</ul>";
+                    }
 
-                            if (ruleData.MANDATORY === "1") {
-                                tableResult += "<span class='badge badge-light-danger fw-semibold'>";
-                                tableResult += "Mandatory";
-                                tableResult += "</span>";
-                            }
+                    html += "</li>";
+                });
 
-                            if (ruleData.SEX === "L") {
-                                tableResult += "<span class='badge badge-light-primary fw-semibold'>";
-                                tableResult += "Male";
-                                tableResult += "</span>";
-                            }
+                return html;
+            }
 
-                            if (ruleData.SEX === "P") {
-                                tableResult += "<span class='badge badge-light-info fw-semibold'>";
-                                tableResult += "Female";
-                                tableResult += "</span>";
-                            }
+            // RENDER RULE CARD
+            function renderRule(rule, index) {
+                const type        = rule.RULE_TYPE || "";
+                const condition   = rule.CONDITION || rule.CONDITION_TEXT || "";
+                const instruction = rule.INSTRUCTION || rule.INSTRUCTION_TEXT || "";
+                const mandatory   = rule.MANDATORY ?? rule.IS_MANDATORY ?? "";
+                const sex         = rule.SEX ?? rule.SEX_CONDITION ?? "";
+                const age         = rule.AGE || rule.AGE_CONDITION || "";
+                const rawDetails  = (rule.SUBNOTE || "").trim();
+                const rawNote     = (rule.NOTE || "").trim();
+                const details     = parseNotes(rawDetails);
 
-                            if (ruleData.AGE) {
-                                tableResult += "<span class='badge badge-light-warning fw-semibold'>";
-                                tableResult += "Age: " + esc(ruleData.AGE);
-                                tableResult += "</span>";
-                            }
+                let html = "";
 
-                            tableResult += "</div>";
-                        }
+                html += "<div class='bg-light-primary rounded p-3 mb-2'>";
+                html += "<div class='row align-items-start g-3'>";
 
-                        tableResult += "</div>";
+                // RULE TYPE
+                html += "<div class='col-md-1 col-12'>";
+                if (type) {
+                    html += "<div class='rounded px-3 py-2'>";
+                    html += "<span class='text-primary fw-bold fs-8'>";
+                    html += escHtml(
+                        type === "SELECT_BY_CONDITION"
+                            ? "CONDITION"
+                            : type.replace(/_/g, " ")
+                    );
+                    html += "</span>";
+                    html += "</div>";
+                }
+                html += "</div>"; // RULE TYPE
+
+                // RULE CONTENT
+                html += "<div class='col-md-10 col-12'>";
+
+                // CONDITION
+                if (condition) {
+                    html += "<div class='text-gray-900 fw-bold fs-8 mb-2' style='white-space: pre-line;'>";
+                    html += escHtml(condition);
+                    html += "</div>";
+                }
+
+                // INSTRUCTION
+                if (instruction) {
+                    html += "<div class='text-gray-700 fs-8 mb-2' style='white-space: pre-line;'>";
+                    html += escHtml(instruction);
+                    html += "</div>";
+                }
+
+                // MANDATORY, SEX, AGE
+                if (String(mandatory) === "1" || age || sex) {
+                    html += "<div class='d-flex align-items-center flex-wrap gap-2 mt-2'>";
+
+                    if (String(mandatory) === "1") {
+                        html += "<span class='badge badge-light-danger fw-semibold'>Mandatory</span>";
+                    }
+
+                    if (sex === "L") {
+                        html += "<span class='badge badge-light-primary fw-semibold'>Male</span>";
+                    }
+
+                    if (sex === "P") {
+                        html += "<span class='badge badge-light-info fw-semibold'>Female</span>";
+                    }
+
+                    if (age) {
+                        html += "<span class='badge badge-light-warning fw-semibold'>";
+                        html += "Age: " + escHtml(age);
+                        html += "</span>";
+                    }
+
+                    html += "</div>";
+                }
+
+                // NOTES DETAILS
+                if (details.length) {
+                    html += "<div class='mt-3'>";
+                    html += "<div class='text-gray-700 fw-bold fs-8 mb-2'>";
+                    html += "<i class='ki-duotone ki-notepad fs-5 me-1'>";
+                    html += "<span class='path1'></span><span class='path2'></span>";
+                    html += "</i>Notes Details</div>";
+                    html += "<ul class='text-gray-700 fs-8 ps-5 mb-0'>";
+                    html += renderNotes(details);
+                    html += "</ul></div>";
+
+                } else if (rawNote) {
+                    const notes = rawNote.split("~").filter(function (note) {
+                        note = note.trim();
+                        return note && !(note.startsWith("ID:") && note.includes("^PARENT:"));
+                    });
+
+                    if (notes.length) {
+                        html += "<div class='mt-3'>";
+                        html += "<div class='text-gray-700 fw-bold fs-8 mb-2'>";
+                        html += "<i class='ki-duotone ki-notepad fs-5 me-1'>";
+                        html += "<span class='path1'></span><span class='path2'></span>";
+                        html += "</i>Notes Details</div>";
+                        html += "<ul class='text-gray-700 fs-8 ps-5 mb-0'>";
+
+                        notes.forEach(function (note) {
+                            html += "<li class='mb-1'>" + escHtml(note.trim()) + "</li>";
+                        });
+
+                        html += "</ul></div>";
                     }
                 }
 
-                tableResult += "</div>";
-                tableResult += "</div>";
-                tableResult += "</div>";
+                html += "</div>"; // RULE CONTENT
+
+                // ACTION DROPDOWN
+                html += "<div class='col-md-1 col-12 text-md-end'>";
+
+                
+
+                html += "<div class='dropdown'>";
+                html += "<button type='button' class='btn btn-sm btn-light-primary dropdown-toggle' ";
+                html += "data-bs-toggle='dropdown' data-bs-boundary='viewport' aria-expanded='false'>";
+                html += "<i class='ki-duotone ki-setting-2 fs-5 me-1'>";
+                html += "<span class='path1'></span><span class='path2'></span>";
+                html += "</i>Action</button>";
+
+                html += "<div class='dropdown-menu dropdown-menu-end'>";
+
+                html += "<a href='javascript:void(0)' class='dropdown-item btn_add_note_item' ";
+                html += "data-rule-index='" + index + "'>";
+                html += "<i class='bi bi-list-ul me-2'></i>";
+                html += "Add Notes</a>";
+
+                // EDIT
+                html += "<a href='javascript:void(0)' class='dropdown-item btn-edit-coding-rule' ";
+                html += "data-rule-index='" + index + "'>";
+                html += "<i class='bi bi-pencil-square me-2'>";
+                html += "<span class='path1'></span><span class='path2'></span>";
+                html += "</i>Edit Coding Rules</a>";
+
+                html += "<div class='separator my-2'></div>";
+
+                // DELETE
+                html += "<a href='javascript:void(0)' class='dropdown-item text-danger' ";
+                html += "data-action='delete-rule' data-rule-index='" + index + "'>";
+                html += "<i class='ki-duotone ki-trash fs-5 me-2'>";
+                html += "<span class='path1'></span><span class='path2'></span>";
+                html += "</i>Delete Rule</a>";
+
+                html += "</div>"; // Dropdown menu
+                html += "</div>"; // Dropdown
+                html += "</div>"; // ACTION
+
+                html += "</div>"; // ROW
+                html += "</div>"; // Rule card
+
+                return html;
             }
 
-            $("#resultdatasection").html(tableResult);
+            // RENDER SECTION
+            let tableResult = "";
 
+            result.forEach(function (section) {
+                tableResult += "<div class='bg-white rounded p-3 mb-5 shadow-sm'>";
+
+                // SECTION HEADER
+                tableResult += "<div class='d-flex align-items-start justify-content-between'>";
+
+                // Section information
+                tableResult += "<div class='d-flex align-items-start flex-grow-1'>";
+
+                // Section code
+                tableResult += "<div class='me-3'>";
+                tableResult += "<span class='badge badge-light-primary fw-bold px-3 py-2'>";
+                tableResult += escHtml(section.SECTION_CODE);
+                tableResult += "</span>";
+                tableResult += "</div>";
+
+                // Section titles and ICD range
+                tableResult += "<div class='flex-grow-1'>";
+
+                tableResult += "<div class='fw-bolder text-gray-900 fs-6 mb-1'>";
+                tableResult += escHtml(section.TITLE_IND);
+                tableResult += "<span class='badge badge-light-info fw-semibold ms-5'>";
+                tableResult += escHtml(section.ICD_RANGE_TEXT);
+                tableResult += "</span>";
+                tableResult += "</div>";
+
+                tableResult += "<div class='fst-italic text-gray-600 fs-7 mb-2'>";
+                tableResult += escHtml(section.TITLE_ENG);
+                tableResult += "</div>";
+
+                tableResult += "</div>"; // Section titles
+                tableResult += "</div>"; // Section information
+
+                // Add Rules button
+                tableResult += "<div class='ms-3 flex-shrink-0'>";
+                tableResult += "<a href='javascript:void(0);' ";
+                tableResult += "class='btn btn-sm btn-light-info btn-add-coding-rule' ";
+                tableResult += "data-section-id='" + section.SECTION_ID + "'>";
+                tableResult += "<i class='bi bi-plus-lg fs-7 me-1'></i>Add Rules";
+                tableResult += "</a>";
+                tableResult += "</div>"; // Add Rules button
+
+                tableResult += "</div>"; // Section header
+
+                // CODING RULES
+                if (section.CODING_RULES) {
+                    tableResult += "<div class='separator separator-dashed my-3'></div>";
+
+                    tableResult += "<div class='d-flex align-items-center mb-2'>";
+                    tableResult += "<i class='bi bi-journal-text text-primary me-2'></i>";
+                    tableResult += "<span class='text-muted fs-8'>Coding Rules</span>";
+                    tableResult += "</div>";
+
+                    section.CODING_RULES.split(";").forEach(function (raw) {
+                        if (!raw.trim()) {
+                            return;
+                        }
+
+                        const rule = parseRule(raw, section.SECTION_ID);
+                        const index = codingRulesData.length;
+
+                        // Save object for Edit and Delete
+                        codingRulesData.push(rule);
+
+                        tableResult += renderRule(rule, index);
+                    });
+                }
+
+                tableResult += "</div>"; // Section card
+            });
+
+            // SAVE DATA OUTSIDE THE AJAX CALLBACK SCOPE
+            window.codingRulesData = codingRulesData;
+
+            $("#resultdatasection").html(tableResult);
         },
         complete: function () {
             Swal.close();
@@ -436,4 +806,131 @@ $(document).on("submit", "#formeditmastermdc", function (e) {
         }
     });
     return false;
+});
+
+$(document).on("submit", "#formeditreules", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var form = $(this);
+    var url  = form.attr("action");
+
+    $.ajax({
+        url       : url,
+        data      : form.serialize(),
+        method    : "POST",
+        dataType  : "JSON",
+        cache     : false,
+        beforeSend: function () {
+            toastr.clear();
+            toastr["info"]("Sending request...", "Please wait");
+            $("#modal_edit_master_rules_btn").addClass("disabled");
+        },
+        success: function (data) {
+            if (data.responCode == "00") {
+                load();
+                $("#modal_edit_master_rules").modal("hide");
+            }
+            toastr.clear();
+            toastr[data.responHead](data.responDesc, "INFORMATION");
+        },
+        complete: function () {
+            toastr.clear();
+            $("#modal_edit_master_rules_btn").removeClass("disabled");
+        },
+        error: function () {
+            Swal.fire({
+                icon             : "error",
+                title            : "Request Failed",
+                text             : "An error occurred while processing your request.",
+                confirmButtonText: "OK"
+            });
+        }
+    });
+    return false;
+});
+
+$(document).on("submit", "#formaddrules", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var form = $(this);
+    var url  = form.attr("action");
+
+    $.ajax({
+        url       : url,
+        data      : form.serialize(),
+        method    : "POST",
+        dataType  : "JSON",
+        cache     : false,
+        beforeSend: function () {
+            toastr.clear();
+            toastr["info"]("Sending request...", "Please wait");
+            $("#modal_add_master_rules_btn").addClass("disabled");
+        },
+        success: function (data) {
+            if (data.responCode == "00") {
+                load();
+                $("#modal_add_master_rules").modal("hide");
+            }
+            toastr.clear();
+            toastr[data.responHead](data.responDesc, "INFORMATION");
+        },
+        complete: function () {
+            toastr.clear();
+            $("#modal_add_master_rules_btn").removeClass("disabled");
+        },
+        error: function () {
+            Swal.fire({
+                icon             : "error",
+                title            : "Request Failed",
+                text             : "An error occurred while processing your request.",
+                confirmButtonText: "OK"
+            });
+        }
+    });
+    return false;
+});
+
+$(document).on("submit", "#formaddrulenotes", function (e) {
+    e.preventDefault();
+
+    const button = $("#modal_add_rule_notes_btn");
+
+    button.prop("disabled", true);
+
+    $.ajax({
+        url: url + "Ics/mastermdc/savemasternotes",
+        type: "POST",
+        data: $(this).serialize(),
+        dataType: "JSON",
+
+        success: function (response) {
+            if (response.responCode === "00") {
+                $("#modal_add_rule_notes").modal("hide");
+
+                Swal.fire({
+                    icon: "success",
+                    title: "Success",
+                    text: response.responDesc
+                });
+            } else {
+                Swal.fire({
+                    icon: "info",
+                    title: "Information",
+                    text: response.responDesc
+                });
+            }
+        },
+
+        error: function () {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Failed to save notes."
+            });
+        },
+
+        complete: function () {
+            button.prop("disabled", false);
+        }
+    });
 });

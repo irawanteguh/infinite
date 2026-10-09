@@ -4,6 +4,7 @@ load();
 
 function load(){
     datamastermdc();
+    datamastersection();
 };
 
 $(document).on("click", ".btn-edit-mdc", function (e) {
@@ -142,6 +143,201 @@ function datamastermdc(){
             }
 
             $("#resultdatamastermdc").html(tableResult);
+
+        },
+        complete: function () {
+            Swal.close();
+        },
+        error: function () {
+            Swal.fire({
+                icon             : "error",
+                title            : "Request Failed",
+                text             : "An error occurred while processing your request.",
+                confirmButtonText: "OK"
+            });
+        }
+    });
+};
+
+function datamastersection(){
+    $.ajax({
+        url      : url + "ics/mastermdc/datamastersection",
+        type     : "POST",
+        dataType : "JSON",
+        beforeSend: function () {
+            Swal.fire({
+                title            : 'Processing',
+                html             : 'Please wait while the system displays the requested data.',
+                allowOutsideClick: false,
+                allowEscapeKey   : false,
+                showConfirmButton: false,
+                didOpen          : () => Swal.showLoading()
+            });
+
+            $("#resultdatasection").empty();
+        },
+        success: function (response) {
+
+            if (!response || response.responseCode !== "00") {
+                Swal.fire({
+                    icon             : 'warning',
+                    title            : 'No Records Found',
+                    text             : 'No records are available for the selected period.',
+                    showConfirmButton: false,
+                    timer            : 2000
+                });
+                return;
+            }
+
+            const result = Array.isArray(response.responseResult) ? response.responseResult : [];
+
+            let tableResult = "";
+            for (var i in result) {
+                tableResult += "<div class='bg-white rounded p-3 mb-2 shadow-sm'>";
+                tableResult += "<div class='d-flex align-items-center'>";
+                tableResult += "<div class='me-3'>";
+                tableResult += "<span class='badge badge-light-primary fw-bold px-3 py-2'>";
+                tableResult += esc(result[i].SECTION_CODE);
+                tableResult += "</span>";
+                tableResult += "</div>";
+                tableResult += "<div class='flex-grow-1'>";
+                tableResult += "<div class='fw-bolder text-gray-900 fs-6 mb-1'>";
+                tableResult += esc(result[i].TITLE_IND);
+                tableResult += "</div>";
+                tableResult += "<div class='fst-italic text-gray-600 fs-7 mb-2'>";
+                tableResult += esc(result[i].TITLE_ENG);
+                tableResult += "</div>";
+                tableResult += "<div class='d-flex align-items-center'>";
+                tableResult += "<i class='bi bi-code-square text-primary me-2'></i>";
+                tableResult += "<span class='text-muted fs-8 me-2'>ICD Range</span>";
+                tableResult += "<span class='badge badge-light-info fw-semibold'>";
+                tableResult += esc(result[i].ICD_RANGE_TEXT);
+                tableResult += "</span>";
+                tableResult += "</div>";
+
+                if (result[i].CODING_RULES) {
+                    tableResult += "<div class='separator separator-dashed my-2'></div>";
+                    tableResult += "<div class='d-flex align-items-center mb-2'>";
+                    tableResult += "<i class='bi bi-journal-text text-primary me-2'></i>";
+                    tableResult += "<span class='text-muted fs-8 me-2'>Coding Rules</span>";
+                    tableResult += "</div>";
+
+                    var rules = result[i].CODING_RULES.split(";");
+
+                    for (var r = 0; r < rules.length; r++) {
+                        if (!rules[r].trim()) {
+                            continue;
+                        }
+
+                        var ruleData = {};
+                        var ruleParts = rules[r].split("|");
+
+                        for (var p = 0; p < ruleParts.length; p++) {
+                            var separatorIndex = ruleParts[p].indexOf("=");
+
+                            if (separatorIndex > -1) {
+                                var key = ruleParts[p].substring(0, separatorIndex);
+                                var value = ruleParts[p].substring(separatorIndex + 1);
+
+                                ruleData[key] = value;
+                            }
+                        }
+
+                        tableResult += "<div class='bg-light-primary rounded p-2 mb-2'>";
+                        tableResult += "<div class='d-flex align-items-start'>";
+
+                        if (ruleData.RULE_TYPE === "SELECT_BY_CONDITION") {
+
+                            tableResult += "<div class='rounded px-3 py-2 me-2 flex-shrink-0'>";
+                            tableResult += "<span class='text-primary fw-bold fs-8'>";
+                            tableResult += "CONDITION";
+                            tableResult += "</span>";
+                            tableResult += "</div>";
+
+                            tableResult += "<div class='flex-grow-1'>";
+
+                            tableResult += "<div class='text-gray-900 fw-semibold fs-8 mb-1'>";
+                            tableResult += esc(ruleData.CONDITION || "");
+                            tableResult += "</div>";
+
+                            if (ruleData.INSTRUCTION) {
+                                tableResult += "<div class='text-gray-700 fs-8'>";
+                                tableResult += esc(ruleData.INSTRUCTION);
+                                tableResult += "</div>";
+                            }
+
+                            tableResult += "</div>";
+
+                        } else if (ruleData.RULE_TYPE) {
+
+                            tableResult += "<div class='rounded px-3 py-2 me-2 flex-shrink-0'>";
+                            tableResult += "<span class='text-primary fw-bold fs-8'>";
+                            tableResult += esc(ruleData.RULE_TYPE.replace(/_/g, " "));
+                            tableResult += "</span>";
+                            tableResult += "</div>";
+
+                            tableResult += "<div class='flex-grow-1'>";
+
+                            tableResult += "<div class='text-gray-900 fw-semibold fs-8 mb-1'>";
+                            tableResult += esc(ruleData.CONDITION || "");
+                            tableResult += "</div>";
+
+                            if (ruleData.INSTRUCTION) {
+                                tableResult += "<div class='text-gray-700 fs-8'>";
+                                tableResult += esc(ruleData.INSTRUCTION);
+                                tableResult += "</div>";
+                            }
+
+                            tableResult += "</div>";
+                        }
+
+                        tableResult += "</div>";
+
+                        if (
+                            ruleData.MANDATORY === "1" ||
+                            ruleData.AGE ||
+                            ruleData.SEX
+                        ) {
+
+                            tableResult += "<div class='d-flex align-items-center flex-wrap gap-2 mt-2'>";
+
+                            if (ruleData.MANDATORY === "1") {
+                                tableResult += "<span class='badge badge-light-danger fw-semibold'>";
+                                tableResult += "Mandatory";
+                                tableResult += "</span>";
+                            }
+
+                            if (ruleData.SEX === "L") {
+                                tableResult += "<span class='badge badge-light-primary fw-semibold'>";
+                                tableResult += "Male";
+                                tableResult += "</span>";
+                            }
+
+                            if (ruleData.SEX === "P") {
+                                tableResult += "<span class='badge badge-light-info fw-semibold'>";
+                                tableResult += "Female";
+                                tableResult += "</span>";
+                            }
+
+                            if (ruleData.AGE) {
+                                tableResult += "<span class='badge badge-light-warning fw-semibold'>";
+                                tableResult += "Age: " + esc(ruleData.AGE);
+                                tableResult += "</span>";
+                            }
+
+                            tableResult += "</div>";
+                        }
+
+                        tableResult += "</div>";
+                    }
+                }
+
+                tableResult += "</div>";
+                tableResult += "</div>";
+                tableResult += "</div>";
+            }
+
+            $("#resultdatasection").html(tableResult);
 
         },
         complete: function () {

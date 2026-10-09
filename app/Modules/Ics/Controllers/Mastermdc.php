@@ -17,7 +17,7 @@ class Mastermdc extends BaseController{
     public function index(){
         $data = $this->loadcombobox();
         return view('template/dashboard-light-aside', [
-            'contents' => view('Modules\Ics\Views\v_mastermdc',$data)
+            'contents' => view('Modules\Ics\Views\v_mastermdcdetail',$data)
         ]);
     }
 
@@ -34,6 +34,23 @@ class Mastermdc extends BaseController{
 
     public function datamastermdc(){
         $result = $this->md->datamastermdc();
+
+        if (!empty($result)) {
+            $json["responseCode"]   = "00";
+            $json["responseHead"]   = "success";
+            $json["responseDesc"]   = "Data found";
+            $json["responseResult"] = $result;
+        } else {
+            $json["responseCode"]   = "01";
+            $json["responseHead"]   = "info";
+            $json["responseDesc"]   = "No data found";
+        }
+
+        return response()->setJSON($json);
+    }
+
+    public function datamastersection(){
+        $result = $this->md->datamastersection();
 
         if (!empty($result)) {
             $json["responseCode"]   = "00";

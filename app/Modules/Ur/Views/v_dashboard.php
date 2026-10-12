@@ -191,3 +191,34 @@
         </div>
     </div>
 </div>
+
+<div class="col-xl-12 mb-5">
+    <div class="row">
+        <div class="col-xl-9">
+            <div class="card card-flush">
+                <div class="card-header pt-5">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label fw-bolder fs-3 mb-1">Monthly Hospital Service Cost Distribution InPatient</span>
+                        <span class="text-muted mt-1 fw-bold fs-7">Monthly breakdown of hospital service costs by tariff component</span>
+                    </h3>
+                </div>
+                <div class="card-body py-3">
+                    <div class="card-rounded-bottom" id="costdistribution"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3">
+            <div class="card card-flush">
+                <div class="card-header pt-5">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label fw-bolder fs-3 mb-1">Cost Component Distribution</span>
+                        <span class="text-muted mt-1 fw-bold fs-7">Distribusi biaya per komponen</span>
+                    </h3>
+                </div>
+                <div class="card-body py-3">
+                    <div class="card-rounded-bottom" id="costcomponentyear"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

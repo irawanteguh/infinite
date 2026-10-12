@@ -1,3 +1,17 @@
+<div class="col-xl-12 mb-5">
+    <div class="card card-flush">
+        <div class="card-header pt-5">
+            <h3 class="card-title align-items-start flex-column">
+                <span class="card-label fw-bolder fs-3 mb-1">Severity Level I Inpatient</span>
+                <span class="text-muted mt-1 fw-bold fs-7">Data aktual kasus rawat inap dengan tingkat keparahan I</span>
+            </h3>
+        </div>
+        <div class="card-body py-3">
+            <div class="card-rounded-bottom" id="severitylevelmountly"></div>
+        </div>
+    </div>
+</div>
+
 <div class="card">
     <div class="card-header border-0 pt-6">
         <div class="card-title">
@@ -20,7 +34,6 @@
                         <th class="text-start rounded-start ps-4">#</th>
                         <th>SEP Number</th>
                         <th>Card Number</th>
-                        <th>Medical Record</th>
                         <th>Patient Name</th>
                         <th>DPJP</th>
                         <th>Diagnosis</th>

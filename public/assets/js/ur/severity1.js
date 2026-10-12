@@ -40,46 +40,56 @@ function rawdata(){
                 return;
             }
 
-            const result = Array.isArray(response.responseResult) ? response.responseResult : [];
+            const result       = Array.isArray(response.responseResult) ? response.responseResult : [];
+            const bulanLengkap = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+            const namaBulan    = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+            const jmlkunjungan = aggregate(result, "count", "periode",["sep"]);
 
-            let tableResultInpatient = "";
-            let noInpatient = 1;
+            const mapKunjungan    = {};
 
+            jmlkunjungan.forEach(function (item) {
+                mapKunjungan[item.periode] = item;
+            });
+
+            const chartdatakunjungan = bulanLengkap.map(function (bulan, index) {
+                return {
+                    periode: namaBulan[index],
+                    value1 : mapKunjungan[bulan]?.sep || 0
+                };
+            });
+
+            let tableResult = "";
             for (var i in result) {
 
-                let btnaction = "";
-                let no = result[i].ptd == 1 ? noInpatient++ : noOutpatient++;
+                let btnaction ="";
 
-                let row = "";
-                row += "<tr>";
-                row += "<td class='text-start ps-4'>" + no + "</td>";
-                row += "<td>" + (result[i].sep || "") + "</td>";
-                row += "<td>" + (result[i].nokartu || "") + "</td>";
-                row += "<td>" + (result[i].mrn || "") + "</td>";
-                row += "<td>" + (result[i].nama_pasien || "") + "</td>";
-                row += "<td>" + (result[i].dpjp || "") + "</td>";
-                row += "<td>" + (result[i].diaglist || "").split(";").join("<br>") + "</td>";
-                row += "<td>" + (result[i].proclist || "").split(";").join("<br>") + "</td>";
-                row += "<td>" + (result[i].admission_date || "") + "</td>";
-                row += "<td>" + (result[i].discharge_date || "") + "</td>";
-                row += "<td>" + (result[i].los || "") + "</td>";
-                row += "<td class='text-end'>" + todesimal(result[i].tarif_rs) + "</td>";
-                row += "<td class='text-end'>" + todesimal(result[i].total_tarif) + "</td>";
-                row += "<td class='text-end'>" + todesimal(result[i].idrg_total_tarif) + "</td>";
-                row += "<td class='text-end'>" + todesimal((parseFloat(result[i].total_tarif) || 0) - (parseFloat(result[i].tarif_rs) || 0)) + "</td>";
-                row += "<td class='text-end'>";
-                row += "<div class='btn-group'>";
-                row += "<button type='button' class='btn btn-light-primary dropdown-toggle btn-sm' data-bs-toggle='dropdown'>Actions</button>";
-                row += "<div class='dropdown-menu'>" + btnaction + "</div>";
-                row += "</div>";
-                row += "</td>";
-                row += "</tr>";
-
-                tableResultInpatient += row;
+                tableResult += "<tr>";
+                tableResult += "<td class='text-start ps-4'>"+(parseInt(i) + 1)+"</td>";
+                tableResult += "<td>" + (result[i].sep || "") + "</td>";
+                tableResult += "<td>" + (result[i].nokartu || "") + "</td>";
+                tableResult += "<td><div>" + (result[i].mrn || "") + "</div><div>" + (result[i].nama_pasien || "") + "</div></td>";
+                tableResult += "<td>" + (result[i].dpjp || "") + "</td>";
+                tableResult += "<td>" + (result[i].diaglist || "").split(";").join("<br>") + "</td>";
+                tableResult += "<td>" + (result[i].proclist || "").split(";").join("<br>") + "</td>";
+                tableResult += "<td>" + (result[i].admission_date || "") + "</td>";
+                tableResult += "<td>" + (result[i].discharge_date || "") + "</td>";
+                tableResult += "<td>" + (result[i].los || "") + "</td>";
+                tableResult += "<td class='text-end'>" + todesimal(result[i].tarif_rs) + "</td>";
+                tableResult += "<td class='text-end'>" + todesimal(result[i].total_tarif) + "</td>";
+                tableResult += "<td class='text-end'>" + todesimal(result[i].idrg_total_tarif) + "</td>";
+                tableResult += "<td class='text-end'>" + todesimal((parseFloat(result[i].total_tarif) || 0) - (parseFloat(result[i].tarif_rs) || 0)) + "</td>";
+                tableResult += "<td class='text-end'>";
+                tableResult += "<div class='btn-group'>";
+                tableResult += "<button type='button' class='btn btn-light-primary dropdown-toggle btn-sm' data-bs-toggle='dropdown'>Actions</button>";
+                tableResult += "<div class='dropdown-menu'>" + btnaction + "</div>";
+                tableResult += "</div>";
+                tableResult += "</td>";
+                tableResult += "</tr>";
             }
 
-            $("#resultrawdatainpatient").html(tableResultInpatient);
+            renderchartarea("severitylevelmountly",chartdatakunjungan,"Admission Date","Jumlah Kasus",["Jumlah Kunjungan"],["value1"],null,"","value1","Rata-rata Kasus",null);
 
+            $("#resultrawdatainpatient").html(tableResult);
             initDataTable("#rawdatainpatient_table","#searchtable",10);
         },
         complete: function () {

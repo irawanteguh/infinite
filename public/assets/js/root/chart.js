@@ -141,14 +141,19 @@ function renderChartStackedBar(elementId,categories,series,titleX = "",titleY = 
         yaxis: {
             title: {
                 text: titleY
+            },
+            labels: {
+                formatter: function (value) {
+                    return value.toLocaleString('id-ID');
+                }
             }
         },
 
         plotOptions: {
             bar: {
-                horizontal: options.horizontal || false,
-                columnWidth: options.columnWidth || "55%",
-                borderRadius: options.borderRadius || 4,
+                horizontal             : options.horizontal || false,
+                columnWidth            : options.columnWidth || "55%",
+                borderRadius           : options.borderRadius || 4,
                 borderRadiusApplication: "end"
             }
         },
@@ -230,12 +235,13 @@ function renderchartpie(name, data) {
     const options = {
         chart: {
             type: "donut",
-            height: 395
+            height: 385
         },
         labels: labels,
         series: series,
         legend: {
-            position: "bottom"
+            position: "bottom",
+            show: false
         },
         dataLabels: {
             enabled: true,

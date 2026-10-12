@@ -30,7 +30,8 @@ class Severity1Model extends Model{
         $query = "
                     select a.ptd, los, mrn, nama_pasien, sep, nokartu, dpjp, diaglist, proclist, tarif_rs, total_tarif, idrg_total_tarif,
                            DATE_FORMAT(admission_date, '%d.%m.%Y') AS admission_date,
-                           DATE_FORMAT(discharge_date, '%d.%m.%Y') AS discharge_date
+                           DATE_FORMAT(discharge_date, '%d.%m.%Y') AS discharge_date,
+                           lpad(month(a.discharge_date), 2, '0') as periode
                     from dt01_bpjs_ur_dt a
                     where a.los > 7
                     and   a.sl='I'

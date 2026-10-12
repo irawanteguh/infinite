@@ -52,8 +52,7 @@ function rawdata(){
                 tableResult += "<td class='text-start ps-4'>"+(parseInt(i) + 1)+"</td>";
                 tableResult += "<td>" + (result[i].sep || "") + "</td>";
                 tableResult += "<td>" + (result[i].nokartu || "") + "</td>";
-                tableResult += "<td>" + (result[i].mrn || "") + "</td>";
-                tableResult += "<td>" + (result[i].nama_pasien || "") + "</td>";
+                tableResult += "<td><div>" + (result[i].mrn || "") + "</div><div>" + (result[i].nama_pasien || "") + "</div></td>";
                 tableResult += "<td>" + (result[i].dpjp || "") + "</td>";
                 tableResult += "<td>" + (result[i].diaglist || "").split(";").join("<br>") + "</td>";
                 tableResult += "<td>" + (result[i].proclist || "").split(";").join("<br>") + "</td>";
@@ -61,6 +60,10 @@ function rawdata(){
                 tableResult += "<td>" + (result[i].discharge_date || "") + "</td>";
                 tableResult += "<td>" + (result[i].los || "") + "</td>";
                 tableResult += "<td>" + (result[i].sl || "") + "</td>";
+                tableResult += "<td class='text-end'>" + todesimal(result[i].tarif_rs) + "</td>";
+                tableResult += "<td class='text-end'>" + todesimal(result[i].total_tarif) + "</td>";
+                tableResult += "<td class='text-end'>" + todesimal(result[i].idrg_total_tarif) + "</td>";
+                tableResult += "<td class='text-end'>" + todesimal((parseFloat(result[i].total_tarif) || 0) - (parseFloat(result[i].tarif_rs) || 0)) + "</td>";
                 tableResult += "<td>" + (result[i].case_notes || "") + "</td>";
                 tableResult += "<td class='text-end'>";
                 tableResult += "<div class='btn-group'>";

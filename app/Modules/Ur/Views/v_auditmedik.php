@@ -20,7 +20,6 @@
                         <th class="text-start rounded-start ps-4">#</th>
                         <th>SEP Number</th>
                         <th>Card Number</th>
-                        <th>Medical Record</th>
                         <th>Patient Name</th>
                         <th>DPJP</th>
                         <th>Diagnosis</th>
@@ -29,6 +28,10 @@
                         <th>Discharge Date</th>
                         <th>LOS</th>
                         <th>SL</th>
+                        <th class="text-end">Hospital Cost</th>
+                        <th class="text-end">INA-CBG</th>
+                        <th class="text-end">iDRG</th>
+                        <th class="text-end">Difference</th>
                         <th>Notes Case</th>
                         <th class="text-end rounded-end pe-4">Actions</th>
                     </tr>

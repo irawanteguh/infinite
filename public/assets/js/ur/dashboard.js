@@ -165,7 +165,7 @@ function dataraweklaim(){
             setStatusSelisih("#selisihidrg", selisihRSIDRG);
 
             renderchartarea("trenkunjungan",chartdatakunjungan,"Discharge Date","InPatient",["Rawat Inap", "Rawat Jalan"],["value1", "value2"],true,"OutPatient","","",null);
-            renderchartarea("trenpendapatan",chartpendapatan,"Discharge Date","INACBG",["Tarif Ina-Cbg","Tarif IDRG"],["value1","value2"],true,"IDRG","","",null);
+            renderchartarea("trenpendapatan",chartpendapatan,"Discharge Date","Pendapatan",["Tarif Ina-Cbg","Tarif IDRG"],["value1","value2"],null,"","","",null);
             renderchartpie("severitylevelyear", chartseveritylevel);
 
             renderChartStackedBar(

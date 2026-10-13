@@ -41,19 +41,48 @@ function rawdata(){
                 return;
             }
 
-            const result = Array.isArray(response.responseResult) ? response.responseResult : [];
+            const result       = Array.isArray(response.responseResult) ? response.responseResult : [];
+            const bulanLengkap = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+            const namaBulan    = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
 
-            let tableResultInpatient = "";
-            let tableResultOutpatient = "";
-            let noInpatient = 1;
-            let noOutpatient = 1;
+            const selisihpendapatanRI = aggregate(
+                result.filter(item => String(item.ptd).trim() === "1"),
+                "sum",
+                "periode",
+                ["selisih"]
+            );
+
+            const selisihpendapatanRJ = aggregate(
+                result.filter(item => String(item.ptd).trim() === "2"),
+                "sum",
+                "periode",
+                ["selisih"]
+            );
+
+            const mapPendapatanRI       = {};
+            const mapPendapatanRJ       = {};
+            let   totalselisihRI        = 0;
+            let   totalselisihRJ        = 0;
+            let   tableResultInpatient  = "";
+            let   tableResultOutpatient = "";
+            let   noInpatient           = 1;
+            let   noOutpatient          = 1;
 
             for (var i in result) {
+                const item    = result[i];
+                const ptd     = String(item.ptd ?? "").trim();
+                const selisih = (parseFloat(item.selisih) || 0);
+
+                if (ptd === "1") {
+                    totalselisihRI += selisih;
+                } else if (ptd === "2") {
+                    totalselisihRJ += selisih;
+                }
 
                 let btnaction = "";
-                let no = result[i].ptd == 1 ? noInpatient++ : noOutpatient++;
-
-                let row = "";
+                let row       = "";
+                let no        = result[i].ptd == 1 ? noInpatient++ : noOutpatient++;
+               
                 row += "<tr>";
                 row += "<td class='text-start ps-4'>" + no + "</td>";
                 row += "<td>" + (result[i].sep || "") + "</td>";
@@ -77,15 +106,33 @@ function rawdata(){
                 row += "</td>";
                 row += "</tr>";
 
-    if (result[i].ptd == 1) {
-        tableResultInpatient += row;
-    } else if (result[i].ptd == 2) {
-        tableResultOutpatient += row;
-    }
-}
+                if (result[i].ptd == 1) {
+                    tableResultInpatient += row;
+                } else if (result[i].ptd == 2) {
+                    tableResultOutpatient += row;
+                }
+            }
 
-$("#resultrawdatainpatient").html(tableResultInpatient);
-$("#resultrawdataoutpatient").html(tableResultOutpatient);
+            selisihpendapatanRI.forEach(function (item) {
+                mapPendapatanRI[String(item.periode).trim()] = item;
+            });
+
+            selisihpendapatanRJ.forEach(function (item) {
+                mapPendapatanRJ[String(item.periode).trim()] = item;
+            });
+
+            const chartpendapatan = bulanLengkap.map(function (bulan, index) {
+                return {
+                    periode: namaBulan[index],
+                    value1 : mapPendapatanRI[bulan]?.selisih || 0,
+                    value2 : mapPendapatanRJ[bulan]?.selisih || 0
+                };
+            });
+
+            renderchartarea("trenpendapatan", chartpendapatan, "Discharge Date", "Selisih Pendapatan (Rp)", ["InPatient", "OutPatient"], ["value1", "value2"], 1, "Selisih Rawat Jalan (Rp)", null, "Rata-rata Selisih", null);
+
+            $("#resultrawdatainpatient").html(tableResultInpatient);
+            $("#resultrawdataoutpatient").html(tableResultOutpatient);
 
             initDataTable("#rawdatainpatient_table","#searchtable",10);
             initDataTable("#rawdataoutpatient_table","#searchtable",10);

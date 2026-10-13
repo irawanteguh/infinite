@@ -29,8 +29,11 @@ class TarifnegatifModel extends Model{
     function rawdata($koders,$periode){
         $query = "
                     select a.ptd, mrn, nama_pasien, sep, nokartu, dpjp, diaglist, proclist, tarif_rs, total_tarif, idrg_total_tarif,
-                           DATE_FORMAT(admission_date, '%d.%m.%Y') AS admission_date,
-                           DATE_FORMAT(discharge_date, '%d.%m.%Y') AS discharge_date
+                            lpad(month(a.discharge_date), 2, '0') as periode,
+                            DATE_FORMAT(admission_date, '%d.%m.%Y') AS admission_date,
+                            DATE_FORMAT(discharge_date, '%d.%m.%Y') AS discharge_date,
+                            ABS(total_tarif - tarif_rs) AS selisih
+
                     from dt01_bpjs_ur_dt a
                     where a.tarif_rs > a.total_tarif
                     and   a.kode_rs='".$koders."'

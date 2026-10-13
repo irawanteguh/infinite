@@ -28,45 +28,44 @@ class DashboardModel extends Model{
 
     function dataraweklaim($koders,$periode){
         $query = "
-                    select a.sep, kelas_rawat, sl, ptd, tarif_rs, total_tarif, idrg_total_tarif, lpad(month(a.discharge_date), 2, '0') as periode
-                    from dt01_bpjs_ur_dt a
-                    where a.kode_rs='".$koders."'
-                    and   year(a.discharge_date) = " . $periode;
-
-        $recordset = $this->db->query($query);
-        return $recordset->getResult();
-    }
-
-    function detailtarif($koders,$periode){
-        $query = "
-                        SELECT
-                            LPAD(MONTH(a.discharge_date), 2, '0') AS periode,
-                            SUM(a.PROSEDUR_NON_BEDAH)   AS prosedurnonbedah,
-                            SUM(a.PROSEDUR_BEDAH)       AS prosedurbedah,
-                            SUM(a.KONSULTASI)           AS konsultasi,
-                            SUM(a.TENAGA_AHLI)          AS tenagaahli,
-                            SUM(a.KEPERAWATAN)          AS keperawatan,
-                            SUM(a.PENUNJANG)            AS penunjang,
-                            SUM(a.RADIOLOGI)            AS radiologi,
-                            SUM(a.LABORATORIUM)         AS laboratorium,
-                            SUM(a.PELAYANAN_DARAH)      AS pelayanandarah,
-                            SUM(a.REHABILITASI)         AS rehabilitasi,
-                            SUM(a.KAMAR_AKOMODASI)      AS kamarakomodasi,
-                            SUM(a.RAWAT_INTENSIF)       AS rawatintensif,
-                            SUM(a.OBAT)                 AS obat,
-                            SUM(a.ALKES)                AS alkes,
-                            SUM(a.BMHP)                 AS bmhp,
-                            SUM(a.SEWA_ALAT)            AS sewaalat,
-                            SUM(a.OBAT_KRONIS)          AS obatkronis,
-                            SUM(a.OBAT_KEMO)            AS obatkemo
-                        FROM dt01_bpjs_ur_dt a
-                        WHERE a.discharge_date IS NOT null
-                        and   a.ptd='1'
-                        and   a.kode_rs='".$koders."'
-                        and   year(a.discharge_date) = ".$periode."
-                        GROUP BY MONTH(a.discharge_date)
-                        ORDER BY MONTH(a.discharge_date);
-                    ";
+                    SELECT
+                        LPAD(MONTH(a.discharge_date), 2, '0') AS periode,
+                        a.ptd,
+                        a.sl,
+                        COUNT(*) AS jumlah_kasus,
+                        SUM(a.tarif_rs) AS tarif_rs,
+                        SUM(a.total_tarif) AS total_tarif,
+                        SUM(a.idrg_total_tarif) AS idrg_total_tarif,
+                        SUM(a.prosedur_non_bedah) AS prosedur_non_bedah,
+                        SUM(a.prosedur_bedah) AS prosedur_bedah,
+                        SUM(a.konsultasi) AS konsultasi,
+                        SUM(a.tenaga_ahli) AS tenaga_ahli,
+                        SUM(a.keperawatan) AS keperawatan,
+                        SUM(a.penunjang) AS penunjang,
+                        SUM(a.radiologi) AS radiologi,
+                        SUM(a.laboratorium) AS laboratorium,
+                        SUM(a.pelayanan_darah) AS pelayanan_darah,
+                        SUM(a.rehabilitasi) AS rehabilitasi,
+                        SUM(a.kamar_akomodasi) AS kamar_akomodasi,
+                        SUM(a.rawat_intensif) AS rawat_intensif,
+                        SUM(a.obat) AS obat,
+                        SUM(a.alkes) AS alkes,
+                        SUM(a.bmhp) AS bmhp,
+                        SUM(a.sewa_alat) AS sewa_alat,
+                        SUM(a.obat_kronis) AS obat_kronis,
+                        SUM(a.obat_kemo) AS obat_kemo
+                    FROM dt01_bpjs_ur_dt a
+                    WHERE  a.kode_rs = '".$koders."'
+                    AND year(a.discharge_date) = ".$periode."
+                    GROUP BY
+                        MONTH(a.discharge_date),
+                        a.ptd,
+                        a.sl
+                    ORDER BY
+                        MONTH(a.discharge_date),
+                        a.ptd,
+                        a.sl;
+                ";
 
         $recordset = $this->db->query($query);
         return $recordset->getResult();

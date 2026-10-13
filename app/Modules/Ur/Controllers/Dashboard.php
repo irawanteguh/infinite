@@ -23,28 +23,8 @@ class Dashboard extends BaseController{
     }
 
     public function dataraweklaim(){
-        $periode  = request()->getPost('selectperiode');
-
-        $result = $this->md->dataraweklaim($this->session->get('koders'),$periode);
-
-        if (!empty($result)) {
-            $json["responseCode"]   = "00";
-            $json["responseHead"]   = "success";
-            $json["responseDesc"]   = "Data found";
-            $json["responseResult"] = $result;
-        } else {
-            $json["responseCode"]   = "01";
-            $json["responseHead"]   = "info";
-            $json["responseDesc"]   = "No data found";
-        }
-
-        return response()->setJSON($json);
-    }
-
-    public function detailtarif(){
-        $periode  = request()->getPost('selectperiode');
-
-        $result = $this->md->detailtarif($this->session->get('koders'),$periode);
+        $periode = request()->getPost('selectperiode');
+        $result  = $this->md->dataraweklaim($this->session->get('koders'),$periode);
 
         if (!empty($result)) {
             $json["responseCode"]   = "00";

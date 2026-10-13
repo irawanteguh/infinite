@@ -1,10 +1,9 @@
 dataraweklaim();
-detailtarif();
 
 $('#selectperiode').on('change', function () {
     dataraweklaim();
-    detailtarif();
 });
+
 
 function dataraweklaim(){
     let selectperiode = $("select[name='selectperiode']").val();
@@ -40,208 +39,23 @@ function dataraweklaim(){
             const bulanLengkap = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
             const namaBulan    = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
 
-            const jmlkunjungan  = aggregate(result, "count", "periode",["sep"]);
-            const jmlpendapatan = aggregate(result,"sum","periode",["total_tarif", "idrg_total_tarif"]);
-
-            const severityMap = {
-                // "0"  : "Rawat Jalan",
-                "I"  : "Severity I",
-                "II" : "Severity II",
-                "III": "Severity III"
-            };
-
-            const mapKunjungan     = {};
-            const mapPendapatan    = {};
-            const severityCount    = {};
-            const severityMonthly  = {};
-
+            // Total keseluruhan
             let totalKunjungan = 0;
             let totalTarifRS   = 0;
             let totalINACBG    = 0;
             let totalIDRG      = 0;
 
-            result.forEach(function (item) {
-                totalKunjungan += 1;
-                totalTarifRS   += parseFloat(item.tarif_rs) || 0;
-                totalINACBG    += parseFloat(item.total_tarif) || 0;
-                totalIDRG      += parseFloat(item.idrg_total_tarif) || 0;
+            // Total InPatient (PTD = 1)
+            let kunjunganRI = 0;
+            let tarifRSRI   = 0;
+            let inaCBGRI    = 0;
+            let idrgRI      = 0;
 
-                const periode = String(item.periode ?? "").trim();
-                const sl      = String(item.sl ?? "").trim();
-                const ptd     = String(item.ptd ?? "").trim();
-
-                // Hitung kunjungan berdasarkan jenis pelayanan
-                if (!mapKunjungan[periode]) {
-                    mapKunjungan[periode] = {
-                        rawatInap : 0,
-                        rawatJalan: 0
-                    };
-                }
-
-                if (ptd === "1") {
-                    mapKunjungan[periode].rawatInap++;
-                } else if (ptd === "2") {
-                    mapKunjungan[periode].rawatJalan++;
-                }
-
-                // Proses severity tetap seperti sebelumnya
-                if (!severityMap[sl]) return;
-
-                severityCount[sl] = (severityCount[sl] || 0) + 1;
-
-                if (!severityMonthly[periode]) {
-                    severityMonthly[periode] = {
-                        "0"  : 0,
-                        "I"  : 0,
-                        "II" : 0,
-                        "III": 0
-                    };
-                }
-
-                severityMonthly[periode][sl] += 1;
-            });
-
-            jmlpendapatan.forEach(function (item) {
-                mapPendapatan[item.periode] = item;
-            });
-
-
-            const chartdatakunjungan = bulanLengkap.map(function (bulan, index) {
-                const data = mapKunjungan[bulan] || {
-                    rawatInap : 0,
-                    rawatJalan: 0
-                };
-
-                return {
-                    periode: namaBulan[index],
-                    value1 : data.rawatInap,
-                    value2 : data.rawatJalan
-                };
-            });
-            
-            const chartpendapatan = bulanLengkap.map(function (bulan, index) {
-                return {
-                    periode: namaBulan[index],
-                    value1 : mapPendapatan[bulan]?.total_tarif || 0,
-                    value2 : mapPendapatan[bulan]?.idrg_total_tarif || 0
-                };
-            });
-
-            const chartseveritylevel = Object.keys(severityMap).filter(function (sl) {return severityCount[sl] > 0;}).map(function (sl) {
-                return {
-                    category: severityMap[sl],
-                    value   : severityCount[sl]
-                };
-            });
-
-            const chartDataSeverityMonthly = bulanLengkap.map(function(bulan, index) {
-                const data = severityMonthly[bulan] || {
-                    "0"  : 0,
-                    "I"  : 0,
-                    "II" : 0,
-                    "III": 0
-                };
-
-                return {
-                    periode: namaBulan[index],
-                    value_1: data["0"],
-                    value_2: data["I"],
-                    value_3: data["II"],
-                    value_4: data["III"]
-                };
-            });
-
-            const selisihRSINACBG = totalINACBG - totalTarifRS;
-            const selisihRSIDRG   = totalIDRG - totalTarifRS;
-
-            $("#jmlkunjungan").text(new Intl.NumberFormat("id-ID").format(totalKunjungan));
-            $("#jmltarifrs").text(todesimal(totalTarifRS));
-            $("#jmlinacbg").text(todesimal(totalINACBG));
-            $("#selisihinacbg").text(todesimal(selisihRSINACBG));
-            $("#jmlidrg").text(todesimal(totalIDRG));
-            $("#selisihidrg").text(todesimal(selisihRSIDRG));
-
-            setStatusSelisih("#selisihinacbg", selisihRSINACBG);
-            setStatusSelisih("#selisihidrg", selisihRSIDRG);
-
-            renderchartarea("trenkunjungan",chartdatakunjungan,"Discharge Date","InPatient",["Rawat Inap", "Rawat Jalan"],["value1", "value2"],true,"OutPatient","","",null);
-            renderchartarea("trenpendapatan",chartpendapatan,"Discharge Date","Pendapatan",["Tarif Ina-Cbg","Tarif IDRG"],["value1","value2"],null,"","","",null);
-            renderchartpie("severitylevelyear", chartseveritylevel);
-
-            renderChartStackedBar(
-                "severitylevelmountly",
-                chartDataSeverityMonthly.map(item => item.periode),
-                [
-                    // {
-                    //     name: "Rawat Jalan",
-                    //     data: chartDataSeverityMonthly.map(item => item.value_1)
-                    // },
-                    {
-                        name: "Severity I",
-                        data: chartDataSeverityMonthly.map(item => item.value_2)
-                    },
-                    {
-                        name: "Severity II",
-                        data: chartDataSeverityMonthly.map(item => item.value_3)
-                    },
-                    {
-                        name: "Severity III",
-                        data: chartDataSeverityMonthly.map(item => item.value_4)
-                    }
-                ],
-                "Discharge Date",
-                "Jumlah Kasus"
-            );
-        },
-        complete: function () {
-            Swal.close();
-        },
-        error: function () {
-            Swal.fire({
-                icon             : "error",
-                title            : "Request Failed",
-                text             : "An error occurred while processing your request.",
-                confirmButtonText: "OK"
-            });
-        }
-    });
-};
-
-function detailtarif(){
-    let selectperiode = $("select[name='selectperiode']").val();
-    $.ajax({
-        url      : url + "ur/dashboard/detailtarif",
-        data     : {selectperiode:selectperiode},
-        type     : "POST",
-        dataType : "JSON",
-        beforeSend: function () {
-            Swal.fire({
-                title            : 'Processing',
-                html             : 'Please wait while the system displays the requested data.',
-                allowOutsideClick: false,
-                allowEscapeKey   : false,
-                showConfirmButton: false,
-                didOpen          : () => Swal.showLoading()
-            });
-        },
-        success: function (response) {
-
-            if (!response || response.responseCode !== "00") {
-                Swal.fire({
-                    icon             : 'warning',
-                    title            : 'No Records Found',
-                    text             : 'No records are available for the selected period.',
-                    showConfirmButton: false,
-                    timer            : 2000
-                });
-                return;
-            }
-
-            const result       = Array.isArray(response.responseResult) ? response.responseResult : [];
-            const bulanLengkap = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
-            const namaBulan    = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
-
-            const costMonthly = {};
+            // Total OutPatient (PTD = 2)
+            let kunjunganRJ = 0;
+            let tarifRSRJ   = 0;
+            let inaCBGRJ    = 0;
+            let idrgRJ      = 0;
 
             const costComponents = [
                 { field: "prosedurenonbedah", name: "Prosedur Non-Bedah" },
@@ -264,60 +78,223 @@ function detailtarif(){
                 { field: "obatkemo",         name: "Obat Kemo" }
             ];
 
-            result.forEach(function (item) {
-                const periode = String(item.periode ?? "").trim();
+            const mapKunjunganRI      = {};
+            const mapKunjunganRJ      = {};
+            const mapPendapatanRI     = {};
+            const mapPendapatanRJ     = {};
+            const mapPendapatanInacbg = {};
+            const mapPendapatanIdrg   = {};
+            const mapSeverityLevelI   = {};
+            const mapSeverityLevelII  = {};
+            const mapSeverityLevelIII = {};
+            const mapCostDistribution = {};
 
-                if (!costMonthly[periode]) {
-                    costMonthly[periode] = {};
-
-                    costComponents.forEach(function (component) {
-                        costMonthly[periode][component.field] = 0;
-                    });
-                }
-
-                costComponents.forEach(function (component) {
-                    costMonthly[periode][component.field] +=
-                        parseFloat(item[component.field]) || 0;
-                });
+            costComponents.forEach(function (item) {
+                mapCostDistribution[item.field] = {};
             });
 
-            const chartDataCostMonthly = bulanLengkap.map(function (bulan, index) {
-                const data = costMonthly[bulan] || {};
+            for (const item of result) {
+                const periode = String(item.periode ?? "").trim();
+                const ptd     = String(item.ptd ?? "").trim();
+                const sl      = String(item.sl ?? "").trim();
+                const jumlah  = parseInt(item.jumlah_kasus, 10) || 0;
+                const tarifRS = parseFloat(item.tarif_rs) || 0;
+                const inaCBG  = parseFloat(item.total_tarif) || 0;
+                const idrg    = parseFloat(item.idrg_total_tarif) || 0;
 
-                const row = {
+                // Total keseluruhan
+                totalKunjungan += jumlah;
+                totalTarifRS   += tarifRS;
+                totalINACBG    += inaCBG;
+                totalIDRG      += idrg;
+
+                mapPendapatanInacbg[periode] = (mapPendapatanInacbg[periode] || 0) + inaCBG;
+                mapPendapatanIdrg[periode]   = (mapPendapatanIdrg[periode] || 0) + idrg;
+
+                if (ptd === "1") {
+                    // InPatient
+                    kunjunganRI += jumlah;
+                    tarifRSRI   += tarifRS;
+                    inaCBGRI    += inaCBG;
+                    idrgRI      += idrg;
+
+                    mapKunjunganRI[periode] = (mapKunjunganRI[periode] || 0) + jumlah;
+                    mapPendapatanRI[periode] = (mapPendapatanRI[periode] || 0) + inaCBG;
+
+                    if (sl === "I") {
+                        mapSeverityLevelI[periode] =
+                            (mapSeverityLevelI[periode] || 0) + jumlah;
+
+                    } else if (sl === "II") {
+                        mapSeverityLevelII[periode] =
+                            (mapSeverityLevelII[periode] || 0) + jumlah;
+
+                    } else if (sl === "III") {
+                        mapSeverityLevelIII[periode] =
+                            (mapSeverityLevelIII[periode] || 0) + jumlah;
+                    }
+
+                    costComponents.forEach(function (component) {
+                        const nilaiBiaya = parseFloat(item[component.field]) || 0;
+
+                        mapCostDistribution[component.field][periode] =
+                            (mapCostDistribution[component.field][periode] || 0) + nilaiBiaya;
+                    });
+
+                } else if (ptd === "2") {
+                    // OutPatient
+                    kunjunganRJ += jumlah;
+                    tarifRSRJ   += tarifRS;
+                    inaCBGRJ    += inaCBG;
+                    idrgRJ      += idrg;
+
+                    mapKunjunganRJ[periode] = (mapKunjunganRJ[periode] || 0) + jumlah;
+                    mapPendapatanRJ[periode] = (mapPendapatanRJ[periode] || 0) + inaCBG;
+                }   
+                
+                
+            }
+
+            // Selisih total
+            const selisihRSINACBG = totalINACBG - totalTarifRS;
+            const selisihRSIDRG   = totalIDRG - totalTarifRS;
+
+            // Selisih InPatient
+            const selisihINACBGRI = inaCBGRI - tarifRSRI;
+            const selisihIDRGRI   = idrgRI - tarifRSRI;
+
+            // Selisih OutPatient
+            const selisihINACBGRJ = inaCBGRJ - tarifRSRJ;
+            const selisihIDRGRJ   = idrgRJ - tarifRSRJ;
+
+            const chartkunjungan = bulanLengkap.map(function (bulan, index) {
+                return {
+                    periode: namaBulan[index],
+                    value1 : mapKunjunganRI[bulan] || 0,
+                    value2 : mapKunjunganRJ[bulan] || 0
+                };
+            });
+
+            const chartpendapatan = bulanLengkap.map(function (bulan, index) {
+                return {
+                    periode: namaBulan[index],
+                    value1 : mapPendapatanRI[bulan] || 0,
+                    value2 : mapPendapatanRJ[bulan] || 0
+                };
+            });
+
+            const chartpendapatancompare = bulanLengkap.map(function (bulan, index) {
+                return {
+                    periode: namaBulan[index],
+                    value1 : mapPendapatanInacbg[bulan] || 0,
+                    value2 : mapPendapatanIdrg[bulan] || 0
+                };
+            });
+
+            const chartseveritylevel = bulanLengkap.map(function (bulan, index) {
+                return {
+                    periode: namaBulan[index],
+                    value1: mapSeverityLevelI[bulan] || 0,
+                    value2: mapSeverityLevelII[bulan] || 0,
+                    value3: mapSeverityLevelIII[bulan] || 0
+                };
+            });
+
+            const chartseveritylevelyear = [
+                {
+                    label: "Severity Level I",
+                    value: Object.values(mapSeverityLevelI).reduce((total, jumlah) => total + jumlah, 0)
+                },
+                {
+                    label: "Severity Level II",
+                    value: Object.values(mapSeverityLevelII).reduce((total, jumlah) => total + jumlah, 0)
+                },
+                {
+                    label: "Severity Level III",
+                    value: Object.values(mapSeverityLevelIII).reduce((total, jumlah) => total + jumlah, 0)
+                }
+            ];
+
+            const chartcostdistribution = bulanLengkap.map(function (bulan, index) {
+                const data = {
                     periode: namaBulan[index]
                 };
 
                 costComponents.forEach(function (component) {
-                    row[component.field] = data[component.field] || 0;
+                    data[component.field] =
+                        mapCostDistribution[component.field][bulan] || 0;
                 });
 
-                return row;
+                return data;
             });
 
-            const chartDataCostYear = costComponents.map(function (component) {
+            const chartcostcomponentyear = costComponents.map(function (component) {
+                const total = Object.values(
+                    mapCostDistribution[component.field]
+                ).reduce(function (sum, value) {
+                    return sum + value;
+                }, 0);
+
                 return {
-                    category: component.name,
-                    value: chartDataCostMonthly.reduce(function (total, item) {
-                        return total + (parseFloat(item[component.field]) || 0);
-                    }, 0)
+                    label: component.name,
+                    value: total
                 };
             });
 
-            renderchartpie("costcomponentyear", chartDataCostYear);
+            // ==========================================
+            // TOTAL KUNJUNGAN
+            // ==========================================
+            $("#jmlkunjungan").text(todesimal(totalKunjungan));
+            $("#jmlkunjungan_inpatient").text(todesimal(kunjunganRI));
+            $("#jmlkunjungan_outpatient").text(todesimal(kunjunganRJ));
 
-            renderChartStackedBar(
-                "costdistribution",
-                chartDataCostMonthly.map(item => item.periode),
-                costComponents.map(function (component) {
-                    return {
-                        name: component.name,
-                        data: chartDataCostMonthly.map(item => item[component.field])
-                    };
-                }),
-                "Discharge Date",
-                "Total Cost (Rp)"
-            );
+            // ==========================================
+            // TOTAL TARIF RS
+            // ==========================================
+            $("#jmltarifrs").text(todesimal(totalTarifRS));
+            $("#jmltarifrs_inpatient").text(todesimal(tarifRSRI));
+            $("#jmltarifrs_outpatient").text(todesimal(tarifRSRJ));
+
+            // ==========================================
+            // TOTAL INA-CBG
+            // ==========================================
+            $("#jmlinacbg").text(todesimal(totalINACBG));
+            $("#jmlinacbg_inpatient").text(todesimal(inaCBGRI));
+            $("#jmlinacbg_outpatient").text(todesimal(inaCBGRJ));
+
+            // ==========================================
+            // TOTAL iDRG
+            // ==========================================
+            $("#jmlidrg").text(todesimal(totalIDRG));
+            $("#jmlidrg_inpatient").text(todesimal(idrgRI));
+            $("#jmlidrg_outpatient").text(todesimal(idrgRJ));
+
+            // ==========================================
+            // SELISIH RS VS INA-CBG
+            // ==========================================
+            $("#selisihinacbg").text(todesimal(selisihRSINACBG));
+            $("#selisihinacbg_inpatient").text(todesimal(selisihINACBGRI));
+            $("#selisihinacbg_outpatient").text(todesimal(selisihINACBGRJ));
+
+            // ==========================================
+            // SELISIH RS VS iDRG
+            // ==========================================
+            $("#selisihidrg").text(todesimal(selisihRSIDRG));
+            $("#selisihidrg_inpatient").text(todesimal(selisihIDRGRI));
+            $("#selisihidrg_outpatient").text(todesimal(selisihIDRGRJ));
+
+            // Status selisih total
+            setStatusSelisih("#selisihinacbg", selisihRSINACBG);
+            setStatusSelisih("#selisihidrg", selisihRSIDRG);
+
+            renderchartarea("trenvisit",chartkunjungan,"Discharge Date","InPatient",["InPatient", "OutPatient"],["value1", "value2"],true,"OutPatient","","",null);
+            renderchartarea("trenrevenue",chartpendapatan,"Discharge Date","InPatient",["InPatient", "OutPatient"],["value1", "value2"],null,"","","",null);
+            renderchartarea("trenrevenuecompare",chartpendapatancompare,"Discharge Date","Revenue",["Ina-Cbg","IDRG"],["value1","value2"],null,"","","",null);
+            renderchartarea("severitylevelmountly",chartseveritylevel,"Discharge Date","Case",["Severity Level I", "Severity Level II", "Severity Level III"],["value1", "value2", "value3"],null,"","","",null);
+            renderchartarea("costdistribution",chartseveritylevel,"Discharge Date","Case",["Severity Level I", "Severity Level II", "Severity Level III"],["value1", "value2", "value3"],null,"","","",null);
+            renderchartarea("costdistribution",chartcostdistribution,"Discharge Date","Cost Distribution",costComponents.map(item => item.name),costComponents.map(item => item.field),null,"","","",null);
+            renderchartpie("severitylevelyear", chartseveritylevelyear);
+            renderchartpie("costcomponentyear", chartcostcomponentyear);
         },
         complete: function () {
             Swal.close();

@@ -17,7 +17,7 @@ class Mastermdc extends BaseController{
     public function index(){
         $data = $this->loadcombobox();
         return view('template/dashboard-light-aside', [
-            'contents' => view('Modules\Ics\Views\v_mastermdc',$data)
+            'contents' => view('Modules\Ics\Views\v_mastermdcdetail',$data)
         ]);
     }
 

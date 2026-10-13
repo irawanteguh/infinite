@@ -47,10 +47,14 @@ function dataraweklaim(){
                 tableResult += "<td class='text-start ps-4'>"+(parseInt(i) + 1)+"</td>";
                 tableResult += "<td>"+(result[i].sep || "")+"</td>";
                 tableResult += "<td>"+(result[i].nokartu || "")+"</td>";
-                tableResult += "<td>"+(result[i].mrn || "")+"</td>";
-                tableResult += "<td>"+(result[i].nama_pasien || "")+"</td>";
-                tableResult += "<td>"+(result[i].addmissiondate || "")+"</td>";
-                tableResult += "<td>"+(result[i].ptd == 1 ? "Outpatient" : "Inpatient")+"</td>";
+                tableResult += "<td><div>" + (result[i].mrn || "") + "</div><div>" + (result[i].nama_pasien || "") + "</div></td>";
+                tableResult += "<td>" + (result[i].dpjp || "") + "</td>";
+                tableResult += "<td>" + (result[i].diaglist || "").split(";").join("<br>") + "</td>";
+                tableResult += "<td>" + (result[i].proclist || "").split(";").join("<br>") + "</td>";
+                tableResult += "<td>" + (result[i].admission_date || "") + "</td>";
+                tableResult += "<td>" + (result[i].discharge_date || "") + "</td>";
+                tableResult += "<td>" + (result[i].los || "") + "</td>";
+                tableResult += "<td>"+(result[i].ptd == 1 ? "Inpatient" : "Outpatient")+"</td>";
                 tableResult += "<td class='text-end'>"+(todesimal(result[i].tarif_rs) || "0")+"</td>";
                 tableResult += "<td class='text-end'>"+(todesimal(result[i].total_tarif) || "0")+"</td>";
                 tableResult += "<td class='text-end'>"+(todesimal(result[i].idrg_total_tarif) || "0")+"</td>";
@@ -68,7 +72,7 @@ function dataraweklaim(){
 
             $("#resultdataraweklaim").html(tableResult);
 
-            initDataTable("#dataraweklaim_table","#searchtable",50);
+            initDataTable("#dataraweklaim_table","#searchtable",10);
         },
         complete: function () {
             Swal.close();

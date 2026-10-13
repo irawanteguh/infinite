@@ -21,9 +21,13 @@
                         <th class="text-start rounded-start ps-4">#</th>
                         <th>SEP Number</th>
                         <th>Card Number</th>
-                        <th>Medical Record</th>
                         <th>Patient Name</th>
+                        <th>DPJP</th>
+                        <th>Diagnosis</th>
+                        <th>Procedure</th>
                         <th>Admission Date</th>
+                        <th>Discharge Date</th>
+                        <th>LOS</th>
                         <th>Inpatient / Outpatient</th>
                         <th class="text-end">Hospital Cost</th>
                         <th class="text-end">INA-CBG</th>

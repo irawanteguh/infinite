@@ -32,7 +32,6 @@
                                 <th class="text-start rounded-start ps-4">#</th>
                                 <th>SEP Number</th>
                                 <th>Card Number</th>
-                                <th>Medical Record</th>
                                 <th>Patient Name</th>
                                 <th>DPJP</th>
                                 <th>Diagnosis</th>

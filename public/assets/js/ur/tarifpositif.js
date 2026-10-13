@@ -58,8 +58,7 @@ function rawdata(){
                 row += "<td class='text-start ps-4'>" + no + "</td>";
                 row += "<td>" + (result[i].sep || "") + "</td>";
                 row += "<td>" + (result[i].nokartu || "") + "</td>";
-                row += "<td>" + (result[i].mrn || "") + "</td>";
-                row += "<td>" + (result[i].nama_pasien || "") + "</td>";
+                row += "<td><div>" + (result[i].mrn || "") + "</div><div>" + (result[i].nama_pasien || "") + "</div></td>";
                 row += "<td>" + (result[i].dpjp || "") + "</td>";
                 row += "<td>" + (result[i].diaglist || "").split(";").join("<br>") + "</td>";
                 row += "<td>" + (result[i].proclist || "").split(";").join("<br>") + "</td>";

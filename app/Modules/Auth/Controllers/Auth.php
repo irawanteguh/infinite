@@ -61,6 +61,7 @@ class Auth extends BaseController{
                 'website'  => $datasession->website,
                 'address'  => $datasession->address,
                 'koders'   => $datasession->kode_rs,
+                'kodeppk'   => $datasession->kode_ppk,
                 'emailorg' => $datasession->organizationemail,
                 'pimpinan' => $datasession->pimpinan,
                 'userid'   => $datasession->user_id,

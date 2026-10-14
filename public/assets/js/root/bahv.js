@@ -706,6 +706,8 @@ function prosesImportTxtBahv(data) {
                         willClose: function() {
                             resetPreviewBahv();
                             $("#modal_upload_txt_bahv").modal("hide");
+
+                            load();
                         }
                     });
                 }, 200);

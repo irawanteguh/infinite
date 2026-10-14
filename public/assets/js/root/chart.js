@@ -202,6 +202,135 @@ function renderChartStackedBar(elementId,categories,series,titleX = "",titleY = 
 
 }
 
+
+function renderBarHorizontal(elementId,seriesConfig,data,categoryField,titleX){
+    const chartElement = document.getElementById(elementId);
+
+    if (!chartElement) return;
+
+    if (chartElement.chart) {
+        chartElement.chart.destroy();
+    }
+
+    data = Array.isArray(data) ? data : [];
+
+    const chartData = data.map(item => ({
+        ...item,
+        [categoryField]: String(
+            item[categoryField] ?? 'LAINNYA'
+        ).trim().toUpperCase()
+    }));
+
+    chartData.sort((a, b) => {
+        const totalA = seriesConfig.reduce(
+            (sum, s) => sum + (Number(a[s.field]) || 0), 0
+        );
+
+        const totalB = seriesConfig.reduce(
+            (sum, s) => sum + (Number(b[s.field]) || 0), 0
+        );
+
+        return totalB - totalA;
+    });
+
+    const categories = chartData.map(
+        item => item[categoryField]
+    );
+
+    const series = seriesConfig.map(s => ({
+        name: s.name,
+        data: chartData.map(item => Number(item[s.field]) || 0)
+    }));
+
+    const options = {
+        chart: {
+            type: 'bar',
+            stacked: true,
+            height: Math.max(350, categories.length * 45),
+            toolbar: {
+                show: false
+            },
+            fontFamily: 'inherit'
+        },
+        series: series,
+        plotOptions: {
+            bar: {
+                horizontal: true,
+                borderRadius: 3,
+                barHeight: '70%',
+                dataLabels: {
+                    total: {
+                        enabled: true,
+                        offsetX: 10,
+                        style: {
+                            fontSize: '12px',
+                            fontWeight: 700
+                        },
+                        formatter: function (val) {
+                            return Number(val).toLocaleString('id-ID');
+                        }
+                    }
+                }
+            }
+        },
+        stroke: {
+            width: 1,
+            colors: ['#ffffff']
+        },
+        xaxis: {
+            categories: categories,
+            title: {
+                text: titleX
+            },
+            labels: {
+                formatter: function (val) {
+                    return Number(val).toLocaleString('id-ID');
+                }
+            }
+        },
+        yaxis: {
+            title: {
+                text: ''
+            }
+        },
+        dataLabels: {
+            enabled: true,
+            formatter: function (val) {
+                return val > 0 ? Number(val).toLocaleString('id-ID') : '';
+            },
+            style: {
+                fontSize: '11px',
+                fontWeight: 500
+            }
+        },
+        tooltip: {
+            shared: true,
+            intersect: false,
+            y: {
+                formatter: function (val) {
+                    return Number(val).toLocaleString('id-ID') + ' kasus';
+                }
+            }
+        },
+        legend: {
+            position: 'top',
+            horizontalAlign: 'left'
+        },
+        grid: {
+            borderColor: '#e5e5e5',
+            strokeDashArray: 4
+        },
+        noData: {
+            text: 'Tidak ada data'
+        }
+    };
+
+    const chartEl = document.querySelector(`#${elementId}`);
+    chartEl.innerHTML = "";
+    chartInstances[elementId] = new ApexCharts(chartEl, options);
+    chartInstances[elementId].render();
+}
+
 function renderchartpie(name, data) {
     if (chartInstances[name]) {
         chartInstances[name].destroy();

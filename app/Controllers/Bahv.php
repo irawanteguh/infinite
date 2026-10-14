@@ -71,7 +71,7 @@ class Bahv extends BaseController{
 
                 $data["BAHV_ID"]               = 'd80ebae3-c768-11f1-9151-e0be037258a4';
                 $data["STATUS"]                = strtoupper($this->cleanTxt($row["STATUS"] ?? null));
-                $data["KODEPPK"]               = $this->cleanTxt($row["KODEPPK"] ?? null);
+                $data["KODEPPK"]               = $this->cleanTxt($row["KODEPPK"] ?? isset($_SESSION["kodeppk"]) ? $_SESSION["kodeppk"] : "");
                 $data["NAMAPPK"]               = $this->cleanTxt($row["NAMAPPK"] ?? null);
                 $data["NOSEP"]                 = $nosep;
                 $data["TGLSEP"]                = $this->formatDateEklaim($row["TGLSEP"] ?? null);

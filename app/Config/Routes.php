@@ -13,20 +13,9 @@ use CodeIgniter\Router\RouteCollection;
 |--------------------------------------------------------------------------
 */
 
-$routes->get(
-    '/',
-    '\Modules\Auth\Controllers\Auth::index'
-);
-
-$routes->post(
-    'auth/signin',
-    '\Modules\Auth\Controllers\Auth::signin'
-);
-
-$routes->get(
-    'auth/logout',
-    '\Modules\Auth\Controllers\Auth::logoutsystem'
-);
+$routes->get('/','\Modules\Auth\Controllers\Auth::index');
+$routes->post('auth/signin','\Modules\Auth\Controllers\Auth::signin');
+$routes->get('auth/logout','\Modules\Auth\Controllers\Auth::logoutsystem');
 
 
 /*
@@ -40,10 +29,8 @@ $routes->get(
 | POST /ur/importtxteklaim
 */
 
-$routes->post(
-    'ur/importtxteklaim',
-    '\App\Controllers\Ur::importtxteklaim'
-);
+$routes->post('ur/importtxteklaim','\App\Controllers\Ur::importtxteklaim');
+$routes->post('bahv/importtxtbahv','\App\Controllers\Bahv::importtxtbahv');
 
 
 /*
@@ -59,13 +46,8 @@ $routes->get(
     '(:segment)/(:segment)',
     function ($module, $controller) {
 
-        $class = ucfirst($controller);
-
-        $namespace =
-            'Modules\\' .
-            ucfirst($module) .
-            '\\Controllers\\' .
-            $class;
+        $class     = ucfirst($controller);
+        $namespace = 'Modules\\'.ucfirst($module).'\\Controllers\\'.$class;
 
         if (!class_exists($namespace)) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
@@ -99,13 +81,8 @@ $routes->get(
         $method
     ) {
 
-        $class = ucfirst($controller);
-
-        $namespace =
-            'Modules\\' .
-            ucfirst($module) .
-            '\\Controllers\\' .
-            $class;
+        $class     = ucfirst($controller);
+        $namespace = 'Modules\\'.ucfirst($module).'\\Controllers\\'.$class;
 
         if (!class_exists($namespace)) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();

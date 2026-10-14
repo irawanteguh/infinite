@@ -11,61 +11,130 @@
             </div>
             <div class="modal-body">
                 <div class="col-md-12">
-                    <label class="form-label fw-bold">File Excel</label>
+                    <label class="form-label fw-bold">File E-Klaim</label>
                     <div class="input-group">
                         <input type="file" class="form-control" id="filetxteklaim" accept=".txt">
                         <button type="button" class="btn btn-primary" id="btnImportTxtEklaim"><i class="bi bi-upload"></i>Import</button>
                     </div>
-                    <div class="form-text">Format file: TXT dengan pemisah TAB (tab-delimited).</div>
+                    <div class="form-text mt-2">
+                        Format file yang didukung:
+                        <span class="badge badge-light-primary">TXT</span>
+                    </div>
                 </div>
                 <br>
                 <div class="row mt-4 mb-3">
 
                     <!-- Jumlah Data -->
-                    <div class="col-md-2">
-                        <div class="border rounded p-3 bg-light">
-                            <div class="text-muted fs-8">Jumlah Data</div>
-                            <div class="fw-bold fs-3 text-primary" id="jmlDataEklaim">0</div>
+                    <div class="col-xl-2 col-md-6">
+                        <div class="card border h-100">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="symbol symbol-45px me-3">
+                                        <div class="symbol-label bg-light-info">
+                                            <i class="bi bi-files fs-2 text-info"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted fs-8">Jumlah Data</div>
+                                        <div class="fw-bold fs-2 text-info" id="jmlDataEklaim">0</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Total Tarif RS -->
-                    <div class="col-md-2">
-                        <div class="border rounded p-3 bg-light">
-                            <div class="text-muted fs-8">Total Tarif RS</div>
-                            <div class="fw-bold fs-3 text-warning" id="totalTarifRSEklaim">0</div>
+                    <div class="col-xl-2 col-md-6">
+                        <div class="card border h-100">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="symbol symbol-45px me-3">
+                                        <div class="symbol-label bg-light-primary">
+                                            <i class="bi bi-hospital fs-2 text-primary"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted fs-8">Total Tarif RS</div>
+                                        <div class="fw-bold fs-2 text-primary" id="totalTarifRSEklaim">0</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Total INA-CBG -->
-                    <div class="col-md-2">
-                        <div class="border rounded p-3 bg-light">
-                            <div class="text-muted fs-8">Total Nilai INA-CBG</div>
-                            <div class="fw-bold fs-3 text-success" id="totalNilaiEklaim">0</div>
+                    <div class="col-xl-2 col-md-6">
+                        <div class="card border h-100">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="symbol symbol-45px me-3">
+                                        <div class="symbol-label bg-light-success">
+                                            <i class="bi bi-cash-stack fs-2 text-success"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted fs-8">Total Nilai INA-CBG</div>
+                                        <div class="fw-bold fs-2 text-success" id="totalNilaiEklaim">0</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Selisih RS - INA-CBG -->
-                    <div class="col-md-2">
-                        <div class="border rounded p-3 bg-light">
-                            <div class="text-muted fs-8">Selisih RS − INA-CBG</div>
-                            <div class="fw-bold fs-3 text-danger" id="selisihTarifEklaim">0</div>
+                    <div class="col-xl-2 col-md-6">
+                        <div class="card border h-100">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="symbol symbol-45px me-3">
+                                        <div class="symbol-label bg-light-danger">
+                                            <i class="bi bi-graph-down-arrow fs-2 text-danger"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted fs-8">Selisih RS − INA-CBG</div>
+                                        <div class="fw-bold fs-2 text-danger" id="selisihTarifEklaim">0</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Total IDRG -->
-                    <div class="col-md-2">
-                        <div class="border rounded p-3 bg-light">
-                            <div class="text-muted fs-8">Total Tarif IDRG</div>
-                            <div class="fw-bold fs-3 text-info" id="totalTarifIDRGEklaim">0</div>
+                    <div class="col-xl-2 col-md-6">
+                        <div class="card border h-100">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="symbol symbol-45px me-3">
+                                        <div class="symbol-label bg-light-success">
+                                            <i class="bi bi-calculator fs-2 text-success"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted fs-8">Total Tarif IDRG</div>
+                                        <div class="fw-bold fs-2 text-success" id="totalTarifIDRGEklaim">0</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Selisih RS - IDRG -->
-                    <div class="col-md-2">
-                        <div class="border rounded p-3 bg-light">
-                            <div class="text-muted fs-8">Selisih RS − IDRG</div>
-                            <div class="fw-bold fs-3 text-danger" id="selisihTarifIDRGEklaim">0</div>
+                    <div class="col-xl-2 col-md-6">
+                        <div class="card border h-100">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="symbol symbol-45px me-3">
+                                        <div class="symbol-label bg-light-danger">
+                                            <i class="bi bi-arrow-left-right fs-2 text-danger"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted fs-8">Selisih RS − IDRG</div>
+                                        <div class="fw-bold fs-2 text-danger" id="selisihTarifIDRGEklaim">0</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

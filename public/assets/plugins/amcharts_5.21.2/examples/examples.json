@@ -1,0 +1,1640 @@
+[
+  {
+    "name": "flow-arc-diagram",
+    "title": "Arc Diagram",
+    "description": "An arc diagram: nodes in a row, sized by their total, with arcs for the links between them and a label under each node.",
+    "category": "flow",
+    "tier": "basic",
+    "tags": [
+      "arc diagram",
+      "flow",
+      "links",
+      "labels"
+    ],
+    "modules": [
+      "flow",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "flow-chord",
+    "title": "Chord Diagram",
+    "description": "A chord diagram where ribbons between the nodes show how much flows each way.",
+    "category": "flow",
+    "tier": "basic",
+    "tags": [
+      "chord",
+      "flow",
+      "links"
+    ],
+    "modules": [
+      "flow",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "flow-chord-directed",
+    "title": "Directed Chord Diagram",
+    "description": "A chord diagram whose links end in arrowheads, so each one shows its direction.",
+    "category": "flow",
+    "tier": "basic",
+    "tags": [
+      "chord",
+      "directed",
+      "flow",
+      "radial labels"
+    ],
+    "modules": [
+      "flow",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "flow-chord-non-ribbon",
+    "title": "Chord Diagram with Moving Bullets",
+    "description": "A chord diagram with thin line links, nodes drawn as circle bullets, and a circle travelling along every link.",
+    "category": "flow",
+    "tier": "technique",
+    "tags": [
+      "chord",
+      "non-ribbon",
+      "bullets",
+      "animations"
+    ],
+    "since": "5.21.0",
+    "modules": [
+      "flow",
+      "themes/Animated"
+    ],
+    "json": true,
+    "jsonNote": "Giving each circle the color of its node takes code, so here they are all one color.",
+    "script": true
+  },
+  {
+    "name": "flow-sankey",
+    "title": "Sankey Diagram",
+    "description": "A Sankey diagram: nodes in columns and links whose width shows how much flows between them.",
+    "category": "flow",
+    "tier": "basic",
+    "tags": [
+      "sankey",
+      "flow",
+      "links"
+    ],
+    "modules": [
+      "flow",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "gantt-multilevel",
+    "title": "Gantt Chart with Subtasks",
+    "description": "A Gantt chart with parent tasks and subtasks, set up with parentId in the category data.",
+    "category": "gantt",
+    "tier": "basic",
+    "tags": [
+      "gantt",
+      "subtasks",
+      "parent tasks",
+      "links"
+    ],
+    "modules": [
+      "gantt",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "gantt-save-state",
+    "title": "Gantt Chart That Saves Edits",
+    "description": "A Gantt chart that keeps the user's edits and marked dates in localStorage and restores them on the next visit.",
+    "category": "gantt",
+    "tier": "technique",
+    "tags": [
+      "gantt",
+      "local storage",
+      "events",
+      "marked dates"
+    ],
+    "modules": [
+      "gantt",
+      "themes/Animated"
+    ],
+    "json": false,
+    "script": true
+  },
+  {
+    "name": "gantt-simple",
+    "title": "Gantt Chart",
+    "description": "A Gantt chart with a flat list of linked tasks.",
+    "category": "gantt",
+    "tier": "basic",
+    "tags": [
+      "gantt",
+      "tasks",
+      "links"
+    ],
+    "modules": [
+      "gantt",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "gauge",
+    "title": "Gauge with Clock Hand",
+    "description": "A gauge made from a radar chart: a half-circle value axis and a clock hand that points at a value.",
+    "category": "radar",
+    "tier": "basic",
+    "tags": [
+      "gauge",
+      "radar",
+      "clock hand",
+      "axis range"
+    ],
+    "modules": [
+      "xy",
+      "radar",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "gauge-bands",
+    "title": "Gauge with Bands",
+    "description": "A gauge with labelled color bands, where the hand and the value label take the color of the band the hand is in.",
+    "category": "radar",
+    "tier": "technique",
+    "tags": [
+      "gauge",
+      "bands",
+      "axis ranges",
+      "clock hand",
+      "animation"
+    ],
+    "modules": [
+      "xy",
+      "radar",
+      "themes/Animated"
+    ],
+    "json": true,
+    "jsonNote": "Moving the hand and coloring it by its band take code.",
+    "script": true
+  },
+  {
+    "name": "hierarchy-force-directed",
+    "title": "Force-Directed Tree",
+    "description": "A force-directed tree: nested data as linked circles that arrange themselves and open on click.",
+    "category": "hierarchy",
+    "tier": "basic",
+    "tags": [
+      "force directed",
+      "hierarchy",
+      "nested data"
+    ],
+    "modules": [
+      "hierarchy",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "hierarchy-pack",
+    "title": "Circle Pack",
+    "description": "A pack chart: nested data as circles inside circles, sized by value, where a click opens the next level.",
+    "category": "hierarchy",
+    "tier": "basic",
+    "tags": [
+      "pack",
+      "hierarchy",
+      "nested data",
+      "drill-down"
+    ],
+    "modules": [
+      "hierarchy",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "hierarchy-partition",
+    "title": "Partition Chart",
+    "description": "A partition chart: every level of nested data as a column of rectangles sized by value.",
+    "category": "hierarchy",
+    "tier": "basic",
+    "tags": [
+      "partition",
+      "hierarchy",
+      "nested data",
+      "orientation"
+    ],
+    "modules": [
+      "hierarchy",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "hierarchy-sunburst",
+    "title": "Sunburst Chart",
+    "description": "A sunburst: nested data as rings of slices, one ring per level.",
+    "category": "hierarchy",
+    "tier": "basic",
+    "tags": [
+      "sunburst",
+      "hierarchy",
+      "nested data"
+    ],
+    "modules": [
+      "hierarchy",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "hierarchy-tree",
+    "title": "Tree Chart",
+    "description": "A tree chart: nested data as linked nodes laid out level by level.",
+    "category": "hierarchy",
+    "tier": "basic",
+    "tags": [
+      "tree",
+      "hierarchy",
+      "nested data"
+    ],
+    "modules": [
+      "hierarchy",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "hierarchy-treemap",
+    "title": "Treemap with Breadcrumbs",
+    "description": "A treemap that drills into a branch on click, with a breadcrumb bar to go back up.",
+    "category": "hierarchy",
+    "tier": "basic",
+    "tags": [
+      "treemap",
+      "hierarchy",
+      "breadcrumbs",
+      "drill-down"
+    ],
+    "modules": [
+      "hierarchy",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "hierarchy-voronoi-treemap",
+    "title": "Voronoi Treemap",
+    "description": "World population as a Voronoi treemap, with theme rules that style each level and a click that zooms to a continent.",
+    "category": "hierarchy",
+    "tier": "showcase",
+    "tags": [
+      "voronoi treemap",
+      "hierarchy",
+      "theme rules",
+      "adapter",
+      "drill-down"
+    ],
+    "modules": [
+      "hierarchy",
+      "themes/Animated"
+    ],
+    "json": true,
+    "jsonNote": "Styling by level, names where they fit and the zoom on click take code, so this one shows country codes.",
+    "script": true
+  },
+  {
+    "name": "jest",
+    "title": "Testing with Jest",
+    "description": "A project set up to run Jest tests against a chart, in the jsdom environment.",
+    "category": "other",
+    "tier": "technique",
+    "tags": [
+      "jest",
+      "testing",
+      "jsdom"
+    ],
+    "modules": [],
+    "json": false,
+    "script": false
+  },
+  {
+    "name": "json-config",
+    "title": "Chart from a JSON Config",
+    "description": "A pie chart built by passing a JSON config to JsonParser, with refs for its data and series.",
+    "category": "other",
+    "tier": "technique",
+    "tags": [
+      "json",
+      "parser",
+      "config",
+      "refs"
+    ],
+    "modules": [
+      "themes/Animated",
+      "plugins/json"
+    ],
+    "json": false,
+    "script": true
+  },
+  {
+    "name": "map-altitude-arcs",
+    "title": "Globe with Raised Arcs",
+    "description": "Flight routes between cities on a globe, drawn as lines that rise above the surface in an arc with the altitude setting.",
+    "category": "map",
+    "tier": "basic",
+    "tags": [
+      "globe",
+      "map lines",
+      "altitude",
+      "arcs",
+      "routes"
+    ],
+    "since": "5.21.0",
+    "modules": [
+      "map",
+      "geodata/worldLow",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "map-animating-along-lines",
+    "title": "Animating Along Lines",
+    "description": "A plane flies back and forth along a line between two cities, moved by the animations setting of its bullet.",
+    "category": "map",
+    "tier": "technique",
+    "tags": [
+      "line series",
+      "point series",
+      "animations",
+      "position on line",
+      "auto rotate"
+    ],
+    "since": "5.20.8",
+    "modules": [
+      "map",
+      "geodata/worldLow",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "map-auto-home",
+    "title": "Map with Home Position",
+    "description": "A map that opens zoomed in on Europe, using the home settings and autoHome, with a home button to return there.",
+    "category": "map",
+    "tier": "basic",
+    "tags": [
+      "home",
+      "zoom",
+      "zoom control",
+      "autoHome"
+    ],
+    "since": "5.21.0",
+    "modules": [
+      "map",
+      "geodata/worldLow",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "map-clustered-points",
+    "title": "Clustered Map Points",
+    "description": "City markers that merge into clusters with a count when they are close together; clicking a cluster zooms in on its cities.",
+    "category": "map",
+    "tier": "technique",
+    "tags": [
+      "clustered point series",
+      "cluster",
+      "bullets",
+      "zoom"
+    ],
+    "modules": [
+      "map",
+      "geodata/worldLow",
+      "themes/Animated"
+    ],
+    "json": true,
+    "jsonNote": "Zooming in on a clicked cluster takes code.",
+    "script": true
+  },
+  {
+    "name": "map-day-and-night",
+    "title": "Day and Night Map",
+    "description": "A world map with a NightSeries that shades where it is night right now and shows the sun.",
+    "category": "map",
+    "tier": "basic",
+    "tags": [
+      "night series",
+      "sun",
+      "twilight",
+      "polygon series"
+    ],
+    "since": "5.21.0",
+    "modules": [
+      "map",
+      "geodata/worldLow",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "map-globe-rotate-to-country",
+    "title": "Globe Rotating to a Country",
+    "description": "A globe that turns and zooms to the clicked country, and back when it is clicked again or the water is clicked: clickZoom on a map that pans by rotating.",
+    "category": "map",
+    "tier": "technique",
+    "tags": [
+      "globe",
+      "orthographic",
+      "rotate",
+      "click",
+      "clickZoom",
+      "active state"
+    ],
+    "since": "5.21.0",
+    "modules": [
+      "map",
+      "geodata/worldLow",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "map-globe-with-projected-circles",
+    "title": "Globe with Projected Circles",
+    "description": "Population by country as circles that lie on the surface of a globe and flatten towards its edge, sized by a heat rule, with surfaceBullets.",
+    "category": "map",
+    "tier": "basic",
+    "tags": [
+      "globe",
+      "orthographic",
+      "surface bullets",
+      "heat rules",
+      "map points"
+    ],
+    "since": "5.21.0",
+    "modules": [
+      "map",
+      "geodata/worldLow",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "map-pixel-map",
+    "title": "Pixel Map",
+    "description": "A world map drawn as a grid of dots with PixelMapSeries, with countries colored by value using heat rules.",
+    "category": "map",
+    "tier": "basic",
+    "tags": [
+      "pixel map",
+      "dots",
+      "heat rules",
+      "tooltip"
+    ],
+    "since": "5.21.0",
+    "modules": [
+      "map",
+      "geodata/worldLow",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "map-sankey",
+    "title": "Map Sankey",
+    "description": "Flows between countries drawn as bands on a map with MapSankeySeries, each band as wide as its value.",
+    "category": "map",
+    "tier": "basic",
+    "tags": [
+      "map sankey series",
+      "flows",
+      "links",
+      "nodes"
+    ],
+    "modules": [
+      "map",
+      "geodata/worldLow",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "map-sankey-waypoints",
+    "title": "Map Sankey with Waypoints",
+    "description": "Oil routes on a globe: MapSankeySeries flows between coordinates, bent through waypoints to stay at sea, with a bullet travelling along each one.",
+    "category": "map",
+    "tier": "showcase",
+    "tags": [
+      "map sankey series",
+      "waypoints",
+      "bullets",
+      "animations",
+      "globe",
+      "auto home"
+    ],
+    "since": "5.21.0",
+    "modules": [
+      "map",
+      "geodata/worldLow",
+      "themes/Animated"
+    ],
+    "json": true,
+    "jsonNote": "Giving every drop the same speed and its own start takes code, so here they all take the same time.",
+    "script": true
+  },
+  {
+    "name": "map-satellite-day-and-night",
+    "title": "Satellite Day and Night Map",
+    "description": "A flat map that shows a daytime satellite image where the sun is up right now and city lights where it is night, with MapRasterSeries. The images load from the amCharts CDN, so it needs an internet connection.",
+    "category": "map",
+    "tier": "basic",
+    "tags": [
+      "satellite",
+      "raster",
+      "image",
+      "day and night",
+      "sun"
+    ],
+    "since": "5.21.0",
+    "modules": [
+      "map",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "map-satellite-globe",
+    "title": "Satellite Image Globe",
+    "description": "A slowly turning globe that shows a satellite image with MapRasterSeries, with country borders drawn over it. The image loads from the amCharts CDN, so it needs an internet connection.",
+    "category": "map",
+    "tier": "basic",
+    "tags": [
+      "globe",
+      "satellite",
+      "raster",
+      "image",
+      "animations"
+    ],
+    "since": "5.21.0",
+    "modules": [
+      "map",
+      "geodata/worldLow",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "map-surface-bullets",
+    "title": "Globe with Surface Bullets",
+    "description": "City pins that lie on the surface of a globe and flatten towards its edge, using the surfaceBullets setting of MapPointSeries.",
+    "category": "map",
+    "tier": "basic",
+    "tags": [
+      "globe",
+      "map points",
+      "bullets",
+      "surface",
+      "icon"
+    ],
+    "since": "5.21.0",
+    "modules": [
+      "map",
+      "geodata/worldLow",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "map-us-heat-map",
+    "title": "US Heat Map",
+    "description": "US states colored by value on a red, yellow and green scale, with heat rules and a heat legend that take several colors.",
+    "category": "map",
+    "tier": "basic",
+    "tags": [
+      "heat rules",
+      "heat legend",
+      "choropleth",
+      "usa"
+    ],
+    "since": "5.21.2",
+    "modules": [
+      "map",
+      "geodata/usaLow",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "map-with-bubbles",
+    "title": "Map with Bubbles",
+    "description": "Bubbles placed on countries by their id, with heat rules setting each bubble's size and color from its value.",
+    "category": "map",
+    "tier": "basic",
+    "tags": [
+      "bubbles",
+      "point series",
+      "heat rules",
+      "polygon id"
+    ],
+    "modules": [
+      "map",
+      "geodata/worldLow",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "map-zoom-to-country",
+    "title": "Zoom to Country",
+    "description": "Click a country to zoom in on it; click it again, the water or the home button to zoom back out. One setting, clickZoom, does it.",
+    "category": "map",
+    "tier": "technique",
+    "tags": [
+      "zoom",
+      "click",
+      "clickZoom",
+      "active state",
+      "zoom control",
+      "home button"
+    ],
+    "since": "5.21.0",
+    "modules": [
+      "map",
+      "geodata/worldLow",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "misc-chart-element",
+    "title": "Chart as an HTML Element",
+    "description": "The <am5-chart> element builds a chart from a JSON config, with no root and no chart code: for pages, frameworks and tools where writing chart code is not the point.",
+    "category": "other",
+    "tier": "technique",
+    "tags": [
+      "element",
+      "web component",
+      "custom element",
+      "json"
+    ],
+    "since": "5.21.0",
+    "modules": [
+      "element",
+      "themes/Animated"
+    ],
+    "json": false,
+    "script": true
+  },
+  {
+    "name": "misc-microchart-grid",
+    "title": "Micro Charts in a Table",
+    "description": "A table with a tiny line chart and a tiny column chart in every row, each in its own root with the Micro theme.",
+    "category": "other",
+    "tier": "technique",
+    "tags": [
+      "micro theme",
+      "sparkline",
+      "table",
+      "multiple roots"
+    ],
+    "modules": [
+      "xy",
+      "themes/Micro"
+    ],
+    "json": false,
+    "script": true
+  },
+  {
+    "name": "pie-chart",
+    "title": "Pie Chart",
+    "description": "A pie chart with a legend below it.",
+    "category": "percent",
+    "tier": "basic",
+    "tags": [
+      "pie",
+      "legend"
+    ],
+    "modules": [
+      "percent",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "pie-donut-chart",
+    "title": "Donut Chart",
+    "description": "A pie chart made into a donut with an inner radius, with a legend below it.",
+    "category": "percent",
+    "tier": "basic",
+    "tags": [
+      "pie",
+      "donut",
+      "inner radius",
+      "legend"
+    ],
+    "modules": [
+      "percent",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "pie-variable-radius",
+    "title": "Pie Chart with Variable Radius",
+    "description": "A pie chart where each slice's radius follows its value, set by an adapter on the slice template.",
+    "category": "percent",
+    "tier": "technique",
+    "tags": [
+      "pie",
+      "adapter",
+      "radius",
+      "legend"
+    ],
+    "modules": [
+      "percent",
+      "themes/Animated"
+    ],
+    "json": false,
+    "script": true
+  },
+  {
+    "name": "radar-date-range-columns",
+    "title": "Radar Date Range Columns",
+    "description": "Rounded radar columns that span date ranges on a circular date axis, with a ring for each category.",
+    "category": "radar",
+    "tier": "technique",
+    "tags": [
+      "radar",
+      "column",
+      "date axis",
+      "category axis",
+      "open value",
+      "rounded corners"
+    ],
+    "modules": [
+      "xy",
+      "radar",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "radar-heat-map",
+    "title": "Radar Heat Map",
+    "description": "A heat map on a radar chart, hours around the circle and weekdays as rings, with a heat legend that shows the value of the hovered cell.",
+    "category": "radar",
+    "tier": "technique",
+    "tags": [
+      "radar",
+      "heat map",
+      "heat rules",
+      "heat legend",
+      "category axis"
+    ],
+    "modules": [
+      "xy",
+      "radar",
+      "themes/Animated"
+    ],
+    "json": true,
+    "jsonNote": "Showing the hovered cell's value on the legend takes code.",
+    "script": true
+  },
+  {
+    "name": "radar-line",
+    "title": "Radar Line Chart",
+    "description": "A line series with bullets on a radar chart, with a category axis around the circle and a cursor.",
+    "category": "radar",
+    "tier": "basic",
+    "tags": [
+      "radar",
+      "line",
+      "category axis",
+      "bullets",
+      "cursor"
+    ],
+    "modules": [
+      "xy",
+      "radar",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "radar-time-line",
+    "title": "Radar Timeline with Slider",
+    "description": "Radar columns that animate through the years with a play button and a slider, and continent ranges that zoom in when clicked.",
+    "category": "radar",
+    "tier": "showcase",
+    "tags": [
+      "radar",
+      "column",
+      "slider",
+      "play button",
+      "axis ranges",
+      "heat rules"
+    ],
+    "modules": [
+      "xy",
+      "radar",
+      "themes/Animated"
+    ],
+    "json": false,
+    "script": true
+  },
+  {
+    "name": "sliced-funnel",
+    "title": "Funnel Chart",
+    "description": "A funnel series in a sliced chart, with labels on the slices and a legend.",
+    "category": "percent",
+    "tier": "basic",
+    "tags": [
+      "funnel",
+      "sliced",
+      "legend"
+    ],
+    "modules": [
+      "percent",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "sliced-pictorial-stacked",
+    "title": "Pictorial Stacked Chart",
+    "description": "A pictorial stacked series: slices fill an SVG shape in proportion to their values.",
+    "category": "percent",
+    "tier": "basic",
+    "tags": [
+      "pictorial",
+      "sliced",
+      "svg path"
+    ],
+    "modules": [
+      "percent",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "sliced-pyramid",
+    "title": "Pyramid Chart",
+    "description": "A pyramid series in a sliced chart, with aligned labels and a legend.",
+    "category": "percent",
+    "tier": "basic",
+    "tags": [
+      "pyramid",
+      "sliced",
+      "legend"
+    ],
+    "modules": [
+      "percent",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "stock-chart",
+    "title": "Stock Chart",
+    "description": "A stock chart with candlesticks, volume, a scrollbar with a preview, a legend and a toolbar for indicators, periods, series type and drawing.",
+    "category": "stock",
+    "tier": "showcase",
+    "tags": [
+      "candlestick",
+      "volume",
+      "toolbar",
+      "indicators",
+      "scrollbar",
+      "legend"
+    ],
+    "modules": [
+      "xy",
+      "stock",
+      "themes/Animated"
+    ],
+    "json": false,
+    "script": true
+  },
+  {
+    "name": "stock-chart-comparing-stocks",
+    "title": "Comparing Stocks",
+    "description": "A stock chart with a comparison control and a searchable dropdown: picked stocks are added with addComparingSeries() and the chart switches to percent change.",
+    "category": "stock",
+    "tier": "technique",
+    "tags": [
+      "comparison",
+      "percent scale",
+      "toolbar",
+      "search",
+      "candlestick"
+    ],
+    "modules": [
+      "xy",
+      "stock",
+      "themes/Animated"
+    ],
+    "json": false,
+    "script": true
+  },
+  {
+    "name": "stock-chart-data-granularity",
+    "title": "Stock Chart Data Granularity",
+    "description": "A stock chart with an interval control that swaps minute, day, week and month data and sets the matching base interval on the date axis.",
+    "category": "stock",
+    "tier": "technique",
+    "tags": [
+      "interval control",
+      "base interval",
+      "toolbar",
+      "candlestick"
+    ],
+    "modules": [
+      "xy",
+      "stock",
+      "themes/Animated"
+    ],
+    "json": false,
+    "script": true
+  },
+  {
+    "name": "stock-chart-data-grouping",
+    "title": "Stock Chart Data Grouping",
+    "description": "Three years of daily prices on a date axis with groupData, which shows them as weekly candlesticks when zoomed out and as daily ones when zoomed in.",
+    "category": "stock",
+    "tier": "technique",
+    "tags": [
+      "data grouping",
+      "date axis",
+      "candlestick",
+      "zoom",
+      "toolbar"
+    ],
+    "modules": [
+      "xy",
+      "stock",
+      "themes/Animated"
+    ],
+    "json": false,
+    "script": true
+  },
+  {
+    "name": "stock-chart-live",
+    "title": "Live Stock Chart",
+    "description": "A candlestick chart that gets a new price every second: the last candle is updated or a new one is added, and an axis range follows the current value.",
+    "category": "stock",
+    "tier": "technique",
+    "tags": [
+      "live data",
+      "candlestick",
+      "axis range",
+      "data update",
+      "toolbar"
+    ],
+    "modules": [
+      "xy",
+      "stock",
+      "themes/Animated"
+    ],
+    "json": false,
+    "script": true
+  },
+  {
+    "name": "stock-chart-volume-separate-panel",
+    "title": "Stock Chart with Volume Panel",
+    "description": "A stock chart that shows volume in a second panel, which has its own axes, legend and cursor and stays in sync with the main one.",
+    "category": "stock",
+    "tier": "technique",
+    "tags": [
+      "stock panel",
+      "volume",
+      "candlestick",
+      "legend",
+      "cursor",
+      "toolbar"
+    ],
+    "modules": [
+      "xy",
+      "stock",
+      "themes/Animated"
+    ],
+    "json": false,
+    "script": true
+  },
+  {
+    "name": "svg-renderer",
+    "title": "SVG Renderer",
+    "description": "A column chart drawn as SVG instead of canvas, by choosing the renderer when the root element is created.",
+    "category": "other",
+    "tier": "basic",
+    "tags": [
+      "svg",
+      "renderer",
+      "column"
+    ],
+    "since": "5.21.0",
+    "modules": [
+      "xy",
+      "themes/Animated"
+    ],
+    "json": false,
+    "script": true
+  },
+  {
+    "name": "timeline-linear-process-diagram",
+    "title": "Timeline on a Custom Path",
+    "description": "A day as a timeline that follows a hand-made path: a curve chart whose axis runs along a list of points, with an icon pin on every activity.",
+    "category": "timeline",
+    "tier": "showcase",
+    "tags": [
+      "curve chart",
+      "custom path",
+      "bullets",
+      "icons",
+      "scrollbar"
+    ],
+    "modules": [
+      "xy",
+      "timeline",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "timeline-serpentine-chart",
+    "title": "Serpentine Timeline",
+    "description": "A serpentine chart: tasks as columns along a date axis that winds back and forth, with a circle at each end of a task and flags for events.",
+    "category": "timeline",
+    "tier": "basic",
+    "tags": [
+      "serpentine",
+      "gantt",
+      "bullets",
+      "flags",
+      "date axis"
+    ],
+    "modules": [
+      "xy",
+      "timeline",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "timeline-spiral-chart",
+    "title": "Spiral Chart",
+    "description": "A spiral chart: three years of monthly values as columns along a date axis that winds outwards, with a value axis across it.",
+    "category": "timeline",
+    "tier": "basic",
+    "tags": [
+      "spiral",
+      "column",
+      "date axis",
+      "value axis"
+    ],
+    "modules": [
+      "xy",
+      "timeline",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "venn-diagram",
+    "title": "Venn Diagram",
+    "description": "Three overlapping circles and their intersections, with a legend.",
+    "category": "other",
+    "tier": "basic",
+    "tags": [
+      "venn",
+      "sets",
+      "legend"
+    ],
+    "modules": [
+      "venn",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "wordcloud-with-data",
+    "title": "Word Cloud from Data",
+    "description": "A word cloud made from a list of words with weights, colored by weight with a heat rule.",
+    "category": "other",
+    "tier": "basic",
+    "tags": [
+      "word cloud",
+      "data",
+      "heat rules"
+    ],
+    "modules": [
+      "wc",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "wordcloud-with-text",
+    "title": "Word Cloud from Text",
+    "description": "A word cloud made from a paragraph of text: the series counts the words and sizes them by how often they are used.",
+    "category": "other",
+    "tier": "basic",
+    "tags": [
+      "word cloud",
+      "text"
+    ],
+    "modules": [
+      "wc",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "xy-100-percent-stacked-column",
+    "title": "100% Stacked Column Chart",
+    "description": "Stacked columns shown as shares of each category's total, using valueYShow and calculateTotals.",
+    "category": "xy",
+    "tier": "basic",
+    "tags": [
+      "column",
+      "stacked",
+      "percent",
+      "category axis",
+      "legend"
+    ],
+    "modules": [
+      "xy",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "xy-bubble",
+    "title": "Bubble Chart",
+    "description": "Countries as bubbles on two value axes, sized by a heat rule and colored per data row through templateField.",
+    "category": "xy",
+    "tier": "basic",
+    "tags": [
+      "bubble",
+      "scatter",
+      "heat rules",
+      "templatefield",
+      "value axis"
+    ],
+    "modules": [
+      "xy",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "xy-candlestick",
+    "title": "Candlestick Chart",
+    "description": "Daily open, high, low and close prices as candles on a date axis; OHLCSeries takes the same settings.",
+    "category": "xy",
+    "tier": "basic",
+    "tags": [
+      "candlestick",
+      "ohlc",
+      "date axis",
+      "cursor",
+      "scrollbar"
+    ],
+    "modules": [
+      "xy",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "xy-clustered-column",
+    "title": "Clustered Column Chart",
+    "description": "Several column series side by side in each category, with value labels and a legend.",
+    "category": "xy",
+    "tier": "basic",
+    "tags": [
+      "column",
+      "clustered",
+      "category axis",
+      "bullet",
+      "legend"
+    ],
+    "modules": [
+      "xy",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "xy-column",
+    "title": "Column Chart with Date Axis",
+    "description": "A column series of daily values on a date axis, with a cursor, a scrollbar and zoom.",
+    "category": "xy",
+    "tier": "basic",
+    "tags": [
+      "column",
+      "date axis",
+      "cursor",
+      "scrollbar",
+      "zoom"
+    ],
+    "modules": [
+      "xy",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "xy-comparing-periods",
+    "title": "Comparing Two Periods",
+    "description": "This period as a solid line and the previous one as a dashed line on the same dates, with one tooltip showing both values.",
+    "category": "xy",
+    "tier": "technique",
+    "tags": [
+      "line",
+      "date axis",
+      "comparison",
+      "tooltip",
+      "dashed line"
+    ],
+    "modules": [
+      "xy",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "xy-data-grouping",
+    "title": "Data Grouping on a Date Axis",
+    "description": "A line of 50,000 hourly values that stays responsive because the date axis groups them into longer periods with groupData.",
+    "category": "xy",
+    "tier": "technique",
+    "tags": [
+      "line",
+      "date axis",
+      "data grouping",
+      "large data",
+      "zoom"
+    ],
+    "modules": [
+      "xy",
+      "themes/Animated"
+    ],
+    "json": false,
+    "script": true
+  },
+  {
+    "name": "xy-draggable-range",
+    "title": "Draggable Range",
+    "description": "A handle on the date axis that the user drags to move an axis range; the part of the series after it is drawn in another color with a pattern fill.",
+    "category": "xy",
+    "tier": "technique",
+    "tags": [
+      "line",
+      "axis range",
+      "series range",
+      "dragging",
+      "pattern"
+    ],
+    "modules": [
+      "xy",
+      "themes/Animated"
+    ],
+    "json": false,
+    "script": true
+  },
+  {
+    "name": "xy-drawing-series",
+    "title": "Drawing a Series",
+    "description": "Clicking the plot area adds a point to a line series and its bullets can be dragged, by turning pointer coordinates into axis values.",
+    "category": "xy",
+    "tier": "technique",
+    "tags": [
+      "line",
+      "drawing",
+      "dragging",
+      "bullet",
+      "events"
+    ],
+    "modules": [
+      "xy",
+      "themes/Animated"
+    ],
+    "json": false,
+    "script": true
+  },
+  {
+    "name": "xy-dumbbell-plot",
+    "title": "Dumbbell Plot",
+    "description": "A range per category drawn as a thin column from the open value to the close value, with a bullet at each end.",
+    "category": "xy",
+    "tier": "basic",
+    "tags": [
+      "dumbbell",
+      "column",
+      "bullet",
+      "category axis",
+      "range"
+    ],
+    "modules": [
+      "xy",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "xy-gapless-date-axis",
+    "title": "Gapless Date Axis",
+    "description": "A line of weekday values on a GaplessDateAxis, which leaves out the weekends so the points stay evenly spaced.",
+    "category": "xy",
+    "tier": "basic",
+    "tags": [
+      "line",
+      "date axis",
+      "gapless",
+      "weekends",
+      "cursor"
+    ],
+    "modules": [
+      "xy",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "xy-line",
+    "title": "Line Chart with Date Axis",
+    "description": "A line series on a date axis, with a cursor, a scrollbar and zoom.",
+    "category": "xy",
+    "tier": "basic",
+    "tags": [
+      "line",
+      "date axis",
+      "cursor",
+      "scrollbar",
+      "zoom"
+    ],
+    "modules": [
+      "xy",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "xy-line-highlight-on-legend-hover",
+    "title": "Highlight Line on Legend Hover",
+    "description": "Ten line series with a legend at the side; hovering a legend item dims all the other lines, done with events on the legend item template.",
+    "category": "xy",
+    "tier": "technique",
+    "tags": [
+      "line",
+      "legend",
+      "hover",
+      "events"
+    ],
+    "modules": [
+      "xy",
+      "themes/Animated"
+    ],
+    "json": false,
+    "script": true
+  },
+  {
+    "name": "xy-live-data",
+    "title": "Live Data",
+    "description": "A line that gets a new point every second and drops its oldest one, with the new point animated in from the last.",
+    "category": "xy",
+    "tier": "technique",
+    "tags": [
+      "line",
+      "live data",
+      "date axis",
+      "animation",
+      "bullets"
+    ],
+    "modules": [
+      "xy",
+      "themes/Animated"
+    ],
+    "json": false,
+    "script": true
+  },
+  {
+    "name": "xy-multiple-synced-value-axes",
+    "title": "Multiple Synced Value Axes",
+    "description": "Three line series with a value axis each, colored like their series, with the grids lined up by syncWithAxis.",
+    "category": "xy",
+    "tier": "technique",
+    "tags": [
+      "line",
+      "multiple axes",
+      "value axis",
+      "syncWithAxis",
+      "date axis"
+    ],
+    "modules": [
+      "xy",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "xy-percent-change-comparison",
+    "title": "Percent Change Comparison",
+    "description": "Two price series shown as percent change from the start of the zoomed range, so they can be compared, with a volume panel on a second, stacked Y axis.",
+    "category": "xy",
+    "tier": "technique",
+    "tags": [
+      "line",
+      "percent change",
+      "stacked axes",
+      "gapless date axis",
+      "legend",
+      "volume"
+    ],
+    "modules": [
+      "xy",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "xy-pulsing-last-bullet",
+    "title": "Pulsing Last Bullet",
+    "description": "A line whose last point has a pulsing bullet, switched on for one data item with templateField and animated with the animations setting.",
+    "category": "xy",
+    "tier": "technique",
+    "tags": [
+      "line",
+      "bullet",
+      "animation",
+      "templatefield"
+    ],
+    "since": "5.21.0",
+    "modules": [
+      "xy",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "xy-real-time-data-sorting",
+    "title": "Real-Time Data Sorting",
+    "description": "Columns whose values change on a timer and that slide to their new places as the category axis is sorted again.",
+    "category": "xy",
+    "tier": "technique",
+    "tags": [
+      "column",
+      "live data",
+      "sorting",
+      "category axis",
+      "animation"
+    ],
+    "modules": [
+      "xy",
+      "themes/Animated"
+    ],
+    "json": false,
+    "script": true
+  },
+  {
+    "name": "xy-smoothed-line",
+    "title": "Smoothed Line Chart",
+    "description": "A smoothed line series with a fill and bullets on a date axis.",
+    "category": "xy",
+    "tier": "basic",
+    "tags": [
+      "smoothed line",
+      "area",
+      "bullets",
+      "date axis"
+    ],
+    "modules": [
+      "xy",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "xy-stacked-and-clustered-column",
+    "title": "Stacked and Clustered Columns",
+    "description": "Column series where some are stacked and some start a new cluster, set per series with the stacked setting.",
+    "category": "xy",
+    "tier": "basic",
+    "tags": [
+      "column",
+      "stacked",
+      "clustered",
+      "category axis",
+      "legend"
+    ],
+    "modules": [
+      "xy",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "xy-stacked-column",
+    "title": "Stacked Column Chart",
+    "description": "Six column series stacked on a category axis, with value labels and a legend.",
+    "category": "xy",
+    "tier": "basic",
+    "tags": [
+      "column",
+      "stacked",
+      "category axis",
+      "legend"
+    ],
+    "modules": [
+      "xy",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  },
+  {
+    "name": "xy-stacked-step",
+    "title": "Stacked Step Line Chart",
+    "description": "Two step line series with fills, one stacked on the other, on a date axis.",
+    "category": "xy",
+    "tier": "basic",
+    "tags": [
+      "step line",
+      "stacked",
+      "area",
+      "date axis"
+    ],
+    "modules": [
+      "xy",
+      "themes/Animated"
+    ],
+    "json": true,
+    "script": true
+  }
+]

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>amCharts 5 Example - Map Sankey (JSON config)</title>
+
+    <!-- Styles -->
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        padding: 0;
+        margin: 0;
+        background-color: #ffffff;
+      }
+
+      #chartdiv {
+        width: 100%;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chartdiv"></div>
+
+    <!-- Resources -->
+    <script src="../../index.js"></script>
+    <script src="../../map.js"></script>
+    <script src="../../geodata/worldLow.js"></script>
+    <script src="../../themes/Animated.js"></script>
+    <script src="../../plugins/json.js"></script>
+
+    <!-- Chart code -->
+    <script>
+      // The chart as a JSON config. The code that builds the chart from it is below
+      // how a config reads:
+      // "type" is the class to create, and "settings" are what you would pass to its new() in code
+      // "properties" fill in its parts: lists such as series and axes, or templates such as columns.template
+      // "refs" holds objects used in more than one place: "#series-0" stands for the one named series-0
+      // a string starting with "@" takes a value from another object, such as "@series.get('fill')"
+      // https://www.amcharts.com/docs/v5/concepts/serializing/
+      var config = {
+        "type": "MapChart",
+        "settings": {
+          "panX": "translateX",
+          "panY": "translateY",
+          "autoAppear": true,
+          "appearDuration": 1000,
+          "appearDelay": 100,
+          "projectionName": "geoMercator"
+        },
+        "properties": {
+          "series": ["#series-0", "#series-1"]
+        },
+        "refs": [
+          {
+            "data-0": []
+          },
+          {
+            "data-1": [
+              { "sourceId": "BR", "source": "Brazil", "targetId": "US", "target": "United States", "value": 450 },
+              { "sourceId": "BR", "source": "Brazil", "targetId": "DE", "target": "Germany", "value": 350 },
+              { "sourceId": "BR", "source": "Brazil", "targetId": "IT", "target": "Italy", "value": 200 },
+              {
+                "sourceId": "CO",
+                "source": "Colombia",
+                "targetId": "US",
+                "target": "United States",
+                "value": 250
+              },
+              { "sourceId": "CO", "source": "Colombia", "targetId": "DE", "target": "Germany", "value": 80 },
+              { "sourceId": "ET", "source": "Ethiopia", "targetId": "DE", "target": "Germany", "value": 80 },
+              { "sourceId": "VN", "source": "Vietnam", "targetId": "DE", "target": "Germany", "value": 200 },
+              { "sourceId": "VN", "source": "Vietnam", "targetId": "IT", "target": "Italy", "value": 150 },
+              { "sourceId": "VN", "source": "Vietnam", "targetId": "JP", "target": "Japan", "value": 100 },
+              { "sourceId": "ID", "source": "Indonesia", "targetId": "JP", "target": "Japan", "value": 80 },
+              { "sourceId": "ID", "source": "Indonesia", "targetId": "DE", "target": "Germany", "value": 60 }
+            ]
+          },
+          {
+            "series-0": {
+              "type": "MapPolygonSeries",
+              "settings": {
+                "geoJSON": "am5geodata_worldLow",
+                "exclude": ["AQ"]
+              },
+              "properties": {
+                "mapPolygons": {
+                  "properties": {
+                    "template": {
+                      "settings": {
+                        "fill": { "type": "Color", "value": "#000000" },
+                        "fillOpacity": 0.15
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "series-1": {
+              "type": "MapSankeySeries",
+              "settings": { "polygonSeries": "#series-0" },
+              "properties": {
+                "data": "#data-1",
+                "mapPolygons": {
+                  "properties": {
+                    "template": {
+                      "settings": { "fillOpacity": 0.6, "tooltipText": "{source} > {target}: {value}" }
+                    }
+                  }
+                },
+                "nodes": {
+                  "properties": {
+                    "mapPolygons": {
+                      "properties": {
+                        "template": {
+                          "settings": { "tooltipText": "{name}: {sum}" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      };
+
+
+      // Create root element
+      // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+      var root = am5.Root.new("chartdiv");
+
+
+      // Set themes
+      // https://www.amcharts.com/docs/v5/concepts/themes/
+      root.setThemes([
+        am5themes_Animated.new(root)
+      ]);
+
+
+      // Build the chart from its JSON config
+      // https://www.amcharts.com/docs/v5/concepts/serializing/
+      am5plugins_json.JsonParser.new(root).parse(config, {
+        parent: root.container
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>amCharts 5 Example - Partition Chart (JSON config)</title>
+
+    <!-- Styles -->
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        padding: 0;
+        margin: 0;
+        background-color: #ffffff;
+      }
+
+      #chartdiv {
+        width: 100%;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chartdiv"></div>
+
+    <!-- Resources -->
+    <script src="../../index.js"></script>
+    <script src="../../hierarchy.js"></script>
+    <script src="../../themes/Animated.js"></script>
+    <script src="../../plugins/json.js"></script>
+
+    <!-- Chart code -->
+    <script>
+      // The chart as a JSON config. The code that builds the chart from it is below
+      // how a config reads:
+      // "type" is the class to create, and "settings" are what you would pass to its new() in code
+      // "properties" fill in its parts: lists such as series and axes, or templates such as columns.template
+      // "refs" holds objects used in more than one place: "#series-0" stands for the one named series-0
+      // a string starting with "@" takes a value from another object, such as "@series.get('fill')"
+      // https://www.amcharts.com/docs/v5/concepts/serializing/
+      var config = {
+        "type": "Partition",
+        "settings": {
+          "orientation": "horizontal",
+          "valueField": "value",
+          "categoryField": "name",
+          "childDataField": "children",
+          "selectedDataItem": "@self.dataItems.0",
+          "autoAppear": true,
+          "appearDuration": 1000,
+          "appearDelay": 100
+        },
+        "properties": { "data": "#data-0" },
+        "refs": [
+          {
+            "data-0": [
+              {
+                "name": "Budget",
+                "children": [
+                  {
+                    "name": "Housing",
+                    "children": [
+                      { "name": "Rent", "value": 900 },
+                      {
+                        "name": "Utilities",
+                        "children": [
+                          { "name": "Electricity", "value": 150 },
+                          { "name": "Heating", "value": 200 },
+                          { "name": "Internet", "value": 120 }
+                        ],
+                        "__parse": true
+                      }
+                    ],
+                    "__parse": true
+                  },
+                  {
+                    "name": "Food",
+                    "children": [
+                      { "name": "Groceries", "value": 450 },
+                      {
+                        "name": "Eating Out",
+                        "children": [
+                          { "name": "Restaurants", "value": 220 },
+                          { "name": "Coffee", "value": 130 }
+                        ],
+                        "__parse": true
+                      }
+                    ],
+                    "__parse": true
+                  },
+                  {
+                    "name": "Transport",
+                    "children": [
+                      {
+                        "name": "Car",
+                        "children": [
+                          { "name": "Fuel", "value": 200 },
+                          { "name": "Insurance", "value": 150 }
+                        ],
+                        "__parse": true
+                      },
+                      { "name": "Public Transit", "value": 130 }
+                    ],
+                    "__parse": true
+                  }
+                ],
+                "__parse": true
+              }
+            ]
+          }
+        ]
+      };
+
+
+      // Create root element
+      // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+      var root = am5.Root.new("chartdiv");
+
+
+      // Set themes
+      // https://www.amcharts.com/docs/v5/concepts/themes/
+      root.setThemes([
+        am5themes_Animated.new(root)
+      ]);
+
+
+      // Build the chart from its JSON config
+      // https://www.amcharts.com/docs/v5/concepts/serializing/
+      am5plugins_json.JsonParser.new(root).parse(config, {
+        parent: root.container
+      });
+    </script>
+  </body>
+</html>

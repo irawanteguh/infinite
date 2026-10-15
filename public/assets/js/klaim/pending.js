@@ -49,10 +49,14 @@ function dataraweklaim(){
             const mapKunjunganPendingRJ    = {};
             const mapKunjunganTidakLayakRI = {};
             const mapKunjunganTidakLayakRJ = {};
+            const mapNilaiPendingRI        = {};
+            const mapNilaiPendingRJ        = {};
+            const mapNilaiTidakLayakRI     = {};
+            const mapNilaiTidakLayakRJ     = {};
 
-            let jmlPending = 0;
-            let jmlTidakLayak = 0;
-            let nilaiPending = 0;
+            let jmlPending      = 0;
+            let jmlTidakLayak   = 0;
+            let nilaiPending    = 0;
             let nilaiTidakLayak = 0;
             
             for (const item of result) {
@@ -68,8 +72,10 @@ function dataraweklaim(){
 
                     if (jnspel === "1") {
                         mapKunjunganPendingRI[periode] = (mapKunjunganPendingRI[periode] || 0) + jumlah;
+                        mapNilaiPendingRI[periode]     = (mapNilaiPendingRI[periode] || 0) + pengajuan;
                     } else if (jnspel === "2") {
                         mapKunjunganPendingRJ[periode] = (mapKunjunganPendingRJ[periode] || 0) + jumlah;
+                        mapNilaiPendingRJ[periode]     = (mapNilaiPendingRJ[periode] || 0) + pengajuan;
                     } 
                 }else{
                     jmlTidakLayak += jumlah;
@@ -77,8 +83,10 @@ function dataraweklaim(){
 
                     if (jnspel === "1") {
                         mapKunjunganTidakLayakRI[periode] = (mapKunjunganTidakLayakRI[periode] || 0) + jumlah;
+                        mapNilaiTidakLayakRI[periode]     = (mapNilaiTidakLayakRI[periode] || 0) + pengajuan;
                     } else if (jnspel === "2") {
                         mapKunjunganTidakLayakRJ[periode] = (mapKunjunganTidakLayakRJ[periode] || 0) + jumlah;
+                        mapNilaiTidakLayakRJ[periode]     = (mapNilaiTidakLayakRJ[periode] || 0) + pengajuan;
                     } 
                 }
             }
@@ -93,6 +101,16 @@ function dataraweklaim(){
                 };
             });
 
+            const chartnilai = bulanLengkap.map(function (bulan, index) {
+                return {
+                    periode: namaBulan[index],
+                    value1 : mapNilaiPendingRI[bulan] || 0,
+                    value2 : mapNilaiPendingRJ[bulan] || 0,
+                    value3 : mapNilaiTidakLayakRI[bulan] || 0,
+                    value4 : mapNilaiTidakLayakRJ[bulan] || 0
+                };
+            });
+
             // Update 4 kartu summary
             $('#jmlpending').text(jmlPending.toLocaleString('id-ID'));
             $('#jmltidaklayak').text(jmlTidakLayak.toLocaleString('id-ID'));
@@ -101,6 +119,8 @@ function dataraweklaim(){
 
             renderchartarea("trenpending",chartkunjungan,"Discharge Date","InPatient",["InPatient", "OutPatient"],["value1", "value2"],true,"OutPatient","","",null);
             renderchartarea("trentidaklayak",chartkunjungan,"Discharge Date","InPatient",["InPatient", "OutPatient"],["value3", "value4"],true,"OutPatient","","",null);
+            renderchartarea("trenpendingnilai",chartnilai,"Discharge Date","InPatient",["InPatient", "OutPatient"],["value1", "value2"],true,"OutPatient","","",null);
+            renderchartarea("trentidaklayaknilai",chartnilai,"Discharge Date","InPatient",["InPatient", "OutPatient"],["value3", "value4"],true,"OutPatient","","",null);
         },
         complete: function () {
             Swal.close();
@@ -148,67 +168,30 @@ function dataalgoritmatype(){
 
             const result = Array.isArray(response.responseResult) ? response.responseResult : [];
 
-            function buildChartData(statusTarget) {
-                const grouped = {};
-
-                result.forEach(function (item) {
-                    const status = String(item.status || '').trim().toUpperCase();
-
-                    if (status !== statusTarget) {
-                        return;
-                    }
-
-                    const algoritma = String(item.algoritma_type || 'LAINNYA').trim().toUpperCase();
-                    const jnspel    = String(item.jnspel ?? '').trim();
-                    const jumlah    = Number(item.jumlah_kasus) || 0;
-
-                    if (!grouped[algoritma]) {
-                        grouped[algoritma] = {
-                            algoritma_type: algoritma,
-                            rawat_inap: 0,
-                            rawat_jalan: 0
-                        };
-                    }
-
-                    if (jnspel === '1') {
-                        grouped[algoritma].rawat_inap += jumlah;
-                    } else if (jnspel === '2') {
-                        grouped[algoritma].rawat_jalan += jumlah;
-                    }
-                });
-
-                return Object.values(grouped).sort(function (a, b) {
-                    return (
-                        b.rawat_inap + b.rawat_jalan
-                    ) - (
-                        a.rawat_inap + a.rawat_jalan
-                    );
-                });
-            }
-
-            const dataPending = buildChartData('PENDING');
-            renderBarHorizontal(
-                'trenpendingalgoritma',
-                [
-                    { name: 'Rawat Inap', field: 'rawat_inap' },
-                    { name: 'Rawat Jalan', field: 'rawat_jalan' }
-                ],
-                dataPending,
-                'algoritma_type',
-                'Jumlah Kasus Pending'
-            );
-
-            const dataTidakLayak = buildChartData('TIDAK LAYAK');
-            renderBarHorizontal(
-                'trentidaklayakalgoritma',
-                [
-                    { name: 'Rawat Inap', field: 'rawat_inap' },
-                    { name: 'Rawat Jalan', field: 'rawat_jalan' }
-                ],
-                dataTidakLayak,
-                'algoritma_type',
-                'Jumlah Kasus Tidak Layak'
-            );            
+            const dataAlgorithm = result
+            .map(function (item) {
+                return {
+                    word: String(item.algoritma_type || '').trim(),
+                    weight: Number(item.jumlah_kasus) || 0
+                };
+            })
+            .filter(function (item) {
+                return item.word !== "" && item.weight > 0;
+            })
+            .sort(function (a, b) {
+                return b.weight - a.weight;
+            });  
+            
+            renderWordCloud(
+                "trenalgoritma",
+                dataAlgorithm,
+                {
+                    maxCount: 50,
+                    minFontSize: 12,
+                    maxFontSize: 35,
+                    minWordLength: 2
+                }
+            ); 
         },
         complete: function () {
             Swal.close();
@@ -257,28 +240,28 @@ function dataalgoritmabreakdown(){
             const result = Array.isArray(response.responseResult) ? response.responseResult : [];
 
             const dataAlgorithmBreakdown = result
-                .map(function (item) {
-                    return {
-                        algoritma_detail: String(item.algoritma || '').trim(),
-                        jumlah: Number(item.jumlah) || 0
-                    };
-                })
-                .filter(function (item) {
-                    return item.algoritma_detail !== '';
-                })
-                .sort(function (a, b) {
-                    return b.jumlah - a.jumlah;
-                })
-                .slice(0, 6);
+            .map(function (item) {
+                return {
+                    word: String(item.algoritma || '').trim(),
+                    weight: Number(item.jumlah) || 0
+                };
+            })
+            .filter(function (item) {
+                return item.word !== "" && item.weight > 0;
+            })
+            .sort(function (a, b) {
+                return b.weight - a.weight;
+            });
 
-            renderBarHorizontal(
-                'trenalgoritmabreakdown',
-                [
-                    { name: 'Jumlah Algoritma', field: 'jumlah' }
-                ],
+            renderWordCloud(
+                "trenalgoritmabreakdown",
                 dataAlgorithmBreakdown,
-                'algoritma_detail',
-                'Jumlah Kemunculan Algoritma'
+                {
+                    maxCount: 50,
+                    minFontSize: 12,
+                    maxFontSize: 35,
+                    minWordLength: 2
+                }
             );        
         },
         complete: function () {

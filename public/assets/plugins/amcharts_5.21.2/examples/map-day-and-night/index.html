@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>amCharts 5 Example - Day and Night Map</title>
+
+    <!-- Styles -->
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        padding: 0;
+        margin: 0;
+        background-color: #ffffff;
+      }
+
+      #chartdiv {
+        width: 100%;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chartdiv"></div>
+
+    <!-- Resources -->
+    <script src="../../index.js"></script>
+    <script src="../../map.js"></script>
+    <script src="../../geodata/worldLow.js"></script>
+    <script src="../../themes/Animated.js"></script>
+
+    <!-- Chart code -->
+    <script>
+      // Create root element
+      // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+      var root = am5.Root.new("chartdiv");
+
+
+      // Set themes
+      // https://www.amcharts.com/docs/v5/concepts/themes/
+      root.setThemes([
+        am5themes_Animated.new(root)
+      ]);
+
+
+      // Create the map chart
+      // https://www.amcharts.com/docs/v5/charts/map-chart/
+      var chart = root.container.children.push(am5map.MapChart.new(root, {
+        panX: "rotateX", // dragging sideways turns the world, so any longitude can be centered
+        projection: am5map.geoNaturalEarth1() // a rounded world map, with sizes close to true
+      }));
+
+
+      // Create main polygon series for countries
+      // https://www.amcharts.com/docs/v5/charts/map-chart/map-polygon-series/
+      chart.series.push(am5map.MapPolygonSeries.new(root, {
+        geoJSON: am5geodata_worldLow
+      }));
+
+
+      // Shade the night side and show the sun
+      // the edge fades through 4 shades of twilight, and the sun marks where it is overhead
+      chart.series.push(am5map.NightSeries.new(root, {
+        sunDate: "now" // the night as it is right now, moved on every minute
+      }));
+
+
+      // Make stuff animate on load
+      // https://www.amcharts.com/docs/v5/concepts/animations/#Forcing_appearance_animation
+      chart.appear(1000, 100);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>amCharts 5 Example - Voronoi Treemap</title>
+
+    <!-- Styles -->
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        padding: 0;
+        margin: 0;
+        background-color: #ffffff;
+      }
+
+      #chartdiv {
+        width: 100%;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chartdiv"></div>
+
+    <!-- Resources -->
+    <script src="../../index.js"></script>
+    <script src="../../hierarchy.js"></script>
+    <script src="../../themes/Animated.js"></script>
+
+    <!-- Data: data.js declares "data", which the chart code uses -->
+    <script src="data.js"></script>
+
+    <!-- Chart code -->
+    <script>
+      // Create root element
+      // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+      var root = am5.Root.new("chartdiv");
+
+
+      // Create a theme that styles nodes and labels by their level
+      var myTheme = am5.Theme.new(root);
+
+      // Root node: invisible
+      myTheme.rule("Polygon", ["hierarchy", "node", "shape", "depth0"]).setAll({
+        strokeOpacity: 0,
+        fillOpacity: 0
+      });
+
+      // Continents: filled, with a thick outline
+      myTheme.rule("Polygon", ["hierarchy", "node", "shape", "depth1"]).setAll({
+        strokeWidth: 5,
+        fillOpacity: 1
+      });
+
+      // Countries: a thin outline over their continent
+      myTheme.rule("Polygon", ["hierarchy", "node", "shape", "depth2"]).setAll({
+        strokeWidth: 1,
+        fillOpacity: 0
+      });
+
+      // Countries are the last level, which is not clickable by default
+      myTheme.rule("HierarchyNode", ["last"]).setAll({
+        cursorOverStyle: "pointer"
+      });
+
+      // Labels: small, and only on countries
+      myTheme.rule("Label", ["node"]).setAll({
+        fontSize: 11,
+        minScale: 0.7 // a label shrinks to fit its polygon, but below 70% it is hidden
+      });
+
+      myTheme.rule("Label", ["node", "depth0"]).setAll({
+        forceHidden: true
+      });
+
+      myTheme.rule("Label", ["node", "depth1"]).setAll({
+        forceHidden: true
+      });
+
+
+      // Set themes
+      // https://www.amcharts.com/docs/v5/concepts/themes/
+      root.setThemes([
+        am5themes_Animated.new(root),
+        myTheme
+      ]);
+
+
+      // Create series
+      // https://www.amcharts.com/docs/v5/charts/hierarchy/voronoi-treemap/
+      // population sets each polygon's area: a country's own, a continent's the sum of its countries
+      var series = root.container.children.push(am5hierarchy.VoronoiTreemap.new(root, {
+        paddingLeft: 5,         // a 5 px margin, so the thick continent outlines aren't cut off
+        paddingRight: 5,
+        paddingTop: 5,
+        paddingBottom: 5,
+        singleBranchOnly: true, // opening one continent closes the others
+        downDepth: 2,           // selecting a node shows two levels inside it
+        upDepth: 0,             // and hides the levels above it
+        initialDepth: 2,        // continents and their countries from the start
+        valueField: "population",
+        categoryField: "name",
+        idField: "id",
+        childDataField: "children"
+      }));
+
+
+      // Show the country's name where its polygon is wide enough, its code where it is not
+      series.labels.template.adapters.add("x", function (x, target) {
+        var dataItem = target.dataItem ;
+        if (dataItem) {
+          var polygon = dataItem.get("polygon");
+          if (polygon) {
+            var name = dataItem.get("category", "");
+            var width = polygon.getPrivate("maxX", 0) - polygon.getPrivate("minX", 0);
+            // the name needs about 7 px a letter, and at least 60 px; the code is the id from the data
+            target.set("text", width > Math.max(60, name.length * 7) ? name : dataItem.get("id", ""));
+          }
+        }
+        return x;
+      });
+
+
+      // When a country is clicked, zoom to its continent
+      series.nodes.template.events.on("click", function (ev) {
+        var dataItem = ev.target.dataItem ;
+        if (dataItem && !dataItem.get("children")) { // only countries, which have no children
+          series.selectDataItem(dataItem.get("parent"));
+        }
+      });
+
+
+      // Set data
+      // https://www.amcharts.com/docs/v5/charts/hierarchy/#Setting_data
+      series.data.setAll([data]);
+
+
+      // Select the root node
+      // https://www.amcharts.com/docs/v5/charts/hierarchy/#Pre_selected_branch
+      series.set("selectedDataItem", series.dataItems[0]);
+
+
+      // Make stuff animate on load
+      // https://www.amcharts.com/docs/v5/concepts/animations/#Forcing_appearance_animation
+      series.appear(1000, 100);
+    </script>
+  </body>
+</html>

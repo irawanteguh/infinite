@@ -95,76 +95,95 @@
 </div>
 
 <div class="col-xl-12 mb-5">
-    <div class="card card-flush">
-        <div class="card-header pt-5">
-            <h3 class="card-title align-items-start flex-column">
-                <span class="card-label fw-bolder fs-3 mb-1">BPJS Claim Analytics</span>
-                <span class="text-muted mt-1 fw-bold fs-7">Analisis tren pending klaim dan klaim tidak layak rumah sakit</span>
-            </h3>
-            <div class="card-toolbar m-0">
-                <ul class="nav nav-tabs nav-line-tabs nav-stretch fs-6 border-0 fw-bolder" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link justify-content-center text-active-gray-800 active" data-bs-toggle="tab" role="tab" href="#pending">Pending</a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link justify-content-center text-active-gray-800" data-bs-toggle="tab" role="tab" href="#tidaklayak">Tidak Layak</a>
-                    </li>
-                </ul>
+    <div class="row">
+        <div class="col-xl-6 mb-5">
+            <div class="card card-flush">
+                <div class="card-header pt-5">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label fw-bolder fs-3 mb-1">BPJS Claim Case Analytics</span>
+                        <span class="text-muted mt-1 fw-bold fs-7">Analisis tren pending klaim dan klaim tidak layak rumah sakit</span>
+                    </h3>
+                    <div class="card-toolbar m-0">
+                        <ul class="nav nav-tabs nav-line-tabs nav-stretch fs-6 border-0 fw-bolder" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link justify-content-center text-active-gray-800 active" data-bs-toggle="tab" role="tab" href="#pending">Pending</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link justify-content-center text-active-gray-800" data-bs-toggle="tab" role="tab" href="#tidaklayak">Tidak Layak</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body py-3">
+                    <div class="tab-content">
+                        <div id="pending" class="card-body p-0 tab-pane fade show active" role="tabpanel">
+                            <div class="card-rounded-bottom" id="trenpending"></div>
+                        </div>
+                        <div id="tidaklayak" class="card-body p-0 tab-pane fade " role="tabpanel">
+                            <div class="card-rounded-bottom" id="trentidaklayak"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="card-body py-3">
-            <div class="tab-content">
-                <div id="pending" class="card-body p-0 tab-pane fade show active" role="tabpanel">
-                    <div class="card-rounded-bottom" id="trenpending"></div>
+        <div class="col-xl-6 mb-5">
+            <div class="card card-flush">
+                <div class="card-header pt-5">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label fw-bolder fs-3 mb-1">BPJS Claim Value Analytics</span>
+                        <span class="text-muted mt-1 fw-bold fs-7">Analisis tren nilai rupiah pending klaim dan klaim tidak layak rumah sakit</span>
+                    </h3>
+                    <div class="card-toolbar m-0">
+                        <ul class="nav nav-tabs nav-line-tabs nav-stretch fs-6 border-0 fw-bolder" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link justify-content-center text-active-gray-800 active" data-bs-toggle="tab" role="tab" href="#pendingnilai">Pending</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link justify-content-center text-active-gray-800" data-bs-toggle="tab" role="tab" href="#tidaklayaknilai">Tidak Layak</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <div id="tidaklayak" class="card-body p-0 tab-pane fade " role="tabpanel">
-                    <div class="card-rounded-bottom" id="trentidaklayak"></div>
+                <div class="card-body py-3">
+                    <div class="tab-content">
+                        <div id="pendingnilai" class="card-body p-0 tab-pane fade show active" role="tabpanel">
+                            <div class="card-rounded-bottom" id="trenpendingnilai"></div>
+                        </div>
+                        <div id="tidaklayaknilai" class="card-body p-0 tab-pane fade " role="tabpanel">
+                            <div class="card-rounded-bottom" id="trentidaklayaknilai"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="col-xl-12">
+<div class="col-xl-12 mb-5">
     <div class="row">
-        <div class="col-xl-4 mb-5">
+        <div class="col-xl-6 mb-5">
             <div class="card card-flush">
                 <div class="card-header pt-5">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bolder fs-3 mb-1">Pending Claim Analysis</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">Distribusi kasus pending klaim berdasarkan algoritma verifikasi dan jenis pelayanan</span>
+                        <span class="card-label fw-bolder fs-3 mb-1">Algorithm Analysis</span>
+                        <span class="text-muted mt-1 fw-bold fs-7">VAnalisis frekuensi algoritma verifikasi berdasarkan jumlah temuan pending klaim pada periode terpilih.</span>
                     </h3>
                 </div>
                 <div class="card-body py-3">
-                    <div class="card-rounded-bottom" id="trenpendingalgoritma"></div>
+                    <div id="trenalgoritma" style="width: 100%; height: 350px;"></div>
                 </div>
             </div>
         </div>
-
-        <div class="col-xl-4 mb-5">
+        <div class="col-xl-6 mb-5">
             <div class="card card-flush">
                 <div class="card-header pt-5">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bolder fs-3 mb-1">Unqualified Claim Analysis</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">Distribusi kasus tidak layak klaim berdasarkan algoritma verifikasi dan jenis pelayanan</span>
+                        <span class="card-label fw-bolder fs-3 mb-1">Algorithm Breakdown Analysis</span>
+                        <span class="text-muted mt-1 fw-bold fs-7">Visualisasi frekuensi kemunculan algoritma verifikasi berdasarkan jumlah temuan pending klaim pada periode terpilih.</span>
                     </h3>
                 </div>
                 <div class="card-body py-3">
-                    <div class="card-rounded-bottom" id="trentidaklayakalgoritma"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-4 mb-5">
-            <div class="card card-flush">
-                <div class="card-header pt-5">
-                    <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bolder fs-3 mb-1">Algorithm Breakdown</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">Rincian jumlah kasus pending klaim berdasarkan algoritma verifikasi</span>
-                    </h3>
-                </div>
-                <div class="card-body py-3">
-                    <div class="card-rounded-bottom" id="trenalgoritmabreakdown"></div>
+                    <div id="trenalgoritmabreakdown" style="width: 100%; height: 350px;"></div>
                 </div>
             </div>
         </div>

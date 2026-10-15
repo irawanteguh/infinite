@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>amCharts 5 Example - Sunburst Chart (JSON config)</title>
+
+    <!-- Styles -->
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        padding: 0;
+        margin: 0;
+        background-color: #ffffff;
+      }
+
+      #chartdiv {
+        width: 100%;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chartdiv"></div>
+
+    <!-- Resources -->
+    <script src="../../index.js"></script>
+    <script src="../../hierarchy.js"></script>
+    <script src="../../themes/Animated.js"></script>
+    <script src="../../plugins/json.js"></script>
+
+    <!-- Chart code -->
+    <script>
+      // The chart as a JSON config. The code that builds the chart from it is below
+      // how a config reads:
+      // "type" is the class to create, and "settings" are what you would pass to its new() in code
+      // "properties" fill in its parts: lists such as series and axes, or templates such as columns.template
+      // "refs" holds objects used in more than one place: "#series-0" stands for the one named series-0
+      // a string starting with "@" takes a value from another object, such as "@series.get('fill')"
+      // https://www.amcharts.com/docs/v5/concepts/serializing/
+      var config = {
+        "type": "Sunburst",
+        "settings": {
+          "radius": { "type": "Percent", "value": 95 },
+          "valueField": "value",
+          "categoryField": "name",
+          "childDataField": "children",
+          "selectedDataItem": "@self.dataItems.0",
+          "autoAppear": true,
+          "appearDuration": 1000,
+          "appearDelay": 100
+        },
+        "properties": { "data": "#data-0" },
+        "refs": [
+          {
+            "data-0": [
+              {
+                "name": "Visits",
+                "children": [
+                  {
+                    "name": "Search",
+                    "children": [
+                      {
+                        "name": "Organic",
+                        "children": [
+                          { "name": "Google", "value": 420 },
+                          { "name": "Bing", "value": 90 }
+                        ],
+                        "__parse": true
+                      },
+                      {
+                        "name": "Paid",
+                        "children": [
+                          { "name": "Text Ads", "value": 100 },
+                          { "name": "Banners", "value": 70 }
+                        ],
+                        "__parse": true
+                      }
+                    ],
+                    "__parse": true
+                  },
+                  {
+                    "name": "Social",
+                    "children": [
+                      {
+                        "name": "Video",
+                        "children": [
+                          { "name": "YouTube", "value": 110 },
+                          { "name": "TikTok", "value": 70 }
+                        ],
+                        "__parse": true
+                      },
+                      {
+                        "name": "Networks",
+                        "children": [
+                          { "name": "Facebook", "value": 150 },
+                          { "name": "Instagram", "value": 120 }
+                        ],
+                        "__parse": true
+                      }
+                    ],
+                    "__parse": true
+                  },
+                  {
+                    "name": "Direct",
+                    "children": [
+                      {
+                        "name": "Saved",
+                        "children": [
+                          { "name": "Bookmarks", "value": 90 },
+                          { "name": "Shortcuts", "value": 60 }
+                        ],
+                        "__parse": true
+                      },
+                      {
+                        "name": "Email",
+                        "children": [
+                          { "name": "Newsletter", "value": 95 },
+                          { "name": "Campaigns", "value": 60 }
+                        ],
+                        "__parse": true
+                      }
+                    ],
+                    "__parse": true
+                  }
+                ],
+                "__parse": true
+              }
+            ]
+          }
+        ]
+      };
+
+
+      // Create root element
+      // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+      var root = am5.Root.new("chartdiv");
+
+
+      // Set themes
+      // https://www.amcharts.com/docs/v5/concepts/themes/
+      root.setThemes([
+        am5themes_Animated.new(root)
+      ]);
+
+
+      // Build the chart from its JSON config
+      // https://www.amcharts.com/docs/v5/concepts/serializing/
+      am5plugins_json.JsonParser.new(root).parse(config, {
+        parent: root.container
+      });
+    </script>
+  </body>
+</html>

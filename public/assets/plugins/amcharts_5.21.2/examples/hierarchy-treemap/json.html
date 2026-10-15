@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>amCharts 5 Example - Treemap with Breadcrumbs (JSON config)</title>
+
+    <!-- Styles -->
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        padding: 0;
+        margin: 0;
+        background-color: #ffffff;
+      }
+
+      #chartdiv {
+        width: 100%;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chartdiv"></div>
+
+    <!-- Resources -->
+    <script src="../../index.js"></script>
+    <script src="../../hierarchy.js"></script>
+    <script src="../../themes/Animated.js"></script>
+    <script src="../../plugins/json.js"></script>
+
+    <!-- Chart code -->
+    <script>
+      // The chart as a JSON config. The code that builds the chart from it is below
+      // how a config reads:
+      // "type" is the class to create, and "settings" are what you would pass to its new() in code
+      // "properties" fill in its parts: lists such as series and axes, or templates such as columns.template
+      // "refs" holds objects used in more than one place: "#series-0" stands for the one named series-0
+      // a string starting with "@" takes a value from another object, such as "@series.get('fill')"
+      // https://www.amcharts.com/docs/v5/concepts/serializing/
+      var config = {
+        "type": "Container",
+        "settings": {
+          "width": { "type": "Percent", "value": 100 },
+          "height": { "type": "Percent", "value": 100 },
+          "layout": { "type": "VerticalLayout" }
+        },
+        "children": [
+          "#series-0",
+          {
+            "type": "BreadcrumbBar",
+            "settings": { "series": "#series-0" },
+            "index": 0
+          }
+        ],
+        "refs": [
+          {
+            "data-0": [
+              {
+                "name": "Sales",
+                "children": [
+                  {
+                    "name": "Electronics",
+                    "children": [
+                      { "name": "Phones", "value": 86 },
+                      { "name": "Laptops", "value": 64 },
+                      {
+                        "name": "Audio",
+                        "children": [
+                          { "name": "Headphones", "value": 31 },
+                          { "name": "Speakers", "value": 18 }
+                        ],
+                        "__parse": true
+                      }
+                    ],
+                    "__parse": true
+                  },
+                  {
+                    "name": "Home",
+                    "children": [
+                      { "name": "Furniture", "value": 52 },
+                      { "name": "Lighting", "value": 15 },
+                      {
+                        "name": "Kitchen",
+                        "children": [
+                          { "name": "Cookware", "value": 22 },
+                          { "name": "Appliances", "value": 37 }
+                        ],
+                        "__parse": true
+                      }
+                    ],
+                    "__parse": true
+                  },
+                  {
+                    "name": "Sports",
+                    "children": [
+                      { "name": "Cycling", "value": 41 },
+                      { "name": "Fitness", "value": 28 },
+                      { "name": "Outdoor", "value": 23 }
+                    ],
+                    "__parse": true
+                  }
+                ],
+                "__parse": true
+              }
+            ]
+          },
+          {
+            "series-0": {
+              "type": "Treemap",
+              "settings": {
+                "downDepth": 1,
+                "upDepth": 1,
+                "initialDepth": 2,
+                "valueField": "value",
+                "categoryField": "name",
+                "childDataField": "children",
+                "selectedDataItem": "@self.dataItems.0",
+                "autoAppear": true,
+                "appearDuration": 1000,
+                "appearDelay": 100
+              },
+              "properties": { "data": "#data-0" }
+            }
+          }
+        ]
+      };
+
+
+      // Create root element
+      // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+      var root = am5.Root.new("chartdiv");
+
+
+      // Set themes
+      // https://www.amcharts.com/docs/v5/concepts/themes/
+      root.setThemes([
+        am5themes_Animated.new(root)
+      ]);
+
+
+      // Build the chart from its JSON config
+      // https://www.amcharts.com/docs/v5/concepts/serializing/
+      am5plugins_json.JsonParser.new(root).parse(config, {
+        parent: root.container
+      });
+    </script>
+  </body>
+</html>

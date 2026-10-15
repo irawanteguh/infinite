@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>amCharts 5 Example - Pie Chart with Variable Radius</title>
+
+    <!-- Styles -->
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        padding: 0;
+        margin: 0;
+        background-color: #ffffff;
+      }
+
+      #chartdiv {
+        width: 100%;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chartdiv"></div>
+
+    <!-- Resources -->
+    <script src="../../index.js"></script>
+    <script src="../../percent.js"></script>
+    <script src="../../themes/Animated.js"></script>
+
+    <!-- Chart code -->
+    <script>
+      // Create root element
+      // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+      var root = am5.Root.new("chartdiv");
+
+
+      // Set themes
+      // https://www.amcharts.com/docs/v5/concepts/themes/
+      root.setThemes([
+        am5themes_Animated.new(root)
+      ]);
+
+
+      // Create chart
+      // https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/
+      var chart = root.container.children.push(am5percent.PieChart.new(root, {
+        layout: root.verticalLayout // stacks the pie and the legend added below it
+      }));
+
+
+      // Create series
+      // https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Series
+      var series = chart.series.push(am5percent.PieSeries.new(root, {
+        calculateAggregates: true, // works out the highest value, which the radius adapter needs
+        valueField: "value",
+        categoryField: "category"
+      }));
+
+      // a 3 px outline in the background color keeps the slices apart
+      series.slices.template.setAll({
+        strokeWidth: 3,
+        stroke: root.interfaceColors.get("background")
+      });
+
+
+      // Scale each slice's radius by its value, relative to the biggest one
+      // https://www.amcharts.com/docs/v5/concepts/settings/adapters/
+      series.slices.template.adapters.add("radius", function (radius, target) {
+        var dataItem = target.dataItem ;
+        var high = series.getPrivate("valueHigh"); // the biggest value in the data
+
+        if (dataItem && radius != null && high) {
+          return radius * dataItem.get("valueWorking", 0) / high; // the biggest slice keeps the full radius
+        }
+        return radius;
+      });
+
+
+      // Set data
+      // https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Setting_data
+      series.data.setAll([
+        { value: 10, category: "One" },
+        { value: 9, category: "Two" },
+        { value: 6, category: "Three" },
+        { value: 5, category: "Four" },
+        { value: 4, category: "Five" },
+        { value: 3, category: "Six" }
+      ]);
+
+
+      // Create legend
+      // https://www.amcharts.com/docs/v5/charts/percent-charts/legend-percent-series/
+      var legend = chart.children.push(am5.Legend.new(root, {
+        centerX: am5.percent(50), // the legend's middle...
+        x: am5.percent(50),       // ...at the middle of the chart: centered
+        marginTop: 15,            // some room between the pie and the legend
+        marginBottom: 15
+      }));
+
+      legend.data.setAll(series.dataItems); // one legend item per slice
+
+
+      // Play initial series animation
+      // https://www.amcharts.com/docs/v5/concepts/animations/#Animation_of_series
+      series.appear(1000, 100);
+    </script>
+  </body>
+</html>

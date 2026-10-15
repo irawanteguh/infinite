@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>amCharts 5 Example - Treemap with Breadcrumbs</title>
+
+    <!-- Styles -->
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        padding: 0;
+        margin: 0;
+        background-color: #ffffff;
+      }
+
+      #chartdiv {
+        width: 100%;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chartdiv"></div>
+
+    <!-- Resources -->
+    <script src="../../index.js"></script>
+    <script src="../../hierarchy.js"></script>
+    <script src="../../themes/Animated.js"></script>
+
+    <!-- Chart code -->
+    <script>
+      // Create root element
+      // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+      var root = am5.Root.new("chartdiv");
+
+
+      // Set themes
+      // https://www.amcharts.com/docs/v5/concepts/themes/
+      root.setThemes([
+        am5themes_Animated.new(root)
+      ]);
+
+
+      // Create a container that stacks the breadcrumbs above the chart
+      var container = root.container.children.push(am5.Container.new(root, {
+        width: am5.percent(100),  // fills the chart div; the treemap gets
+        height: am5.percent(100), // the height the breadcrumbs leave
+        layout: root.verticalLayout
+      }));
+
+
+      // Create series
+      // https://www.amcharts.com/docs/v5/charts/hierarchy/treemap/
+      // a click on a tile zooms into it; the breadcrumbs lead back up
+      var series = container.children.push(am5hierarchy.Treemap.new(root, {
+        downDepth: 1,    // a click shows one level inside the clicked tile
+        upDepth: 1,      // levels more than one above the opened tile are hidden
+        initialDepth: 2, // two levels under the top node at first: Audio and Kitchen stay closed
+        valueField: "value",
+        categoryField: "name",
+        childDataField: "children"
+      }));
+
+
+      // Add breadcrumbs above the chart
+      // https://www.amcharts.com/docs/v5/charts/hierarchy/breadcrumbs/
+      container.children.unshift(am5hierarchy.BreadcrumbBar.new(root, {
+        series: series
+      }));
+
+
+      // Set data
+      // https://www.amcharts.com/docs/v5/charts/hierarchy/#Setting_data
+      series.data.setAll([{
+        name: "Sales",
+        children: [
+          {
+            name: "Electronics",
+            children: [
+              { name: "Phones", value: 86 },
+              { name: "Laptops", value: 64 },
+              {
+                name: "Audio",
+                children: [
+                  { name: "Headphones", value: 31 },
+                  { name: "Speakers", value: 18 }
+                ]
+              }
+            ]
+          },
+          {
+            name: "Home",
+            children: [
+              { name: "Furniture", value: 52 },
+              { name: "Lighting", value: 15 },
+              {
+                name: "Kitchen",
+                children: [
+                  { name: "Cookware", value: 22 },
+                  { name: "Appliances", value: 37 }
+                ]
+              }
+            ]
+          },
+          {
+            name: "Sports",
+            children: [
+              { name: "Cycling", value: 41 },
+              { name: "Fitness", value: 28 },
+              { name: "Outdoor", value: 23 }
+            ]
+          }
+        ]
+      }]);
+
+
+      // Select the root node
+      // https://www.amcharts.com/docs/v5/charts/hierarchy/#Pre_selected_branch
+      series.set("selectedDataItem", series.dataItems[0]);
+
+
+      // Make stuff animate on load
+      // https://www.amcharts.com/docs/v5/concepts/animations/#Forcing_appearance_animation
+      series.appear(1000, 100);
+    </script>
+  </body>
+</html>

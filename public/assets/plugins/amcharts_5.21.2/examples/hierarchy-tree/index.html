@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>amCharts 5 Example - Tree Chart</title>
+
+    <!-- Styles -->
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        padding: 0;
+        margin: 0;
+        background-color: #ffffff;
+      }
+
+      #chartdiv {
+        width: 100%;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chartdiv"></div>
+
+    <!-- Resources -->
+    <script src="../../index.js"></script>
+    <script src="../../hierarchy.js"></script>
+    <script src="../../themes/Animated.js"></script>
+
+    <!-- Chart code -->
+    <script>
+      // Create root element
+      // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+      var root = am5.Root.new("chartdiv");
+
+
+      // Set themes
+      // https://www.amcharts.com/docs/v5/concepts/themes/
+      root.setThemes([
+        am5themes_Animated.new(root)
+      ]);
+
+
+      // Create series
+      // https://www.amcharts.com/docs/v5/charts/hierarchy/tree/
+      // the top node is at the top, and each level of nesting one row lower, linked to its parent
+      var series = root.container.children.push(am5hierarchy.Tree.new(root, {
+        paddingTop: 40,    // the top node sits on the layout's top edge: room for its circle
+        paddingBottom: 40, // the deepest nodes sit on the bottom edge: room for theirs
+        valueField: "value",
+        categoryField: "name",
+        childDataField: "children"
+      }));
+
+
+      // Make the nodes big enough for their labels
+      series.circles.template.set("radius", 30);
+
+
+      // Set data
+      // https://www.amcharts.com/docs/v5/charts/hierarchy/#Setting_data
+      series.data.setAll([{
+        name: "Acme",
+        children: [
+          {
+            name: "Product",
+            children: [
+              { name: "Web", value: 12 },
+              { name: "Mobile", value: 8 },
+              {
+                name: "Platform",
+                children: [
+                  { name: "Cloud", value: 5 },
+                  { name: "Data", value: 6 }
+                ]
+              }
+            ]
+          },
+          {
+            name: "Sales",
+            children: [
+              { name: "Europe", value: 7 },
+              { name: "Americas", value: 9 },
+              { name: "Asia", value: 4 }
+            ]
+          },
+          {
+            name: "Support",
+            children: [
+              { name: "Helpdesk", value: 10 },
+              {
+                name: "Training",
+                children: [
+                  { name: "Docs", value: 3 },
+                  { name: "Courses", value: 4 }
+                ]
+              }
+            ]
+          }
+        ]
+      }]);
+
+
+      // Select the root node
+      // https://www.amcharts.com/docs/v5/charts/hierarchy/#Pre_selected_branch
+      series.set("selectedDataItem", series.dataItems[0]);
+
+
+      // Make stuff animate on load
+      // https://www.amcharts.com/docs/v5/concepts/animations/#Forcing_appearance_animation
+      series.appear(1000, 100);
+    </script>
+  </body>
+</html>

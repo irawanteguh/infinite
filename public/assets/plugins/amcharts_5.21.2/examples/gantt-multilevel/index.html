@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>amCharts 5 Example - Gantt Chart with Subtasks</title>
+
+    <!-- Styles -->
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        padding: 0;
+        margin: 0;
+        background-color: #ffffff;
+      }
+
+      #chartdiv {
+        width: 100%;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chartdiv"></div>
+
+    <!-- Resources -->
+    <script src="../../index.js"></script>
+    <script src="../../xy.js"></script>
+    <script src="../../plugins/colorPicker.js"></script>
+    <script src="../../gantt.js"></script>
+    <script src="../../themes/Animated.js"></script>
+
+    <!-- Chart code -->
+    <script>
+      // Create root element
+      // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+      var root = am5.Root.new("chartdiv");
+
+
+      // Set themes
+      // https://www.amcharts.com/docs/v5/concepts/themes/
+      root.setThemes([
+        am5themes_Animated.new(root)
+      ]);
+
+
+      // Create Gantt chart
+      // https://www.amcharts.com/docs/v5/charts/gantt/
+      // with no settings, tasks can be edited with the mouse and durations count days, skipping weekends
+      var gantt = root.container.children.push(am5gantt.Gantt.new(root, {}));
+
+
+      // Set category data: parentId puts a task under another one
+      // https://www.amcharts.com/docs/v5/charts/gantt/#Category_data
+      gantt.yAxis.data.setAll([
+        { id: "kickoff", name: "Kick-off" },
+        { id: "design", name: "Design" },
+        { id: "wireframes", name: "Wireframes", parentId: "design" },
+        { id: "visuals", name: "Visual design", parentId: "design" },
+        { id: "development", name: "Development" },
+        { id: "frontend", name: "Front end", parentId: "development" },
+        { id: "backend", name: "Back end", parentId: "development" },
+        { id: "testing", name: "Testing", parentId: "development" },
+        { id: "launch", name: "Launch" }
+      ]);
+
+
+      // Set series data: a parent task takes its dates from its subtasks
+      // https://www.amcharts.com/docs/v5/charts/gantt/#Series_data
+      // start is a timestamp in ms and duration a number of working days (0 draws a diamond);
+      // progress is the share done, 0 to 1; linkTo draws an arrow to the task that follows
+      gantt.series.data.setAll([
+        { id: "kickoff", start: 1758142800000, duration: 0, progress: 1, linkTo: ["design"] },
+        { id: "design", linkTo: ["development"] },
+        { id: "wireframes", start: 1758142800000, duration: 2, progress: 1, linkTo: ["visuals"] },
+        { id: "visuals", start: 1758488400000, duration: 4, progress: 0.75 },
+        { id: "development", linkTo: ["launch"] },
+        { id: "frontend", start: 1758834000000, duration: 4, progress: 0.2, linkTo: ["testing"] },
+        { id: "backend", start: 1758834000000, duration: 3, progress: 0, linkTo: ["testing"] },
+        { id: "testing", start: 1759352400000, duration: 2, progress: 0 },
+        { id: "launch", start: 1759698000000, duration: 0, progress: 0 }
+      ]);
+
+
+      // Make stuff animate on load
+      // https://www.amcharts.com/docs/v5/concepts/animations/#Forcing_appearance_animation
+      gantt.appear(1000, 100);
+    </script>
+  </body>
+</html>

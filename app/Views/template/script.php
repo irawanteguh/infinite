@@ -4,6 +4,10 @@
 <script src="<?= base_url('assets/routingsystem/scripts.bundle.js') ?>"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
+<script src="<?= base_url('assets/plugins/amcharts_5.21.2/index.js') ?>"></script>
+<script src="<?= base_url('assets/plugins/amcharts_5.21.2/themes/Animated.js') ?>"></script>
+<script src="<?= base_url('assets/plugins/amcharts_5.21.2/wc.js') ?>"></script>
+
 <?php
     $uri = service('uri');
     $segments = $uri->getSegments();

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>amCharts 5 Example - Donut Chart</title>
+
+    <!-- Styles -->
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        padding: 0;
+        margin: 0;
+        background-color: #ffffff;
+      }
+
+      #chartdiv {
+        width: 100%;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chartdiv"></div>
+
+    <!-- Resources -->
+    <script src="../../index.js"></script>
+    <script src="../../percent.js"></script>
+    <script src="../../themes/Animated.js"></script>
+
+    <!-- Chart code -->
+    <script>
+      // Create root element
+      // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+      var root = am5.Root.new("chartdiv");
+
+
+      // Set themes
+      // https://www.amcharts.com/docs/v5/concepts/themes/
+      root.setThemes([
+        am5themes_Animated.new(root)
+      ]);
+
+
+      // Create chart
+      // https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Pie_radius
+      var chart = root.container.children.push(am5percent.PieChart.new(root, {
+        layout: root.verticalLayout, // stacks the donut and the legend added below it
+        innerRadius: am5.percent(50) // a hole half the pie's radius makes it a donut
+      }));
+
+
+      // Create series
+      // https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Series
+      var series = chart.series.push(am5percent.PieSeries.new(root, {
+        valueField: "value",
+        categoryField: "category"
+      }));
+
+
+      // Set data
+      // https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Setting_data
+      series.data.setAll([
+        { value: 10, category: "One" },
+        { value: 9, category: "Two" },
+        { value: 6, category: "Three" },
+        { value: 5, category: "Four" },
+        { value: 4, category: "Five" },
+        { value: 3, category: "Six" },
+        { value: 1, category: "Seven" },
+      ]);
+
+
+      // Create legend
+      // https://www.amcharts.com/docs/v5/charts/percent-charts/legend-percent-series/
+      var legend = chart.children.push(am5.Legend.new(root, {
+        centerX: am5.percent(50), // the legend's middle...
+        x: am5.percent(50),       // ...at the middle of the chart: centered
+        marginTop: 15,            // some room between the donut and the legend
+        marginBottom: 15,
+      }));
+
+      legend.data.setAll(series.dataItems); // one legend item per slice
+
+
+      // Play initial series animation
+      // https://www.amcharts.com/docs/v5/concepts/animations/#Animation_of_series
+      series.appear(1000, 100);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>amCharts 5 Example - SVG Renderer</title>
+
+    <!-- Styles -->
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        padding: 0;
+        margin: 0;
+        background-color: #ffffff;
+      }
+
+      #chartdiv {
+        width: 100%;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chartdiv"></div>
+
+    <!-- Resources -->
+    <script src="../../index.js"></script>
+    <script src="../../xy.js"></script>
+    <script src="../../themes/Animated.js"></script>
+
+    <!-- Chart code -->
+    <script>
+      // Create root element, drawn as SVG instead of canvas
+      // am5.renderToSVG(root) returns the chart as SVG markup
+      // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+      var root = am5.Root.new("chartdiv", {
+        renderer: am5.SVGRenderer // set only when the root is created; the default draws on a canvas
+      });
+
+
+      // Set themes
+      // https://www.amcharts.com/docs/v5/concepts/themes/
+      root.setThemes([
+        am5themes_Animated.new(root)
+      ]);
+
+
+      // Create chart
+      // https://www.amcharts.com/docs/v5/charts/xy-chart/
+      var chart = root.container.children.push(am5xy.XYChart.new(root, {}));
+
+
+      // Create axes
+      // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+      var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
+        categoryField: "country",
+        renderer: am5xy.AxisRendererX.new(root, {
+          minGridDistance: 30 // grid lines and labels may be 30 px apart, so every country gets one
+        })
+      }));
+
+      var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+        renderer: am5xy.AxisRendererY.new(root, {})
+      }));
+
+
+      // Add series
+      // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
+      var series = chart.series.push(am5xy.ColumnSeries.new(root, {
+        xAxis: xAxis,
+        yAxis: yAxis,
+        valueYField: "value",
+        categoryXField: "country",
+        tooltip: am5.Tooltip.new(root, {
+          labelText: "{categoryX}: {valueY}" // the country and its value
+        })
+      }));
+
+
+      // Set data
+      // https://www.amcharts.com/docs/v5/charts/xy-chart/series/#Setting_data
+      var data = [
+        { country: "USA", value: 2025 },
+        { country: "China", value: 1882 },
+        { country: "Japan", value: 1809 },
+        { country: "Germany", value: 1322 },
+        { country: "UK", value: 1122 },
+        { country: "France", value: 1114 },
+        { country: "India", value: 984 },
+      ];
+
+      xAxis.data.setAll(data); // the axis takes its categories from the same rows
+      series.data.setAll(data);
+
+
+      // Make stuff animate on load
+      // https://www.amcharts.com/docs/v5/concepts/animations/#Forcing_appearance_animation
+      series.appear(1000);
+      chart.appear(1000, 100);
+    </script>
+  </body>
+</html>

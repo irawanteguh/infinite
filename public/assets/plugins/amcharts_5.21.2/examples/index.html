@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>amCharts 5 Examples</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f6f7f9;
+        --card: #ffffff;
+        --text: #1c2330;
+        --muted: #5d6878;
+        --line: #dfe3ea;
+        --accent: #2f6fde;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #12161d;
+          --card: #1b212b;
+          --text: #e8ecf2;
+          --muted: #9aa5b5;
+          --line: #2c3442;
+          --accent: #7aa7ff;
+        }
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: 24px 16px 48px;
+        background: var(--bg);
+        color: var(--text);
+        font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      }
+      main { max-width: 1200px; margin: 0 auto; }
+      h1 { margin: 0 0 4px; font-size: 26px; }
+      .intro { margin: 0 0 16px; color: var(--muted); max-width: 70ch; }
+      /* The categories stay in reach down a long page */
+      nav { position: sticky; top: 0; z-index: 1; display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 0 0 8px; padding: 10px 0; background: var(--bg); border-bottom: 1px solid var(--line); }
+      section { scroll-margin-top: 56px; }
+      a { color: var(--accent); text-decoration: none; }
+      a:hover, a:focus-visible { text-decoration: underline; }
+      h2 { margin: 32px 0 12px; font-size: 19px; }
+      h2 small { color: var(--muted); font-weight: normal; font-size: 14px; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+      .card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; }
+      .shot { display: block; aspect-ratio: 8 / 5; background: var(--bg); border-bottom: 1px solid var(--line); }
+      .shot img { display: block; width: 100%; height: 100%; object-fit: cover; }
+      .noshot { display: flex; align-items: center; justify-content: center; height: 100%; color: var(--muted); font-size: 13px; }
+      .card h3 { margin: 12px 14px 4px; font-size: 16px; display: flex; align-items: baseline; gap: 8px; }
+      .card h3 a { color: inherit; }
+      .tier { margin-left: auto; color: var(--muted); font-weight: normal; font-size: 12px; white-space: nowrap; }
+      .card p { margin: 0 14px 10px; color: var(--muted); font-size: 14px; }
+      .card .meta { margin-top: auto; padding: 10px 0 12px; border-top: 1px solid var(--line); font-size: 13px; display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: center; }
+      .chip { padding: 1px 9px; border: 1px solid var(--accent); border-radius: 10px; font-weight: 600; font-size: 12px; }
+      .chip:hover, .chip:focus-visible { background: var(--accent); color: var(--card); text-decoration: none; }
+      .name { margin-left: auto; font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 12px; overflow-wrap: anywhere; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>amCharts 5 Examples</h1>
+      <p class="intro">Each example opens with its chart on top and its source below: a single HTML page with the code inside. <b>JavaScript</b> runs the code; <b>JSON config</b>, where there is one, builds the chart from a config. A <i>basic</i> example is the plain chart of its type, a <i>technique</i> shows one behaviour, a <i>showcase</i> puts several together. The list as data: <a href="examples.json">examples.json</a>.</p>
+      <nav aria-label="Categories">
+        <a href="#xy">XY</a>
+        <a href="#percent">Pie and sliced</a>
+        <a href="#map">Map</a>
+        <a href="#stock">Stock</a>
+        <a href="#hierarchy">Hierarchy</a>
+        <a href="#flow">Flow</a>
+        <a href="#radar">Radar and gauges</a>
+        <a href="#timeline">Timeline</a>
+        <a href="#gantt">Gantt</a>
+        <a href="#other">Other</a>
+      </nav>
+      <section id="xy">
+        <h2>XY <small>22</small></h2>
+        <div class="grid">
+      <article class="card">
+        <a class="shot" href="viewer.html#xy-100-percent-stacked-column" aria-hidden="true" tabindex="-1"><img src="thumbs/xy-100-percent-stacked-column.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#xy-100-percent-stacked-column">100% Stacked Column Chart</a><span class="tier">Basic</span></h3>
+        <p>Stacked columns shown as shares of each category's total, using valueYShow and calculateTotals.</p>
+        <p class="meta"><a class="chip" href="viewer.html#xy-100-percent-stacked-column">JavaScript</a><a class="chip" href="viewer.html#xy-100-percent-stacked-column/json">JSON config</a><span class="name">xy-100-percent-stacked-column</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#xy-bubble" aria-hidden="true" tabindex="-1"><img src="thumbs/xy-bubble.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#xy-bubble">Bubble Chart</a><span class="tier">Basic</span></h3>
+        <p>Countries as bubbles on two value axes, sized by a heat rule and colored per data row through templateField.</p>
+        <p class="meta"><a class="chip" href="viewer.html#xy-bubble">JavaScript</a><a class="chip" href="viewer.html#xy-bubble/json">JSON config</a><span class="name">xy-bubble</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#xy-candlestick" aria-hidden="true" tabindex="-1"><img src="thumbs/xy-candlestick.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#xy-candlestick">Candlestick Chart</a><span class="tier">Basic</span></h3>
+        <p>Daily open, high, low and close prices as candles on a date axis; OHLCSeries takes the same settings.</p>
+        <p class="meta"><a class="chip" href="viewer.html#xy-candlestick">JavaScript</a><a class="chip" href="viewer.html#xy-candlestick/json">JSON config</a><span class="name">xy-candlestick</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#xy-clustered-column" aria-hidden="true" tabindex="-1"><img src="thumbs/xy-clustered-column.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#xy-clustered-column">Clustered Column Chart</a><span class="tier">Basic</span></h3>
+        <p>Several column series side by side in each category, with value labels and a legend.</p>
+        <p class="meta"><a class="chip" href="viewer.html#xy-clustered-column">JavaScript</a><a class="chip" href="viewer.html#xy-clustered-column/json">JSON config</a><span class="name">xy-clustered-column</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#xy-column" aria-hidden="true" tabindex="-1"><img src="thumbs/xy-column.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#xy-column">Column Chart with Date Axis</a><span class="tier">Basic</span></h3>
+        <p>A column series of daily values on a date axis, with a cursor, a scrollbar and zoom.</p>
+        <p class="meta"><a class="chip" href="viewer.html#xy-column">JavaScript</a><a class="chip" href="viewer.html#xy-column/json">JSON config</a><span class="name">xy-column</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#xy-dumbbell-plot" aria-hidden="true" tabindex="-1"><img src="thumbs/xy-dumbbell-plot.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#xy-dumbbell-plot">Dumbbell Plot</a><span class="tier">Basic</span></h3>
+        <p>A range per category drawn as a thin column from the open value to the close value, with a bullet at each end.</p>
+        <p class="meta"><a class="chip" href="viewer.html#xy-dumbbell-plot">JavaScript</a><a class="chip" href="viewer.html#xy-dumbbell-plot/json">JSON config</a><span class="name">xy-dumbbell-plot</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#xy-gapless-date-axis" aria-hidden="true" tabindex="-1"><img src="thumbs/xy-gapless-date-axis.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#xy-gapless-date-axis">Gapless Date Axis</a><span class="tier">Basic</span></h3>
+        <p>A line of weekday values on a GaplessDateAxis, which leaves out the weekends so the points stay evenly spaced.</p>
+        <p class="meta"><a class="chip" href="viewer.html#xy-gapless-date-axis">JavaScript</a><a class="chip" href="viewer.html#xy-gapless-date-axis/json">JSON config</a><span class="name">xy-gapless-date-axis</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#xy-line" aria-hidden="true" tabindex="-1"><img src="thumbs/xy-line.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#xy-line">Line Chart with Date Axis</a><span class="tier">Basic</span></h3>
+        <p>A line series on a date axis, with a cursor, a scrollbar and zoom.</p>
+        <p class="meta"><a class="chip" href="viewer.html#xy-line">JavaScript</a><a class="chip" href="viewer.html#xy-line/json">JSON config</a><span class="name">xy-line</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#xy-smoothed-line" aria-hidden="true" tabindex="-1"><img src="thumbs/xy-smoothed-line.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#xy-smoothed-line">Smoothed Line Chart</a><span class="tier">Basic</span></h3>
+        <p>A smoothed line series with a fill and bullets on a date axis.</p>
+        <p class="meta"><a class="chip" href="viewer.html#xy-smoothed-line">JavaScript</a><a class="chip" href="viewer.html#xy-smoothed-line/json">JSON config</a><span class="name">xy-smoothed-line</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#xy-stacked-and-clustered-column" aria-hidden="true" tabindex="-1"><img src="thumbs/xy-stacked-and-clustered-column.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#xy-stacked-and-clustered-column">Stacked and Clustered Columns</a><span class="tier">Basic</span></h3>
+        <p>Column series where some are stacked and some start a new cluster, set per series with the stacked setting.</p>
+        <p class="meta"><a class="chip" href="viewer.html#xy-stacked-and-clustered-column">JavaScript</a><a class="chip" href="viewer.html#xy-stacked-and-clustered-column/json">JSON config</a><span class="name">xy-stacked-and-clustered-column</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#xy-stacked-column" aria-hidden="true" tabindex="-1"><img src="thumbs/xy-stacked-column.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#xy-stacked-column">Stacked Column Chart</a><span class="tier">Basic</span></h3>
+        <p>Six column series stacked on a category axis, with value labels and a legend.</p>
+        <p class="meta"><a class="chip" href="viewer.html#xy-stacked-column">JavaScript</a><a class="chip" href="viewer.html#xy-stacked-column/json">JSON config</a><span class="name">xy-stacked-column</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#xy-stacked-step" aria-hidden="true" tabindex="-1"><img src="thumbs/xy-stacked-step.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#xy-stacked-step">Stacked Step Line Chart</a><span class="tier">Basic</span></h3>
+        <p>Two step line series with fills, one stacked on the other, on a date axis.</p>
+        <p class="meta"><a class="chip" href="viewer.html#xy-stacked-step">JavaScript</a><a class="chip" href="viewer.html#xy-stacked-step/json">JSON config</a><span class="name">xy-stacked-step</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#xy-comparing-periods" aria-hidden="true" tabindex="-1"><img src="thumbs/xy-comparing-periods.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#xy-comparing-periods">Comparing Two Periods</a><span class="tier">Technique</span></h3>
+        <p>This period as a solid line and the previous one as a dashed line on the same dates, with one tooltip showing both values.</p>
+        <p class="meta"><a class="chip" href="viewer.html#xy-comparing-periods">JavaScript</a><a class="chip" href="viewer.html#xy-comparing-periods/json">JSON config</a><span class="name">xy-comparing-periods</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#xy-data-grouping" aria-hidden="true" tabindex="-1"><img src="thumbs/xy-data-grouping.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#xy-data-grouping">Data Grouping on a Date Axis</a><span class="tier">Technique</span></h3>
+        <p>A line of 50,000 hourly values that stays responsive because the date axis groups them into longer periods with groupData.</p>
+        <p class="meta"><a class="chip" href="viewer.html#xy-data-grouping">JavaScript</a><span class="name">xy-data-grouping</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#xy-draggable-range" aria-hidden="true" tabindex="-1"><img src="thumbs/xy-draggable-range.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#xy-draggable-range">Draggable Range</a><span class="tier">Technique</span></h3>
+        <p>A handle on the date axis that the user drags to move an axis range; the part of the series after it is drawn in another color with a pattern fill.</p>
+        <p class="meta"><a class="chip" href="viewer.html#xy-draggable-range">JavaScript</a><span class="name">xy-draggable-range</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#xy-drawing-series" aria-hidden="true" tabindex="-1"><img src="thumbs/xy-drawing-series.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#xy-drawing-series">Drawing a Series</a><span class="tier">Technique</span></h3>
+        <p>Clicking the plot area adds a point to a line series and its bullets can be dragged, by turning pointer coordinates into axis values.</p>
+        <p class="meta"><a class="chip" href="viewer.html#xy-drawing-series">JavaScript</a><span class="name">xy-drawing-series</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#xy-line-highlight-on-legend-hover" aria-hidden="true" tabindex="-1"><img src="thumbs/xy-line-highlight-on-legend-hover.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#xy-line-highlight-on-legend-hover">Highlight Line on Legend Hover</a><span class="tier">Technique</span></h3>
+        <p>Ten line series with a legend at the side; hovering a legend item dims all the other lines, done with events on the legend item template.</p>
+        <p class="meta"><a class="chip" href="viewer.html#xy-line-highlight-on-legend-hover">JavaScript</a><span class="name">xy-line-highlight-on-legend-hover</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#xy-live-data" aria-hidden="true" tabindex="-1"><img src="thumbs/xy-live-data.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#xy-live-data">Live Data</a><span class="tier">Technique</span></h3>
+        <p>A line that gets a new point every second and drops its oldest one, with the new point animated in from the last.</p>
+        <p class="meta"><a class="chip" href="viewer.html#xy-live-data">JavaScript</a><span class="name">xy-live-data</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#xy-multiple-synced-value-axes" aria-hidden="true" tabindex="-1"><img src="thumbs/xy-multiple-synced-value-axes.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#xy-multiple-synced-value-axes">Multiple Synced Value Axes</a><span class="tier">Technique</span></h3>
+        <p>Three line series with a value axis each, colored like their series, with the grids lined up by syncWithAxis.</p>
+        <p class="meta"><a class="chip" href="viewer.html#xy-multiple-synced-value-axes">JavaScript</a><a class="chip" href="viewer.html#xy-multiple-synced-value-axes/json">JSON config</a><span class="name">xy-multiple-synced-value-axes</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#xy-percent-change-comparison" aria-hidden="true" tabindex="-1"><img src="thumbs/xy-percent-change-comparison.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#xy-percent-change-comparison">Percent Change Comparison</a><span class="tier">Technique</span></h3>
+        <p>Two price series shown as percent change from the start of the zoomed range, so they can be compared, with a volume panel on a second, stacked Y axis.</p>
+        <p class="meta"><a class="chip" href="viewer.html#xy-percent-change-comparison">JavaScript</a><a class="chip" href="viewer.html#xy-percent-change-comparison/json">JSON config</a><span class="name">xy-percent-change-comparison</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#xy-pulsing-last-bullet" aria-hidden="true" tabindex="-1"><img src="thumbs/xy-pulsing-last-bullet.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#xy-pulsing-last-bullet">Pulsing Last Bullet</a><span class="tier">Technique</span></h3>
+        <p>A line whose last point has a pulsing bullet, switched on for one data item with templateField and animated with the animations setting.</p>
+        <p class="meta"><a class="chip" href="viewer.html#xy-pulsing-last-bullet">JavaScript</a><a class="chip" href="viewer.html#xy-pulsing-last-bullet/json">JSON config</a><span class="name">xy-pulsing-last-bullet</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#xy-real-time-data-sorting" aria-hidden="true" tabindex="-1"><img src="thumbs/xy-real-time-data-sorting.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#xy-real-time-data-sorting">Real-Time Data Sorting</a><span class="tier">Technique</span></h3>
+        <p>Columns whose values change on a timer and that slide to their new places as the category axis is sorted again.</p>
+        <p class="meta"><a class="chip" href="viewer.html#xy-real-time-data-sorting">JavaScript</a><span class="name">xy-real-time-data-sorting</span></p>
+      </article>
+        </div>
+      </section>
+      <section id="percent">
+        <h2>Pie and sliced <small>6</small></h2>
+        <div class="grid">
+      <article class="card">
+        <a class="shot" href="viewer.html#pie-donut-chart" aria-hidden="true" tabindex="-1"><img src="thumbs/pie-donut-chart.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#pie-donut-chart">Donut Chart</a><span class="tier">Basic</span></h3>
+        <p>A pie chart made into a donut with an inner radius, with a legend below it.</p>
+        <p class="meta"><a class="chip" href="viewer.html#pie-donut-chart">JavaScript</a><a class="chip" href="viewer.html#pie-donut-chart/json">JSON config</a><span class="name">pie-donut-chart</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#sliced-funnel" aria-hidden="true" tabindex="-1"><img src="thumbs/sliced-funnel.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#sliced-funnel">Funnel Chart</a><span class="tier">Basic</span></h3>
+        <p>A funnel series in a sliced chart, with labels on the slices and a legend.</p>
+        <p class="meta"><a class="chip" href="viewer.html#sliced-funnel">JavaScript</a><a class="chip" href="viewer.html#sliced-funnel/json">JSON config</a><span class="name">sliced-funnel</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#sliced-pictorial-stacked" aria-hidden="true" tabindex="-1"><img src="thumbs/sliced-pictorial-stacked.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#sliced-pictorial-stacked">Pictorial Stacked Chart</a><span class="tier">Basic</span></h3>
+        <p>A pictorial stacked series: slices fill an SVG shape in proportion to their values.</p>
+        <p class="meta"><a class="chip" href="viewer.html#sliced-pictorial-stacked">JavaScript</a><a class="chip" href="viewer.html#sliced-pictorial-stacked/json">JSON config</a><span class="name">sliced-pictorial-stacked</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#pie-chart" aria-hidden="true" tabindex="-1"><img src="thumbs/pie-chart.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#pie-chart">Pie Chart</a><span class="tier">Basic</span></h3>
+        <p>A pie chart with a legend below it.</p>
+        <p class="meta"><a class="chip" href="viewer.html#pie-chart">JavaScript</a><a class="chip" href="viewer.html#pie-chart/json">JSON config</a><span class="name">pie-chart</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#sliced-pyramid" aria-hidden="true" tabindex="-1"><img src="thumbs/sliced-pyramid.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#sliced-pyramid">Pyramid Chart</a><span class="tier">Basic</span></h3>
+        <p>A pyramid series in a sliced chart, with aligned labels and a legend.</p>
+        <p class="meta"><a class="chip" href="viewer.html#sliced-pyramid">JavaScript</a><a class="chip" href="viewer.html#sliced-pyramid/json">JSON config</a><span class="name">sliced-pyramid</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#pie-variable-radius" aria-hidden="true" tabindex="-1"><img src="thumbs/pie-variable-radius.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#pie-variable-radius">Pie Chart with Variable Radius</a><span class="tier">Technique</span></h3>
+        <p>A pie chart where each slice's radius follows its value, set by an adapter on the slice template.</p>
+        <p class="meta"><a class="chip" href="viewer.html#pie-variable-radius">JavaScript</a><span class="name">pie-variable-radius</span></p>
+      </article>
+        </div>
+      </section>
+      <section id="map">
+        <h2>Map <small>16</small></h2>
+        <div class="grid">
+      <article class="card">
+        <a class="shot" href="viewer.html#map-day-and-night" aria-hidden="true" tabindex="-1"><img src="thumbs/map-day-and-night.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#map-day-and-night">Day and Night Map</a><span class="tier">Basic</span></h3>
+        <p>A world map with a NightSeries that shades where it is night right now and shows the sun.</p>
+        <p class="meta"><a class="chip" href="viewer.html#map-day-and-night">JavaScript</a><a class="chip" href="viewer.html#map-day-and-night/json">JSON config</a><span class="name">map-day-and-night</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#map-globe-with-projected-circles" aria-hidden="true" tabindex="-1"><img src="thumbs/map-globe-with-projected-circles.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#map-globe-with-projected-circles">Globe with Projected Circles</a><span class="tier">Basic</span></h3>
+        <p>Population by country as circles that lie on the surface of a globe and flatten towards its edge, sized by a heat rule, with surfaceBullets.</p>
+        <p class="meta"><a class="chip" href="viewer.html#map-globe-with-projected-circles">JavaScript</a><a class="chip" href="viewer.html#map-globe-with-projected-circles/json">JSON config</a><span class="name">map-globe-with-projected-circles</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#map-altitude-arcs" aria-hidden="true" tabindex="-1"><img src="thumbs/map-altitude-arcs.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#map-altitude-arcs">Globe with Raised Arcs</a><span class="tier">Basic</span></h3>
+        <p>Flight routes between cities on a globe, drawn as lines that rise above the surface in an arc with the altitude setting.</p>
+        <p class="meta"><a class="chip" href="viewer.html#map-altitude-arcs">JavaScript</a><a class="chip" href="viewer.html#map-altitude-arcs/json">JSON config</a><span class="name">map-altitude-arcs</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#map-surface-bullets" aria-hidden="true" tabindex="-1"><img src="thumbs/map-surface-bullets.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#map-surface-bullets">Globe with Surface Bullets</a><span class="tier">Basic</span></h3>
+        <p>City pins that lie on the surface of a globe and flatten towards its edge, using the surfaceBullets setting of MapPointSeries.</p>
+        <p class="meta"><a class="chip" href="viewer.html#map-surface-bullets">JavaScript</a><a class="chip" href="viewer.html#map-surface-bullets/json">JSON config</a><span class="name">map-surface-bullets</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#map-sankey" aria-hidden="true" tabindex="-1"><img src="thumbs/map-sankey.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#map-sankey">Map Sankey</a><span class="tier">Basic</span></h3>
+        <p>Flows between countries drawn as bands on a map with MapSankeySeries, each band as wide as its value.</p>
+        <p class="meta"><a class="chip" href="viewer.html#map-sankey">JavaScript</a><a class="chip" href="viewer.html#map-sankey/json">JSON config</a><span class="name">map-sankey</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#map-with-bubbles" aria-hidden="true" tabindex="-1"><img src="thumbs/map-with-bubbles.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#map-with-bubbles">Map with Bubbles</a><span class="tier">Basic</span></h3>
+        <p>Bubbles placed on countries by their id, with heat rules setting each bubble's size and color from its value.</p>
+        <p class="meta"><a class="chip" href="viewer.html#map-with-bubbles">JavaScript</a><a class="chip" href="viewer.html#map-with-bubbles/json">JSON config</a><span class="name">map-with-bubbles</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#map-auto-home" aria-hidden="true" tabindex="-1"><img src="thumbs/map-auto-home.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#map-auto-home">Map with Home Position</a><span class="tier">Basic</span></h3>
+        <p>A map that opens zoomed in on Europe, using the home settings and autoHome, with a home button to return there.</p>
+        <p class="meta"><a class="chip" href="viewer.html#map-auto-home">JavaScript</a><a class="chip" href="viewer.html#map-auto-home/json">JSON config</a><span class="name">map-auto-home</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#map-pixel-map" aria-hidden="true" tabindex="-1"><img src="thumbs/map-pixel-map.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#map-pixel-map">Pixel Map</a><span class="tier">Basic</span></h3>
+        <p>A world map drawn as a grid of dots with PixelMapSeries, with countries colored by value using heat rules.</p>
+        <p class="meta"><a class="chip" href="viewer.html#map-pixel-map">JavaScript</a><a class="chip" href="viewer.html#map-pixel-map/json">JSON config</a><span class="name">map-pixel-map</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#map-satellite-day-and-night" aria-hidden="true" tabindex="-1"><img src="thumbs/map-satellite-day-and-night.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#map-satellite-day-and-night">Satellite Day and Night Map</a><span class="tier">Basic</span></h3>
+        <p>A flat map that shows a daytime satellite image where the sun is up right now and city lights where it is night, with MapRasterSeries. The images load from the amCharts CDN, so it needs an internet connection.</p>
+        <p class="meta"><a class="chip" href="viewer.html#map-satellite-day-and-night">JavaScript</a><a class="chip" href="viewer.html#map-satellite-day-and-night/json">JSON config</a><span class="name">map-satellite-day-and-night</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#map-satellite-globe" aria-hidden="true" tabindex="-1"><img src="thumbs/map-satellite-globe.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#map-satellite-globe">Satellite Image Globe</a><span class="tier">Basic</span></h3>
+        <p>A slowly turning globe that shows a satellite image with MapRasterSeries, with country borders drawn over it. The image loads from the amCharts CDN, so it needs an internet connection.</p>
+        <p class="meta"><a class="chip" href="viewer.html#map-satellite-globe">JavaScript</a><a class="chip" href="viewer.html#map-satellite-globe/json">JSON config</a><span class="name">map-satellite-globe</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#map-us-heat-map" aria-hidden="true" tabindex="-1"><img src="thumbs/map-us-heat-map.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#map-us-heat-map">US Heat Map</a><span class="tier">Basic</span></h3>
+        <p>US states colored by value on a red, yellow and green scale, with heat rules and a heat legend that take several colors.</p>
+        <p class="meta"><a class="chip" href="viewer.html#map-us-heat-map">JavaScript</a><a class="chip" href="viewer.html#map-us-heat-map/json">JSON config</a><span class="name">map-us-heat-map</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#map-animating-along-lines" aria-hidden="true" tabindex="-1"><img src="thumbs/map-animating-along-lines.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#map-animating-along-lines">Animating Along Lines</a><span class="tier">Technique</span></h3>
+        <p>A plane flies back and forth along a line between two cities, moved by the animations setting of its bullet.</p>
+        <p class="meta"><a class="chip" href="viewer.html#map-animating-along-lines">JavaScript</a><a class="chip" href="viewer.html#map-animating-along-lines/json">JSON config</a><span class="name">map-animating-along-lines</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#map-clustered-points" aria-hidden="true" tabindex="-1"><img src="thumbs/map-clustered-points.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#map-clustered-points">Clustered Map Points</a><span class="tier">Technique</span></h3>
+        <p>City markers that merge into clusters with a count when they are close together; clicking a cluster zooms in on its cities.</p>
+        <p class="meta"><a class="chip" href="viewer.html#map-clustered-points">JavaScript</a><a class="chip" href="viewer.html#map-clustered-points/json">JSON config</a><span class="name">map-clustered-points</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#map-globe-rotate-to-country" aria-hidden="true" tabindex="-1"><img src="thumbs/map-globe-rotate-to-country.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#map-globe-rotate-to-country">Globe Rotating to a Country</a><span class="tier">Technique</span></h3>
+        <p>A globe that turns and zooms to the clicked country, and back when it is clicked again or the water is clicked: clickZoom on a map that pans by rotating.</p>
+        <p class="meta"><a class="chip" href="viewer.html#map-globe-rotate-to-country">JavaScript</a><a class="chip" href="viewer.html#map-globe-rotate-to-country/json">JSON config</a><span class="name">map-globe-rotate-to-country</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#map-zoom-to-country" aria-hidden="true" tabindex="-1"><img src="thumbs/map-zoom-to-country.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#map-zoom-to-country">Zoom to Country</a><span class="tier">Technique</span></h3>
+        <p>Click a country to zoom in on it; click it again, the water or the home button to zoom back out. One setting, clickZoom, does it.</p>
+        <p class="meta"><a class="chip" href="viewer.html#map-zoom-to-country">JavaScript</a><a class="chip" href="viewer.html#map-zoom-to-country/json">JSON config</a><span class="name">map-zoom-to-country</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#map-sankey-waypoints" aria-hidden="true" tabindex="-1"><img src="thumbs/map-sankey-waypoints.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#map-sankey-waypoints">Map Sankey with Waypoints</a><span class="tier">Showcase</span></h3>
+        <p>Oil routes on a globe: MapSankeySeries flows between coordinates, bent through waypoints to stay at sea, with a bullet travelling along each one.</p>
+        <p class="meta"><a class="chip" href="viewer.html#map-sankey-waypoints">JavaScript</a><a class="chip" href="viewer.html#map-sankey-waypoints/json">JSON config</a><span class="name">map-sankey-waypoints</span></p>
+      </article>
+        </div>
+      </section>
+      <section id="stock">
+        <h2>Stock <small>6</small></h2>
+        <div class="grid">
+      <article class="card">
+        <a class="shot" href="viewer.html#stock-chart-comparing-stocks" aria-hidden="true" tabindex="-1"><img src="thumbs/stock-chart-comparing-stocks.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#stock-chart-comparing-stocks">Comparing Stocks</a><span class="tier">Technique</span></h3>
+        <p>A stock chart with a comparison control and a searchable dropdown: picked stocks are added with addComparingSeries() and the chart switches to percent change.</p>
+        <p class="meta"><a class="chip" href="viewer.html#stock-chart-comparing-stocks">JavaScript</a><span class="name">stock-chart-comparing-stocks</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#stock-chart-live" aria-hidden="true" tabindex="-1"><img src="thumbs/stock-chart-live.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#stock-chart-live">Live Stock Chart</a><span class="tier">Technique</span></h3>
+        <p>A candlestick chart that gets a new price every second: the last candle is updated or a new one is added, and an axis range follows the current value.</p>
+        <p class="meta"><a class="chip" href="viewer.html#stock-chart-live">JavaScript</a><span class="name">stock-chart-live</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#stock-chart-data-granularity" aria-hidden="true" tabindex="-1"><img src="thumbs/stock-chart-data-granularity.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#stock-chart-data-granularity">Stock Chart Data Granularity</a><span class="tier">Technique</span></h3>
+        <p>A stock chart with an interval control that swaps minute, day, week and month data and sets the matching base interval on the date axis.</p>
+        <p class="meta"><a class="chip" href="viewer.html#stock-chart-data-granularity">JavaScript</a><span class="name">stock-chart-data-granularity</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#stock-chart-data-grouping" aria-hidden="true" tabindex="-1"><img src="thumbs/stock-chart-data-grouping.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#stock-chart-data-grouping">Stock Chart Data Grouping</a><span class="tier">Technique</span></h3>
+        <p>Three years of daily prices on a date axis with groupData, which shows them as weekly candlesticks when zoomed out and as daily ones when zoomed in.</p>
+        <p class="meta"><a class="chip" href="viewer.html#stock-chart-data-grouping">JavaScript</a><span class="name">stock-chart-data-grouping</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#stock-chart-volume-separate-panel" aria-hidden="true" tabindex="-1"><img src="thumbs/stock-chart-volume-separate-panel.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#stock-chart-volume-separate-panel">Stock Chart with Volume Panel</a><span class="tier">Technique</span></h3>
+        <p>A stock chart that shows volume in a second panel, which has its own axes, legend and cursor and stays in sync with the main one.</p>
+        <p class="meta"><a class="chip" href="viewer.html#stock-chart-volume-separate-panel">JavaScript</a><span class="name">stock-chart-volume-separate-panel</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#stock-chart" aria-hidden="true" tabindex="-1"><img src="thumbs/stock-chart.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#stock-chart">Stock Chart</a><span class="tier">Showcase</span></h3>
+        <p>A stock chart with candlesticks, volume, a scrollbar with a preview, a legend and a toolbar for indicators, periods, series type and drawing.</p>
+        <p class="meta"><a class="chip" href="viewer.html#stock-chart">JavaScript</a><span class="name">stock-chart</span></p>
+      </article>
+        </div>
+      </section>
+      <section id="hierarchy">
+        <h2>Hierarchy <small>7</small></h2>
+        <div class="grid">
+      <article class="card">
+        <a class="shot" href="viewer.html#hierarchy-pack" aria-hidden="true" tabindex="-1"><img src="thumbs/hierarchy-pack.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#hierarchy-pack">Circle Pack</a><span class="tier">Basic</span></h3>
+        <p>A pack chart: nested data as circles inside circles, sized by value, where a click opens the next level.</p>
+        <p class="meta"><a class="chip" href="viewer.html#hierarchy-pack">JavaScript</a><a class="chip" href="viewer.html#hierarchy-pack/json">JSON config</a><span class="name">hierarchy-pack</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#hierarchy-force-directed" aria-hidden="true" tabindex="-1"><img src="thumbs/hierarchy-force-directed.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#hierarchy-force-directed">Force-Directed Tree</a><span class="tier">Basic</span></h3>
+        <p>A force-directed tree: nested data as linked circles that arrange themselves and open on click.</p>
+        <p class="meta"><a class="chip" href="viewer.html#hierarchy-force-directed">JavaScript</a><a class="chip" href="viewer.html#hierarchy-force-directed/json">JSON config</a><span class="name">hierarchy-force-directed</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#hierarchy-partition" aria-hidden="true" tabindex="-1"><img src="thumbs/hierarchy-partition.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#hierarchy-partition">Partition Chart</a><span class="tier">Basic</span></h3>
+        <p>A partition chart: every level of nested data as a column of rectangles sized by value.</p>
+        <p class="meta"><a class="chip" href="viewer.html#hierarchy-partition">JavaScript</a><a class="chip" href="viewer.html#hierarchy-partition/json">JSON config</a><span class="name">hierarchy-partition</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#hierarchy-sunburst" aria-hidden="true" tabindex="-1"><img src="thumbs/hierarchy-sunburst.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#hierarchy-sunburst">Sunburst Chart</a><span class="tier">Basic</span></h3>
+        <p>A sunburst: nested data as rings of slices, one ring per level.</p>
+        <p class="meta"><a class="chip" href="viewer.html#hierarchy-sunburst">JavaScript</a><a class="chip" href="viewer.html#hierarchy-sunburst/json">JSON config</a><span class="name">hierarchy-sunburst</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#hierarchy-tree" aria-hidden="true" tabindex="-1"><img src="thumbs/hierarchy-tree.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#hierarchy-tree">Tree Chart</a><span class="tier">Basic</span></h3>
+        <p>A tree chart: nested data as linked nodes laid out level by level.</p>
+        <p class="meta"><a class="chip" href="viewer.html#hierarchy-tree">JavaScript</a><a class="chip" href="viewer.html#hierarchy-tree/json">JSON config</a><span class="name">hierarchy-tree</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#hierarchy-treemap" aria-hidden="true" tabindex="-1"><img src="thumbs/hierarchy-treemap.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#hierarchy-treemap">Treemap with Breadcrumbs</a><span class="tier">Basic</span></h3>
+        <p>A treemap that drills into a branch on click, with a breadcrumb bar to go back up.</p>
+        <p class="meta"><a class="chip" href="viewer.html#hierarchy-treemap">JavaScript</a><a class="chip" href="viewer.html#hierarchy-treemap/json">JSON config</a><span class="name">hierarchy-treemap</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#hierarchy-voronoi-treemap" aria-hidden="true" tabindex="-1"><img src="thumbs/hierarchy-voronoi-treemap.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#hierarchy-voronoi-treemap">Voronoi Treemap</a><span class="tier">Showcase</span></h3>
+        <p>World population as a Voronoi treemap, with theme rules that style each level and a click that zooms to a continent.</p>
+        <p class="meta"><a class="chip" href="viewer.html#hierarchy-voronoi-treemap">JavaScript</a><a class="chip" href="viewer.html#hierarchy-voronoi-treemap/json">JSON config</a><span class="name">hierarchy-voronoi-treemap</span></p>
+      </article>
+        </div>
+      </section>
+      <section id="flow">
+        <h2>Flow <small>5</small></h2>
+        <div class="grid">
+      <article class="card">
+        <a class="shot" href="viewer.html#flow-arc-diagram" aria-hidden="true" tabindex="-1"><img src="thumbs/flow-arc-diagram.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#flow-arc-diagram">Arc Diagram</a><span class="tier">Basic</span></h3>
+        <p>An arc diagram: nodes in a row, sized by their total, with arcs for the links between them and a label under each node.</p>
+        <p class="meta"><a class="chip" href="viewer.html#flow-arc-diagram">JavaScript</a><a class="chip" href="viewer.html#flow-arc-diagram/json">JSON config</a><span class="name">flow-arc-diagram</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#flow-chord" aria-hidden="true" tabindex="-1"><img src="thumbs/flow-chord.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#flow-chord">Chord Diagram</a><span class="tier">Basic</span></h3>
+        <p>A chord diagram where ribbons between the nodes show how much flows each way.</p>
+        <p class="meta"><a class="chip" href="viewer.html#flow-chord">JavaScript</a><a class="chip" href="viewer.html#flow-chord/json">JSON config</a><span class="name">flow-chord</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#flow-chord-directed" aria-hidden="true" tabindex="-1"><img src="thumbs/flow-chord-directed.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#flow-chord-directed">Directed Chord Diagram</a><span class="tier">Basic</span></h3>
+        <p>A chord diagram whose links end in arrowheads, so each one shows its direction.</p>
+        <p class="meta"><a class="chip" href="viewer.html#flow-chord-directed">JavaScript</a><a class="chip" href="viewer.html#flow-chord-directed/json">JSON config</a><span class="name">flow-chord-directed</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#flow-sankey" aria-hidden="true" tabindex="-1"><img src="thumbs/flow-sankey.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#flow-sankey">Sankey Diagram</a><span class="tier">Basic</span></h3>
+        <p>A Sankey diagram: nodes in columns and links whose width shows how much flows between them.</p>
+        <p class="meta"><a class="chip" href="viewer.html#flow-sankey">JavaScript</a><a class="chip" href="viewer.html#flow-sankey/json">JSON config</a><span class="name">flow-sankey</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#flow-chord-non-ribbon" aria-hidden="true" tabindex="-1"><img src="thumbs/flow-chord-non-ribbon.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#flow-chord-non-ribbon">Chord Diagram with Moving Bullets</a><span class="tier">Technique</span></h3>
+        <p>A chord diagram with thin line links, nodes drawn as circle bullets, and a circle travelling along every link.</p>
+        <p class="meta"><a class="chip" href="viewer.html#flow-chord-non-ribbon">JavaScript</a><a class="chip" href="viewer.html#flow-chord-non-ribbon/json">JSON config</a><span class="name">flow-chord-non-ribbon</span></p>
+      </article>
+        </div>
+      </section>
+      <section id="radar">
+        <h2>Radar and gauges <small>6</small></h2>
+        <div class="grid">
+      <article class="card">
+        <a class="shot" href="viewer.html#gauge" aria-hidden="true" tabindex="-1"><img src="thumbs/gauge.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#gauge">Gauge with Clock Hand</a><span class="tier">Basic</span></h3>
+        <p>A gauge made from a radar chart: a half-circle value axis and a clock hand that points at a value.</p>
+        <p class="meta"><a class="chip" href="viewer.html#gauge">JavaScript</a><a class="chip" href="viewer.html#gauge/json">JSON config</a><span class="name">gauge</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#radar-line" aria-hidden="true" tabindex="-1"><img src="thumbs/radar-line.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#radar-line">Radar Line Chart</a><span class="tier">Basic</span></h3>
+        <p>A line series with bullets on a radar chart, with a category axis around the circle and a cursor.</p>
+        <p class="meta"><a class="chip" href="viewer.html#radar-line">JavaScript</a><a class="chip" href="viewer.html#radar-line/json">JSON config</a><span class="name">radar-line</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#gauge-bands" aria-hidden="true" tabindex="-1"><img src="thumbs/gauge-bands.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#gauge-bands">Gauge with Bands</a><span class="tier">Technique</span></h3>
+        <p>A gauge with labelled color bands, where the hand and the value label take the color of the band the hand is in.</p>
+        <p class="meta"><a class="chip" href="viewer.html#gauge-bands">JavaScript</a><a class="chip" href="viewer.html#gauge-bands/json">JSON config</a><span class="name">gauge-bands</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#radar-date-range-columns" aria-hidden="true" tabindex="-1"><img src="thumbs/radar-date-range-columns.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#radar-date-range-columns">Radar Date Range Columns</a><span class="tier">Technique</span></h3>
+        <p>Rounded radar columns that span date ranges on a circular date axis, with a ring for each category.</p>
+        <p class="meta"><a class="chip" href="viewer.html#radar-date-range-columns">JavaScript</a><a class="chip" href="viewer.html#radar-date-range-columns/json">JSON config</a><span class="name">radar-date-range-columns</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#radar-heat-map" aria-hidden="true" tabindex="-1"><img src="thumbs/radar-heat-map.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#radar-heat-map">Radar Heat Map</a><span class="tier">Technique</span></h3>
+        <p>A heat map on a radar chart, hours around the circle and weekdays as rings, with a heat legend that shows the value of the hovered cell.</p>
+        <p class="meta"><a class="chip" href="viewer.html#radar-heat-map">JavaScript</a><a class="chip" href="viewer.html#radar-heat-map/json">JSON config</a><span class="name">radar-heat-map</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#radar-time-line" aria-hidden="true" tabindex="-1"><img src="thumbs/radar-time-line.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#radar-time-line">Radar Timeline with Slider</a><span class="tier">Showcase</span></h3>
+        <p>Radar columns that animate through the years with a play button and a slider, and continent ranges that zoom in when clicked.</p>
+        <p class="meta"><a class="chip" href="viewer.html#radar-time-line">JavaScript</a><span class="name">radar-time-line</span></p>
+      </article>
+        </div>
+      </section>
+      <section id="timeline">
+        <h2>Timeline <small>3</small></h2>
+        <div class="grid">
+      <article class="card">
+        <a class="shot" href="viewer.html#timeline-serpentine-chart" aria-hidden="true" tabindex="-1"><img src="thumbs/timeline-serpentine-chart.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#timeline-serpentine-chart">Serpentine Timeline</a><span class="tier">Basic</span></h3>
+        <p>A serpentine chart: tasks as columns along a date axis that winds back and forth, with a circle at each end of a task and flags for events.</p>
+        <p class="meta"><a class="chip" href="viewer.html#timeline-serpentine-chart">JavaScript</a><a class="chip" href="viewer.html#timeline-serpentine-chart/json">JSON config</a><span class="name">timeline-serpentine-chart</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#timeline-spiral-chart" aria-hidden="true" tabindex="-1"><img src="thumbs/timeline-spiral-chart.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#timeline-spiral-chart">Spiral Chart</a><span class="tier">Basic</span></h3>
+        <p>A spiral chart: three years of monthly values as columns along a date axis that winds outwards, with a value axis across it.</p>
+        <p class="meta"><a class="chip" href="viewer.html#timeline-spiral-chart">JavaScript</a><a class="chip" href="viewer.html#timeline-spiral-chart/json">JSON config</a><span class="name">timeline-spiral-chart</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#timeline-linear-process-diagram" aria-hidden="true" tabindex="-1"><img src="thumbs/timeline-linear-process-diagram.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#timeline-linear-process-diagram">Timeline on a Custom Path</a><span class="tier">Showcase</span></h3>
+        <p>A day as a timeline that follows a hand-made path: a curve chart whose axis runs along a list of points, with an icon pin on every activity.</p>
+        <p class="meta"><a class="chip" href="viewer.html#timeline-linear-process-diagram">JavaScript</a><a class="chip" href="viewer.html#timeline-linear-process-diagram/json">JSON config</a><span class="name">timeline-linear-process-diagram</span></p>
+      </article>
+        </div>
+      </section>
+      <section id="gantt">
+        <h2>Gantt <small>3</small></h2>
+        <div class="grid">
+      <article class="card">
+        <a class="shot" href="viewer.html#gantt-simple" aria-hidden="true" tabindex="-1"><img src="thumbs/gantt-simple.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#gantt-simple">Gantt Chart</a><span class="tier">Basic</span></h3>
+        <p>A Gantt chart with a flat list of linked tasks.</p>
+        <p class="meta"><a class="chip" href="viewer.html#gantt-simple">JavaScript</a><a class="chip" href="viewer.html#gantt-simple/json">JSON config</a><span class="name">gantt-simple</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#gantt-multilevel" aria-hidden="true" tabindex="-1"><img src="thumbs/gantt-multilevel.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#gantt-multilevel">Gantt Chart with Subtasks</a><span class="tier">Basic</span></h3>
+        <p>A Gantt chart with parent tasks and subtasks, set up with parentId in the category data.</p>
+        <p class="meta"><a class="chip" href="viewer.html#gantt-multilevel">JavaScript</a><a class="chip" href="viewer.html#gantt-multilevel/json">JSON config</a><span class="name">gantt-multilevel</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#gantt-save-state" aria-hidden="true" tabindex="-1"><img src="thumbs/gantt-save-state.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#gantt-save-state">Gantt Chart That Saves Edits</a><span class="tier">Technique</span></h3>
+        <p>A Gantt chart that keeps the user's edits and marked dates in localStorage and restores them on the next visit.</p>
+        <p class="meta"><a class="chip" href="viewer.html#gantt-save-state">JavaScript</a><span class="name">gantt-save-state</span></p>
+      </article>
+        </div>
+      </section>
+      <section id="other">
+        <h2>Other <small>7</small></h2>
+        <div class="grid">
+      <article class="card">
+        <a class="shot" href="viewer.html#svg-renderer" aria-hidden="true" tabindex="-1"><img src="thumbs/svg-renderer.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#svg-renderer">SVG Renderer</a><span class="tier">Basic</span></h3>
+        <p>A column chart drawn as SVG instead of canvas, by choosing the renderer when the root element is created.</p>
+        <p class="meta"><a class="chip" href="viewer.html#svg-renderer">JavaScript</a><span class="name">svg-renderer</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#venn-diagram" aria-hidden="true" tabindex="-1"><img src="thumbs/venn-diagram.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#venn-diagram">Venn Diagram</a><span class="tier">Basic</span></h3>
+        <p>Three overlapping circles and their intersections, with a legend.</p>
+        <p class="meta"><a class="chip" href="viewer.html#venn-diagram">JavaScript</a><a class="chip" href="viewer.html#venn-diagram/json">JSON config</a><span class="name">venn-diagram</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#wordcloud-with-data" aria-hidden="true" tabindex="-1"><img src="thumbs/wordcloud-with-data.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#wordcloud-with-data">Word Cloud from Data</a><span class="tier">Basic</span></h3>
+        <p>A word cloud made from a list of words with weights, colored by weight with a heat rule.</p>
+        <p class="meta"><a class="chip" href="viewer.html#wordcloud-with-data">JavaScript</a><a class="chip" href="viewer.html#wordcloud-with-data/json">JSON config</a><span class="name">wordcloud-with-data</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#wordcloud-with-text" aria-hidden="true" tabindex="-1"><img src="thumbs/wordcloud-with-text.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#wordcloud-with-text">Word Cloud from Text</a><span class="tier">Basic</span></h3>
+        <p>A word cloud made from a paragraph of text: the series counts the words and sizes them by how often they are used.</p>
+        <p class="meta"><a class="chip" href="viewer.html#wordcloud-with-text">JavaScript</a><a class="chip" href="viewer.html#wordcloud-with-text/json">JSON config</a><span class="name">wordcloud-with-text</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#misc-chart-element" aria-hidden="true" tabindex="-1"><img src="thumbs/misc-chart-element.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#misc-chart-element">Chart as an HTML Element</a><span class="tier">Technique</span></h3>
+        <p>The &lt;am5-chart&gt; element builds a chart from a JSON config, with no root and no chart code: for pages, frameworks and tools where writing chart code is not the point.</p>
+        <p class="meta"><a class="chip" href="viewer.html#misc-chart-element">JavaScript</a><span class="name">misc-chart-element</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#json-config" aria-hidden="true" tabindex="-1"><img src="thumbs/json-config.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#json-config">Chart from a JSON Config</a><span class="tier">Technique</span></h3>
+        <p>A pie chart built by passing a JSON config to JsonParser, with refs for its data and series.</p>
+        <p class="meta"><a class="chip" href="viewer.html#json-config">JavaScript</a><span class="name">json-config</span></p>
+      </article>
+      <article class="card">
+        <a class="shot" href="viewer.html#misc-microchart-grid" aria-hidden="true" tabindex="-1"><img src="thumbs/misc-microchart-grid.webp" alt="" loading="lazy" width="480" height="300" /></a>
+        <h3><a href="viewer.html#misc-microchart-grid">Micro Charts in a Table</a><span class="tier">Technique</span></h3>
+        <p>A table with a tiny line chart and a tiny column chart in every row, each in its own root with the Micro theme.</p>
+        <p class="meta"><a class="chip" href="viewer.html#misc-microchart-grid">JavaScript</a><span class="name">misc-microchart-grid</span></p>
+      </article>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

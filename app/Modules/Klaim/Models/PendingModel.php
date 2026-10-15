@@ -73,13 +73,13 @@ class PendingModel extends Model{
 
     function dataalgoritmatype($kodeppk,$periode){
         $query = "
-                    SELECT a.algoritma_type, a.status, a.jnspel, COUNT(*) AS jumlah_kasus
+                    SELECT
+                        UPPER(TRIM(TRAILING '.' FROM TRIM(a.algoritma_type))) AS algoritma_type,
+                        COUNT(*) AS jumlah_kasus
                     FROM dt01_bpjs_pending_klaim a
-                    WHERE  a.kodeppk = '".$kodeppk."'
-                    AND    year(a.tglpulang) = ".$periode."
-                    AND    a.algoritma_type<>''
-                    GROUP by a.jnspel, status, algoritma_type
-                    ORDER BY a.algoritma_type;
+                    WHERE TRIM(a.algoritma_type) <> ''
+                    GROUP BY UPPER(TRIM(TRAILING '.' FROM TRIM(a.algoritma_type)))
+                    ORDER BY jumlah_kasus desc;
                 ";
 
         $recordset = $this->db->query($query);
@@ -88,14 +88,16 @@ class PendingModel extends Model{
 
     function dataalgoritmabreakdown($kodeppk,$periode){
         $query = "
+                    
                     WITH RECURSIVE pecah AS (
                         SELECT
                             a.algoritma AS teks
                         FROM dt01_bpjs_pending_klaim a
                         WHERE a.algoritma IS NOT NULL
-                        AND   TRIM(a.algoritma) <> ''
-                        AND   a.kodeppk = '".$kodeppk."'
-                        AND   year(a.tglpulang) = ".$periode."
+                        AND TRIM(a.algoritma) <> ''
+                        AND a.kodeppk = '".$kodeppk."'
+                        AND YEAR(a.tglpulang) = ".$periode."
+
                         UNION ALL
 
                         SELECT
@@ -108,29 +110,29 @@ class PendingModel extends Model{
                             TRIM(SUBSTRING_INDEX(teks, '|', 1)) AS item_awal
                         FROM pecah
                     ),
-                    normalisasi AS (
+                    normalisasi_awal AS (
                         SELECT
                             TRIM(
                                 CASE
                                     WHEN item_awal LIKE '# ALGORITMA ->%'
-                                        THEN SUBSTRING(
-                                            item_awal,
-                                            LENGTH('# ALGORITMA ->') + 1
-                                        )
+                                        THEN SUBSTRING(item_awal, LENGTH('# ALGORITMA ->') + 1)
                                     WHEN item_awal LIKE 'ALGORITMA ->%'
-                                        THEN SUBSTRING(
-                                            item_awal,
-                                            LENGTH('ALGORITMA ->') + 1
-                                        )
+                                        THEN SUBSTRING(item_awal, LENGTH('ALGORITMA ->') + 1)
                                     WHEN item_awal LIKE 'OTOVER ->%'
-                                        THEN SUBSTRING(
-                                            item_awal,
-                                            LENGTH('OTOVER ->') + 1
-                                        )
+                                        THEN SUBSTRING(item_awal, LENGTH('OTOVER ->') + 1)
                                     ELSE item_awal
                                 END
                             ) AS algoritma
                         FROM items
+                    ),
+                    normalisasi AS (
+                        SELECT
+                            UPPER(
+                                TRIM(
+                                    TRAILING '.' FROM TRIM(algoritma)
+                                )
+                            ) AS algoritma
+                        FROM normalisasi_awal
                     )
                     SELECT
                         algoritma,
@@ -139,6 +141,7 @@ class PendingModel extends Model{
                     WHERE algoritma <> ''
                     GROUP BY algoritma
                     ORDER BY jumlah DESC, algoritma ASC;
+
                 ";
 
         $recordset = $this->db->query($query);

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>amCharts 5 Example - Word Cloud from Data (JSON config)</title>
+
+    <!-- Styles -->
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        padding: 0;
+        margin: 0;
+        background-color: #ffffff;
+      }
+
+      #chartdiv {
+        width: 100%;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chartdiv"></div>
+
+    <!-- Resources -->
+    <script src="../../index.js"></script>
+    <script src="../../wc.js"></script>
+    <script src="../../themes/Animated.js"></script>
+    <script src="../../plugins/json.js"></script>
+
+    <!-- Chart code -->
+    <script>
+      // The chart as a JSON config. The code that builds the chart from it is below
+      // how a config reads:
+      // "type" is the class to create, and "settings" are what you would pass to its new() in code
+      // "properties" fill in its parts: lists such as series and axes, or templates such as columns.template
+      // "refs" holds objects used in more than one place: "#series-0" stands for the one named series-0
+      // a string starting with "@" takes a value from another object, such as "@series.get('fill')"
+      // https://www.amcharts.com/docs/v5/concepts/serializing/
+      var config = {
+        "type": "Container",
+        "settings": {
+          "width": { "type": "Percent", "value": 100 },
+          "height": { "type": "Percent", "value": 100 },
+          "layout": { "type": "VerticalLayout" }
+        },
+        "children": [
+          {
+            "type": "Label",
+            "settings": {
+              "text": "Most popular languages on Stack Overflow",
+              "fontSize": 20,
+              "x": { "type": "Percent", "value": 50 },
+              "centerX": { "type": "Percent", "value": 50 }
+            }
+          },
+          "#series-0"
+        ],
+        "refs": [
+          {
+            "data-0": [
+              { "tag": "JavaScript", "weight": 64.96 },
+              { "tag": "HTML/CSS", "weight": 56.07 },
+              { "tag": "Python", "weight": 48.24 },
+              { "tag": "SQL", "weight": 47.08 },
+              { "tag": "Java", "weight": 35.35 },
+              { "tag": "Node.js", "weight": 33.91 },
+              { "tag": "TypeScript", "weight": 30.19 },
+              { "tag": "C#", "weight": 27.86 },
+              { "tag": "Bash/Shell", "weight": 27.13 },
+              { "tag": "C++", "weight": 24.31 },
+              { "tag": "PHP", "weight": 21.98 },
+              { "tag": "C", "weight": 21.01 },
+              { "tag": "PowerShell", "weight": 10.75 },
+              { "tag": "Go", "weight": 9.55 },
+              { "tag": "Kotlin", "weight": 8.32 },
+              { "tag": "Rust", "weight": 7.03 },
+              { "tag": "Ruby", "weight": 6.75 },
+              { "tag": "Dart", "weight": 6.02 },
+              { "tag": "Assembly", "weight": 5.61 },
+              { "tag": "Swift", "weight": 5.1 },
+              { "tag": "R", "weight": 5.07 },
+              { "tag": "VBA", "weight": 4.66 },
+              { "tag": "Matlab", "weight": 4.66 },
+              { "tag": "Groovy", "weight": 3.01 },
+              { "tag": "Objective-C", "weight": 2.8 },
+              { "tag": "Scala", "weight": 2.6 },
+              { "tag": "Perl", "weight": 2.46 },
+              { "tag": "Haskell", "weight": 2.12 },
+              { "tag": "Delphi", "weight": 2.1 },
+              { "tag": "Clojure", "weight": 1.88 },
+              { "tag": "Elixir", "weight": 1.74 },
+              { "tag": "LISP", "weight": 1.33 },
+              { "tag": "Julia", "weight": 1.29 },
+              { "tag": "F#", "weight": 0.97 },
+              { "tag": "Erlang", "weight": 0.79 },
+              { "tag": "APL", "weight": 0.65 },
+              { "tag": "Crystal", "weight": 0.56 },
+              { "tag": "COBOL", "weight": 0.53 }
+            ]
+          },
+          {
+            "template-0": {
+              "type": "Template",
+              "settings": {
+                "paddingTop": 5,
+                "paddingBottom": 5,
+                "paddingLeft": 5,
+                "paddingRight": 5,
+                "fontFamily": "Courier New"
+              }
+            }
+          },
+          {
+            "series-0": {
+              "type": "WordCloud",
+              "settings": {
+                "categoryField": "tag",
+                "valueField": "weight",
+                "calculateAggregates": true,
+                "angles": [0, 0, 0, -90],
+                "randomizeAngles": false,
+                "autoAppear": true,
+                "appearDuration": 1000,
+                "appearDelay": 100,
+                "heatRules": [
+                  {
+                    "target": "#template-0",
+                    "dataField": "value",
+                    "min": { "type": "Color", "value": "#ffd4c2" },
+                    "max": { "type": "Color", "value": "#ff621f" },
+                    "key": "fill",
+                    "__parse": true
+                  }
+                ]
+              },
+              "properties": {
+                "data": "#data-0",
+                "labels": {
+                  "properties": { "template": "#template-0" }
+                }
+              }
+            }
+          }
+        ]
+      };
+
+
+      // Create root element
+      // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+      var root = am5.Root.new("chartdiv");
+
+
+      // Set themes
+      // https://www.amcharts.com/docs/v5/concepts/themes/
+      root.setThemes([
+        am5themes_Animated.new(root)
+      ]);
+
+
+      // Build the chart from its JSON config
+      // https://www.amcharts.com/docs/v5/concepts/serializing/
+      am5plugins_json.JsonParser.new(root).parse(config, {
+        parent: root.container
+      });
+    </script>
+  </body>
+</html>

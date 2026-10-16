@@ -1,3 +1,4 @@
+
 <?php
 
 use CodeIgniter\Router\RouteCollection;
@@ -6,48 +7,69 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 
-
 /*
 |--------------------------------------------------------------------------
 | AUTH
 |--------------------------------------------------------------------------
 */
 
-$routes->get('/','\Modules\Auth\Controllers\Auth::index');
-$routes->post('auth/signin','\Modules\Auth\Controllers\Auth::signin');
-$routes->get('auth/logout','\Modules\Auth\Controllers\Auth::logoutsystem');
+$routes->get('/', '\Modules\Auth\Controllers\Auth::index');
+$routes->post('auth/signin', '\Modules\Auth\Controllers\Auth::signin');
+$routes->get('auth/logout', '\Modules\Auth\Controllers\Auth::logoutsystem');
 
+/*
+|--------------------------------------------------------------------------
+| ClaimGuard REST API
+|--------------------------------------------------------------------------
+| Harus diletakkan sebelum route dinamis HMVC.
+*/
+
+$routes->group('api/v1', [
+    'namespace' => 'Modules\\RestAPI\\Controllers',
+], static function ($routes) {
+
+    // ClaimGuard
+    $routes->get('claimguard', 'Claimguard::index');
+    $routes->get('claimguard/health', 'Claimguard::health');
+    $routes->get('claimguard/rulesclaimguard', 'Claimguard::rulesclaimguard');
+
+    // Dynamic API Router
+    $routes->match(
+        ['get', 'post', 'put', 'patch', 'delete'],
+        '(:segment)',
+        'ApiRouter::dispatch/$1'
+    );
+
+    $routes->match(
+        ['get', 'post', 'put', 'patch', 'delete'],
+        '(:segment)/(:segment)',
+        'ApiRouter::dispatch/$1/$2'
+    );
+});
 
 /*
 |--------------------------------------------------------------------------
 | UR - Legacy Controller
 |--------------------------------------------------------------------------
-| Controller:
-| app/Controllers/Ur.php
-|
-| URL:
-| POST /ur/importtxteklaim
 */
 
-$routes->post('ur/importtxteklaim','\App\Controllers\Ur::importtxteklaim');
-$routes->post('bahv/importtxtbahv','\App\Controllers\Bahv::importtxtbahv');
-
+$routes->post('ur/importtxteklaim', '\App\Controllers\Ur::importtxteklaim');
+$routes->post('bahv/importtxtbahv', '\App\Controllers\Bahv::importtxtbahv');
 
 /*
 |--------------------------------------------------------------------------
 | GET - Module / Controller
 |--------------------------------------------------------------------------
-| Contoh:
-| /developer/testingpage
-| /farmasi/masterobat
+| Contoh: /developer/testingpage
+|         /farmasi/masterobat
 */
 
 $routes->get(
     '(:segment)/(:segment)',
-    function ($module, $controller) {
+    static function ($module, $controller) {
 
-        $class     = ucfirst($controller);
-        $namespace = 'Modules\\'.ucfirst($module).'\\Controllers\\'.$class;
+        $class = ucfirst($controller);
+        $namespace = 'Modules\\' . ucfirst((string) $module) . '\\Controllers\\' . $class;
 
         if (!class_exists($namespace)) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
@@ -63,26 +85,18 @@ $routes->get(
     }
 );
 
-
 /*
 |--------------------------------------------------------------------------
 | GET - Module / Controller / Method
 |--------------------------------------------------------------------------
-| Contoh:
-| /developer/backupdb/listbackup
-| /farmasi/masterobat/masterobat
 */
 
 $routes->get(
     '(:segment)/(:segment)/(:segment)',
-    function (
-        $module,
-        $controller,
-        $method
-    ) {
+    static function ($module, $controller, $method) {
 
-        $class     = ucfirst($controller);
-        $namespace = 'Modules\\'.ucfirst($module).'\\Controllers\\'.$class;
+        $class = ucfirst($controller);
+        $namespace = 'Modules\\' . ucfirst((string) $module) . '\\Controllers\\' . $class;
 
         if (!class_exists($namespace)) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
@@ -98,31 +112,18 @@ $routes->get(
     }
 );
 
-
 /*
 |--------------------------------------------------------------------------
 | GET - Module / Controller / Method / Parameter
 |--------------------------------------------------------------------------
-| Contoh:
-| /developer/backupdb/download/file.sql
 */
 
 $routes->get(
     '(:segment)/(:segment)/(:segment)/(:any)',
-    function (
-        $module,
-        $controller,
-        $method,
-        $parameter
-    ) {
+    static function ($module, $controller, $method, $parameter) {
 
         $class = ucfirst($controller);
-
-        $namespace =
-            'Modules\\' .
-            ucfirst($module) .
-            '\\Controllers\\' .
-            $class;
+        $namespace = 'Modules\\' . ucfirst((string) $module) . '\\Controllers\\' . $class;
 
         if (!class_exists($namespace)) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
@@ -138,30 +139,18 @@ $routes->get(
     }
 );
 
-
 /*
 |--------------------------------------------------------------------------
 | POST - Module / Controller / Method
 |--------------------------------------------------------------------------
-| Contoh:
-| /farmasi/masterobat/masterobat
 */
 
 $routes->post(
     '(:segment)/(:segment)/(:segment)',
-    function (
-        $module,
-        $controller,
-        $method
-    ) {
+    static function ($module, $controller, $method) {
 
         $class = ucfirst($controller);
-
-        $namespace =
-            'Modules\\' .
-            ucfirst($module) .
-            '\\Controllers\\' .
-            $class;
+        $namespace = 'Modules\\' . ucfirst((string) $module) . '\\Controllers\\' . $class;
 
         if (!class_exists($namespace)) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
@@ -176,32 +165,19 @@ $routes->post(
         return $instance->$method();
     }
 );
-
 
 /*
 |--------------------------------------------------------------------------
 | DELETE - Module / Controller / Method
 |--------------------------------------------------------------------------
-| Contoh:
-| DELETE /developer/backupdb/delete
-| DELETE /farmasi/masterobat/delete
 */
 
 $routes->delete(
     '(:segment)/(:segment)/(:segment)',
-    function (
-        $module,
-        $controller,
-        $method
-    ) {
+    static function ($module, $controller, $method) {
 
         $class = ucfirst($controller);
-
-        $namespace =
-            'Modules\\' .
-            ucfirst($module) .
-            '\\Controllers\\' .
-            $class;
+        $namespace = 'Modules\\' . ucfirst((string) $module) . '\\Controllers\\' . $class;
 
         if (!class_exists($namespace)) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
@@ -217,31 +193,18 @@ $routes->delete(
     }
 );
 
-
 /*
 |--------------------------------------------------------------------------
 | DELETE - Module / Controller / Method / Parameter
 |--------------------------------------------------------------------------
-| Contoh:
-| DELETE /developer/backupdb/delete/file.sql
 */
 
 $routes->delete(
     '(:segment)/(:segment)/(:segment)/(:any)',
-    function (
-        $module,
-        $controller,
-        $method,
-        $parameter
-    ) {
+    static function ($module, $controller, $method, $parameter) {
 
         $class = ucfirst($controller);
-
-        $namespace =
-            'Modules\\' .
-            ucfirst($module) .
-            '\\Controllers\\' .
-            $class;
+        $namespace = 'Modules\\' . ucfirst((string) $module) . '\\Controllers\\' . $class;
 
         if (!class_exists($namespace)) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();

@@ -22,7 +22,7 @@
             <form class="form w-100" novalidate="novalidate" id="kt_sign_in_form" action="<?= site_url('auth/signin') ?>" method="post">
                 <?= csrf_field() ?>
                 <div class="text-center mb-1">
-                    <a href="<?= site_url('auth/sign') ?>"><img alt="Logo" src="<?= base_url('assets/media/logos/infinite_landscape.png') ?>" class="h-150px" /></a>
+                    <a href="<?= site_url('auth/sign') ?>"><img alt="Logo" src="<?= base_url('assets/media/logos/rsudpasarminggu.png') ?>" class="h-80px" /></a>
                 </div>
                 <!-- <div class="text-center mb-10">
                     <h2 class="text-dark mb-3">Integrated Information System</h2>

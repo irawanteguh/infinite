@@ -29,9 +29,11 @@ $routes->group('api/v1', [
 ], static function ($routes) {
 
     // ClaimGuard
-    $routes->get('claimguard', 'Claimguard::index');
-    $routes->get('claimguard/health', 'Claimguard::health');
-    $routes->get('claimguard/rulesclaimguard', 'Claimguard::rulesclaimguard');
+    $routes->post('claimguard/rulesclaimguard', 'Claimguard::evaluate');
+    $routes->get('claimguard/request-template', 'Claimguard::requestTemplate');
+    $routes->get('claimguard/request-presets', 'Claimguard::requestPresets');
+    $routes->get('claimguard/request-body/(:num)', 'Claimguard::requestBody/$1');
+    $routes->get('claimguard/export-collection', 'Claimguard::exportPostmanCollection');
 
     // Dynamic API Router
     $routes->match(

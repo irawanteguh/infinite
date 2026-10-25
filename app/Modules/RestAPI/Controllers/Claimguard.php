@@ -1108,6 +1108,7 @@ class Claimguard extends ResourceController{
 
     private function algorithm_0018(array $codes, array $procedureCodes, array $context): ?array {
         $hasObstetri = false;
+
         foreach ($codes as $code) {
             if (preg_match('/^O\d/', $code)) {
                 $hasObstetri = true;
@@ -1142,13 +1143,13 @@ class Claimguard extends ResourceController{
             'recommendations' => [
                 'coder' => [
                     'status' => true,
-                    'recommendation' => 'Tandai kasus obstetri untuk telaah. Penentuan jenis klaim rawat inap atau rawat jalan tidak diatur secara tegas dalam pedoman pengkodean yang berlaku, sehingga perlu dikembalikan kepadaPrimarycareprovider untuk penetapan lebih lanjut. Pastikan resume medis memuat indikasi rawat inap dan justify tindakan yang dilakukan.',
+                    'recommendation' => 'Tandai kasus obstetri untuk ditelaah. Tentukan jenis klaim rawat inap atau rawat jalan berdasarkan indikasi klinis, dokumentasi medis, dan ketentuan yang berlaku. Pastikan resume medis memuat indikasi rawat inap serta alasan tindakan yang dilakukan.',
                     'potential_claim' => null,
                     'topup' => ['topup_name' => null, 'topup_value' => null],
                 ],
                 'physician' => [
                     'status' => true,
-                    'recommendation' => 'Mohon pastikan indikasi rawat inap, kondisi pasien saat masuk, dan justify tindakan obstetri terdokumentasi pada resume medis agar jenis klaim dapat ditentukan sesuai ketentuan yang berlaku.',
+                    'recommendation' => 'Mohon dokumentasikan indikasi rawat inap, kondisi pasien saat masuk, dan alasan tindakan obstetri pada resume medis agar jenis klaim dapat ditelaah sesuai ketentuan yang berlaku.',
                     'potential_claim' => null,
                     'topup' => ['topup_name' => null, 'topup_value' => null],
                 ],
@@ -1168,6 +1169,7 @@ class Claimguard extends ResourceController{
         $kalium = $context['kalium'] ?? null;
         $gejala = $context['gejala_hipokalemia'] ?? null;
         $terapi = $context['terapi_elektrolit'] ?? null;
+        $pemeriksaanSerial = $context['pemeriksaan_serial'] ?? null;
         $usia = $context['umur_tahun'] ?? null;
         $penyertaJantung = $context['komorbid'] ?? null;
 
@@ -1202,6 +1204,7 @@ class Claimguard extends ResourceController{
                 'nilai_kalium' => $kalium,
                 'ambang_na_bawah' => $ambangNa,
                 'ambang_k_bawah' => $ambangK,
+                'pemeriksaan_serial' => $pemeriksaanSerial,
                 'catatan_usia' => $usia !== null
                     ? ($usia < 18 ? 'PADA_ANAK' : 'DEWASA')
                     : 'BELUM_DIKETAHUI',
@@ -1211,21 +1214,15 @@ class Claimguard extends ResourceController{
             'recommendations' => [
                 'coder' => [
                     'status' => true,
-                    'recommendation' => 'Periksa dasar penetapan diagnosis hiponatremia atau hipokalemia berdasarkan hasil laboratorium, nilai rujukan, dokumentasi klinis, dan tata laksana yang diberikan. Pemeriksaan laboratorium serial tidak diwajibkan oleh aturan yang dirujuk dalam materi. Kode harus mengikuti diagnosis dokter yang terdokumentasi pada rekam medis.',
+                    'recommendation' => 'Tinjau dasar penetapan diagnosis hiponatremia atau hipokalemia berdasarkan hasil laboratorium, nilai rujukan, dokumentasi klinis, dan tata laksana yang diberikan. Materi rujukan tidak menetapkan pemeriksaan laboratorium serial sebagai syarat wajib. Kode harus mengikuti diagnosis dokter yang terdokumentasi pada rekam medis.',
                     'potential_claim' => null,
-                    'topup' => [
-                        'topup_name' => null,
-                        'topup_value' => null,
-                    ],
+                    'topup' => ['topup_name' => null, 'topup_value' => null],
                 ],
                 'physician' => [
                     'status' => true,
-                    'recommendation' => 'Mohon pastikan diagnosis hiponatremia atau hipokalemia, hasil laboratorium, gejala yang relevan, serta tata laksana yang diberikan terdokumentasi pada resume medis. Penetapan diagnosis akhir berdasarkan evaluasi klinis.',
+                    'recommendation' => 'Mohon pastikan diagnosis hiponatremia atau hipokalemia, hasil laboratorium, gejala yang relevan, dan tata laksana yang diberikan terdokumentasi pada resume medis. Penetapan diagnosis akhir berdasarkan evaluasi klinis.',
                     'potential_claim' => null,
-                    'topup' => [
-                        'topup_name' => null,
-                        'topup_value' => null,
-                    ],
+                    'topup' => ['topup_name' => null, 'topup_value' => null],
                 ],
             ],
         ];
@@ -1266,7 +1263,6 @@ class Claimguard extends ResourceController{
 
         if ($kreatininSekarang !== null && $kreatininBaseline !== null && $kreatininBaseline > 0) {
             $rasio = $kreatininSekarang / $kreatininBaseline;
-
             $cek['Kenaikan kreatinin >= 1,5 kali baseline'] = $rasio >= 1.5;
             $cek['Kenaikan kreatinin >= 2 kali baseline'] = $rasio >= 2.0;
             $cek['Kenaikan kreatinin >= 3 kali baseline'] = $rasio >= 3.0;
@@ -1279,8 +1275,7 @@ class Claimguard extends ResourceController{
                 $waktuBaseline <= 2 && $kenaikanKreatinin >= 0.3;
         }
 
-        // Nilai ini hanya bisa dibandingkan dengan kriteria urine output
-        // jika input memang dinyatakan dalam mL/kg/jam.
+        // Nilai urine_output diasumsikan dalam mL/kg/jam.
         if ($urineOutput !== null) {
             $cek['Output urine < 0,5 mL/kg/jam'] = $urineOutput < 0.5;
         }
@@ -1314,7 +1309,7 @@ class Claimguard extends ResourceController{
                 ],
                 'physician' => [
                     'status' => true,
-                    'recommendation' => 'Mohon pastikan hasil kreatinin, nilai baseline dan waktu pemeriksaannya, output urine beserta satuannya, eGFR, serta terapi pengganti ginjal terdokumentasi pada rekam medis. Penetapan diagnosis akhir tetap berdasarkan evaluasi klinis.',
+                    'recommendation' => 'Mohon pastikan hasil kreatinin, nilai baseline beserta waktu pemeriksaannya, output urine dan satuannya, eGFR, serta terapi pengganti ginjal terdokumentasi pada rekam medis. Penetapan diagnosis akhir tetap berdasarkan evaluasi klinis.',
                     'potential_claim' => null,
                     'topup' => ['topup_name' => null, 'topup_value' => null],
                 ],

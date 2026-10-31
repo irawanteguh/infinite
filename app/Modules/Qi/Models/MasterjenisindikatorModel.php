@@ -10,7 +10,7 @@ class MasterjenisindikatorModel extends Model{
     function datamasterjenisindikator($groupid,$orgid){
         $query =
                 "
-                    select a.jenis_indikator_id, jenis, active, date_format(a.created_date, '%d.%m.%Y %H:%i:%s')dibuattgl,
+                    select a.jenis_indikator_id, jenis, active, created_by, date_format(a.created_date, '%d.%m.%Y %H:%i:%s')dibuattgl,
                         (select name from dt01_gen_user_data where user_id=a.created_by)dibuatoleh
                     from dt01_qi_jenis_indikator_ms a
                     where a.group_id='".$groupid."'

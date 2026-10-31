@@ -103,7 +103,13 @@ function masterorganization() {
                             tableResult += "</div>";
                             tableResult += "<div class='d-flex flex-column align-items-start'>";
                                 tableResult += "<span class='text-gray-800 fw-bold'>" + (result[i].org_name || "-") + "</span>";
-                                tableResult += (result[i].holding === "Y" ? '<span class="badge badge-light-primary mt-1">Headquarters</span>' : '<span class="badge badge-light-info mt-1">Branch</span>');
+                                tableResult += (
+                                    result[i].holding === "H"  ? '<span class="badge badge-light-primary mt-1">Headquarters</span>' :
+                                    result[i].holding === "A"  ? '<span class="badge badge-light-success mt-1">Dinas Kesehatan</span>' :
+                                    result[i].holding === "B" ? '<span class="badge badge-light-warning mt-1">Suku Dinas</span>' :
+                                    result[i].holding === "C"  ? '<span class="badge badge-light-danger mt-1">Rumah Sakit Pemprov</span>' :
+                                    '<span class="badge badge-light-info mt-1">Branch</span>'
+                                );
                             tableResult += "</div>";
                         tableResult += "</div>";
                     tableResult += "</td>";

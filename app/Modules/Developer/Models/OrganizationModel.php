@@ -15,7 +15,7 @@ class OrganizationModel extends Model{
                         (select email from dt01_gen_user_data where user_id=a.user_id)emailpic,
                         (select name from dt01_gen_user_data where user_id=a.created_by)dibuatoleh
                     from dt01_gen_organization_ms a
-                    order by header_id asc, holding desc, org_name asc
+                    order by holding asc, header_id asc, org_name asc
                 ";
 
         $recordset = $this->db->query($query);

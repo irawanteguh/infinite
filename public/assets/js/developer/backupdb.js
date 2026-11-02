@@ -115,7 +115,7 @@ $("#btnBackupDatabaseICS").on("click", function (e) {
                 Swal.fire({
                     icon             : "error",
                     title            : "Request Failed",
-                    text             : "An error occurred while creating the database ICS backup.",
+                    text             : "An error occurred while processing your request.",
                     confirmButtonText: "OK"
                 });
             },

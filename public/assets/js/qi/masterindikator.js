@@ -1,5 +1,81 @@
 datamasterindikator();
 
+function getdata(btn){
+
+    $("#modal_edit_masterindikator_indikatorid").val(btn.data("indikatorid"));
+    $("#modal_edit_masterindikator_indikator").val(btn.data("indikator"));
+    $("#modal_edit_masterindikator_dasarpemikiran").val(btn.data("dasar_pemikiran"));
+    $("#modal_edit_masterindikator_tujuan").val(btn.data("tujuan"));
+    $("#modal_edit_masterindikator_definisi").val(btn.data("definisi"));
+    $("#modal_edit_masterindikator_numerator").val(btn.data("numerator"));
+    $("#modal_edit_masterindikator_denominator").val(btn.data("denominator"));
+    $("#modal_edit_masterindikator_formula").val(btn.data("formula"));
+    $("#modal_edit_masterindikator_populasi").val(btn.data("populasi"));
+    $("#modal_edit_masterindikator_metodepengumpulan").val(btn.data("metode"));
+    $("#modal_edit_masterindikator_kriteriainklusi").val(btn.data("inklusi"));
+    $("#modal_edit_masterindikator_kriteriaeksklusi").val(btn.data("eksklusi"));
+    $("#modal_edit_masterindikator_instrumen").val(btn.data("instrument"));
+
+    $("#modal_edit_masterindikator_satuanid").val(btn.data("satuan_id")).trigger("change");
+    $("#modal_edit_masterindikator_frekuensiid").val(btn.data("frekuensi_id")).trigger("change");
+    $("#modal_edit_masterindikator_sumberid").val(btn.data("sumber_id")).trigger("change");
+    $("#modal_edit_masterindikator_donabedianid").val(btn.data("donabedian_id")).trigger("change");
+    $("#modal_edit_masterindikator_targetcapaian").val(btn.data("target_capaian")).trigger("change");
+    $("#modal_edit_masterindikator_benchmarkid").val(btn.data("benchmark_id")).trigger("change");
+    $("#modal_edit_masterindikator_active").val(btn.data("active")).trigger("change");
+
+    $("#modal_edit_masterindikator_dimensikeselamatan").prop("checked", btn.data("dimensi_keselamatan") === "Y");
+    $("#modal_edit_masterindikator_dimensiwaktu").prop("checked", btn.data("dimensi_waktu") === "Y");
+    $("#modal_edit_masterindikator_dimensiefektif").prop("checked", btn.data("dimensi_efektif") === "Y");
+    $("#modal_edit_masterindikator_dimensiefisien").prop("checked", btn.data("dimensi_efisien") === "Y");
+    $("#modal_edit_masterindikator_dimensipasien").prop("checked", btn.data("dimensi_pasien") === "Y");
+    $("#modal_edit_masterindikator_dimensiintegrasi").prop("checked", btn.data("dimensi_integrasi") === "Y");
+
+}
+
+function updateActivation (el) {
+    const id        = el.data("indikatorid");
+    const active    = el.data("active");
+    const newActive = active == 1 ? 0 : 1;
+    const isActive  = active == 1;
+
+    Swal.fire({
+        title            : isActive ? "Deactivate Indicator?" : "Activate Indicator?",
+        text             : isActive ? "This Indicator will be deactivated." : "This Indicator will be activated.",
+        icon             : "warning",
+        showCancelButton : true,
+        confirmButtonText: isActive ? "Yes, Deactivate" : "Yes, Activate",
+        cancelButtonText : "Cancel",
+        buttonsStyling   : false,
+        customClass      : {confirmButton: isActive ? "btn btn-danger" : "btn btn-success", cancelButton: "btn btn-light"}
+    }).then(function(result) {
+        if (result.isConfirmed) {
+            $.ajax({
+                url      : url + "qi/masterindikator/updateindikator",
+                type     : "POST",
+                data     : {indikatorid : id,active: newActive},
+                dataType : "JSON",
+                success  : function(response) {
+                    if (response.responseCode === "00") {
+                        Swal.fire({
+                            title             : "Success",
+                            text              : response.responseDesc,
+                            icon              : "success",
+                            timer             : 1500,
+                            showConfirmButton : false,
+                            didClose          : function() {
+                                location.reload();
+                            }
+                        });
+                    } else {
+                        Swal.fire("Error", response.responseDesc, "error");
+                    }
+                }
+            });
+        }
+    });
+}
+
 function datamasterindikator() {
     $.ajax({
         url       : url+"qi/masterindikator/datamasterindikator",
@@ -37,16 +113,39 @@ function datamasterindikator() {
                 const avatar        = `${url}assets/media/avatars/${result[i].last_update_by}.jpg`;
                 const avatarDefault = `${url}assets/media/avatars/blank.png`;
 
-                getvariabel =   "data-id='"+result[i].indikator_id+"' "+
-                                "data-indikator='"+result[i].indikator+"' "+ 
-                                "data-definisi='"+result[i].definisi+"' "+
-                                "data-dasar_pemikiran='"+result[i].dasar_pemikiran+"' "+
-                                "data-tujuan='"+result[i].tujuan+"' ";
+                var getvariabel = "";
+                    getvariabel += " data-indikatorid='" + result[i].indikator_id + "'";
+                    getvariabel += " data-indikator=\"" + result[i].indikator + "\"";
+                    getvariabel += " data-dasar_pemikiran=\"" + result[i].dasar_pemikiran + "\"";
+                    getvariabel += " data-tujuan=\"" + result[i].tujuan + "\"";
+                    getvariabel += " data-definisi=\"" + result[i].definisi + "\"";
+                    getvariabel += " data-numerator=\"" + result[i].numerator + "\"";
+                    getvariabel += " data-denumerator=\"" + result[i].denumerator + "\"";
+                    getvariabel += " data-formula=\"" + result[i].formula + "\"";
+                    getvariabel += " data-populasi=\"" + result[i].populasi + "\"";
+                    getvariabel += " data-metode=\"" + result[i].metode + "\"";
+                    getvariabel += " data-inklusi=\"" + result[i].inklusi + "\"";
+                    getvariabel += " data-eksklusi=\"" + result[i].eksklusi + "\"";
+                    getvariabel += " data-instrument=\"" + result[i].instrument + "\"";
+                    getvariabel += " data-satuan_id=\"" + result[i].satuan_id + "\"";
+                    getvariabel += " data-frekuensi_id=\"" + result[i].frekuensi_id + "\"";
+                    getvariabel += " data-sumber_id=\"" + result[i].sumber_id + "\"";
+                    getvariabel += " data-donabedian_id=\"" + result[i].donabedian_id + "\"";
+                    getvariabel += " data-target_capaian=\"" + result[i].target_capaian + "\"";
+                    getvariabel += " data-benchmark_id=\"" + result[i].benchmark_id + "\"";
+                    getvariabel += " data-active=\"" + result[i].active + "\"";
+                    getvariabel += " data-dimensi_keselamatan=\"" + result[i].dimensi_mutu_keselamatan + "\"";
+                    getvariabel += " data-dimensi_waktu=\"" + result[i].dimensi_mutu_waktu + "\"";
+                    getvariabel += " data-dimensi_efektif=\"" + result[i].dimensi_mutu_efektif + "\"";
+                    getvariabel += " data-dimensi_efesien=\"" + result[i].dimensi_mutu_efesien + "\"";
+                    getvariabel += " data-dimensi_pasien=\"" + result[i].dimensi_mutu_pasien + "\"";
+                    getvariabel += " data-dimensi_integrasi=\"" + result[i].dimensi_mutu_integrasi + "\"";
 
 
                 let btnaction = "";
 
                 btnaction += "<a href='javascript:void(0);' class='dropdown-item btn btn-sm "+(result[i].active === '1' ? 'text-danger' : 'text-success')+"' "+getvariabel+" data-active='"+result[i].active+"' onclick='updateActivation($(this));'><i class='bi "+(result[i].active === '1' ? 'bi-x-circle text-danger' : 'bi-check-circle text-success')+" me-4'></i>"+(result[i].active === '1' ? 'Non Active' : 'Active')+"</a>";
+                btnaction += "<a class='dropdown-item btn btn-sm text-primary' data-bs-toggle='modal' data-bs-target='#modal_edit_masterindikator' "+getvariabel+" onclick='getdata($(this));'><i class='bi bi-pencil text-primary me-4'></i>Edit</a>";
 
                 tableResult += "<tr>";
 
@@ -185,3 +284,115 @@ function badgeMutu(status, text, color) {
     if (status !== "Y") return "";
     return "<span class='badge badge-light-" + color + " me-1 mb-1'>" + text + "</span>";
 }
+
+$(document).on("submit", "#formeditmasterindikator", function (e) {
+	e.preventDefault();
+	var data = new  FormData(this);
+	$.ajax({
+        url        : url+'qi/masterindikator/editmasterindikator',
+        data       : data,
+        method     : "POST",
+        dataType   : "JSON",
+        cache      : false,
+        processData: false,
+        contentType: false,
+        beforeSend : function () {
+            Swal.fire({
+                title: 'Processing',
+                html : 'Please wait while the system displays the requested data.',
+                allowOutsideClick: false,
+                allowEscapeKey   : false,
+                showConfirmButton: false,
+                didOpen: () => Swal.showLoading()
+            });
+        },
+		success: function (response) {
+            if (response.responCode !== "00") {
+                Swal.fire({
+                    title            : "<h1 class='font-weight-bold'>For Your Information</h1>",
+                    html             : "<b>"+data.responDesc+"</b>",
+                    icon             : data.responHead,
+                    confirmButtonText: 'Please Try Again',
+                    customClass      : {confirmButton: 'btn btn-danger'},
+                    timerProgressBar : true,
+                    timer            : 5000,
+                    showClass        : {popup: "animate__animated animate__fadeInUp animate__faster"},
+                    hideClass        : {popup: "animate__animated animate__fadeOutDown animate__faster"}
+                });
+                return;
+            }
+
+            $('#modal_edit_masterindikator').modal('hide');
+            Swal.close();
+		},
+        error: function () {
+            Swal.fire({
+                icon             : "error",
+                title            : "Request Failed",
+                text             : "An error occurred while processing your request.",
+                confirmButtonText: "OK"
+            });
+        },
+        complete: function () {
+            Swal.close();
+            location.reload();
+        }
+	});
+    return false;
+});
+
+$(document).on("submit", "#formaddmasterindikator", function (e) {
+	e.preventDefault();
+	var data = new  FormData(this);
+	$.ajax({
+        url        : url+'qi/masterindikator/addmasterindikator',
+        data       : data,
+        method     : "POST",
+        dataType   : "JSON",
+        cache      : false,
+        processData: false,
+        contentType: false,
+        beforeSend : function () {
+            Swal.fire({
+                title: 'Processing',
+                html : 'Please wait while the system displays the requested data.',
+                allowOutsideClick: false,
+                allowEscapeKey   : false,
+                showConfirmButton: false,
+                didOpen: () => Swal.showLoading()
+            });
+        },
+		success: function (response) {
+            if (response.responCode !== "00") {
+                Swal.fire({
+                    title            : "<h1 class='font-weight-bold'>For Your Information</h1>",
+                    html             : "<b>"+data.responDesc+"</b>",
+                    icon             : data.responHead,
+                    confirmButtonText: 'Please Try Again',
+                    customClass      : {confirmButton: 'btn btn-danger'},
+                    timerProgressBar : true,
+                    timer            : 5000,
+                    showClass        : {popup: "animate__animated animate__fadeInUp animate__faster"},
+                    hideClass        : {popup: "animate__animated animate__fadeOutDown animate__faster"}
+                });
+                return;
+            }
+
+            $('#modal_add_masterindikator').modal('hide');
+            Swal.close();
+		},
+        error: function () {
+            Swal.fire({
+                icon             : "error",
+                title            : "Request Failed",
+                text             : "An error occurred while processing your request.",
+                confirmButtonText: "OK"
+            });
+        },
+        complete: function () {
+            Swal.close();
+            location.reload();
+        }
+	});
+    return false;
+});

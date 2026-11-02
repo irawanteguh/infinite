@@ -312,9 +312,6 @@ $("#searchMasterMdc")
     });
 
         },
-        complete: function () {
-            Swal.close();
-        },
         error: function () {
             Swal.fire({
                 icon             : "error",
@@ -322,6 +319,9 @@ $("#searchMasterMdc")
                 text             : "An error occurred while processing your request.",
                 confirmButtonText: "OK"
             });
+        },
+        complete: function () {
+            Swal.close();
         }
     });
 };

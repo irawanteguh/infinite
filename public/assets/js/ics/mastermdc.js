@@ -314,9 +314,6 @@ function datamastermdc(){
             $("#resultdatamastermdc").html(tableResult);
 
         },
-        complete: function () {
-            Swal.close();
-        },
         error: function () {
             Swal.fire({
                 icon             : "error",
@@ -324,6 +321,9 @@ function datamastermdc(){
                 text             : "An error occurred while processing your request.",
                 confirmButtonText: "OK"
             });
+        },
+        complete: function () {
+            Swal.close();
         }
     });
 };

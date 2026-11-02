@@ -6,6 +6,19 @@ use CodeIgniter\Config\BaseConfig;
 
 class App extends BaseConfig
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $protocol = (
+            ! empty($_SERVER['HTTPS']) &&
+            $_SERVER['HTTPS'] !== 'off'
+        ) ? 'https' : 'http';
+
+        $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+
+        $this->baseURL = $protocol . '://' . $host . '/infinite/';
+    }
     /**
      * --------------------------------------------------------------------------
      * Base Site URL
@@ -16,7 +29,7 @@ class App extends BaseConfig
      *
      * E.g., http://example.com/
      */
-    public string $baseURL = 'http://localhost/infinite/';
+    public string $baseURL = '';
 
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.

@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Qi\Controllers;
+namespace Modules\Developer\Controllers;
 
 use App\Controllers\BaseController;
-use Modules\Qi\Models\MasterjenisindikatorModel;
+use Modules\Developer\Models\MasterjenisindikatorModel;
 
 class Masterjenisindikator extends BaseController{
 
@@ -15,12 +15,12 @@ class Masterjenisindikator extends BaseController{
 
     public function index(){
         return view('template/dashboard-light-aside', [
-            'contents' => view('Modules\Qi\Views\v_masterjenisindikator')
+            'contents' => view('Modules\Developer\Views\v_masterjenisindikator')
         ]);
     }
 
     public function datamasterjenisindikator(){
-        $result = $this->md->datamasterjenisindikator(session()->get('groupid'), session()->get('orgid'));
+        $result = $this->md->datamasterjenisindikator();
 
         if (!empty($result)) {
             $json["responseCode"]   = "00";
@@ -37,8 +37,8 @@ class Masterjenisindikator extends BaseController{
     }
 
     public function updatejenisindikator(){
-        $jenisindikatorid  = request()->getPost('jenisindikatorid');
-        $active = request()->getPost('active');
+        $jenisindikatorid = request()->getPost('jenisindikatorid');
+        $active           = request()->getPost('active');
 
         if (empty($jenisindikatorid)) {
             return $this->response->setJSON([

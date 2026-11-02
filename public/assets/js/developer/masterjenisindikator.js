@@ -1,7 +1,7 @@
 datamasterjenisindikator();
 
 function updateActivation (el) {
-    const id     = el.data("id");
+    const id        = el.data("id");
     const active    = el.data("active");
     const newActive = active == 1 ? 0 : 1;
     const isActive  = active == 1;
@@ -18,7 +18,7 @@ function updateActivation (el) {
     }).then(function(result) {
         if (result.isConfirmed) {
             $.ajax({
-                url      : url + "qi/masterjenisindikator/updatejenisindikator",
+                url      : url + "developer/masterjenisindikator/updatejenisindikator",
                 type     : "POST",
                 data     : {jenisindikatorid : id,active: newActive},
                 dataType : "JSON",
@@ -45,7 +45,7 @@ function updateActivation (el) {
 
 function datamasterjenisindikator() {
     $.ajax({
-        url       : url+"qi/masterjenisindikator/datamasterjenisindikator",
+        url       : url+"developer/masterjenisindikator/datamasterjenisindikator",
         type      : "POST",
         dataType  : "JSON",
         beforeSend: function () {

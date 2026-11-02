@@ -78,7 +78,7 @@ function masterorganization() {
 
             for (var i in result) {
                 const iconrs           = `${url}assets/media/logos/${result[i].org_id}.png`;
-                const iconrsDefault    = `${url}assets/media/logos/infinite.png`;
+                const iconrsDefault    = `${url}assets/media/noimages.png`;
                 const avatar           = `${url}assets/media/avatars/${result[i].created_by}.jpg`;
                 const avatarDefault    = `${url}assets/media/avatars/blank.png`;
                 const avatarpic        = `${url}assets/media/avatars/${result[i].user_id}.jpg`;

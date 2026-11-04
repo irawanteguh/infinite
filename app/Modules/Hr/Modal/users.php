@@ -66,10 +66,10 @@
                                 </div>                             
                                 <div class="col-md-6 mb-5">
                                     <label class="d-flex align-items-center fs-5 fw-bold mb-2">
-                                        <span class="required">Email Address</span>
+                                        <span>Email Address</span>
                                         <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Silakan alamat email anda yang aktif"></i>
                                     </label>
-                                    <input type="text" class="form-control form-control-solid" placeholder="Silakan Masukan Alamat Email Anda" id="modal_add_user_email" name="modal_add_user_email" required>
+                                    <input type="text" class="form-control form-control-solid" placeholder="Silakan Masukan Alamat Email Anda" id="modal_add_user_email" name="modal_add_user_email">
                                 </div>
                             </div>
                         </div>
@@ -150,10 +150,10 @@
                                 </div>                             
                                 <div class="col-md-6 mb-5">
                                     <label class="d-flex align-items-center fs-5 fw-bold mb-2">
-                                        <span class="required">Email Address</span>
+                                        <span>Email Address</span>
                                         <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Silakan alamat email anda yang aktif"></i>
                                     </label>
-                                    <input type="text" class="form-control form-control-solid" placeholder="Silakan Masukan Alamat Email Anda" id="modal_edit_user_email" name="modal_edit_user_email" required>
+                                    <input type="text" class="form-control form-control-solid" placeholder="Silakan Masukan Alamat Email Anda" id="modal_edit_user_email" name="modal_edit_user_email">
                                 </div>
                             </div>
                         </div>

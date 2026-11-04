@@ -5,17 +5,17 @@ function activationuser(el) {
     let isDeactive = active === "Y";
 
     Swal.fire({
-        title             : isDeactive ? "Suspend Account?"                                                                                                                                       : "Reactivate Account?",
-        html              : isDeactive ? `User ini akan dinonaktifkan dan tidak dapat login ke sistem.<br><small class="text-muted">Dialog ini akan tertutup otomatis dalam <b>10 detik</b>.</small>`: `User ini akan diaktifkan kembali dan dapat login ke sistem.<br><small class="text-muted">Dialog ini akan tertutup otomatis dalam <b>10 detik</b>.</small>`,
-        icon              : "warning",
-        showCancelButton  : true,
-        confirmButtonColor: isDeactive ? "#d33"                                                                                                                                                      : "#50CD89",
-        cancelButtonColor : "#6c757d",
-        confirmButtonText : isDeactive ? '<i class="bi bi-trash3 text-white"></i> Ya, Suspend'                                                                                                    : '<i class="bi bi-check-circle text-white"></i> Ya, Reactivate',
-        cancelButtonText  : "Batal",
-        reverseButtons    : true,
-        timer             : 10000,
-        timerProgressBar  : true
+        ttitle              : isDeactive ? "Suspend Account?" : "Reactivate Account?",
+        html               : isDeactive ? `User ini akan dinonaktifkan dan tidak dapat login ke sistem.<br><small class="text-muted">Dialog ini akan tertutup otomatis dalam <b>10 detik</b>.</small>` : `User ini akan diaktifkan kembali dan dapat login ke sistem.<br><small class="text-muted">Dialog ini akan tertutup otomatis dalam <b>10 detik</b>.</small>`,
+        icon               : "warning",
+        showCancelButton   : true,
+        confirmButtonColor : isDeactive ? "#d33" : "#50CD89",
+        cancelButtonColor  : "#6c757d",
+        confirmButtonText  : isDeactive ? '<i class="bi bi-trash3 text-white"></i> Ya, Suspend' : '<i class="bi bi-check-circle text-white"></i> Ya, Reactivate',
+        cancelButtonText   : "Batal",
+        reverseButtons     : true,
+        timer              : 10000,
+        timerProgressBar   : true
     }).then((result) => {
         if (!result.isConfirmed) return;
         $.ajax({
@@ -88,29 +88,16 @@ function deleteuser(el) {
     });
 };
 
-function getdatausers(btn){
-    var userid        = btn.attr("data-userid");
-    var nikrs         = btn.attr("data-nikrs");
-    var username      = btn.attr("data-username");
-    var name          = btn.attr("data-name");
-    var email         = btn.attr("data-email");
-    var avatar        = url+"assets/media/avatars/"+userid+".jpg";
-    var avatarDefault = url+"assets/media/avatars/blank.png";
+function getdatausers(btn) {
+    $(":hidden[name='modal_edit_user_userid']").val(btn.attr("data-userid"));
+    $("#modal_edit_user_username").val(btn.attr("data-username"));
+    $("#modal_edit_user_nikrs").val(btn.attr("data-nikrs") === "null" || btn.attr("data-nikrs") === null ? "" : btn.attr("data-nikrs"));
+    $("#modal_edit_user_name").val(btn.attr("data-name"));
+    $("#modal_edit_user_email").val(btn.attr("data-email") === "null" || btn.attr("data-email") === null ? "" : btn.attr("data-email"));
+    $("#modal_edit_user_department").val(btn.data("department")).trigger("change");
 
-	$(":hidden[name='modal_edit_user_userid']").val(userid);
-    $("#modal_edit_user_username").val(username);
-    $("#modal_edit_user_nikrs").val(nikrs === "null" || nikrs === null ? "" : nikrs);
-    $("#modal_edit_user_name").val(name);
-    $("#modal_edit_user_email").val(email === "null" || email === null ? "" : email);
-    $("<img>").attr("src",avatar).on("load",function(){$("#avatar-preview-edit").css("background-image","url('"+avatar+"')");}).on("error",function(){$("#avatar-preview-edit").css("background-image","url('"+avatarDefault+"')");});
-
-    $(":hidden[name='modal_edit_user_userid_root']").val(userid);
-    $("#modal_edit_user_username_root").val(username);
-    $("#modal_edit_user_nikrs_root").val(nikrs === "null" || nikrs === null ? "" : nikrs);
-    $("#modal_edit_user_name_root").val(name);
-    $("#modal_edit_user_email_root").val(email === "null" || email === null ? "" : email);
-    $("<img>").attr("src",avatar).on("load",function(){$("#avatar-preview-edit-root").css("background-image","url('"+avatar+"')");}).on("error",function(){$("#avatar-preview-edit").css("background-image","url('"+avatarDefault+"')");});
-};
+    $("<img>").attr("src", url + "assets/media/avatars/" + btn.attr("data-userid") + ".jpg").on("load", function(){$("#avatar-preview-edit").css("background-image", "url('" + url + "assets/media/avatars/" + btn.attr("data-userid") + ".jpg')");}).on("error", function(){$("#avatar-preview-edit").css("background-image", "url('" + url + "assets/media/avatars/blank.png')");});
+}
 
 $(document).on("submit", "#formadduser", function (e) {
 	e.preventDefault();

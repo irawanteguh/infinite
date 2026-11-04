@@ -22,7 +22,6 @@
                         <th>Username</th>
                         <th>Name</th>
                         <th>Organization</th>
-                        <th>Department</th>
                         <th>Status</th>
                         <th>Last Updated By</th>
                         <th class="text-end pe-4 rounded-end">Actions</th>

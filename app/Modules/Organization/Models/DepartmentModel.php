@@ -28,7 +28,19 @@ class DepartmentModel extends Model{
                     select a.department_id, department, user_id, last_update_by, active, date_format(a.last_update_date, '%d.%m.%Y %H:%i:%s')dibuattgl, active,
                         (select name from dt01_gen_user_data where user_id=a.user_id)pic,
                         (select email from dt01_gen_user_data where user_id=a.user_id)emailpic,
-                        (select name from dt01_gen_user_data where user_id=a.last_update_by)dibuatoleh
+                        (select name from dt01_gen_user_data where user_id=a.last_update_by)dibuatoleh,
+
+                        (
+                            select group_concat(
+                                x.user_id, ':',
+                                x.name
+                                separator ';'
+                            )
+                            from dt01_gen_user_data x
+                            where x.active = '1'
+                            and x.department_id = a.department_id
+                        ) as memberdepartment
+
                     from dt01_gen_department_ms a
                     where a.group_id='".$groupid."'
                     and   a.org_id='".$orgid."'

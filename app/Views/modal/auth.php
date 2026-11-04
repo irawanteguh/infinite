@@ -7,15 +7,9 @@
             </div>
             <div class="modal-body text-center py-5">
                 <?php
-                    $userid = isset($_SESSION['userid']) ? $_SESSION['userid'] : '';
-                    $nama   = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
-
-                    if (!empty($userid)) {
-                        $avatar = base_url('assets/media/avatars/' . $userid . '.jpg');
-                    } else {
-                        $avatar = base_url('assets/media/avatars/blank.png');
-                    }
-
+                    $userid      = session()->get('userid') ?? '';
+                    $nama        = session()->get('name') ?? 'User';
+                    $avatar      = !empty($userid) ? base_url('assets/media/avatars/' . $userid . '.jpg') : base_url('assets/media/avatars/blank.png');
                     $avatarBlank = base_url('assets/media/avatars/blank.png');
                 ?>
 

@@ -14,7 +14,7 @@ class UsersModel extends Model{
                     from dt01_gen_department_ms a
                     where a.group_id='".$groupid."'
                     and   a.org_id='".$orgid."'
-                    order by last_update_date desc
+                    order by department asc
                 ";
 
         $recordset = $this->db->query($query);
@@ -38,7 +38,7 @@ class UsersModel extends Model{
     function datamasterusers($groupid,$orgid){
         $query =
                 "
-                    select a.user_id, username, name, email, last_update_by, nik, active, suspend, date_format(a.last_update_date, '%d.%m.%Y %H:%i:%s')dibuattgl,
+                    select a.user_id, username, name, email, last_update_by, nik, active, department_id, suspend, date_format(a.last_update_date, '%d.%m.%Y %H:%i:%s')dibuattgl,
                             (select org_name from dt01_gen_organization_ms where org_id=a.org_id)orgname,
                             (select department from dt01_gen_department_ms where department_id=a.department_id)department,
                             (select name from dt01_gen_user_data where user_id=a.last_update_by)dibuatoleh

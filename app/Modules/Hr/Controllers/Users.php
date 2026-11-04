@@ -96,7 +96,7 @@ class Users extends BaseController{
         $file             = request()->getFile('modal_add_user_avatar');
         $resultcheckemail = $this->md->checkemail($userid,$email);
 
-        if(!empty($resultcheckemail)){
+        if(!empty($resultcheckemail) && $email !=""){
             $json['responCode'] = "01";
             $json['responHead'] = "error";
             $json['responDesc'] = "Email already exists.";
@@ -234,7 +234,7 @@ class Users extends BaseController{
         $resultcheckemail = $this->md->checkemail($userid, $email);
 
         // Validasi email duplikat
-        if(!empty($resultcheckemail)){
+        if(!empty($resultcheckemail) && $email !=""){
             $json['responCode'] = "01";
             $json['responHead'] = "error";
             $json['responDesc'] = "Email already exists.";
@@ -323,12 +323,13 @@ class Users extends BaseController{
 
         // Data update
         $dataupdate = [
-            'username'       => $username ?? null,
-            'department_id'  => $department ?? null,
-            'nik'            => !empty($nikrs) ? $nikrs : null,
-            'name'           => $namakaryawan ?? null,
-            'email'          => $email ?? null,
-            'last_update_by' => session()->get('userid') ?? null
+            'username'         => $username ?? null,
+            'department_id'    => $department ?? null,
+            'nik'              => !empty($nikrs) ? $nikrs : null,
+            'name'             => $namakaryawan ?? null,
+            'email'            => $email ?? null,
+            'last_update_by'   => session()->get('userid') ?? null,
+            'last_update_date' => date('Y-m-d H:i:s')
         ];
 
         if($this->md->updateuser($userid, $dataupdate)){

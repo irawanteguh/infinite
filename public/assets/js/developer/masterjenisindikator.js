@@ -7,14 +7,17 @@ function updateActivation (el) {
     const isActive  = active == 1;
 
     Swal.fire({
-        title            : isActive ? "Deactivate Indicator Category?" : "Activate Indicator Category?",
-        text             : isActive ? "This Indicator Category will be deactivated." : "This Indicator Category will be activated.",
-        icon             : "warning",
-        showCancelButton : true,
-        confirmButtonText: isActive ? "Yes, Deactivate" : "Yes, Activate",
-        cancelButtonText : "Cancel",
-        buttonsStyling   : false,
-        customClass      : {confirmButton: isActive ? "btn btn-danger" : "btn btn-success", cancelButton: "btn btn-light"}
+        title             : isActive ? "Deactivate Indicator Category?" : "Activate Indicator Category?",
+        html              : isActive ? `Kategori indikator ini akan dinonaktifkan dan tidak dapat digunakan.<br><small class="text-muted">Dialog ini akan tertutup otomatis dalam <b>10 detik</b>.</small>` : `Kategori indikator ini akan diaktifkan kembali dan dapat digunakan.<br><small class="text-muted">Dialog ini akan tertutup otomatis dalam <b>10 detik</b>.</small>`,
+        icon              : "warning",
+        showCancelButton  : true,
+        confirmButtonColor: isActive ? "#d33" : "#50CD89",
+        cancelButtonColor : "#6c757d",
+        confirmButtonText : isActive ? '<i class="bi bi-trash3 text-white"></i> Yes, Deactivate' : '<i class="bi bi-check-circle text-white"></i> Yes, Activate',
+        cancelButtonText  : "Cancel",
+        reverseButtons    : true,
+        timer             : 10000,
+        timerProgressBar  : true
     }).then(function(result) {
         if (result.isConfirmed) {
             $.ajax({

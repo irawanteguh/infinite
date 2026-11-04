@@ -39,11 +39,14 @@ function datamasterusers() {
                 const avatarcreatedby        = `${url}assets/media/avatars/${result[i].last_update_by}.jpg`;
                 const avatarDefaultcreatedby = `${url}assets/media/avatars/blank.png`;
 
-                getvariabel =   "data-userid='"+result[i].user_id+"'"+
-                                "data-nikrs='"+result[i].nik+"'"+
-                                "data-username='"+result[i].username+"'"+
-                                "data-name='"+result[i].name+"'"+
-                                "data-email='"+result[i].email+"'";
+                var getvariabel = "";
+                    getvariabel += " data-userid='" + result[i].user_id + "'";
+                    getvariabel += " data-nikrs='" + result[i].nik + "'";
+                    getvariabel += " data-username='" + result[i].username + "'";
+                    getvariabel += " data-name='" + result[i].name + "'";
+                    getvariabel += " data-email='" + result[i].email + "'";
+                    getvariabel += " data-department='" + result[i].department_id + "'";
+                    
 
                 let btnaction = "";
 
@@ -51,9 +54,7 @@ function datamasterusers() {
                 
                 if(result[i].suspend==="N"){btnaction += "<a class='dropdown-item btn btn-sm text-danger' "+getvariabel+" data-active='Y' onclick='activationuser($(this));'><i class='bi bi-person-slash text-danger me-4'></i>Suspend</a>";}else{btnaction += "<a class='dropdown-item btn btn-sm text-success' "+getvariabel+" data-active='N' onclick='activationuser($(this));'><i class='bi bi-bookmark-check text-success me-4'></i>Reactive</a>";}
 
-                if(result[i].active==="1"){
-                    btnaction += "<a class='dropdown-item btn btn-sm text-danger' "+getvariabel+" data-active='0' onclick='deleteuser($(this));'><i class='bi bi-trash-fill text-danger me-4'></i>Delete</a>";
-                }
+                if(result[i].active==="1"){btnaction += "<a class='dropdown-item btn btn-sm text-danger' "+getvariabel+" data-active='0' onclick='deleteuser($(this));'><i class='bi bi-trash-fill text-danger me-4'></i>Delete</a>";}
 
                 tableResult += "<tr>";
                 tableResult += "<td class='ps-4'>" + (parseInt(i) + 1) + "</td>";
@@ -81,8 +82,7 @@ function datamasterusers() {
                     tableResult += "</div>";
                 tableResult += "</td>";
 
-                tableResult += "<td>" + (result[i].orgname || "-") + "</td>";
-                tableResult += "<td>" + (result[i].department || "-") + "</td>";
+                tableResult += "<td><div>" + (result[i].orgname || "-") + "</div><div>" + (result[i].department || "-") + "</div></td>";
 
                 tableResult += "<td>";
                 if (result[i].suspend == "N") {

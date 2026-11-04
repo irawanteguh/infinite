@@ -21,6 +21,7 @@
                         <th class="text-start ps-4 rounded-start">#</th>
                         <th>Department</th>
                         <th>Head Department</th>
+                        <th>Member Department</th>
                         <th>Active</th>
                         <th>Last Updated By</th>
                         <th class="text-end pe-4 rounded-end">Actions</th>

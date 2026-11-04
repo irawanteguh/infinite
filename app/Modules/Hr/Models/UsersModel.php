@@ -12,6 +12,7 @@ class UsersModel extends Model{
                 "
                     select a.user_id, username, name, email, created_by, nik, active, suspend, date_format(a.created_date, '%d.%m.%Y %H:%i:%s')dibuattgl,
                             (select org_name from dt01_gen_organization_ms where org_id=a.org_id)orgname,
+                            (select department from dt01_gen_department_ms where department_id=a.department_id)department,
                             (select name from dt01_gen_user_data where user_id=a.created_by)dibuatoleh
                     from dt01_gen_user_data a
                     where a.active='1'

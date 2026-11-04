@@ -26,6 +26,7 @@ class SignModel extends Model{
                         a.user_id,
                         a.name,
                         a.email,
+                        b.trial,
                         b.kode_rs,
                         b.kode_ppk,
                         b.org_name AS organizationname,

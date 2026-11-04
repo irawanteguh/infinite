@@ -1,241 +1,244 @@
-let table = null;
+datamasterdepartment();
 
-datadepartment();
-
-function activation(el) {
-
-    let departmentid = el.data('departmentid');
-    let active = String(el.data('active'));
-
-    let isDeactive = active === "0";
-
-    Swal.fire({
-        title: isDeactive ? "Deactivate Department?" : "Reactivate Department?",
-        html: isDeactive
-            ? `
-                Department ini akan dinonaktifkan.<br>
-                <small class="text-muted">
-                    Dialog ini akan tertutup otomatis dalam <b>10 detik</b>.
-                </small>
-              `
-            : `
-                Department ini akan diaktifkan kembali.<br>
-                <small class="text-muted">
-                    Dialog ini akan tertutup otomatis dalam <b>10 detik</b>.
-                </small>
-              `,
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: isDeactive ? "#d33" : "#50CD89",
-        cancelButtonColor: "#6c757d",
-        confirmButtonText: isDeactive
-            ? '<i class="bi bi-trash3 text-white"></i> Ya, Deactivate'
-            : '<i class="bi bi-check-circle text-white"></i> Ya, Reactivate',
-        cancelButtonText: "Batal",
-        reverseButtons: true,
-        timer: 10000,
-        timerProgressBar: true
-    }).then((result) => {
-
-        if (!result.isConfirmed) return;
-
-        $.ajax({
-            url: url + "index.php/organization/department/activation",
-            type: "POST",
-            dataType: "json",
-            data: {
-                departmentid: departmentid,
-                active: active
-            },
-            success: function (response) {
-
-                Swal.fire({
-                    icon: response.responHead,
-                    title: response.responDesc,
-                    timer: 2000,
-                    timerProgressBar: true,
-                    showConfirmButton: false
-                });
-
-                if (response.responCode === "00") {
-                    datadepartment();
-                }
-
-            },
-            error: function () {
-                Swal.fire({
-                    icon: "error",
-                    title: "Request Failed",
-                    text: "We were unable to process your request due to a server error. Please try again later. If the problem persists, contact your system administrator.",
-                    confirmButtonText: "OK"
-                });
-            }
-        });
-
-    });
-
+function getdata(btn){
+    $("#modal_edit_masterdepartment_departmentid").val(btn.data("departmentid"));
+    $("#modal_edit_masterdepartment_department").val(btn.data("department"));
+    $("#modal_edit_masterdepartment_headdepartment").val(btn.data("headdepartment")).trigger("change");
 }
 
-function datadepartment() {
+function updateActivation (el) {
+    const id        = el.data("departmentid");
+    const active    = el.data("active");
+    const newActive = active == 1 ? 0 : 1;
+    const isActive  = active == 1;
+
+    Swal.fire({
+        title            : isActive ? "Deactivate Department?" : "Activate Department?",
+        text             : isActive ? "This Department will be deactivated." : "This Department will be activated.",
+        icon             : "warning",
+        showCancelButton : true,
+        confirmButtonText: isActive ? "Yes, Deactivate" : "Yes, Activate",
+        cancelButtonText : "Cancel",
+        buttonsStyling   : false,
+        customClass      : {confirmButton: isActive ? "btn btn-danger" : "btn btn-success", cancelButton: "btn btn-light"}
+    }).then(function(result) {
+        if (result.isConfirmed) {
+            $.ajax({
+                url      : url + "organization/department/updatedepartment",
+                type     : "POST",
+                data     : {departmentid : id,active: newActive},
+                dataType : "JSON",
+                success  : function(response) {
+                    if (response.responseCode === "00") {
+                        Swal.fire({
+                            title             : "Success",
+                            text              : response.responseDesc,
+                            icon              : "success",
+                            timer             : 1500,
+                            showConfirmButton : false,
+                            didClose          : function() {
+                                location.reload();
+                            }
+                        });
+                    } else {
+                        Swal.fire("Error", response.responseDesc, "error");
+                    }
+                }
+            });
+        }
+    });
+}
+
+function datamasterdepartment() {
     $.ajax({
-        url: url + "index.php/organization/department/datadepartment",
-        type: "POST",
-        dataType: "json",
-
+        url       : url+"organization/department/datamasterdepartment",
+        type      : "POST",
+        dataType  : "JSON",
         beforeSend: function () {
-
             Swal.fire({
-                title: "Processing",
-                html: "Loading data, please wait...",
+                title            : "Processing",
+                html             : "Please wait while the system displays the requested data.",
                 allowOutsideClick: false,
-                allowEscapeKey: false,
+                allowEscapeKey   : false,
                 showConfirmButton: false,
-                didOpen: () => Swal.showLoading()
+                didOpen          : () => Swal.showLoading()
             });
 
-            if ($.fn.DataTable.isDataTable("#datadepartment_table")) {
-                $("#datadepartment_table").DataTable().clear().destroy();
-            }
-
-            $("#resultdatadepartment").empty();
+            $("#resultdatamasterdepartment").empty();
         },
-
         success: function (response) {
-            Swal.close();
-            const result = Array.isArray(response.responResult) ? response.responResult : [];
-
-            if (response.responCode !== "00") {
-                $("#resultdatadepartment").html("");
+            if (response.responseCode !== "00") {
                 Swal.fire({
-                    icon: "info",
-                    title: "Information",
-                    text: response.responDesc || "No user data found."
+                    icon             : "info",
+                    title            : "No Records Found",
+                    text             : "No records are available for the selected period.",
+                    showConfirmButton: false,
+                    timer            : 2000
                 });
-
                 return;
             }
 
-            let tableresult = "";
+            const result = Array.isArray(response.responseResult) ? response.responseResult : [];
+
+            let tableResult = "";
 
             for (var i in result) {
-
-                const avatar           = `${url}assets/media/avatars/${result[i].created_by}.jpg`;
+                const avatar           = `${url}assets/media/avatars/${result[i].last_update_by}.jpg`;
                 const avatarDefault    = `${url}assets/media/avatars/blank.png`;
                 const avatarpic        = `${url}assets/media/avatars/${result[i].user_id}.jpg`;
                 const avatarDefaultpic = `${url}assets/media/avatars/blank.png`;
 
-                getvariabel =   "data-departmentid='"+result[i].department_id+"'";
+                var getvariabel = "";
+                    getvariabel += " data-departmentid='" + result[i].department_id + "'";
+                    getvariabel += " data-department='" + result[i].department + "'";
+                    getvariabel += " data-headdepartment='" + result[i].user_id + "'";
 
                 let btnaction = "";
 
-                if(result[i].active==="1"){
-                    btnaction += "<a class='dropdown-item btn btn-sm text-danger' "+getvariabel+" data-active='0' onclick='activation($(this));'><i class='bi bi-trash3 text-danger me-4'></i>Deactive</a>";
-                }else{
-                    btnaction += "<a class='dropdown-item btn btn-sm text-success' "+getvariabel+" data-active='1' onclick='activation($(this));'><i class='bi bi-bookmark-check text-success me-4'></i>Reactive</a>";
-                }
+                btnaction += "<a href='javascript:void(0);' class='dropdown-item btn btn-sm "+(result[i].active === '1' ? 'text-danger' : 'text-success')+"' "+getvariabel+" data-active='"+result[i].active+"' onclick='updateActivation($(this));'><i class='bi "+(result[i].active === '1' ? 'bi-x-circle text-danger' : 'bi-check-circle text-success')+" me-4'></i>"+(result[i].active === '1' ? 'Deactivate' : 'Activate')+"</a>";
+                btnaction += "<a class='dropdown-item btn btn-sm text-primary' data-bs-toggle='modal' data-bs-target='#modal_edit_masterdepartment' "+getvariabel+" onclick='getdata($(this));'><i class='bi bi-pencil text-primary me-4'></i>Edit</a>";
 
-                tableresult += "<tr>";
-                    tableresult += "<td class='text-start ps-4'>"+(parseInt(i) + 1)+"</td>";
-                    tableresult += "<td>"+(result[i].department || "-")+"</td>";
+                tableResult += "<tr>";
+                    tableResult += "<td class='text-start ps-4'>"+(parseInt(i) + 1)+"</td>";
+                    tableResult += "<td>"+(result[i].department || "-")+"</td>";
 
-                    tableresult += "<td>";
-                        tableresult += "<div class='d-flex align-items-center'>";
-                            tableresult += "<div class='symbol symbol-circle symbol-35px overflow-hidden me-3'>";
-                                tableresult += "<div class='symbol-label'>";
-                                    tableresult += "<img ";
-                                    tableresult += "src='" + avatarpic + "' ";
-                                    tableresult += "class='w-100' ";
-                                    tableresult += "alt='" + (result[i].pic || "") + "' ";
-                                    tableresult += "onerror=\"this.onerror=null;this.src='" + avatarDefaultpic + "';\">";
-                                tableresult += "</div>";
-                            tableresult += "</div>";
-                            tableresult += "<div class='d-flex flex-column'>";
-                                tableresult += "<span class='text-gray-800 fw-bold'>";
-                                tableresult += (result[i].pic || "-");
-                                tableresult += "</span>";
-                                tableresult += "<span class='text-muted'>";
-                                tableresult += (result[i].emailpic || "-");
-                                tableresult += "</span>";
-                            tableresult += "</div>";
-                        tableresult += "</div>";
-                    tableresult += "</td>";
+                    tableResult += "<td>";
+                        tableResult += "<div class='d-flex align-items-center'>";
+                            tableResult += "<div class='symbol symbol-circle symbol-35px overflow-hidden me-3'>";
+                                tableResult += "<div class='symbol-label'>";
+                                    tableResult += "<img ";
+                                    tableResult += "src='" + avatarpic + "' ";
+                                    tableResult += "class='w-100' ";
+                                    tableResult += "alt='" + (result[i].pic || "") + "' ";
+                                    tableResult += "onerror=\"this.onerror=null;this.src='" + avatarDefaultpic + "';\">";
+                                tableResult += "</div>";
+                            tableResult += "</div>";
+                            tableResult += "<div class='d-flex flex-column'>";
+                                tableResult += "<span class='text-gray-800 fw-bold'>";
+                                tableResult += (result[i].pic || "-");
+                                tableResult += "</span>";
+                                tableResult += "<span class='text-muted'>";
+                                tableResult += (result[i].emailpic || "-");
+                                tableResult += "</span>";
+                            tableResult += "</div>";
+                        tableResult += "</div>";
+                    tableResult += "</td>";
 
-                    tableresult += "<td>"+(result[i].active == 1 ? '<span class=\"badge badge-light-success\">Active</span>' : '<span class=\"badge badge-light-danger\">Deactive</span>')+"</td>";
+                    tableResult += "<td>"+(result[i].active == 1 ? '<span class=\"badge badge-light-success\">Active</span>' : '<span class=\"badge badge-light-danger\">Deactive</span>')+"</td>";
                     
-                    tableresult += "<td>";
-                        tableresult += "<div class='d-flex align-items-center'>";
-                            tableresult += "<div class='symbol symbol-circle symbol-35px overflow-hidden me-3'>";
-                                tableresult += "<div class='symbol-label'>";
-                                    tableresult += "<img ";
-                                    tableresult += "src='" + avatar + "' ";
-                                    tableresult += "class='w-100' ";
-                                    tableresult += "alt='" + (result[i].dibuatoleh || "") + "' ";
-                                    tableresult += "onerror=\"this.onerror=null;this.src='" + avatarDefault + "';\">";
-                                tableresult += "</div>";
-                            tableresult += "</div>";
-                            tableresult += "<div class='d-flex flex-column'>";
-                                tableresult += "<span class='text-gray-800 fw-bold'>";
-                                tableresult += (result[i].dibuatoleh || "-");
-                                tableresult += "</span>";
-                                tableresult += "<span class='text-muted'>";
-                                tableresult += (result[i].dibuattgl || "-");
-                                tableresult += "</span>";
-                            tableresult += "</div>";
-                        tableresult += "</div>";
-                    tableresult += "</td>";
+                    tableResult += "<td>";
+                        tableResult += "<div class='d-flex align-items-center'>";
+                            tableResult += "<div class='symbol symbol-circle symbol-35px overflow-hidden me-3'>";
+                                tableResult += "<div class='symbol-label'>";
+                                    tableResult += "<img ";
+                                    tableResult += "src='" + avatar + "' ";
+                                    tableResult += "class='w-100' ";
+                                    tableResult += "alt='" + (result[i].dibuatoleh || "") + "' ";
+                                    tableResult += "onerror=\"this.onerror=null;this.src='" + avatarDefault + "';\">";
+                                tableResult += "</div>";
+                            tableResult += "</div>";
+                            tableResult += "<div class='d-flex flex-column'>";
+                                tableResult += "<span class='text-gray-800 fw-bold'>";
+                                tableResult += (result[i].dibuatoleh || "-");
+                                tableResult += "</span>";
+                                tableResult += "<span class='text-muted'>";
+                                tableResult += (result[i].dibuattgl || "-");
+                                tableResult += "</span>";
+                            tableResult += "</div>";
+                        tableResult += "</div>";
+                    tableResult += "</td>";
 
 
-                    tableresult += "<td class='text-end'>";
-                        tableresult += "<div class='btn-group'>";
-                            tableresult += "<button type='button' class='btn btn-light-primary dropdown-toggle btn-sm' data-bs-toggle='dropdown'>Actions</button>";
-                            tableresult += "<div class='dropdown-menu'>";
-                                tableresult += btnaction;
-                            tableresult += "</div>";
-                        tableresult += "</div>";
-                    tableresult += "</td>";
+                    tableResult += "<td class='text-end'>";
+                        tableResult += "<div class='btn-group'>";
+                            tableResult += "<button type='button' class='btn btn-light-primary dropdown-toggle btn-sm' data-bs-toggle='dropdown'>Actions</button>";
+                            tableResult += "<div class='dropdown-menu'>";
+                                tableResult += btnaction;
+                            tableResult += "</div>";
+                        tableResult += "</div>";
+                    tableResult += "</td>";
                     
-                tableresult += "</tr>";
+                tableResult += "</tr>";
             }
 
-            $("#resultdatadepartment").html(tableresult);
-
-            const table = $("#datadepartment_table").DataTable({
-                responsive: false,
-                pageLength: 10,
-                autoWidth : false,
-                destroy   : true,
-                ordering  : false,
-                searching : true,
-                info      : true,
-                language: {
-                    emptyTable: "No data available"
-                }
-            });
-
-            initTableSearch("#datadepartment_table", "#searchtable");
+            $("#resultdatamasterdepartment").html(tableResult);
+            initDataTable("#datamasterdepartment_table","#searchtable",10);
         },
-
-        complete: function () {
-            Swal.close();
-        },
-
         error: function () {
             Swal.fire({
-                icon: "error",
-                title: "Request Failed",
-                text: "We were unable to process your request due to a server error. Please try again later. If the problem persists, contact your system administrator.",
+                icon             : "error",
+                title            : "Request Failed",
+                text             : "An error occurred while processing your request.",
                 confirmButtonText: "OK"
             });
+        },
+        complete: function () {
+            Swal.close();
         }
     });
-
 }
 
-$(document).on("submit", "#formadddepartment", function (e) {
+$(document).on("submit", "#formeditmasterdepartment", function (e) {
 	e.preventDefault();
 	var data = new  FormData(this);
 	$.ajax({
-        url        : url+'index.php/organization/department/adddepartment',
+        url        : url+'organization/department/editmasterdepartment',
+        data       : data,
+        method     : "POST",
+        dataType   : "JSON",
+        cache      : false,
+        processData: false,
+        contentType: false,
+        beforeSend : function () {
+            Swal.fire({
+                title: 'Processing',
+                html : 'Please wait while the system displays the requested data.',
+                allowOutsideClick: false,
+                allowEscapeKey   : false,
+                showConfirmButton: false,
+                didOpen: () => Swal.showLoading()
+            });
+        },
+		success: function (response) {
+            if (response.responCode !== "00") {
+                Swal.fire({
+                    title            : "<h1 class='font-weight-bold'>For Your Information</h1>",
+                    html             : "<b>"+data.responDesc+"</b>",
+                    icon             : data.responHead,
+                    confirmButtonText: 'Please Try Again',
+                    customClass      : {confirmButton: 'btn btn-danger'},
+                    timerProgressBar : true,
+                    timer            : 5000,
+                    showClass        : {popup: "animate__animated animate__fadeInUp animate__faster"},
+                    hideClass        : {popup: "animate__animated animate__fadeOutDown animate__faster"}
+                });
+                return;
+            }
+
+            $('#modal_edit_masterdepartment').modal('hide');
+            Swal.close();
+		},
+        error: function () {
+            Swal.fire({
+                icon             : "error",
+                title            : "Request Failed",
+                text             : "An error occurred while processing your request.",
+                confirmButtonText: "OK"
+            });
+        },
+        complete: function () {
+            Swal.close();
+            location.reload();
+        }
+	});
+    return false;
+});
+
+$(document).on("submit", "#formaddmasterdepartment", function (e) {
+	e.preventDefault();
+	var data = new  FormData(this);
+	$.ajax({
+        url        : url+'organization/department/addmasterdepartment',
         data       : data,
         method     : "POST",
         dataType   : "JSON",
@@ -271,17 +274,17 @@ $(document).on("submit", "#formadddepartment", function (e) {
             $('#modal_add_department').modal('hide');
             Swal.close();
 		},
-        complete: function () {
-            Swal.close();
-            datadepartment();
-		},
         error: function () {
             Swal.fire({
                 icon             : "error",
                 title            : "Request Failed",
-                text             : "We were unable to process your request due to a server error. Please try again later. If the problem persists, contact your system administrator.",
+                text             : "An error occurred while processing your request.",
                 confirmButtonText: "OK"
             });
+        },
+        complete: function () {
+            Swal.close();
+            location.reload();
         }
 	});
     return false;

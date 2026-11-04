@@ -86,6 +86,7 @@ function datamasterusers() {
                 tableResult += "</td>";
 
                 tableResult += "<td>" + (result[i].orgname || "-") + "</td>";
+                tableResult += "<td>" + (result[i].department || "-") + "</td>";
 
                 tableResult += "<td>";
                 if (result[i].suspend == "N") {

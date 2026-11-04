@@ -103,7 +103,7 @@ class MasterindikatorModel extends Model{
         return $recordset->getResult();
     }
 
-    public function updatemasterindikator($indikatorid, $data){
+    function updatemasterindikator($indikatorid, $data){
         return $this->db->table('dt01_qi_indikator_ms')->where('indikator_id', $indikatorid)->update($data);
     }
 

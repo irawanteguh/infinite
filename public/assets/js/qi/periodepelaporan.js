@@ -157,8 +157,8 @@ $(document).on("submit", "#formaddperiode", function (e) {
             if (response.responCode !== "00") {
                 Swal.fire({
                     title            : "<h1 class='font-weight-bold'>For Your Information</h1>",
-                    html             : "<b>"+data.responDesc+"</b>",
-                    icon             : data.responHead,
+                    html             : "<b>"+response.responDesc+"</b>",
+                    icon             : response.responHead,
                     confirmButtonText: 'Please Try Again',
                     customClass      : {confirmButton: 'btn btn-danger'},
                     timerProgressBar : true,

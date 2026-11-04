@@ -36,7 +36,7 @@ function datamasterusers() {
             for (var i in result) {
                 const avatar                 = `${url}assets/media/avatars/${result[i].user_id}.jpg`;
                 const avatarDefault          = `${url}assets/media/avatars/blank.png`;
-                const avatarcreatedby        = `${url}assets/media/avatars/${result[i].created_by}.jpg`;
+                const avatarcreatedby        = `${url}assets/media/avatars/${result[i].last_update_by}.jpg`;
                 const avatarDefaultcreatedby = `${url}assets/media/avatars/blank.png`;
 
                 getvariabel =   "data-userid='"+result[i].user_id+"'"+
@@ -47,13 +47,9 @@ function datamasterusers() {
 
                 let btnaction = "";
 
-                btnaction += "<a class='dropdown-item btn btn-sm text-primary' data-bs-toggle='modal' data-bs-target='#modal_edit_user_root' "+getvariabel+" onclick='getdata($(this));'><i class='bi bi-pencil text-primary me-4'></i>Edit</a>";
+                btnaction += "<a class='dropdown-item btn btn-sm text-primary' data-bs-toggle='modal' data-bs-target='#modal_edit_user' "+getvariabel+" onclick='getdatausers($(this));'><i class='bi bi-pencil text-primary me-4'></i>Edit</a>";
                 
-                if(result[i].suspend==="N"){
-                    btnaction += "<a class='dropdown-item btn btn-sm text-danger' "+getvariabel+" data-active='Y' onclick='activationuser($(this));'><i class='bi bi-person-slash text-danger me-4'></i>Suspend</a>";
-                }else{
-                    btnaction += "<a class='dropdown-item btn btn-sm text-success' "+getvariabel+" data-active='N' onclick='activationuser($(this));'><i class='bi bi-bookmark-check text-success me-4'></i>Reactive</a>";
-                }
+                if(result[i].suspend==="N"){btnaction += "<a class='dropdown-item btn btn-sm text-danger' "+getvariabel+" data-active='Y' onclick='activationuser($(this));'><i class='bi bi-person-slash text-danger me-4'></i>Suspend</a>";}else{btnaction += "<a class='dropdown-item btn btn-sm text-success' "+getvariabel+" data-active='N' onclick='activationuser($(this));'><i class='bi bi-bookmark-check text-success me-4'></i>Reactive</a>";}
 
                 if(result[i].active==="1"){
                     btnaction += "<a class='dropdown-item btn btn-sm text-danger' "+getvariabel+" data-active='0' onclick='deleteuser($(this));'><i class='bi bi-trash-fill text-danger me-4'></i>Delete</a>";

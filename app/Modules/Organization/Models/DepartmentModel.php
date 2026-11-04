@@ -15,7 +15,6 @@ class DepartmentModel extends Model{
                     where a.active='1'
                     and   a.group_id='".$groupid."'
                     and   a.org_id='".$orgid."'
-                    and   a.department_id is null
                     order by name asc
                 ";
 

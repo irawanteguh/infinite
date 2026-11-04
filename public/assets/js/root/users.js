@@ -87,3 +87,133 @@ function deleteuser(el) {
         });
     });
 };
+
+function getdatausers(btn){
+    var userid        = btn.attr("data-userid");
+    var nikrs         = btn.attr("data-nikrs");
+    var username      = btn.attr("data-username");
+    var name          = btn.attr("data-name");
+    var email         = btn.attr("data-email");
+    var avatar        = url+"assets/media/avatars/"+userid+".jpg";
+    var avatarDefault = url+"assets/media/avatars/blank.png";
+
+	$(":hidden[name='modal_edit_user_userid']").val(userid);
+    $("#modal_edit_user_username").val(username);
+    $("#modal_edit_user_nikrs").val(nikrs === "null" || nikrs === null ? "" : nikrs);
+    $("#modal_edit_user_name").val(name);
+    $("#modal_edit_user_email").val(email === "null" || email === null ? "" : email);
+    $("<img>").attr("src",avatar).on("load",function(){$("#avatar-preview-edit").css("background-image","url('"+avatar+"')");}).on("error",function(){$("#avatar-preview-edit").css("background-image","url('"+avatarDefault+"')");});
+
+    $(":hidden[name='modal_edit_user_userid_root']").val(userid);
+    $("#modal_edit_user_username_root").val(username);
+    $("#modal_edit_user_nikrs_root").val(nikrs === "null" || nikrs === null ? "" : nikrs);
+    $("#modal_edit_user_name_root").val(name);
+    $("#modal_edit_user_email_root").val(email === "null" || email === null ? "" : email);
+    $("<img>").attr("src",avatar).on("load",function(){$("#avatar-preview-edit-root").css("background-image","url('"+avatar+"')");}).on("error",function(){$("#avatar-preview-edit").css("background-image","url('"+avatarDefault+"')");});
+};
+
+$(document).on("submit", "#formadduser", function (e) {
+	e.preventDefault();
+	var data = new  FormData(this);
+	$.ajax({
+        url        : url+'hr/users/adduser',
+        data       : data,
+        method     : "POST",
+        dataType   : "JSON",
+        cache      : false,
+        processData: false,
+        contentType: false,
+        beforeSend : function () {
+            Swal.fire({
+                title: 'Processing',
+                html : 'Please wait while the system displays the requested data.',
+                allowOutsideClick: false,
+                allowEscapeKey   : false,
+                showConfirmButton: false,
+                didOpen: () => Swal.showLoading()
+            });
+        },
+		success: function (response) {
+            if (response.responCode !== "00") {
+                Swal.fire({
+                    title            : "<h1 class='font-weight-bold'>For Your Information</h1>",
+                    html             : "<b>"+response.responDesc+"</b>",
+                    icon             : response.responHead,
+                    confirmButtonText: 'Please Try Again',
+                    customClass      : {confirmButton: 'btn btn-danger'},
+                    timerProgressBar : true,
+                    timer            : 5000,
+                    showClass        : {popup: "animate__animated animate__fadeInUp animate__faster"},
+                    hideClass        : {popup: "animate__animated animate__fadeOutDown animate__faster"}
+                });
+                return;
+            }
+
+            $('#modal_add_user').modal('hide');
+            Swal.close();
+            location.reload();
+		},
+        error: function () {
+            Swal.fire({
+                icon             : "error",
+                title            : "Request Failed",
+                text             : "An error occurred while processing your request.",
+                confirmButtonText: "OK"
+            });
+        }
+	});
+    return false;
+});
+
+$(document).on("submit", "#formedituser", function (e) {
+	e.preventDefault();
+	var data = new  FormData(this);
+	$.ajax({
+        url        : url+'index.php/hr/users/edituser',
+        data       : data,
+        method     : "POST",
+        dataType   : "JSON",
+        cache      : false,
+        processData: false,
+        contentType: false,
+        beforeSend : function () {
+            Swal.fire({
+                title: 'Processing',
+                html : 'Please wait while the system displays the requested data.',
+                allowOutsideClick: false,
+                allowEscapeKey   : false,
+                showConfirmButton: false,
+                didOpen: () => Swal.showLoading()
+            });
+        },
+		success: function (response) {
+            if (response.responCode !== "00") {
+                Swal.fire({
+                    title            : "<h1 class='font-weight-bold'>For Your Information</h1>",
+                    html             : "<b>"+response.responDesc+"</b>",
+                    icon             : response.responHead,
+                    confirmButtonText: 'Please Try Again',
+                    customClass      : {confirmButton: 'btn btn-danger'},
+                    timerProgressBar : true,
+                    timer            : 5000,
+                    showClass        : {popup: "animate__animated animate__fadeInUp animate__faster"},
+                    hideClass        : {popup: "animate__animated animate__fadeOutDown animate__faster"}
+                });
+                return;
+            }
+
+            $('#modal_edit_user').modal('hide');
+            Swal.close();
+            location.reload();
+		},
+        error: function () {
+            Swal.fire({
+                icon             : "error",
+                title            : "Request Failed",
+                text             : "An error occurred while processing your request.",
+                confirmButtonText: "OK"
+            });
+        }
+	});
+    return false;
+});

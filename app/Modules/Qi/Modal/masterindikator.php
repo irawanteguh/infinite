@@ -30,22 +30,22 @@
                             <textarea class="form-control form-control-solid" id="modal_add_masterindikator_dasarpemikiran" name="modal_add_masterindikator_dasarpemikiran" rows="3" placeholder="Masukkan dasar pemikiran indikator"></textarea>
                         </div>
 
-                        <div class="col-md-6 mb-5">
+                        <div class="col-md-12 mb-5">
                             <label class="form-label fw-bold">Tujuan</label>
                             <textarea class="form-control form-control-solid" id="modal_add_masterindikator_tujuan" name="modal_add_masterindikator_tujuan" rows="3" placeholder="Masukkan tujuan indikator"></textarea>
                         </div>
 
-                        <div class="col-md-6 mb-5">
+                        <div class="col-md-12 mb-5">
                             <label class="form-label fw-bold">Definisi Operasional</label>
                             <textarea class="form-control form-control-solid" id="modal_add_masterindikator_definisi" name="modal_add_masterindikator_definisi" rows="3" placeholder="Masukkan definisi operasional"></textarea>
                         </div>
 
-                        <div class="col-md-6 mb-5">
+                        <div class="col-md-12 mb-5">
                             <label class="form-label fw-bold">Numerator</label>
                             <input type="text" class="form-control form-control-solid" id="modal_add_masterindikator_numerator" name="modal_add_masterindikator_numerator" placeholder="Masukkan numerator">
                         </div>
 
-                        <div class="col-md-6 mb-5">
+                        <div class="col-md-12 mb-5">
                             <label class="form-label fw-bold">Denominator</label>
                             <input type="text" class="form-control form-control-solid" id="modal_add_masterindikator_denominator" name="modal_add_masterindikator_denominator" placeholder="Masukkan denominator">
                         </div>
@@ -226,22 +226,22 @@
                             <textarea class="form-control form-control-solid" id="modal_edit_masterindikator_dasarpemikiran" name="modal_edit_masterindikator_dasarpemikiran" rows="3" placeholder="Masukkan dasar pemikiran indikator"></textarea>
                         </div>
 
-                        <div class="col-md-6 mb-5">
+                        <div class="col-md-12 mb-5">
                             <label class="form-label fw-bold">Tujuan</label>
                             <textarea class="form-control form-control-solid" id="modal_edit_masterindikator_tujuan" name="modal_edit_masterindikator_tujuan" rows="3" placeholder="Masukkan tujuan indikator"></textarea>
                         </div>
 
-                        <div class="col-md-6 mb-5">
+                        <div class="col-md-12 mb-5">
                             <label class="form-label fw-bold">Definisi Operasional</label>
                             <textarea class="form-control form-control-solid" id="modal_edit_masterindikator_definisi" name="modal_edit_masterindikator_definisi" rows="3" placeholder="Masukkan definisi operasional"></textarea>
                         </div>
 
-                        <div class="col-md-6 mb-5">
+                        <div class="col-md-12 mb-5">
                             <label class="form-label fw-bold">Numerator</label>
                             <input type="text" class="form-control form-control-solid" id="modal_edit_masterindikator_numerator" name="modal_edit_masterindikator_numerator" placeholder="Masukkan numerator">
                         </div>
 
-                        <div class="col-md-6 mb-5">
+                        <div class="col-md-12 mb-5">
                             <label class="form-label fw-bold">Denominator</label>
                             <input type="text" class="form-control form-control-solid" id="modal_edit_masterindikator_denominator" name="modal_edit_masterindikator_denominator" placeholder="Masukkan denominator">
                         </div>

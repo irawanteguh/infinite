@@ -111,22 +111,17 @@
 
                     <div class="row">
 
-                        <div class="col-md-6 mb-5">
+                        <div class="col-md-12 mb-5">
                             <label class="form-label fw-bold">Populasi</label>
-                            <input type="text" class="form-control form-control-solid" id="modal_add_masterindikator_populasi" name="modal_add_masterindikator_populasi" placeholder="Masukkan populasi">
+                            <textarea class="form-control form-control-solid" id="modal_add_masterindikator_populasi" name="modal_add_masterindikator_populasi" rows="3" placeholder="Masukkan populasi"></textarea>
                         </div>
 
-                        <div class="col-md-6 mb-5">
-                            <label class="form-label fw-bold">Metode Pengumpulan</label>
-                            <input type="text" class="form-control form-control-solid" id="modal_add_masterindikator_metodepengumpulan" name="modal_add_masterindikator_metodepengumpulan" placeholder="Masukkan metode pengumpulan">
-                        </div>
-
-                        <div class="col-md-6 mb-5">
+                        <div class="col-md-12 mb-5">
                             <label class="form-label fw-bold">Kriteria Inklusi</label>
                             <textarea class="form-control form-control-solid" id="modal_add_masterindikator_kriteriainklusi" name="modal_add_masterindikator_kriteriainklusi" rows="3" placeholder="Masukkan kriteria inklusi"></textarea>
                         </div>
 
-                        <div class="col-md-6 mb-5">
+                        <div class="col-md-12 mb-5">
                             <label class="form-label fw-bold">Kriteria Eksklusi</label>
                             <textarea class="form-control form-control-solid" id="modal_add_masterindikator_kriteriaeksklusi" name="modal_add_masterindikator_kriteriaeksklusi" rows="3" placeholder="Masukkan kriteria eksklusi"></textarea>
                         </div>
@@ -157,7 +152,7 @@
                         </div>
 
                         <div class="col-md-4 mb-5">
-                            <label class="required form-label fw-bold">Sumber Data</label>
+                            <label class="required form-label fw-bold">Sumber Data / Metode</label>
                             <select class="form-select form-select-solid" data-control="select2" data-dropdown-parent="#modal_add_masterindikator" id="modal_add_masterindikator_sumberid" name="modal_add_masterindikator_sumberid" data-placeholder="Pilih sumber data" required>
                                 <?php echo $mastersumber;?>
                             </select>
@@ -181,6 +176,13 @@
                             <label class="form-label fw-bold">Benchmark</label>
                             <select class="form-select form-select-solid" data-control="select2" data-dropdown-parent="#modal_add_masterindikator" id="modal_add_masterindikator_benchmarkid" name="modal_add_masterindikator_benchmarkid" data-placeholder="Pilih benchmark">
                                 <?php echo $masterbenchmark;?>
+                            </select>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label class="form-label fw-bold">Jenis Indikator</label>
+                            <select class="form-select form-select-solid" data-control="select2" data-dropdown-parent="#modal_add_masterindikator" id="modal_add_masterindikator_jenis" name="modal_add_masterindikator_jenis" data-placeholder="Pilih Jenis Indikator">
+                                <?php echo $masterjenisindikator;?>
                             </select>
                         </div>
                     </div>
@@ -307,22 +309,17 @@
 
                     <div class="row">
 
-                        <div class="col-md-6 mb-5">
+                        <div class="col-md-12 mb-5">
                             <label class="form-label fw-bold">Populasi</label>
-                            <input type="text" class="form-control form-control-solid" id="modal_edit_masterindikator_populasi" name="modal_edit_masterindikator_populasi" placeholder="Masukkan populasi">
+                            <textarea class="form-control form-control-solid" id="modal_edit_masterindikator_populasi" name="modal_edit_masterindikator_populasi" rows="3" placeholder="Masukkan populasi"></textarea>
                         </div>
 
-                        <div class="col-md-6 mb-5">
-                            <label class="form-label fw-bold">Metode Pengumpulan</label>
-                            <input type="text" class="form-control form-control-solid" id="modal_edit_masterindikator_metodepengumpulan" name="modal_edit_masterindikator_metodepengumpulan" placeholder="Masukkan metode pengumpulan">
-                        </div>
-
-                        <div class="col-md-6 mb-5">
+                        <div class="col-md-12 mb-5">
                             <label class="form-label fw-bold">Kriteria Inklusi</label>
                             <textarea class="form-control form-control-solid" id="modal_edit_masterindikator_kriteriainklusi" name="modal_edit_masterindikator_kriteriainklusi" rows="3" placeholder="Masukkan kriteria inklusi"></textarea>
                         </div>
 
-                        <div class="col-md-6 mb-5">
+                        <div class="col-md-12 mb-5">
                             <label class="form-label fw-bold">Kriteria Eksklusi</label>
                             <textarea class="form-control form-control-solid" id="modal_edit_masterindikator_kriteriaeksklusi" name="modal_edit_masterindikator_kriteriaeksklusi" rows="3" placeholder="Masukkan kriteria eksklusi"></textarea>
                         </div>
@@ -353,7 +350,7 @@
                         </div>
 
                         <div class="col-md-4 mb-5">
-                            <label class="required form-label fw-bold">Sumber Data</label>
+                            <label class="required form-label fw-bold">Sumber Data / Metode</label>
                             <select class="form-select form-select-solid" data-control="select2" data-dropdown-parent="#modal_edit_masterindikator" id="modal_edit_masterindikator_sumberid" name="modal_edit_masterindikator_sumberid" data-placeholder="Pilih sumber data" required>
                                 <?php echo $mastersumber;?>
                             </select>
@@ -381,11 +378,9 @@
                         </div>
 
                         <div class="col-md-12">
-                            <label class="form-label fw-bold">Status</label>
-                            <select class="form-select form-select-solid" id="modal_edit_masterindikator_active" name="modal_edit_masterindikator_active">
-                                <option value="">Pilih status</option>
-                                <option value="1">Aktif</option>
-                                <option value="0">Tidak Aktif</option>
+                            <label class="form-label fw-bold">Jenis Indikator</label>
+                            <select class="form-select form-select-solid" data-control="select2" data-dropdown-parent="#modal_edit_masterindikator" id="modal_edit_masterindikator_jenis" name="modal_edit_masterindikator_jenis" data-placeholder="Pilih Jenis Indikator">
+                                <?php echo $masterjenisindikator;?>
                             </select>
                         </div>
 

@@ -21,9 +21,9 @@
                         <th class="text-start ps-4 rounded-start">#</th>
                         <th>Code</th>
                         <th>Indikator</th>
-                        <th>Dasar Pemikiran / Tujuan</th>
+                        <!-- <th>Dasar Pemikiran / Tujuan</th> -->
                         <th>Numerator / Denumerator</th>
-                        <th>Inklusi / Eksklusi</th>
+                        <!-- <th>Inklusi / Eksklusi</th> -->
                         <th>Satuan</th>
                         <th>Status</th>
                         <th>Update By</th>

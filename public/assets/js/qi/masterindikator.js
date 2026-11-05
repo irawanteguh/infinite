@@ -11,7 +11,6 @@ function getdata(btn){
     $("#modal_edit_masterindikator_denominator").val(btn.data("denominator"));
     $("#modal_edit_masterindikator_formula").val(btn.data("formula"));
     $("#modal_edit_masterindikator_populasi").val(btn.data("populasi"));
-    $("#modal_edit_masterindikator_metodepengumpulan").val(btn.data("metode"));
     $("#modal_edit_masterindikator_kriteriainklusi").val(btn.data("inklusi"));
     $("#modal_edit_masterindikator_kriteriaeksklusi").val(btn.data("eksklusi"));
     $("#modal_edit_masterindikator_instrumen").val(btn.data("instrument"));
@@ -22,7 +21,7 @@ function getdata(btn){
     $("#modal_edit_masterindikator_donabedianid").val(btn.data("donabedian_id")).trigger("change");
     $("#modal_edit_masterindikator_targetcapaian").val(btn.data("target_capaian")).trigger("change");
     $("#modal_edit_masterindikator_benchmarkid").val(btn.data("benchmark_id")).trigger("change");
-    $("#modal_edit_masterindikator_active").val(btn.data("active")).trigger("change");
+    $("#modal_edit_masterindikator_jenis").val(btn.data("jenis_indikatorid")).trigger("change");
 
     $("#modal_edit_masterindikator_dimensikeselamatan").prop("checked", btn.data("dimensi_keselamatan") === "Y");
     $("#modal_edit_masterindikator_dimensiwaktu").prop("checked", btn.data("dimensi_waktu") === "Y");
@@ -120,13 +119,13 @@ function datamasterindikator() {
                     getvariabel += " data-indikatorid='" + result[i].indikator_id + "'";
                     getvariabel += " data-indikator=\"" + result[i].indikator + "\"";
                     getvariabel += " data-dasar_pemikiran=\"" + result[i].dasar_pemikiran + "\"";
+                    getvariabel += " data-jenis_indikatorid=\"" + result[i].jenis_indikator_id + "\"";
                     getvariabel += " data-tujuan=\"" + result[i].tujuan + "\"";
                     getvariabel += " data-definisi=\"" + result[i].definisi + "\"";
                     getvariabel += " data-numerator=\"" + result[i].numerator + "\"";
                     getvariabel += " data-denumerator=\"" + result[i].denumerator + "\"";
                     getvariabel += " data-formula=\"" + result[i].formula + "\"";
                     getvariabel += " data-populasi=\"" + result[i].populasi + "\"";
-                    getvariabel += " data-metode=\"" + result[i].metode + "\"";
                     getvariabel += " data-inklusi=\"" + result[i].inklusi + "\"";
                     getvariabel += " data-eksklusi=\"" + result[i].eksklusi + "\"";
                     getvariabel += " data-instrument=\"" + result[i].instrument + "\"";
@@ -143,6 +142,7 @@ function datamasterindikator() {
                     getvariabel += " data-dimensi_efesien=\"" + result[i].dimensi_mutu_efesien + "\"";
                     getvariabel += " data-dimensi_pasien=\"" + result[i].dimensi_mutu_pasien + "\"";
                     getvariabel += " data-dimensi_integrasi=\"" + result[i].dimensi_mutu_integrasi + "\"";
+                    
 
 
                 let btnaction = "";
@@ -157,7 +157,7 @@ function datamasterindikator() {
 
                     tableResult += "<td>";
                         tableResult += "<div>"+(result[i].indikator || "-")+"</div>";
-                        tableResult += "<div class='fst-italic'>"+(result[i].definisi || "-")+"</div>";
+                        // tableResult += "<div class='fst-italic'>"+(result[i].definisi || "-")+"</div>";
                         tableResult += "<div>";
                         tableResult += badgeDimensiMutu(result[i].dimensi_mutu_keselamatan, "Keselamatan Pasien", "info");
                         tableResult += badgeDimensiMutu(result[i].dimensi_mutu_waktu, "Tepat Waktu", "info");
@@ -166,56 +166,26 @@ function datamasterindikator() {
                         tableResult += badgeDimensiMutu(result[i].dimensi_mutu_pasien, "Berorientasi Pada Pasien", "info");
                         tableResult += badgeDimensiMutu(result[i].dimensi_mutu_integrasi, "Integrasi", "info");
                         tableResult += "</div>";
+                        tableResult += result[i].jenis ? "<div><span class='badge badge-light-primary mt-4'>" + result[i].jenis + "</span></div>" : "";
                     tableResult += "</td>";
+
+                    // tableResult += "<td>";
+                    // tableResult += "<div><span class='fw-bold text-primary'>Dasar Pemikiran</span><br>" + (result[i].dasar_pemikiran || "-") + "</div>";
+                    // tableResult += "<hr class='my-2'>";
+                    // tableResult += "<div><span class='fw-bold text-success'>Tujuan</span><br>" + (result[i].tujuan || "-") + "</div>";
+                    // tableResult += "</td>";
 
                     tableResult += "<td>";
-
-                        tableResult += "<div>";
-                            tableResult += "<span class='fw-bold text-primary'>Dasar Pemikiran</span><br>";
-                            tableResult += (result[i].dasar_pemikiran || "-");
-                        tableResult += "</div>";
-
-                        tableResult += "<hr class='my-2'>";
-
-                        tableResult += "<div>";
-                            tableResult += "<span class='fw-bold text-success'>Tujuan</span><br>";
-                            tableResult += (result[i].tujuan || "-");
-                        tableResult += "</div>";
-
+                    tableResult += "<div><span class='fw-bold text-primary'>Numerator</span><br>" + (result[i].numerator || "-") + "</div>";
+                    tableResult += "<hr class='my-2'>";
+                    tableResult += "<div><span class='fw-bold text-success'>Denominator</span><br>" + (result[i].denumerator || "-") + "</div>";
                     tableResult += "</td>";
 
-                    // Numerator Denominator
-                    tableResult += "<td>";
-
-                        tableResult += "<div>";
-                            tableResult += "<span class='fw-bold text-primary'>Numerator</span><br>";
-                            tableResult += (result[i].numerator || "-");
-                        tableResult += "</div>";
-
-                        tableResult += "<hr class='my-2'>";
-
-                        tableResult += "<div>";
-                            tableResult += "<span class='fw-bold text-success'>Denominator</span><br>";
-                            tableResult += (result[i].denumerator || "-");
-                        tableResult += "</div>";
-
-                    tableResult += "</td>";
-
-                    tableResult += "<td>";
-
-                        tableResult += "<div>";
-                            tableResult += "<span class='fw-bold text-primary'>Inklusi</span><br>";
-                            tableResult += (result[i].inklusi || "-");
-                        tableResult += "</div>";
-
-                        tableResult += "<hr class='my-2'>";
-
-                        tableResult += "<div>";
-                            tableResult += "<span class='fw-bold text-success'>Eksklusi</span><br>";
-                            tableResult += (result[i].eksklusi || "-");
-                        tableResult += "</div>";
-
-                    tableResult += "</td>";
+                    // tableResult += "<td>";
+                    // tableResult += "<div><span class='fw-bold text-primary'>Inklusi</span><br>" + (result[i].inklusi || "-") + "</div>";
+                    // tableResult += "<hr class='my-2'>";
+                    // tableResult += "<div><span class='fw-bold text-success'>Eksklusi</span><br>" + (result[i].eksklusi || "-") + "</div>";
+                    // tableResult += "</td>";
 
                     tableResult += "<td>"+(result[i].satuan || "")+"</td>";
 

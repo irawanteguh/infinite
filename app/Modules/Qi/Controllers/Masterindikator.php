@@ -27,6 +27,7 @@ class Masterindikator extends BaseController{
         $resultdatamasterdonabedian = $this->md->datamasterdonabedian();
         $resultdatamastertarget     = $this->md->datamastertarget();
         $resultdatamasterbenchmark  = $this->md->datamasterbenchmark();
+        $resultdatamasterjenisindikator = $this->md->datamasterjenisindikator();
 
         $data['mastersatuan'] = '';
         foreach ($resultdatamastersatuan as $row) {
@@ -56,6 +57,10 @@ class Masterindikator extends BaseController{
         $data['masterbenchmark'] = '';
         foreach ($resultdatamasterbenchmark as $row) {
             $data['masterbenchmark'] .= '<option value="' . $row->benchmark_id . '">' . $row->benchmark . '</option>';
+        }
+        $data['masterjenisindikator'] = '';
+        foreach ($resultdatamasterjenisindikator as $row) {
+            $data['masterjenisindikator'] .= '<option value="' . $row->jenis_indikator_id . '">' . $row->jenis . '</option>';
         }
 
         return $data;
@@ -130,7 +135,6 @@ class Masterindikator extends BaseController{
 
             'INKLUSI'                   => request()->getPost("modal_add_masterindikator_kriteriainklusi"),
             'EKSKLUSI'                  => request()->getPost("modal_add_masterindikator_kriteriaeksklusi"),
-            'METODE'                    => request()->getPost("modal_add_masterindikator_metodepengumpulan"),
             'INSTRUMENT'                => request()->getPost("modal_add_masterindikator_instrumen"),
             'POPULASI'                  => request()->getPost("modal_add_masterindikator_populasi"),
 
@@ -138,6 +142,8 @@ class Masterindikator extends BaseController{
             'DONABEDIAN_ID'             => request()->getPost("modal_add_masterindikator_donabedianid"),
             'TARGET_CAPAIAN'            => request()->getPost("modal_add_masterindikator_targetcapaian"),
             'BENCHMARK_ID'              => request()->getPost("modal_add_masterindikator_benchmarkid"),
+
+            'JENIS_INDIKATOR_ID'        => request()->getPost("modal_add_masterindikator_jenis"),
 
             'CREATED_BY'                => session()->get('userid'),
             'LAST_UPDATE_BY'            => session()->get('userid'),
@@ -183,7 +189,6 @@ class Masterindikator extends BaseController{
 
             'INKLUSI'                   => request()->getPost("modal_edit_masterindikator_kriteriainklusi"),
             'EKSKLUSI'                  => request()->getPost("modal_edit_masterindikator_kriteriaeksklusi"),
-            'METODE'                    => request()->getPost("modal_edit_masterindikator_metodepengumpulan"),
             'INSTRUMENT'                => request()->getPost("modal_edit_masterindikator_instrumen"),
             'POPULASI'                  => request()->getPost("modal_edit_masterindikator_populasi"),
 
@@ -192,7 +197,7 @@ class Masterindikator extends BaseController{
             'TARGET_CAPAIAN'            => request()->getPost("modal_edit_masterindikator_targetcapaian"),
             'BENCHMARK_ID'              => request()->getPost("modal_edit_masterindikator_benchmarkid"),
 
-            'ACTIVE'                    => request()->getPost("modal_edit_masterindikator_active"),
+            'JENIS_INDIKATOR_ID'        => request()->getPost("modal_edit_masterindikator_jenis"),
 
             'LAST_UPDATE_BY'            => session()->get('userid'),
             'LAST_UPDATE_DATE'          => date('Y-m-d H:i:s')

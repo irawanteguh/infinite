@@ -116,6 +116,7 @@ function datamasterindikator() {
                         tableResult += badgeDimensiMutu(result[i].dimensi_mutu_pasien, "Berorientasi Pada Pasien", "info");
                         tableResult += badgeDimensiMutu(result[i].dimensi_mutu_integrasi, "Integrasi", "info");
                         tableResult += "</div>";
+                        tableResult += result[i].jenis ? "<div><span class='badge badge-light-primary mt-4'>" + result[i].jenis + "</span></div>" : "";
                     tableResult += "</td>";
 
                     // tableResult += "<td>";

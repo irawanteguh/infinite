@@ -10,13 +10,16 @@ class MasterindikatorModel extends Model{
     function datamasterindikator($groupid,$orgid){
         $query =
                 "
-                    select a.indikator_id, indikator_code, indikator, definisi, dasar_pemikiran, formula, populasi, metode, instrument, tujuan, last_update_by, numerator, denumerator, inklusi, eksklusi, active, date_format(a.created_date, '%d.%m.%Y %H:%i:%s')dibuattgl,
+                    select a.indikator_id, indikator_code, indikator, a.jenis_indikator_id, definisi, dasar_pemikiran, formula, populasi, instrument, tujuan, last_update_by, numerator, denumerator, inklusi, eksklusi, a.active, date_format(a.created_date, '%d.%m.%Y %H:%i:%s')dibuattgl,
                         dimensi_mutu_keselamatan, dimensi_mutu_waktu, dimensi_mutu_efektif, dimensi_mutu_efesien, dimensi_mutu_pasien, dimensi_mutu_integrasi,
                         satuan_id, frekuensi_id, sumber_id, donabedian_id, target_capaian, benchmark_id,
+                        b.jenis,
                         (select name from dt01_gen_user_data where user_id=a.last_update_by)dibuatoleh,
                         (select concat(satuan,' /',keterangan) from dt01_qi_satuan_ms where satuan_id=a.satuan_id)satuan
 
                     from dt01_qi_indikator_ms a
+                    left join dt01_qi_jenis_indikator_ms b
+                    on b.jenis_indikator_id=a.jenis_indikator_id
                     where a.group_id='".$groupid."'
                     and   a.org_id='".$orgid."'
                     order by last_update_date desc
@@ -33,6 +36,19 @@ class MasterindikatorModel extends Model{
                     from dt01_qi_satuan_ms a
                     where a.active='1'
                     order by sort asc
+                ";
+
+        $recordset = $this->db->query($query);
+        return $recordset->getResult();
+    }
+
+    function datamasterjenisindikator(){
+        $query =
+                "
+                    select a.jenis_indikator_id, jenis
+                    from dt01_qi_jenis_indikator_ms a
+                    where a.active='1'
+                    order by jenis asc
                 ";
 
         $recordset = $this->db->query($query);

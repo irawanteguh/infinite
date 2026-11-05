@@ -24,6 +24,7 @@
                         <th>Dasar Pemikiran / Tujuan</th>
                         <th>Numerator / Denumerator</th>
                         <th>Inklusi / Eksklusi</th>
+                        <th>Satuan</th>
                         <th>Status</th>
                         <th>Update By</th>
                         <th class="text-end pe-4 rounded-end">Actions</th>

@@ -19,4 +19,21 @@ class Indikatorunit extends BaseController{
         ]);
     }
 
+    public function dataindikatorunit(){
+        $result = $this->md->dataindikatorunit(session()->get('groupid'), session()->get('orgid'), session()->get('userid'));
+
+        if (!empty($result)) {
+            $json["responseCode"]   = "00";
+            $json["responseHead"]   = "success";
+            $json["responseDesc"]   = "Data found";
+            $json["responseResult"] = $result;
+        } else {
+            $json["responseCode"]   = "01";
+            $json["responseHead"]   = "info";
+            $json["responseDesc"]   = "No data found";
+        }
+
+        return response()->setJSON($json);
+    }
+
 }

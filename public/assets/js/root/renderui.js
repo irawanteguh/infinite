@@ -39,3 +39,8 @@ function renderteam(picindikator, maxShow = 5) {
 
     return html;
 }
+
+function badgeDimensiMutu(status, text, color) {
+    if (status !== "Y") return "";
+    return "<span class='badge badge-light-" + color + " me-1 mb-1'>" + text + "</span>";
+}

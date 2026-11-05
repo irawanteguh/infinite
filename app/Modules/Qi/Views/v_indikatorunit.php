@@ -15,21 +15,21 @@
 
     <div class="card-body pt-0">
         <div class="table-responsive">
-            <table class="table align-middle table-row-dashed gy-2" id="datamasterindikator_table">
+            <table class="table align-middle table-row-dashed gy-2" id="dataindikatorunit_table">
                 <thead>
                     <tr class="fw-bolder text-muted bg-light">
                         <th class="text-start ps-4 rounded-start">#</th>
                         <th>Indicator</th>
-                        <th>Category</th>
                         <th>Period</th>
                         <th>Department</th>
                         <th>Target</th>
                         <th>Achievement</th>
+                        <th>Status</th>
                         <th>Indicator PIC</th>
                         <th class="text-end pe-4 rounded-end">Actions</th>
                     </tr>
                 </thead>
-                <tbody class="fw-bold text-gray-600" id="resultdatamasterindikator"></tbody>
+                <tbody class="fw-bold text-gray-600" id="resultdataindikatorunit"></tbody>
             </table>
         </div>
     </div>

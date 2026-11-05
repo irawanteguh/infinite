@@ -278,6 +278,7 @@ $(document).on("submit", "#formaddmasterdepartment", function (e) {
 
             $('#modal_add_department').modal('hide');
             Swal.close();
+            location.reload();
 		},
         error: function () {
             Swal.fire({
@@ -286,10 +287,6 @@ $(document).on("submit", "#formaddmasterdepartment", function (e) {
                 text             : "An error occurred while processing your request.",
                 confirmButtonText: "OK"
             });
-        },
-        complete: function () {
-            Swal.close();
-            location.reload();
         }
 	});
     return false;

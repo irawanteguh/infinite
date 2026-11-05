@@ -98,4 +98,8 @@ class PeriodepelaporanModel extends Model{
         return $this->db->table('dt01_qi_periode_mutu')->insert($data);
     }
 
+    function updatemasterperiode($periodeid, $data){
+        return $this->db->table('dt01_qi_periode_mutu')->where('periode_id', $periodeid)->update($data);
+    }
+
 }

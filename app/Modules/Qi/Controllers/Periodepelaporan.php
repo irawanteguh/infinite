@@ -73,4 +73,28 @@ class Periodepelaporan extends BaseController{
         return response()->setJSON($json);
     }
 
+    public function editperiode(){
+
+        $id = request()->getPost("modal_edit_periodepelaporan_id");
+
+        $dataupdate = [
+            'TAHUN'          => request()->getPost("modal_edit_periodepelaporan_periode"),
+            'STATUS_ID'      => request()->getPost("modal_edit_periodepelaporan_status"),
+            'USER_ID'      => request()->getPost("modal_edit_periodepelaporan_user"),
+            'LAST_UPDATE_BY' => session()->get('userid')
+        ];
+
+        if($this->md->updatemasterperiode($id, $dataupdate)){
+            $json['responCode'] = "00";
+            $json['responHead'] = "success";
+            $json['responDesc'] = "Data Updated Successfully";
+        }else{
+            $json['responCode'] = "01";
+            $json['responHead'] = "info";
+            $json['responDesc'] = "Data failed to update";
+        }
+
+        return response()->setJSON($json);
+    }
+
 }

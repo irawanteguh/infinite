@@ -1,38 +1,5 @@
 datamasterindikator();
 
-function getdata(btn){
-
-    $("#modal_edit_masterindikator_indikatorid").val(btn.data("indikatorid"));
-    $("#modal_edit_masterindikator_indikator").val(btn.data("indikator"));
-    $("#modal_edit_masterindikator_dasarpemikiran").val(btn.data("dasar_pemikiran"));
-    $("#modal_edit_masterindikator_tujuan").val(btn.data("tujuan"));
-    $("#modal_edit_masterindikator_definisi").val(btn.data("definisi"));
-    $("#modal_edit_masterindikator_numerator").val(btn.data("numerator"));
-    $("#modal_edit_masterindikator_denominator").val(btn.data("denominator"));
-    $("#modal_edit_masterindikator_formula").val(btn.data("formula"));
-    $("#modal_edit_masterindikator_populasi").val(btn.data("populasi"));
-    $("#modal_edit_masterindikator_metodepengumpulan").val(btn.data("metode"));
-    $("#modal_edit_masterindikator_kriteriainklusi").val(btn.data("inklusi"));
-    $("#modal_edit_masterindikator_kriteriaeksklusi").val(btn.data("eksklusi"));
-    $("#modal_edit_masterindikator_instrumen").val(btn.data("instrument"));
-
-    $("#modal_edit_masterindikator_satuanid").val(btn.data("satuan_id")).trigger("change");
-    $("#modal_edit_masterindikator_frekuensiid").val(btn.data("frekuensi_id")).trigger("change");
-    $("#modal_edit_masterindikator_sumberid").val(btn.data("sumber_id")).trigger("change");
-    $("#modal_edit_masterindikator_donabedianid").val(btn.data("donabedian_id")).trigger("change");
-    $("#modal_edit_masterindikator_targetcapaian").val(btn.data("target_capaian")).trigger("change");
-    $("#modal_edit_masterindikator_benchmarkid").val(btn.data("benchmark_id")).trigger("change");
-    $("#modal_edit_masterindikator_active").val(btn.data("active")).trigger("change");
-
-    $("#modal_edit_masterindikator_dimensikeselamatan").prop("checked", btn.data("dimensi_keselamatan") === "Y");
-    $("#modal_edit_masterindikator_dimensiwaktu").prop("checked", btn.data("dimensi_waktu") === "Y");
-    $("#modal_edit_masterindikator_dimensiefektif").prop("checked", btn.data("dimensi_efektif") === "Y");
-    $("#modal_edit_masterindikator_dimensiefisien").prop("checked", btn.data("dimensi_efisien") === "Y");
-    $("#modal_edit_masterindikator_dimensipasien").prop("checked", btn.data("dimensi_pasien") === "Y");
-    $("#modal_edit_masterindikator_dimensiintegrasi").prop("checked", btn.data("dimensi_integrasi") === "Y");
-
-}
-
 function updateActivation (el) {
     const id        = el.data("indikatorid");
     const active    = el.data("active");
@@ -327,6 +294,7 @@ $(document).on("submit", "#formeditmasterindikator", function (e) {
 
             $('#modal_edit_masterindikator').modal('hide');
             Swal.close();
+            location.reload();
 		},
         error: function () {
             Swal.fire({
@@ -335,10 +303,6 @@ $(document).on("submit", "#formeditmasterindikator", function (e) {
                 text             : "An error occurred while processing your request.",
                 confirmButtonText: "OK"
             });
-        },
-        complete: function () {
-            Swal.close();
-            location.reload();
         }
 	});
     return false;
@@ -383,6 +347,7 @@ $(document).on("submit", "#formaddmasterindikator", function (e) {
 
             $('#modal_add_masterindikator').modal('hide');
             Swal.close();
+            location.reload();
 		},
         error: function () {
             Swal.fire({
@@ -391,10 +356,6 @@ $(document).on("submit", "#formaddmasterindikator", function (e) {
                 text             : "An error occurred while processing your request.",
                 confirmButtonText: "OK"
             });
-        },
-        complete: function () {
-            Swal.close();
-            location.reload();
         }
 	});
     return false;

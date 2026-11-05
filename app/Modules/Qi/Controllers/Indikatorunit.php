@@ -36,4 +36,24 @@ class Indikatorunit extends BaseController{
         return response()->setJSON($json);
     }
 
+    public function deleteindikator(){
+        $transaksiid = request()->getPost('transaksiid');
+
+        $dataupdate['active']           = "0";
+        $dataupdate['last_update_by']   = session()->get('userid');
+        $dataupdate['last_update_date'] = date('Y-m-d H:i:s');
+
+        if($this->md->updateindikator($transaksiid,$dataupdate)){
+            $json["responseCode"] = "00";
+            $json["responseHead"] = "success";
+            $json["responseDesc"] = "Indicator has been deleted successfully.";
+        }else{
+            $json["responseCode"] = "01";
+            $json["responseHead"] = "info";
+            $json["responseDesc"] = "Failed to deleted Indicator.";
+        }
+
+        return response()->setJSON($json);
+    }
+
 }

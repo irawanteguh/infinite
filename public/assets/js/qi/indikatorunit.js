@@ -1,5 +1,51 @@
 dataindikatorunit();
 
+function deleteIndikator(el) {
+    const transaksiid = el.data("transaksiid");
+
+    Swal.fire({
+        title             : "Delete Indicator?",
+        html              : `Indikator ini akan dihapus dan tidak dapat digunakan kembali.<br><small class="text-muted">Dialog ini akan tertutup otomatis dalam <b>10 detik</b>.</small>`,
+        icon              : "warning",
+        showCancelButton  : true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor : "#6c757d",
+        confirmButtonText : '<i class="bi bi-trash3 text-white"></i> Yes, Delete',
+        cancelButtonText  : "Cancel",
+        reverseButtons    : true,
+        timer             : 10000,
+        timerProgressBar  : true
+    }).then(function(result) {
+        if (result.isConfirmed) {
+            $.ajax({
+                url     : url + "qi/indikatorunit/deleteindikator",
+                type    : "POST",
+                data    : {transaksiid: transaksiid},
+                dataType: "JSON",
+                success : function(response) {
+                    if (response.responseCode === "00") {
+                        Swal.fire({
+                            title            : "Success",
+                            text             : response.responseDesc,
+                            icon             : "success",
+                            timer            : 1500,
+                            showConfirmButton: false,
+                            didClose         : function() {
+                                location.reload();
+                            }
+                        });
+                    } else {
+                        Swal.fire("Error", response.responseDesc, "error");
+                    }
+                },
+                error: function(xhr) {
+                    Swal.fire("Error", "Failed to delete indicator.", "error");
+                }
+            });
+        }
+    });
+}
+
 function dataindikatorunit() {
     $.ajax({
         url       : url+"qi/indikatorunit/dataindikatorunit",
@@ -37,6 +83,9 @@ function dataindikatorunit() {
                 const avatar        = `${url}assets/media/avatars/${result[i].pic}.jpg`;
                 const avatarDefault = `${url}assets/media/avatars/blank.png`;
 
+                var getvariabel = "";
+                    getvariabel += " data-transaksiid='" + result[i].transaksi_id + "'";
+
                 const nilai = [
                     result[i].nilai01, result[i].nilai02, result[i].nilai03, result[i].nilai04,
                     result[i].nilai05, result[i].nilai06, result[i].nilai07, result[i].nilai08,
@@ -48,6 +97,13 @@ function dataindikatorunit() {
                 const badgeAvg = avg >= Number(result[i].target) ? "badge-light-success" : "badge-light-danger";
 
                 let btnaction      = "";
+
+                if(result[i].status_id==="1"){
+                    if(result[i].statusidindikatorunit==="0"){
+                        btnaction += "<a href='javascript:void(0);' class='dropdown-item btn btn-sm text-danger' "+getvariabel+" onclick='deleteIndikator($(this));'><i class='bi bi-trash3 text-danger me-4'></i>Delete</a>";
+                    }
+                }
+                
 
                 tableResult += "<tr>";
                 tableResult += "<td class='ps-4'>"+(parseInt(i) + 1)+"</td>";

@@ -191,4 +191,8 @@ class IndikatorunitModel extends Model{
         return $recordset->getResult();
     }
 
+    public function updateindikator($transaksiid, $data){
+        return $this->db->table('dt01_qi_indikator_hd')->where('transaksi_id', $transaksiid)->update($data);
+    }
+
 }

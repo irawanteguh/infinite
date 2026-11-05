@@ -82,8 +82,8 @@
                             </label>
                             <select data-control="select2" data-dropdown-parent="#modal_edit_periodepelaporan" data-placeholder="Please Select Status" class="form-select form-select-solid" name="modal_edit_periodepelaporan_status" id="modal_edit_periodepelaporan_status" required>
                                 <option value="1">Draft - Pengguna menyusun indikator</option>
-                                <option value="3">Publikasi - Pengguna dapat melakukan pengisian nilai indikator</option>
                                 <option value="2">Verifikasi - Komite melakukan verifikasi indikator</option>
+                                <option value="3">Publikasi - Pengguna dapat melakukan pengisian nilai indikator</option>
                                 <option value="4">Final - Periode laporan telah berakhir dan data dikunci</option>
                             </select>
                         </div>

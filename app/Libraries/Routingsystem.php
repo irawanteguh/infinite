@@ -210,61 +210,29 @@ class Routingsystem
         return $html;
     }
 
-    /**
-     * Build organization menu
-     */
-    protected function buildOrganization(): string
-    {
+
+    protected function buildOrganization(): string{
         $html = '';
 
-        $allowedPackage = [
-            'organization',
-            'hr',
-        ];
+        $allowedPackage = ['organization','hr',];
 
         foreach ($this->resultmenu as $menu) {
 
-            if (!in_array(
-                (string) ($menu['package'] ?? ''),
-                $allowedPackage,
-                true
-            )) {
+            if(!in_array((string) ($menu['package'] ?? ''),$allowedPackage,true)){
                 continue;
             }
 
-            if (trim(
-                (string) ($menu['def_controller'] ?? '')
-            ) === '') {
+            if(trim((string) ($menu['def_controller'] ?? '')) === ''){
                 continue;
             }
 
-            if (
-                (string) ($menu['parent'] ?? '') === 'H'
-            ) {
+            if((string) ($menu['parent'] ?? '') === 'H'){
                 continue;
             }
 
-            $active = $this->menuActive($menu)
-                ? 'active'
-                : '';
+            $active = $this->menuActive($menu) ? 'active' : '';
 
-            $html .= '
-                <li class="nav-item">
-                    <a class="nav-link text-active-primary me-6 '
-                . $active
-                . '"
-                        href="'
-                . $this->escape(
-                    $this->menuUrl($menu)
-                )
-                . '">
-                        '
-                . $this->escape(
-                    $menu['modules_name'] ?? ''
-                )
-                . '
-                    </a>
-                </li>';
+            $html .= '<li class="nav-item"><a class="nav-link text-active-primary me-6 '.$active.'" href="'.$this->escape($this->menuUrl($menu)).'" >'.$this->escape($menu['modules_name'] ?? '').'</a></li>';
         }
 
         return $html;

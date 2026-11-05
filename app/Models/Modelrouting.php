@@ -4,32 +4,20 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Modelrouting extends Model
-{
+class Modelrouting extends Model{
+
     protected $DBGroup = 'default';
 
-    /**
-     * Get active application menu
-     */
-    public function menu(): array
-    {
+
+    public function menu(): array{
         $query = "
-            SELECT
-                a.modules_id,
-                a.modules_name,
-                a.modules_header_id,
-                a.package,
-                a.def_controller,
-                a.parent,
-                a.icon
-            FROM dt01_gen_modules_ms a
-            WHERE a.active = '1'
-            ORDER BY a.urut ASC
+            select a.modules_id, a.modules_name, a.modules_header_id, a.package, a.def_controller, a.parent, a.icon
+            from dt01_gen_modules_ms a
+            where a.active = '1'
+            order by modules_header_id asc, a.urut asc
         ";
 
-        return $this->db
-            ->query($query)
-            ->getResultArray();
+        return $this->db->query($query)->getResultArray();
     }
 
     /**

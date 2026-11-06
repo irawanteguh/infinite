@@ -3,6 +3,23 @@ let   indikatorUnitMap  = {};
 
 load();
 
+$("#modal_add_pengajuanindikatorunit_numerator, #modal_add_pengajuanindikatorunit_denumerator").on("input", function () {
+    this.value = this.value.replace(/[^0-9]/g, "");
+});
+
+$("#modal_add_pengajuanindikatorunit_numerator, #modal_add_pengajuanindikatorunit_denumerator").on("paste", function (e) {
+    const paste = (e.originalEvent || e).clipboardData.getData("text");
+    if (!/^\d+$/.test(paste)) {
+        e.preventDefault();
+
+        Swal.fire({
+            icon: "warning",
+            title: "Invalid Input",
+            text: "Numerator dan Denumerator hanya boleh berisi angka."
+        });
+    }
+});
+
 function getdata(btn) {
     $("#modal_edit_pengajuanindikatorunit_uuid").val(btn.data("uuid"));
     $("#modal_edit_pengajuanindikatorunit_periodeid").val(btn.data("periode_id")).trigger("change");
@@ -11,6 +28,13 @@ function getdata(btn) {
     $("#modal_edit_pengajuanindikatorunit_target").val(btn.data("target"));
     $("#modal_edit_pengajuanindikatorunit_indikatorid").val(btn.data("indikator_id")).trigger("change");
 }
+
+function getdatapenilaian(btn){
+    $("#modal_input_nilai_indikator_referensiid").val(btn.data("transaksiid"));
+    $("#modal_input_nilai_indikator_indikatorid").val(btn.data("indikatoriid"));
+    $("#modal_input_nilai_indikator_bulan").val(btn.data("bulan"));
+
+};
 
 function load(){
     dataindikatorunit();
@@ -120,10 +144,12 @@ function loadIndikatorUnitSubmit(){
 
         const pencapaian = nilai[i] == null ? 0 : parseFloat(nilai[i]);
 
-        getvariabel =   "data-transaksiid='"+data.transaksi_id+"'"+
-                        "data-bulan='" + String(i + 1).padStart(2, '0') + "'";
+         var getvariabel = "";
+            getvariabel += " data-transaksiid='" + data.transaksi_id + "'";
+            getvariabel += " data-bulan='" + String(i + 1).padStart(2, '0') + "'";
+            getvariabel += " data-indikatoriid='" + data.indikator_id + "'";
 
-        btnaction += "<a class='dropdown-item btn btn-sm text-primary' data-bs-toggle='modal' data-bs-target='#modal_input_nilai_indikator' "+getvariabel+" onclick='getdata($(this));'><i class='bi bi-pencil text-primary me-4'></i>Submit</a>";
+        btnaction += "<a class='dropdown-item btn btn-sm text-primary' data-bs-toggle='modal' data-bs-target='#modal_input_nilai_indikator' "+getvariabel+" onclick='getdatapenilaian($(this));'><i class='bi bi-pencil text-primary me-4'></i>Submit</a>";
 
         tableresult += "<tr>";
             tableresult += "<td class='ps-4'>"+(parseInt(i) + 1)+"</td>";
@@ -297,6 +323,7 @@ function dataindikatorunit() {
 
                     <span class="badge badge-light-${progressColor} ms-3">${totalIndikator} Indicator</span>
                 `);
+                
 
                 let btnaction      = "";
 
@@ -520,6 +547,113 @@ $(document).on("submit", "#formeditindikatorunit", function (e) {
                 title            : "Request Failed",
                 text             : "An error occurred while processing your request.",
                 confirmButtonText: "OK"
+            });
+        }
+    });
+
+    return false;
+});
+
+$(document).on("submit", "#forminputnilaiindikator", function (e) {
+    e.preventDefault();
+
+    const numerator   = $("#modal_add_pengajuanindikatorunit_numerator").val().trim();
+    const denumerator = $("#modal_add_pengajuanindikatorunit_denumerator").val().trim();
+
+    if (numerator === "" || denumerator === "") {
+        Swal.fire({
+            icon: "warning",
+            title: "Validation",
+            text: "Numerator dan Denumerator wajib diisi."
+        });
+        return false;
+    }
+
+    if (!$.isNumeric(numerator) || !$.isNumeric(denumerator)) {
+        Swal.fire({
+            icon: "warning",
+            title: "Validation",
+            text: "Numerator dan Denumerator harus berupa angka."
+        });
+        return false;
+    }
+
+    if (Number(numerator) < 0 || Number(denumerator) < 0) {
+        Swal.fire({
+            icon: "warning",
+            title: "Validation",
+            text: "Numerator dan Denumerator tidak boleh bernilai negatif."
+        });
+        return false;
+    }
+
+    // if (Number(denumerator) === 0) {
+    //     Swal.fire({
+    //         icon: "warning",
+    //         title: "Validation",
+    //         text: "Denumerator tidak boleh bernilai 0."
+    //     });
+    //     return false;
+    // }
+
+    if (Number(numerator) > Number(denumerator)) {
+        Swal.fire({
+            icon: "warning",
+            title: "Validation",
+            text: "Numerator tidak boleh lebih besar dari Denumerator."
+        });
+        return false;
+    }
+
+    const data = new FormData(this);
+
+    $.ajax({
+        url        : url+"qi/indikatorunit/inputnilaiindikator",
+        data       : data,
+        method     : "POST",
+        dataType   : "JSON",
+        cache      : false,
+        processData: false,
+        contentType: false,
+        beforeSend : function () {
+            Swal.fire({
+                title: 'Processing',
+                html : 'Please wait while the system displays the requested data.',
+                allowOutsideClick: false,
+                allowEscapeKey   : false,
+                showConfirmButton: false,
+                didOpen: () => Swal.showLoading()
+            });
+        },
+        success: function (response) {
+
+             if (response.responCode !== "00") {
+                Swal.fire({
+                    title            : "<h1 class='font-weight-bold'>For Your Information</h1>",
+                    html             : "<b>" + response.responDesc + "</b>",
+                    icon             : response.responHead,
+                    confirmButtonText: 'Please Try Again',
+                    customClass      : { confirmButton: 'btn btn-danger' },
+                    timerProgressBar : true,
+                    timer            : 5000,
+                    showClass        : { popup: "animate__animated animate__fadeInUp animate__faster" },
+                    hideClass        : { popup: "animate__animated animate__fadeOutDown animate__faster" }
+                });
+                return;
+            }
+
+            $("#modal_input_nilai_indikator").modal("hide");
+            Swal.close();
+            location.reload();
+        },
+        complete: function () {
+            load();
+        },
+        error: function () {
+            Swal.fire({
+                icon: "error",
+                title: "System Error",
+                text: "Failed to process request."
             });
         }
     });

@@ -177,4 +177,40 @@ class Indikatorunit extends BaseController{
         return response()->setJSON($json);
     }
 
+    public function inputnilaiindikator(){
+        $indikator   = request()->getPost("modal_input_nilai_indikator_indikatorid");
+        $referenceid = request()->getPost("modal_input_nilai_indikator_referensiid");
+        $bulan       = request()->getPost("modal_input_nilai_indikator_bulan");
+        $numerator   = request()->getPost("modal_add_pengajuanindikatorunit_numerator");
+        $denumerator = request()->getPost("modal_add_pengajuanindikatorunit_denumerator");
+        $alasan      = request()->getPost("modal_add_pengajuanindikatorunit_alasan");
+        $rtl         = request()->getPost("modal_add_pengajuanindikatorunit_rtl");
+
+        $datainsert = [
+            'group_id'     => session()->get('groupid') ?? null,
+            'org_id'       => session()->get('orgid') ?? null,
+            'referensi_id' => $referenceid ?? null,
+            'indikator_id' => $indikator ?? null,
+            'bulan'        => $bulan ?? null,
+            'numerator'    => $numerator ?? 0,
+            'denumerator'  => $denumerator ?? 0,
+            'reason'       => $alasan ?? null,
+            'rtl'          => $rtl ?? null,
+            'created_by'   => session()->get('userid') ?? null
+        ];
+
+        if($this->md->insertnilaiindikator($datainsert)){
+            $json['responCode']="00";
+            $json['responHead']="success";
+            $json['responDesc']="Data Updated Successfully";
+        }else{
+            $json['responCode']="01";
+            $json['responHead']="info";
+            $json['responDesc']="Data failed to update";
+        }
+        
+
+        echo json_encode($json);
+    }
+
 }

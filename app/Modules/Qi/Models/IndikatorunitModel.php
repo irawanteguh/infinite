@@ -205,18 +205,18 @@ class IndikatorunitModel extends Model{
                         /* ===========================
                         PENCAPAIAN (%)
                         =========================== */
-                        ROUND(MAX(CASE WHEN it.bulan='01' THEN (it.numerator/NULLIF(it.denumerator,0))*100 END),2) AS nilai01,
-                        ROUND(MAX(CASE WHEN it.bulan='02' THEN (it.numerator/NULLIF(it.denumerator,0))*100 END),2) AS nilai02,
-                        ROUND(MAX(CASE WHEN it.bulan='03' THEN (it.numerator/NULLIF(it.denumerator,0))*100 END),2) AS nilai03,
-                        ROUND(MAX(CASE WHEN it.bulan='04' THEN (it.numerator/NULLIF(it.denumerator,0))*100 END),2) AS nilai04,
-                        ROUND(MAX(CASE WHEN it.bulan='05' THEN (it.numerator/NULLIF(it.denumerator,0))*100 END),2) AS nilai05,
-                        ROUND(MAX(CASE WHEN it.bulan='06' THEN (it.numerator/NULLIF(it.denumerator,0))*100 END),2) AS nilai06,
-                        ROUND(MAX(CASE WHEN it.bulan='07' THEN (it.numerator/NULLIF(it.denumerator,0))*100 END),2) AS nilai07,
-                        ROUND(MAX(CASE WHEN it.bulan='08' THEN (it.numerator/NULLIF(it.denumerator,0))*100 END),2) AS nilai08,
-                        ROUND(MAX(CASE WHEN it.bulan='09' THEN (it.numerator/NULLIF(it.denumerator,0))*100 END),2) AS nilai09,
-                        ROUND(MAX(CASE WHEN it.bulan='10' THEN (it.numerator/NULLIF(it.denumerator,0))*100 END),2) AS nilai10,
-                        ROUND(MAX(CASE WHEN it.bulan='11' THEN (it.numerator/NULLIF(it.denumerator,0))*100 END),2) AS nilai11,
-                        ROUND(MAX(CASE WHEN it.bulan='12' THEN (it.numerator/NULLIF(it.denumerator,0))*100 END),2) AS nilai12
+                        round(max(case when it.bulan = '01' then case when coalesce(it.numerator, 0) = 0 and coalesce(it.denumerator, 0) = 0 then 100 when coalesce(it.denumerator, 0) = 0 then 0 else (it.numerator / it.denumerator) * 100 end end), 2) as nilai01,
+                        round(max(case when it.bulan = '02' then case when coalesce(it.numerator, 0) = 0 and coalesce(it.denumerator, 0) = 0 then 100 when coalesce(it.denumerator, 0) = 0 then 0 else (it.numerator / it.denumerator) * 100 end end), 2) as nilai02,
+                        round(max(case when it.bulan = '03' then case when coalesce(it.numerator, 0) = 0 and coalesce(it.denumerator, 0) = 0 then 100 when coalesce(it.denumerator, 0) = 0 then 0 else (it.numerator / it.denumerator) * 100 end end), 2) as nilai03,
+                        round(max(case when it.bulan = '04' then case when coalesce(it.numerator, 0) = 0 and coalesce(it.denumerator, 0) = 0 then 100 when coalesce(it.denumerator, 0) = 0 then 0 else (it.numerator / it.denumerator) * 100 end end), 2) as nilai04,
+                        round(max(case when it.bulan = '05' then case when coalesce(it.numerator, 0) = 0 and coalesce(it.denumerator, 0) = 0 then 100 when coalesce(it.denumerator, 0) = 0 then 0 else (it.numerator / it.denumerator) * 100 end end), 2) as nilai05,
+                        round(max(case when it.bulan = '06' then case when coalesce(it.numerator, 0) = 0 and coalesce(it.denumerator, 0) = 0 then 100 when coalesce(it.denumerator, 0) = 0 then 0 else (it.numerator / it.denumerator) * 100 end end), 2) as nilai06,
+                        round(max(case when it.bulan = '07' then case when coalesce(it.numerator, 0) = 0 and coalesce(it.denumerator, 0) = 0 then 100 when coalesce(it.denumerator, 0) = 0 then 0 else (it.numerator / it.denumerator) * 100 end end), 2) as nilai07,
+                        round(max(case when it.bulan = '08' then case when coalesce(it.numerator, 0) = 0 and coalesce(it.denumerator, 0) = 0 then 100 when coalesce(it.denumerator, 0) = 0 then 0 else (it.numerator / it.denumerator) * 100 end end), 2) as nilai08,
+                        round(max(case when it.bulan = '09' then case when coalesce(it.numerator, 0) = 0 and coalesce(it.denumerator, 0) = 0 then 100 when coalesce(it.denumerator, 0) = 0 then 0 else (it.numerator / it.denumerator) * 100 end end), 2) as nilai09,
+                        round(max(case when it.bulan = '10' then case when coalesce(it.numerator, 0) = 0 and coalesce(it.denumerator, 0) = 0 then 100 when coalesce(it.denumerator, 0) = 0 then 0 else (it.numerator / it.denumerator) * 100 end end), 2) as nilai10,
+                        round(max(case when it.bulan = '11' then case when coalesce(it.numerator, 0) = 0 and coalesce(it.denumerator, 0) = 0 then 100 when coalesce(it.denumerator, 0) = 0 then 0 else (it.numerator / it.denumerator) * 100 end end), 2) as nilai11,
+                        round(max(case when it.bulan = '12' then case when coalesce(it.numerator, 0) = 0 and coalesce(it.denumerator, 0) = 0 then 100 when coalesce(it.denumerator, 0) = 0 then 0 else (it.numerator / it.denumerator) * 100 end end), 2) as nilai12
 
                     FROM dt01_qi_indikator_hd a
 
@@ -294,6 +294,10 @@ class IndikatorunitModel extends Model{
 
     function insertindikatorunit($data){
         return $this->db->table('dt01_qi_indikator_hd')->insert($data);
+    }
+
+    function insertnilaiindikator($data){
+        return $this->db->table('dt01_qi_indikator_it')->insert($data);
     }
 
 }

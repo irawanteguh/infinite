@@ -241,51 +241,31 @@ class Routingsystem
     /**
      * Build navbar
      */
-    protected function buildNavbar(): string
-    {
+    protected function buildNavbar(): string{
         $html = '';
 
-        /*
-         * Root header
-         */
         foreach ($this->resultmenu as $menu) {
-
             if (!$this->isRootHeader($menu)) {
                 continue;
             }
-
             $html .= $this->generateNavbar($menu);
         }
 
-        /*
-         * Top level menu
-         */
         foreach ($this->resultmenu as $menu) {
-
             if (!$this->isTopLevelMenu($menu)) {
                 continue;
             }
-
             $html .= $this->generateNavbar($menu);
         }
 
         return $html;
     }
 
-    /**
-     * Generate sidebar children
-     */
-    protected function generateSidebar(
-        string $parentId,
-        array $visited = []
-    ): string {
+    protected function generateSidebar(string $parentId, array $visited = []): string {
 
         $html = '';
 
-        foreach (
-            $this->children[$parentId] ?? []
-            as $menu
-        ) {
+        foreach ($this->children[$parentId] ?? [] as $menu) {
 
             $id = $this->menuId($menu);
 
@@ -300,83 +280,17 @@ class Routingsystem
                 $this->children[$id]
             );
 
-            $isOpen = $this->isMenuActive($id);
-
+            $isOpen   = $this->isMenuActive($id);
             $isActive = $this->menuActive($menu);
 
-            $nextVisited = $visited + [
-                $id => true,
-            ];
+            $nextVisited = $visited + [$id => true];
 
             if ($hasChild) {
-
-                $html .= '
-                    <div data-kt-menu-trigger="click"
-                        class="menu-item menu-accordion '
-                    . ($isOpen ? 'show' : '')
-                    . '">
-
-                        <span class="menu-link '
-                    . ($isOpen ? 'active' : '')
-                    . '">
-
-                            '
-                    . $this->menuLeading($menu)
-                    . '
-
-                            <span class="menu-title">
-                                '
-                    . $this->escape(
-                        $menu['modules_name'] ?? ''
-                    )
-                    . '
-                            </span>
-
-                            <span class="menu-arrow"></span>
-
-                        </span>
-
-                        <div class="menu-sub menu-sub-accordion">
-                            '
-                    . $this->generateSidebar(
-                        $id,
-                        $nextVisited
-                    )
-                    . '
-                        </div>
-
-                    </div>';
-
+                $html .= '<div data-kt-menu-trigger="click" class="menu-item menu-accordion ' . ($isOpen ? 'show' : '') . '"><span class="menu-link ' . ($isOpen ? 'active' : '') . '">' . $this->menuLeading($menu) . '<span class="menu-title">' . $this->escape($menu['modules_name'] ?? '') . '</span><span class="menu-arrow"></span></span><div class="menu-sub menu-sub-accordion">' . $this->generateSidebar($id, $nextVisited) . '</div></div>';
                 continue;
             }
 
-            $html .= '
-                <div class="menu-item">
-
-                    <a class="menu-link '
-                . ($isActive ? 'active' : '')
-                . '"
-                        href="'
-                . $this->escape(
-                    $this->menuUrl($menu)
-                )
-                . '">
-
-                        '
-                . $this->menuLeading($menu)
-                . '
-
-                        <span class="menu-title">
-                            '
-                . $this->escape(
-                    $menu['modules_name'] ?? ''
-                )
-                . '
-                        </span>
-
-                    </a>
-
-                </div>';
+            $html .= '<div class="menu-item"><a class="menu-link ' . ($isActive ? 'active' : '') . '" href="' . $this->escape($this->menuUrl($menu)) . '">' . $this->menuLeading($menu) . '<span class="menu-title">' . $this->escape($menu['modules_name'] ?? '') . '</span></a></div>';
         }
 
         return $html;

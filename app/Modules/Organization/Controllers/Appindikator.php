@@ -14,13 +14,25 @@ class Appindikator extends BaseController{
     }
 
     public function index(){
+        $data = $this->loadcombobox();
         return view('template/dashboard-light-aside', [
-            'contents' => view('Modules\Organization\Views\v_appindikator')
+            'contents' => view('Modules\Organization\Views\v_appindikator', $data)
         ]);
     }
 
+    private function loadcombobox(){
+        $resultPeriode = $this->md->periode();
+
+        $data['periode'] = '';
+        foreach ($resultPeriode as $row) {
+            $data['periode'] .= '<option value="' . $row->periode . '">' . $row->periode . '</option>';
+        }
+
+        return $data;
+    }
+
     public function datamasterindikator(){
-        $result = $this->md->datamasterindikator(session()->get('groupid'), session()->get('orgid'));
+        $result = $this->md->datamasterindikator(session()->get('groupid'), session()->get('orgid'), request()->getPost('selectperiode'));
 
         if (!empty($result)) {
             $json["responseCode"]   = "00";

@@ -19,6 +19,7 @@
                 <thead>
                     <tr class="fw-bolder text-muted bg-light">
                         <th class="text-start ps-4 rounded-start">#</th>
+                        <th>Period</th>
                         <th>Department</th>
                         <th>Code</th>
                         <th>Indikator</th>

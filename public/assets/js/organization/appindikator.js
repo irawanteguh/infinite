@@ -1,5 +1,9 @@
 datamasterindikator();
 
+$('#selectperiode').on('change', function () {
+    datamasterindikator();
+});
+
 function updateApproval(el) {
     const transaksiid = el.data("transaksiid");
     const status      = String(el.data("status"));
@@ -51,8 +55,10 @@ function updateApproval(el) {
 }
 
 function datamasterindikator() {
+    let selectperiode = $("select[name='selectperiode']").val();
     $.ajax({
         url       : url+"organization/appindikator/datamasterindikator",
+        data      : {selectperiode:selectperiode},
         type      : "POST",
         dataType  : "JSON",
         beforeSend: function () {
@@ -84,9 +90,9 @@ function datamasterindikator() {
             let tableResult = "";
 
             for (var i in result) {
-                const avatarvalidation        = `${url}assets/media/avatars/${result[i].approval_by}.jpg`;
-                const avatar        = `${url}assets/media/avatars/${result[i].created_by}.jpg`;
-                const avatarDefault = `${url}assets/media/avatars/blank.png`;
+                const avatarvalidation = `${url}assets/media/avatars/${result[i].approval_by}.jpg`;
+                const avatar           = `${url}assets/media/avatars/${result[i].created_by}.jpg`;
+                const avatarDefault    = `${url}assets/media/avatars/blank.png`;
 
                 var getvariabel = "";
                     getvariabel += " data-transaksiid='" + result[i].transaksi_id + "'";
@@ -102,6 +108,7 @@ function datamasterindikator() {
                 tableResult += "<tr>";
 
                     tableResult += "<td class='ps-4'>"+(parseInt(i) + 1)+"</td>";
+                    tableResult += "<td>"+(result[i].tahun || "")+"</td>";
                     tableResult += "<td>"+(result[i].department || "")+"</td>";
                     tableResult += "<td>"+(result[i].indikator_code || "-")+"</td>";
 

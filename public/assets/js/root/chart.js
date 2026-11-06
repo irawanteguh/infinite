@@ -202,7 +202,6 @@ function renderChartStackedBar(elementId,categories,series,titleX = "",titleY = 
 
 }
 
-
 function renderBarHorizontal(elementId,seriesConfig,data,categoryField,titleX){
     const chartElement = document.getElementById(elementId);
 

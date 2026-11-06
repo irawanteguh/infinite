@@ -55,21 +55,22 @@ class Auth extends BaseController{
             }
 
             $sessiondata = [
-                'groupid'  => $datasession->group_id,
-                'orgid'    => $datasession->org_id,
-                'orgname'  => $datasession->organizationname,
-                'website'  => $datasession->website,
-                'address'  => $datasession->address,
-                'trial'    => $datasession->trial,
-                'koders'   => $datasession->kode_rs,
-                'kodeppk'  => $datasession->kode_ppk,
-                'emailorg' => $datasession->organizationemail,
-                'pimpinan' => $datasession->pimpinan,
-                'userid'   => $datasession->user_id,
-                'name'     => $datasession->name,
-                'email'    => $datasession->email,
-                'loggedin' => true,
-                'timeout'  => false
+                'groupid'      => $datasession->group_id,
+                'orgid'        => $datasession->org_id,
+                'orgname'      => $datasession->organizationname,
+                'website'      => $datasession->website,
+                'departmentid' => $datasession->department_id,
+                'address'      => $datasession->address,
+                'trial'        => $datasession->trial,
+                'koders'       => $datasession->kode_rs,
+                'kodeppk'      => $datasession->kode_ppk,
+                'emailorg'     => $datasession->organizationemail,
+                'pimpinan'     => $datasession->pimpinan,
+                'userid'       => $datasession->user_id,
+                'name'         => $datasession->name,
+                'email'        => $datasession->email,
+                'loggedin'     => true,
+                'timeout'      => false
             ];
 
             $this->session->set($sessiondata);

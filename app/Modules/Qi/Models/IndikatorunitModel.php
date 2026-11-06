@@ -7,6 +7,69 @@ use CodeIgniter\Model;
 class IndikatorunitModel extends Model{
     protected $DBGroup = 'default';
 
+    function datamasterindikator($groupid,$orgid){
+        $query =
+                "
+                    select a.indikator_id, indikator
+                    from dt01_qi_indikator_ms a
+                    where a.active='1'
+                    and   a.group_id='".$groupid."'
+                    and   a.org_id='".$orgid."'
+                    order by indikator asc
+                ";
+
+        $recordset = $this->db->query($query);
+        return $recordset->getResult();
+    }
+
+    function datamasterperiodepelaporan($groupid,$orgid){
+        $query =
+                "
+                    select a.periode_id, tahun
+                    from dt01_qi_periode_mutu a
+                    where a.active='1'
+                    and   a.status_id='1'
+                    and   a.group_id='".$groupid."'
+                    and   a.org_id='".$orgid."'
+                    order by tahun desc
+                ";
+
+        $recordset = $this->db->query($query);
+        return $recordset->getResult();
+    }
+
+    function datamasterdepartment($groupid,$orgid,$userid){
+        $query =
+                "
+                    select a.department_id, department
+                    from dt01_gen_department_ms a
+                    where a.active='1'
+                    and   a.group_id='".$groupid."'
+                    and   a.org_id='".$orgid."'
+                    and   a.user_id='".$userid."'
+                    order by department asc
+                ";
+
+        $recordset = $this->db->query($query);
+        return $recordset->getResult();
+    }
+
+    function datauser($groupid,$orgid,$departmentid){
+        $query =
+                "
+                    select a.user_id, name
+                    from dt01_gen_user_data a
+                    where a.active='1'
+                    and   a.group_id='".$groupid."'
+                    and   a.org_id='".$orgid."'
+                    and   a.department_id='".$departmentid."'
+                    order by name asc
+                ";
+
+        $recordset = $this->db->query($query);
+        return $recordset->getResult();
+    }
+
     function dataindikatorunit($groupid,$orgid,$userid){
         $query =
                 "
@@ -191,7 +254,7 @@ class IndikatorunitModel extends Model{
         return $recordset->getResult();
     }
 
-    public function updateindikator($transaksiid, $data){
+    function updateindikator($transaksiid, $data){
         return $this->db->table('dt01_qi_indikator_hd')->where('transaksi_id', $transaksiid)->update($data);
     }
 

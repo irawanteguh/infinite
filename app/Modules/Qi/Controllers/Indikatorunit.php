@@ -14,9 +14,39 @@ class Indikatorunit extends BaseController{
     }
 
     public function index(){
+        $data = $this->loadcombobox();
         return view('template/dashboard-light-aside', [
-            'contents' => view('Modules\Qi\Views\v_indikatorunit')
+            'contents' => view('Modules\Qi\Views\v_indikatorunit', $data)
         ]);
+    }
+
+    private function loadcombobox(){
+        $resultdatamasterperiodepelaporan = $this->md->datamasterperiodepelaporan(session()->get('groupid'), session()->get('orgid'));
+        $resultdatamasterdepartment       = $this->md->datamasterdepartment(session()->get('groupid'), session()->get('orgid'), session()->get('userid'));
+        $resultdatauser                   = $this->md->datauser(session()->get('groupid'), session()->get('orgid'), session()->get('departmentid'));
+        $resultdatamasterindikator        = $this->md->datamasterindikator(session()->get('groupid'), session()->get('orgid'));
+
+        $data['masterperiodepelaporan'] = '';
+        foreach ($resultdatamasterperiodepelaporan as $row) {
+            $data['masterperiodepelaporan'] .= '<option value="' . $row->periode_id . '">' . $row->tahun . '</option>';
+        }
+
+        $data['masterdatadepartment'] = '';
+        foreach ($resultdatamasterdepartment as $row) {
+            $data['masterdatadepartment'] .= '<option value="' . $row->department_id . '">' . $row->department . '</option>';
+        }
+
+        $data['masterdatauser'] = '';
+        foreach ($resultdatauser as $row) {
+            $data['masterdatauser'] .= '<option value="' . $row->user_id . '">' . $row->name . '</option>';
+        }
+
+        $data['masterindikator'] = '';
+        foreach ($resultdatamasterindikator as $row) {
+            $data['masterindikator'] .= '<option value="' . $row->indikator_id . '">' . $row->indikator . '</option>';
+        }
+
+        return $data;
     }
 
     public function dataindikatorunit(){

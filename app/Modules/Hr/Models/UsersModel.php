@@ -53,11 +53,11 @@ class UsersModel extends Model{
         return $recordset->getResult();
     }
 
-    public function insertuser($data){
+    function insertuser($data){
         return $this->db->table('dt01_gen_user_data')->insert($data);
     }
 
-    public function updateuser($userid, $data){
+    function updateuser($userid, $data){
         return $this->db->table('dt01_gen_user_data')->where('user_id', $userid)->update($data);
     }
 

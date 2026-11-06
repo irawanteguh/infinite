@@ -11,7 +11,7 @@ class Modelrouting extends Model{
 
     public function menu(): array{
         $query = "
-            select a.modules_id, a.modules_name, a.modules_header_id, a.package, a.def_controller, a.parent, a.icon
+            select a.modules_id, a.modules_name, a.modules_header_id, a.package, a.def_controller, a.parent, a.icon, a.urut
             from dt01_gen_modules_ms a
             where a.active = '1'
             order by modules_header_id asc, a.urut asc

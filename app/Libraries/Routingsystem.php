@@ -211,28 +211,28 @@ class Routingsystem
     }
 
 
-    protected function buildOrganization(): string{
+    protected function buildOrganization(): string
+    {
         $html = '';
 
-        $allowedPackage = ['organization','hr',];
+        $allowedPackage = ['organization', 'hr'];
 
-        foreach ($this->resultmenu as $menu) {
+        $menus = array_filter($this->resultmenu, function ($menu) use ($allowedPackage) {
+            return in_array((string) ($menu['package'] ?? ''), $allowedPackage, true)
+                && trim((string) ($menu['def_controller'] ?? '')) !== ''
+                && (string) ($menu['parent'] ?? '') !== 'H';
+        });
 
-            if(!in_array((string) ($menu['package'] ?? ''),$allowedPackage,true)){
-                continue;
-            }
+        // Urutkan berdasarkan urut ASC
+        usort($menus, function ($a, $b) {
+            return (int) ($a['urut'] ?? 0) <=> (int) ($b['urut'] ?? 0);
+        });
 
-            if(trim((string) ($menu['def_controller'] ?? '')) === ''){
-                continue;
-            }
-
-            if((string) ($menu['parent'] ?? '') === 'H'){
-                continue;
-            }
+        foreach ($menus as $menu) {
 
             $active = $this->menuActive($menu) ? 'active' : '';
 
-            $html .= '<li class="nav-item"><a class="nav-link text-active-primary me-6 '.$active.'" href="'.$this->escape($this->menuUrl($menu)).'" >'.$this->escape($menu['modules_name'] ?? '').'</a></li>';
+            $html .= '<li class="nav-item"><a class="nav-link text-active-primary me-6 '.$active.'" href="'.$this->escape($this->menuUrl($menu)).'">'.$this->escape($menu['modules_name'] ?? '').'</a></li>';
         }
 
         return $html;

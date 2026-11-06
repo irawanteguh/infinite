@@ -54,6 +54,38 @@ class IndikatorunitModel extends Model{
         return $recordset->getResult();
     }
 
+    function datateam($groupid,$orgid,$userid){
+            $query =
+                    "
+                        select
+                            group_concat(
+                                distinct concat(
+                                    a.pic, ':',
+                                    u.name
+                                )
+                                order by u.name asc
+                                separator ';'
+                            ) as pic_list
+                        from dt01_qi_indikator_hd a
+                        left join dt01_gen_user_data u
+                            on u.user_id = a.pic
+                        where a.active = '1'
+                            and a.group_id = '".$groupid."'
+                            and a.org_id = '".$orgid."'
+                            and a.department_id in (
+                                select department_id
+                                from dt01_gen_department_ms
+                                where active = '1'
+                                    and group_id = '".$groupid."'
+                                    and org_id = '".$orgid."'
+                                    and user_id = '".$userid."'
+                            );
+                    ";
+
+            $recordset = $this->db->query($query);
+            return $recordset->getResult();
+        }
+
     function datauser($groupid,$orgid,$departmentid){
         $query =
                 "

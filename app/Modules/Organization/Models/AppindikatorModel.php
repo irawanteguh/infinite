@@ -13,6 +13,7 @@ class AppindikatorModel extends Model{
                     select tahun periode
                     from dt01_qi_periode_mutu
                     where active='1'
+                    and   status_id='2'
                     order by periode desc
 
                 ";

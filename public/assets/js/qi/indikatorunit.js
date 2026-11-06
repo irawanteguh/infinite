@@ -1,4 +1,4 @@
-dataindikatorunit();
+load();
 
 function getdata(btn) {
     $("#modal_edit_pengajuanindikatorunit_uuid").val(btn.data("uuid"));
@@ -7,6 +7,11 @@ function getdata(btn) {
     $("#modal_edit_pengajuanindikatorunit_userid").val(btn.data("userid")).trigger("change");
     $("#modal_edit_pengajuanindikatorunit_target").val(btn.data("target"));
     $("#modal_edit_pengajuanindikatorunit_indikatorid").val(btn.data("indikator_id")).trigger("change");
+}
+
+function load(){
+    dataindikatorunit();
+    datateam();
 }
 
 function deleteIndikator(el) {
@@ -86,7 +91,9 @@ function dataindikatorunit() {
 
             const result = Array.isArray(response.responseResult) ? response.responseResult : [];
 
-            let tableResult = "";
+            let tableResult    = "";
+            let totalAvg       = 0;
+            let totalIndikator = 0;
 
             for (var i in result) {
                 const avatar        = `${url}assets/media/avatars/${result[i].pic}.jpg`;
@@ -110,12 +117,43 @@ function dataindikatorunit() {
                 const avg = Number((nilaiValid.reduce((a, b) => a + b, 0) / (nilaiValid.length || 1)).toFixed(2));
                 const badgeAvg = avg >= Number(result[i].target) ? "badge-light-success" : "badge-light-danger";
 
+                if(nilaiValid.length > 0){
+                    totalAvg += nilaiValid.reduce((a,b) => a+b,0) / nilaiValid.length;
+                }
+
+                totalIndikator++;
+
+                const overallAvg = totalIndikator ? (totalAvg / totalIndikator) : 0;
+                const progressColor = overallAvg >= 80 ? "success" : overallAvg >= 60 ? "warning" : "danger";
+
+                $("#overallpencapaian").html(`
+                    <span class="fs-7 text-gray-700 fw-bolder pe-4 ps-1">Achievement:</span>
+                    <div class="progress w-200px h-25px bg-light-${progressColor}">
+                        <div class="progress-bar bg-${progressColor} fw-bold fs-7"
+                            role="progressbar"
+                            style="width:${overallAvg.toFixed(2)}%"
+                            aria-valuenow="${overallAvg.toFixed(2)}"
+                            aria-valuemin="0"
+                            aria-valuemax="100">
+                            ${overallAvg.toFixed(2)}%
+                        </div>
+                    </div>
+
+                    <span class="badge badge-light-${progressColor} ms-3">${totalIndikator} Indicator</span>
+                `);
+
                 let btnaction      = "";
 
                 if(result[i].status_id==="1"){
                     if(result[i].statusidindikatorunit==="0"){
                         btnaction += "<a class='dropdown-item btn btn-sm text-primary' data-bs-toggle='modal' data-bs-target='#modal_edit_pengajuanindikatorunit' "+getvariabel+" onclick='getdata($(this));'><i class='bi bi-pencil text-primary me-4'></i>Edit</a>";
                         btnaction += "<a href='javascript:void(0);' class='dropdown-item btn btn-sm text-danger' "+getvariabel+" onclick='deleteIndikator($(this));'><i class='bi bi-trash3 text-danger me-4'></i>Delete</a>";
+                    }
+                }
+
+                if(result[i].status_id==="3"){
+                    if(result[i].statusidindikatorunit==="1"){
+                        btnaction += "<a class='dropdown-item btn btn-sm text-primary' "+getvariabel+" href='"+url+"index.php/qi/indikatorunit?uuid="+result[i].transaksi_id+"'><i class='bi bi-pencil-square text-primary me-4'></i>Submit</a>";
                     }
                 }
                 
@@ -184,7 +222,7 @@ function dataindikatorunit() {
             }
 
             $("#resultdataindikatorunit").html(tableResult);
-            // initDataTable("#dataindikatorunit_table","#searchtable",10);
+            initDataTable("#dataindikatorunit_table","#searchtable",10);
         },
         error: function () {
             Swal.fire({
@@ -198,6 +236,32 @@ function dataindikatorunit() {
             Swal.close();
         }
     });
+}
+
+function datateam(){
+    $.ajax({
+        url     : url+"qi/indikatorunit/datateam",
+        type    : "POST",
+        dataType: "JSON",
+        success : function(response){
+
+            let html = "";
+            if(response.responseCode === "00"){
+                const result = Array.isArray(response.responseResult) ? response.responseResult : [];
+                for (var i in result) {
+                    html += renderteam(result[i].pic_list, 5);
+                }
+            }
+
+            $("#teamindikatorunit").html(html);
+
+            $('[data-bs-toggle="tooltip"]').each(function () {
+                new bootstrap.Tooltip(this);
+            });
+
+        }
+    });
+
 }
 
 $(document).on("submit", "#formaddindikatorunit", function (e) {

@@ -14,10 +14,20 @@ class Indikatorunit extends BaseController{
     }
 
     public function index(){
+        $uuid = request()->getGet('uuid');
         $data = $this->loadcombobox();
-        return view('template/dashboard-light-aside', [
-            'contents' => view('Modules\Qi\Views\v_indikatorunit', $data)
-        ]);
+
+        if(!empty($uuid)){
+            $data['uuid'] = $uuid;
+
+            return view('template/dashboard-light-aside', [
+                'contents' => view('Modules\Qi\Views\v_indikatorunitsubmit', $data)
+            ]);
+        }else{
+            return view('template/dashboard-light-aside', [
+                'contents' => view('Modules\Qi\Views\v_indikatorunit', $data)
+            ]);
+        }
     }
 
     private function loadcombobox(){
@@ -115,6 +125,23 @@ class Indikatorunit extends BaseController{
 
     public function dataindikatorunit(){
         $result = $this->md->dataindikatorunit(session()->get('groupid'), session()->get('orgid'), session()->get('userid'));
+
+        if (!empty($result)) {
+            $json["responseCode"]   = "00";
+            $json["responseHead"]   = "success";
+            $json["responseDesc"]   = "Data found";
+            $json["responseResult"] = $result;
+        } else {
+            $json["responseCode"]   = "01";
+            $json["responseHead"]   = "info";
+            $json["responseDesc"]   = "No data found";
+        }
+
+        return response()->setJSON($json);
+    }
+
+    public function datateam(){
+        $result = $this->md->datateam(session()->get('groupid'), session()->get('orgid'), session()->get('userid'));
 
         if (!empty($result)) {
             $json["responseCode"]   = "00";

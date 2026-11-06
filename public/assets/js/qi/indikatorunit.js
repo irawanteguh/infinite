@@ -1,7 +1,16 @@
 dataindikatorunit();
 
+function getdata(btn) {
+    $("#modal_edit_pengajuanindikatorunit_uuid").val(btn.data("uuid"));
+    $("#modal_edit_pengajuanindikatorunit_periodeid").val(btn.data("periode_id")).trigger("change");
+    $("#modal_edit_pengajuanindikatorunit_departmentid").val(btn.data("department_id")).trigger("change");
+    $("#modal_edit_pengajuanindikatorunit_userid").val(btn.data("userid")).trigger("change");
+    $("#modal_edit_pengajuanindikatorunit_target").val(btn.data("target"));
+    $("#modal_edit_pengajuanindikatorunit_indikatorid").val(btn.data("indikator_id")).trigger("change");
+}
+
 function deleteIndikator(el) {
-    const transaksiid = el.data("transaksiid");
+    const transaksiid = el.data("uuid");
 
     Swal.fire({
         title             : "Delete Indicator?",
@@ -84,7 +93,12 @@ function dataindikatorunit() {
                 const avatarDefault = `${url}assets/media/avatars/blank.png`;
 
                 var getvariabel = "";
-                    getvariabel += " data-transaksiid='" + result[i].transaksi_id + "'";
+                    getvariabel += " data-uuid='" + result[i].transaksi_id + "'";
+                    getvariabel += " data-periode_id='" + result[i].periode_id + "'";
+                    getvariabel += " data-department_id='" + result[i].department_id + "'";
+                    getvariabel += " data-userid='" + result[i].pic + "'";
+                    getvariabel += " data-target='" + result[i].target + "'";
+                    getvariabel += " data-indikator_id='" + result[i].indikator_id + "'";
 
                 const nilai = [
                     result[i].nilai01, result[i].nilai02, result[i].nilai03, result[i].nilai04,
@@ -100,6 +114,7 @@ function dataindikatorunit() {
 
                 if(result[i].status_id==="1"){
                     if(result[i].statusidindikatorunit==="0"){
+                        btnaction += "<a class='dropdown-item btn btn-sm text-primary' data-bs-toggle='modal' data-bs-target='#modal_edit_pengajuanindikatorunit' "+getvariabel+" onclick='getdata($(this));'><i class='bi bi-pencil text-primary me-4'></i>Edit</a>";
                         btnaction += "<a href='javascript:void(0);' class='dropdown-item btn btn-sm text-danger' "+getvariabel+" onclick='deleteIndikator($(this));'><i class='bi bi-trash3 text-danger me-4'></i>Delete</a>";
                     }
                 }
@@ -235,5 +250,59 @@ $(document).on("submit", "#formaddindikatorunit", function (e) {
             });
         }
 	});
+    return false;
+});
+
+$(document).on("submit", "#formeditindikatorunit", function (e) {
+    e.preventDefault();
+    var data = new FormData(this);
+    $.ajax({
+        url        : url + 'qi/indikatorunit/updateindikatorunit',
+        data       : data,
+        method     : "POST",
+        dataType   : "JSON",
+        cache      : false,
+        processData: false,
+        contentType: false,
+        beforeSend : function () {
+            Swal.fire({
+                title: 'Processing',
+                html : 'Please wait while the system displays the requested data.',
+                allowOutsideClick: false,
+                allowEscapeKey   : false,
+                showConfirmButton: false,
+                didOpen: () => Swal.showLoading()
+            });
+        },
+        success: function (response) {
+            if (response.responCode !== "00") {
+                Swal.fire({
+                    title            : "<h1 class='font-weight-bold'>For Your Information</h1>",
+                    html             : "<b>" + response.responDesc + "</b>",
+                    icon             : response.responHead,
+                    confirmButtonText: 'Please Try Again',
+                    customClass      : { confirmButton: 'btn btn-danger' },
+                    timerProgressBar : true,
+                    timer            : 5000,
+                    showClass        : { popup: "animate__animated animate__fadeInUp animate__faster" },
+                    hideClass        : { popup: "animate__animated animate__fadeOutDown animate__faster" }
+                });
+                return;
+            }
+
+            $('#modal_edit_pengajuanindikatorunit').modal('hide');
+            Swal.close();
+            location.reload();
+        },
+        error: function () {
+            Swal.fire({
+                icon             : "error",
+                title            : "Request Failed",
+                text             : "An error occurred while processing your request.",
+                confirmButtonText: "OK"
+            });
+        }
+    });
+
     return false;
 });

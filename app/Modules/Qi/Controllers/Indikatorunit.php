@@ -50,37 +50,68 @@ class Indikatorunit extends BaseController{
     }
 
     public function addindikatorunit(){
-            $periode      = request()->getPost("modal_add_pengajuanindikatorunit_periodeid");
-            $userid       = request()->getPost("modal_add_pengajuanindikatorunit_userid");
-            $target       = request()->getPost("modal_add_pengajuanindikatorunit_target");
-            $indikatorid  = request()->getPost("modal_add_pengajuanindikatorunit_indikatorid");
-            $departmentid = request()->getPost("modal_add_pengajuanindikatorunit_departmentid");
+        $periode      = request()->getPost("modal_add_pengajuanindikatorunit_periodeid");
+        $userid       = request()->getPost("modal_add_pengajuanindikatorunit_userid");
+        $target       = request()->getPost("modal_add_pengajuanindikatorunit_target");
+        $indikatorid  = request()->getPost("modal_add_pengajuanindikatorunit_indikatorid");
+        $departmentid = request()->getPost("modal_add_pengajuanindikatorunit_departmentid");
 
-            $datainsert = [
-                'group_id'      => $_SESSION['groupid'] ?? null,
-                'org_id'        => $_SESSION['orgid'] ?? null,
-                'periode_id'    => $periode ?? null,
-                'pic'           => $userid ?? null,
-                'target'        => $target ?? null,
-                'indikator_id'  => $indikatorid ?? null,
-                'department_id' => $departmentid ?? null,
-                'created_by'    => $_SESSION['userid'] ?? null
-            ];
+        $datainsert = [
+            'group_id'      => $_SESSION['groupid'] ?? null,
+            'org_id'        => $_SESSION['orgid'] ?? null,
+            'periode_id'    => $periode ?? null,
+            'pic'           => $userid ?? null,
+            'target'        => $target ?? null,
+            'indikator_id'  => $indikatorid ?? null,
+            'department_id' => $departmentid ?? null,
+            'created_by'    => $_SESSION['userid'] ?? null
+        ];
 
 
-            if($this->md->insertindikatorunit($datainsert)){
-                $json['responCode']="00";
-                $json['responHead']="success";
-                $json['responDesc']="Data Updated Successfully";
-            }else{
-                $json['responCode']="01";
-                $json['responHead']="info";
-                $json['responDesc']="Data failed to update";
-            }
-            
-
-            echo json_encode($json);
+        if($this->md->insertindikatorunit($datainsert)){
+            $json['responCode']="00";
+            $json['responHead']="success";
+            $json['responDesc']="Data Updated Successfully";
+        }else{
+            $json['responCode']="01";
+            $json['responHead']="info";
+            $json['responDesc']="Data failed to update";
         }
+        
+
+        return response()->setJSON($json);
+    }
+
+    public function updateindikatorunit(){
+        $uuid         = request()->getPost("modal_edit_pengajuanindikatorunit_uuid");
+        $periode      = request()->getPost("modal_edit_pengajuanindikatorunit_periodeid");
+        $userid       = request()->getPost("modal_edit_pengajuanindikatorunit_userid");
+        $target       = request()->getPost("modal_edit_pengajuanindikatorunit_target");
+        $indikatorid  = request()->getPost("modal_edit_pengajuanindikatorunit_indikatorid");
+        $departmentid = request()->getPost("modal_edit_pengajuanindikatorunit_departmentid");
+
+        $dataupdate = [
+            'periode_id'       => $periode ?? null,
+            'pic'              => $userid ?? null,
+            'target'           => $target ?? null,
+            'indikator_id'     => $indikatorid ?? null,
+            'department_id'    => $departmentid ?? null,
+            'last_update_by'   => $_SESSION['userid'] ?? null,
+            'last_update_date' => date('Y-m-d H:i:s')
+        ];
+
+        if ($this->md->updateindikator($uuid, $dataupdate)) {
+            $json['responCode'] = "00";
+            $json['responHead'] = "success";
+            $json['responDesc'] = "Data Updated Successfully";
+        } else {
+            $json['responCode'] = "01";
+            $json['responHead'] = "info";
+            $json['responDesc'] = "Data failed to update";
+        }
+
+        return response()->setJSON($json);
+    }
 
     public function dataindikatorunit(){
         $result = $this->md->dataindikatorunit(session()->get('groupid'), session()->get('orgid'), session()->get('userid'));

@@ -67,3 +67,72 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal_edit_pengajuanindikatorunit" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header pb-0">
+                <h1 class="mb-3">Edit Pengajuan Indikator Unit</h1>
+                <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                    <span class="svg-icon svg-icon-1"><i class="bi bi-x-lg"></i></span>
+                </div>
+            </div>
+            <form action="<?php echo base_url(); ?>index.php/qi/indikatorunit/updateindikatorunit" id="formeditindikatorunit" method="post">
+                <div class="modal-body">
+                    <div class="text-start mb-5">
+                        <div class="text-muted fw-bold fs-5">Please update unit indicator.</div>
+                    </div>
+                    <input type="hidden" name="modal_edit_pengajuanindikatorunit_uuid" id="modal_edit_pengajuanindikatorunit_uuid">
+                    <div class="row">
+                        <div class="col-md-2 mb-5">
+                            <label class="d-flex align-items-center fs-5 fw-bold mb-2">
+                                <span class="required">Periode</span>
+                                <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Periode Pelaporan"></i>
+                            </label>
+                            <select data-control="select2" data-dropdown-parent="#modal_edit_pengajuanindikatorunit" data-placeholder="Please Select Period" class="form-select form-select-solid" name="modal_edit_pengajuanindikatorunit_periodeid" id="modal_edit_pengajuanindikatorunit_periodeid" required>
+                                <?php echo $masterperiodepelaporan; ?>
+                            </select>
+                        </div>
+                        <div class="col-md-5 mb-5">
+                            <label class="d-flex align-items-center fs-5 fw-bold mb-2">
+                                <span class="required">Department</span>
+                                <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Head Department"></i>
+                            </label>
+                            <select data-control="select2" data-dropdown-parent="#modal_edit_pengajuanindikatorunit" data-placeholder="Please Select Department" class="form-select form-select-solid" name="modal_edit_pengajuanindikatorunit_departmentid" id="modal_edit_pengajuanindikatorunit_departmentid" required>
+                                <?php echo $masterdatadepartment; ?>
+                            </select>
+                        </div>
+                        <div class="col-md-5 mb-5">
+                            <label class="d-flex align-items-center fs-5 fw-bold mb-2">
+                                <span class="required">PIC Indikator</span>
+                                <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Person In Charge"></i>
+                            </label>
+                            <select data-control="select2" data-dropdown-parent="#modal_edit_pengajuanindikatorunit" data-placeholder="Please Select User" class="form-select form-select-solid" name="modal_edit_pengajuanindikatorunit_userid" id="modal_edit_pengajuanindikatorunit_userid" required>
+                                <?php echo $masterdatauser; ?>
+                            </select>
+                        </div>
+                        <div class="col-md-2 mb-5">
+                            <label class="d-flex align-items-center fs-5 fw-bold mb-2">
+                                <span class="required">Target</span>
+                                <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Target Indikator"></i>
+                            </label>
+                            <input type="text" class="form-control form-control-solid" id="modal_edit_pengajuanindikatorunit_target" name="modal_edit_pengajuanindikatorunit_target" required>
+                        </div>
+                        <div class="col-md-10 mb-5">
+                            <label class="d-flex align-items-center fs-5 fw-bold mb-2">
+                                <span class="required">Indikator</span>
+                                <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Indikator Mutu"></i>
+                            </label>
+                            <select data-control="select2" data-dropdown-parent="#modal_edit_pengajuanindikatorunit" data-placeholder="Please Select Indicator" class="form-select form-select-solid" name="modal_edit_pengajuanindikatorunit_indikatorid" id="modal_edit_pengajuanindikatorunit_indikatorid" required>
+                                <?php echo $masterindikator; ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer p-1">
+                    <input class="btn btn-light-primary" id="btnprosesedit" type="submit" value="UPDATE" name="update">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

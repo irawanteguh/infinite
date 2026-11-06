@@ -79,6 +79,8 @@ class IndikatorunitModel extends Model{
                         a.target,
                         a.pic,
                         a.status_id statusidindikatorunit,
+                        a.department_id,
+                        a.indikator_id,
                         DATE_FORMAT(a.created_date,'%d.%m.%Y %H:%i:%s') AS dibuattgl,
 
                         p.tahun,

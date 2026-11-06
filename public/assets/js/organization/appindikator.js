@@ -114,7 +114,7 @@ function datamasterindikator() {
 
                     tableResult += "<td>";
                         tableResult += "<div>"+(result[i].indikator || "-")+"</div>";
-                        tableResult += "<div class='fst-italic'>"+(result[i].definisi || "-")+"</div>";
+                        tableResult += "<div class='fst-italic'>"+(formathtml(result[i].definisi) || "-")+"</div>";
                         tableResult += "<div>";
                         tableResult += badgeDimensiMutu(result[i].dimensi_mutu_keselamatan, "Keselamatan Pasien", "info");
                         tableResult += badgeDimensiMutu(result[i].dimensi_mutu_waktu, "Tepat Waktu", "info");

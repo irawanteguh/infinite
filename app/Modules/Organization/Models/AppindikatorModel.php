@@ -21,7 +21,7 @@ class AppindikatorModel extends Model{
         return $recordset->getResult();
     }
 
-    function datamasterindikator($groupid,$orgid, $periode){
+    function datamasterindikator($groupid,$orgid,$periode){
         $query =
                 "
                     select  a.transaksi_id, approval_by, a.created_by, target, date_format(a.created_date, '%d.%m.%Y %H:%i:%s')dibuattgl, date_format(a.approval_date, '%d.%m.%Y %H:%i:%s')approvaldate, a.status_id as statusidindikatorunit,
@@ -54,7 +54,7 @@ class AppindikatorModel extends Model{
                     where a.active='1'
                     and   a.group_id='".$groupid."'
                     and   a.org_id='".$orgid."'
-                    order by a.created_date asc
+                    order by a.status_id asc, a.approval_date desc
                 ";
 
         $recordset = $this->db->query($query);

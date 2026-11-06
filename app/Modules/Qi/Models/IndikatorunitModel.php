@@ -247,7 +247,7 @@ class IndikatorunitModel extends Model{
                         s.color,
                         s.icon
 
-                    ORDER BY p.tahun DESC;
+                    order by p.tahun desc;
                 ";
 
         $recordset = $this->db->query($query);
@@ -256,6 +256,10 @@ class IndikatorunitModel extends Model{
 
     function updateindikator($transaksiid, $data){
         return $this->db->table('dt01_qi_indikator_hd')->where('transaksi_id', $transaksiid)->update($data);
+    }
+
+    function insertindikatorunit($data){
+        return $this->db->table('dt01_qi_indikator_hd')->insert($data);
     }
 
 }

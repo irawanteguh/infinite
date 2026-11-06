@@ -109,7 +109,7 @@ function dataindikatorunit() {
                 tableResult += "<td class='ps-4'>"+(parseInt(i) + 1)+"</td>";
 
                 tableResult += "<td>";
-                    tableResult += "<div class='fw-bold'>" + result[i].indikator + "</div><div class='text-muted fst-italic'>" + result[i].definisi + "</div>";
+                    tableResult += "<div class='fw-bold'>" + result[i].indikator + "</div><div class='text-muted fst-italic'>" + formathtml(result[i].definisi) + "</div>";
                     tableResult += "<div>";
                         tableResult += badgeDimensiMutu(result[i].dimensi_mutu_keselamatan, "Keselamatan Pasien", "info");
                         tableResult += badgeDimensiMutu(result[i].dimensi_mutu_waktu, "Tepat Waktu", "info");
@@ -184,3 +184,56 @@ function dataindikatorunit() {
         }
     });
 }
+
+$(document).on("submit", "#formaddindikatorunit", function (e) {
+	e.preventDefault();
+	var data = new  FormData(this);
+	$.ajax({
+        url        : url+'qi/indikatorunit/addindikatorunit',
+        data       : data,
+        method     : "POST",
+        dataType   : "JSON",
+        cache      : false,
+        processData: false,
+        contentType: false,
+        beforeSend : function () {
+            Swal.fire({
+                title: 'Processing',
+                html : 'Please wait while the system displays the requested data.',
+                allowOutsideClick: false,
+                allowEscapeKey   : false,
+                showConfirmButton: false,
+                didOpen: () => Swal.showLoading()
+            });
+        },
+		success: function (response) {
+            if (response.responCode !== "00") {
+                Swal.fire({
+                    title            : "<h1 class='font-weight-bold'>For Your Information</h1>",
+                    html             : "<b>"+response.responDesc+"</b>",
+                    icon             : response.responHead,
+                    confirmButtonText: 'Please Try Again',
+                    customClass      : {confirmButton: 'btn btn-danger'},
+                    timerProgressBar : true,
+                    timer            : 5000,
+                    showClass        : {popup: "animate__animated animate__fadeInUp animate__faster"},
+                    hideClass        : {popup: "animate__animated animate__fadeOutDown animate__faster"}
+                });
+                return;
+            }
+
+            $('#modal_add_pengajuanindikatorunit').modal('hide');
+            Swal.close();
+            location.reload();
+		},
+        error: function () {
+            Swal.fire({
+                icon             : "error",
+                title            : "Request Failed",
+                text             : "An error occurred while processing your request.",
+                confirmButtonText: "OK"
+            });
+        }
+	});
+    return false;
+});

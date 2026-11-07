@@ -1,8 +1,4 @@
 <div id="pdsaRoot" data-endpoint="<?= esc($endpoint) ?>" data-indicator-ref="<?= esc($linkedIndicator->transaksi_id ?? '') ?>" data-department="<?= esc($linkedIndicator->department_id ?? '') ?>" data-period="<?= esc($linkedIndicator->periode_id ?? '') ?>" class="d-flex flex-wrap flex-stack mb-6">
-    <div>
-        <h2 class="text-gray-900 fw-bolder mb-2">PDSA Indikator Mutu</h2>
-        <p class="text-muted mb-0">Kelola header perbaikan dan tambahkan item pada tahap Plan, Do, Study, dan Act.</p>
-    </div>
     <?php if (!empty($linkedIndicator)): ?><div class="text-primary fw-bold mt-2"><i class="bi bi-link-45deg me-1"></i>Indikator: <?= esc($linkedIndicator->indikator) ?> — <?= esc($linkedIndicator->department) ?> (<?= esc($linkedIndicator->tahun) ?>)</div><?php endif; ?>
 </div>
 

@@ -66,17 +66,13 @@ class PdsaModel extends Model
     public function listCycles($groupId, $orgId, $userId, $referenceId = '')
     {
         $departmentIds = array_column($this->departments($groupId, $orgId, $userId), 'department_id');
-        if (!$departmentIds) {
-            return [];
-        }
         $builder = $this->db->table('dt01_qi_pdsa x')
             ->select('x.*, d.department, p.tahun, i.indikator')
             ->join('dt01_gen_department_ms d', 'd.department_id = x.department_id', 'left')
             ->join('dt01_qi_periode_mutu p', 'p.periode_id = x.periode_id', 'left')
             ->join('dt01_qi_indikator_hd ih', 'ih.transaksi_id = x.indikator_ref_id', 'left')
             ->join('dt01_qi_indikator_ms i', 'i.indikator_id = ih.indikator_id', 'left')
-            ->where('x.active', '1')->where('x.group_id', $groupId)->where('x.org_id', $orgId)
-            ->whereIn('x.department_id', $departmentIds);
+            ->where('x.active', '1')->where('x.group_id', $groupId)->where('x.org_id', $orgId);
         if ($referenceId !== '') $builder->where('x.indikator_ref_id', $referenceId);
         $rows = $builder->orderBy('x.last_update_date', 'DESC')->get()->getResult();
         if (!$rows) return [];
@@ -86,18 +82,33 @@ class PdsaModel extends Model
             ->where('active', '1')->whereIn('pdsa_id', $ids)->groupBy('pdsa_id')->get()->getResultArray();
         $countMap = [];
         foreach ($counts as $count) $countMap[(string) $count['pdsa_id']] = (int) $count['item_count'];
-        foreach ($rows as $row) $row->item_count = $countMap[(string) $row->pdsa_id] ?? 0;
+        foreach ($rows as $row) {
+            $row->item_count = $countMap[(string) $row->pdsa_id] ?? 0;
+            $row->can_manage = in_array((string) $row->department_id, array_map('strval', $departmentIds), true);
+        }
         return $rows;
     }
 
     public function getCycle($id, $groupId, $orgId, $userId)
     {
         foreach ($this->listCycles($groupId, $orgId, $userId) as $cycle) {
-            if ((string) $cycle->pdsa_id === (string) $id) {
+            if ((string) $cycle->pdsa_id === (string) $id && $cycle->can_manage) {
                 return $cycle;
             }
         }
         return null;
+    }
+
+    public function getCycleForOrganization($id, $groupId, $orgId)
+    {
+        return $this->db->table('dt01_qi_pdsa x')
+            ->select('x.*, d.department, p.tahun, i.indikator')
+            ->join('dt01_gen_department_ms d', 'd.department_id = x.department_id', 'left')
+            ->join('dt01_qi_periode_mutu p', 'p.periode_id = x.periode_id', 'left')
+            ->join('dt01_qi_indikator_hd ih', 'ih.transaksi_id = x.indikator_ref_id', 'left')
+            ->join('dt01_qi_indikator_ms i', 'i.indikator_id = ih.indikator_id', 'left')
+            ->where('x.pdsa_id', $id)->where('x.group_id', $groupId)->where('x.org_id', $orgId)
+            ->where('x.active', '1')->get()->getRow();
     }
 
     public function saveCycle($id, array $data, $groupId, $orgId)

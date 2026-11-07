@@ -101,9 +101,8 @@ class Pdsa extends BaseController
         $id = trim((string) request()->getGet('pdsa_id'));
         $groupId = session()->get('groupid');
         $orgId = session()->get('orgid');
-        $userId = session()->get('userid');
-        $cycle = $this->md->getCycle($id, $groupId, $orgId, $userId);
-        if (!$cycle) return $this->jsonError('Header PDSA tidak ditemukan atau di luar departemen Anda.');
+        $cycle = $this->md->getCycleForOrganization($id, $groupId, $orgId);
+        if (!$cycle) return $this->jsonError('Header PDSA tidak ditemukan.');
 
         return response()->setJSON([
             'responseCode' => '00', 'responseHead' => 'success', 'responseCycle' => $cycle,

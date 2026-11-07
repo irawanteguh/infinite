@@ -19,7 +19,7 @@
                 <thead>
                     <tr class="fw-bolder text-muted bg-light">
                         <th class="text-start ps-4 rounded-start">#</th>
-                        <<th>Period</th>
+                        <th>Period</th>
                         <th>Quality Committee Chair / Quality Officer</th>
                         <th>Quality Team Members</th>
                         <th>Indicator PIC</th>

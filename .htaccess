@@ -1,0 +1,20 @@
+# Route the project subfolder through CodeIgniter's public web root.
+# Keep application, configuration, and writable files outside the public URL space.
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteBase /infinite_V2/
+
+	# Do not expose project files when the server points at the project root.
+	RewriteRule ^(?:app|tests|vendor|writable|builds|\.git)(?:/|$) - [F,L,NC]
+
+	# Serve existing public assets directly; send all other requests to the app.
+	RewriteCond %{REQUEST_URI} !^/infinite_V2/public/
+	RewriteCond %{DOCUMENT_ROOT}/infinite_V2/public/$1 -f [OR]
+	RewriteCond %{DOCUMENT_ROOT}/infinite_V2/public/$1 -d
+	RewriteRule ^(.+)$ public/$1 [L]
+
+	RewriteCond %{REQUEST_URI} !^/infinite_V2/public/
+	RewriteRule ^ public/index.php [L]
+</IfModule>

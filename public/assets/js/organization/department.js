@@ -1,4 +1,4 @@
-datamasterdepartment();
+﻿datamasterdepartment();
 
 function getdata(btn){
     $("#modal_edit_masterdepartment_departmentid").val(btn.data("departmentid"));
@@ -40,7 +40,7 @@ function updateActivation (el) {
                             timer             : 1500,
                             showConfirmButton : false,
                             didClose          : function() {
-                                location.reload();
+                                datamasterdepartment();
                             }
                         });
                     } else {
@@ -205,11 +205,11 @@ $(document).on("submit", "#formeditmasterdepartment", function (e) {
             });
         },
 		success: function (response) {
-            if (response.responCode !== "00") {
+            if (response.responseCode !== "00") {
                 Swal.fire({
                     title            : "<h1 class='font-weight-bold'>For Your Information</h1>",
-                    html             : "<b>"+response.responDesc+"</b>",
-                    icon             : data.responHead,
+                    html             : "<b>"+response.responseDesc+"</b>",
+                    icon             : data.responseHead,
                     confirmButtonText: 'Please Try Again',
                     customClass      : {confirmButton: 'btn btn-danger'},
                     timerProgressBar : true,
@@ -222,6 +222,7 @@ $(document).on("submit", "#formeditmasterdepartment", function (e) {
 
             $('#modal_edit_masterdepartment').modal('hide');
             Swal.close();
+			 datamasterdepartment();
 		},
         error: function () {
             Swal.fire({
@@ -233,7 +234,6 @@ $(document).on("submit", "#formeditmasterdepartment", function (e) {
         },
         complete: function () {
             Swal.close();
-            location.reload();
         }
 	});
     return false;
@@ -261,11 +261,11 @@ $(document).on("submit", "#formaddmasterdepartment", function (e) {
             });
         },
 		success: function (response) {
-            if (response.responCode !== "00") {
+            if (response.responseCode !== "00") {
                 Swal.fire({
                     title            : "<h1 class='font-weight-bold'>For Your Information</h1>",
-                    html             : "<b>"+response.responDesc+"</b>",
-                    icon             : response.responHead,
+                    html             : "<b>"+response.responseDesc+"</b>",
+                    icon             : response.responseHead,
                     confirmButtonText: 'Please Try Again',
                     customClass      : {confirmButton: 'btn btn-danger'},
                     timerProgressBar : true,
@@ -278,7 +278,7 @@ $(document).on("submit", "#formaddmasterdepartment", function (e) {
 
             $('#modal_add_department').modal('hide');
             Swal.close();
-            location.reload();
+			 datamasterdepartment();
 		},
         error: function () {
             Swal.fire({

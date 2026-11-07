@@ -151,13 +151,13 @@ class Masterindikator extends BaseController{
         ];
 
         if($this->md->insertmasterindikator($dataupdate)){
-            $json['responCode']="00";
-            $json['responHead']="success";
-            $json['responDesc']="Data Updated Successfully";
+            $json['responseCode']="00";
+            $json['responseHead']="success";
+            $json['responseDesc']="Data Updated Successfully";
         }else{
-            $json['responCode']="01";
-            $json['responHead']="info";
-            $json['responDesc']="Data failed to update";
+            $json['responseCode']="01";
+            $json['responseHead']="info";
+            $json['responseDesc']="Data failed to update";
         }
         
 
@@ -205,13 +205,13 @@ class Masterindikator extends BaseController{
 
 
         if($this->md->updatemasterindikator($indikatorid, $dataupdate)){
-            $json['responCode']="00";
-            $json['responHead']="success";
-            $json['responDesc']="Data Updated Successfully";
+            $json['responseCode']="00";
+            $json['responseHead']="success";
+            $json['responseDesc']="Data Updated Successfully";
         }else{
-            $json['responCode']="01";
-            $json['responHead']="info";
-            $json['responDesc']="Data failed to update";
+            $json['responseCode']="01";
+            $json['responseHead']="info";
+            $json['responseDesc']="Data failed to update";
         }
         
 

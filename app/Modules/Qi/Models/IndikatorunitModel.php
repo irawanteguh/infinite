@@ -300,4 +300,70 @@ class IndikatorunitModel extends Model{
         return $this->db->table('dt01_qi_indikator_it')->insert($data);
     }
 
+    function indikatorBelongsTo($transaksiid, $indikatorid, $groupid, $orgid, $userid){
+        $departments = $this->db->table('dt01_gen_department_ms')
+            ->select('department_id')
+            ->where('active', '1')
+            ->where('group_id', $groupid)
+            ->where('org_id', $orgid)
+            ->where('user_id', $userid)
+            ->get()->getResultArray();
+        $departmentIds = array_column($departments, 'department_id');
+        if (empty($departmentIds)) {
+            return false;
+        }
+
+        return $this->db->table('dt01_qi_indikator_hd')
+            ->where('transaksi_id', $transaksiid)
+            ->where('indikator_id', $indikatorid)
+            ->where('group_id', $groupid)
+            ->where('org_id', $orgid)
+            ->where('active', '1')
+            ->whereIn('department_id', $departmentIds)
+            ->countAllResults() > 0;
+    }
+
+    function indikatorReferenceBelongsTo($transaksiid, $groupid, $orgid, $userid){
+        $departments = $this->db->table('dt01_gen_department_ms')
+            ->select('department_id')
+            ->where('active', '1')
+            ->where('group_id', $groupid)
+            ->where('org_id', $orgid)
+            ->where('user_id', $userid)
+            ->get()->getResultArray();
+        $departmentIds = array_column($departments, 'department_id');
+        if (empty($departmentIds)) {
+            return false;
+        }
+
+        return $this->db->table('dt01_qi_indikator_hd')
+            ->where('transaksi_id', $transaksiid)
+            ->where('group_id', $groupid)
+            ->where('org_id', $orgid)
+            ->where('active', '1')
+            ->whereIn('department_id', $departmentIds)
+            ->countAllResults() > 0;
+    }
+
+    function saveNilaiindikator($data){
+        $builder = $this->db->table('dt01_qi_indikator_it');
+        $exists = $builder->where('referensi_id', $data['referensi_id'])
+            ->where('bulan', $data['bulan'])
+            ->where('group_id', $data['group_id'])
+            ->where('org_id', $data['org_id'])
+            ->countAllResults() > 0;
+
+        if ($exists) {
+            unset($data['created_by']);
+            return $this->db->table('dt01_qi_indikator_it')
+                ->where('referensi_id', $data['referensi_id'])
+                ->where('bulan', $data['bulan'])
+                ->where('group_id', $data['group_id'])
+                ->where('org_id', $data['org_id'])
+                ->update($data);
+        }
+
+        return $this->insertnilaiindikator($data);
+    }
+
 }

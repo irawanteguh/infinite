@@ -43,6 +43,7 @@
                             <th>Status</th>
                             <th>Reason</th>
                             <th>Follow-up Plan</th>
+                            <th>Attachment</th>
                             <th class="text-end pe-4 rounded-end">Actions</th>
                         </tr>
                     </thead>

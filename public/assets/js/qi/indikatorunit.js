@@ -1,4 +1,4 @@
-let   indikatorUnitData = [];
+﻿let   indikatorUnitData = [];
 let   indikatorUnitMap  = {};
 
 load();
@@ -30,9 +30,25 @@ function getdata(btn) {
 }
 
 function getdatapenilaian(btn){
-    $("#modal_input_nilai_indikator_referensiid").val(btn.data("transaksiid"));
+    const referenceId = String(btn.data("transaksiid"));
+    const month = String(btn.data("bulan")).padStart(2, "0");
+    const data = indikatorUnitMap[referenceId] || {};
+    const numerator = data["numerator" + month];
+    const denumerator = data["denumerator" + month];
+    const reason = data["reason" + month];
+    const rtl = data["rtl" + month];
+    const hasSubmitted = numerator !== null && numerator !== undefined && numerator !== "";
+
+    $("#modal_input_nilai_indikator_referensiid").val(referenceId);
     $("#modal_input_nilai_indikator_indikatorid").val(btn.data("indikatoriid"));
-    $("#modal_input_nilai_indikator_bulan").val(btn.data("bulan"));
+    $("#modal_input_nilai_indikator_bulan").val(month);
+    $("#modal_add_pengajuanindikatorunit_numerator").val(numerator ?? "");
+    $("#modal_add_pengajuanindikatorunit_denumerator").val(denumerator ?? "");
+    $("#modal_add_pengajuanindikatorunit_alasan").val(reason ?? "");
+    $("#modal_add_pengajuanindikatorunit_rtl").val(rtl ?? "");
+    $("#modal_input_nilai_indikator_dokumen").val("");
+    $("#modal_input_nilai_indikator_title").text(hasSubmitted ? "Edit Penilaian Indikator" : "Submit Penilaian Indikator");
+    $("#btn_submit_nilai_indikator").val(hasSubmitted ? "UPDATE" : "SUBMIT");
 
 };
 
@@ -149,7 +165,18 @@ function loadIndikatorUnitSubmit(){
             getvariabel += " data-bulan='" + String(i + 1).padStart(2, '0') + "'";
             getvariabel += " data-indikatoriid='" + data.indikator_id + "'";
 
-        btnaction += "<a class='dropdown-item btn btn-sm text-primary' data-bs-toggle='modal' data-bs-target='#modal_input_nilai_indikator' "+getvariabel+" onclick='getdatapenilaian($(this));'><i class='bi bi-pencil text-primary me-4'></i>Submit</a>";
+        const hasSubmitted = numerator[i] !== null && numerator[i] !== undefined && numerator[i] !== "";
+        btnaction += "<a class='dropdown-item btn btn-sm text-primary' data-bs-toggle='modal' data-bs-target='#modal_input_nilai_indikator' "+getvariabel+" onclick='getdatapenilaian($(this));'><i class='bi bi-pencil text-primary me-4'></i>"+(hasSubmitted ? "Edit Penilaian" : "Submit Penilaian")+"</a>";
+
+        const monthKey = String(i + 1).padStart(2, "0");
+        const attachments = data["attachments" + monthKey] || [];
+        const attachmentCell = attachments.length
+            ? attachments.map(function (file, fileIndex) {
+                const link = url+"qi/indikatorunit/viewattachment?reference_id="+encodeURIComponent(data.transaksi_id)+"&bulan="+monthKey+"&file="+encodeURIComponent(file);
+                const label = attachments.length > 1 ? "View " + (fileIndex + 1) : "View";
+                return "<a class='btn btn-sm btn-light-primary me-1 mb-1' target='_blank' rel='noopener' href='"+link+"'><i class='bi bi-paperclip me-1'></i>"+label+"</a>";
+            }).join("")
+            : "<span class='text-muted'>-</span>";
 
         tableresult += "<tr>";
             tableresult += "<td class='ps-4'>"+(parseInt(i) + 1)+"</td>";
@@ -165,6 +192,7 @@ function loadIndikatorUnitSubmit(){
             tableresult += "</td>";
             tableresult += "<td>"+(reason[i] ?? "")+"</td>";
             tableresult += "<td>"+(rtl[i] ?? "")+"</td>";
+            tableresult += "<td>"+attachmentCell+"</td>";
 
             tableresult += "<td class='text-end'>";
                 tableresult += "<div class='btn-group'>";
@@ -216,7 +244,7 @@ function deleteIndikator(el) {
                             timer            : 1500,
                             showConfirmButton: false,
                             didClose         : function() {
-                                location.reload();
+                                load();
                             }
                         });
                     } else {
@@ -236,6 +264,7 @@ function dataindikatorunit() {
         url       : url+"qi/indikatorunit/dataindikatorunit",
         type      : "POST",
         dataType  : "JSON",
+        data      : { uuid: $("#uuid").val() || "" },
         beforeSend: function () {
             Swal.fire({
                 title            : "Processing",
@@ -336,9 +365,11 @@ function dataindikatorunit() {
 
                 if(result[i].status_id==="3"){
                     if(result[i].statusidindikatorunit==="1"){
-                        btnaction += "<a class='dropdown-item btn btn-sm text-primary' "+getvariabel+" href='"+url+"index.php/qi/indikatorunit?uuid="+result[i].transaksi_id+"'><i class='bi bi-pencil-square text-primary me-4'></i>Submit</a>";
+                        btnaction += "<a class='dropdown-item btn btn-sm text-primary' "+getvariabel+" href='"+url+"qi/indikatorunit?uuid="+result[i].transaksi_id+"'><i class='bi bi-pencil-square text-primary me-4'></i>Submit</a>";
                     }
                 }
+
+                btnaction += "<a class='dropdown-item btn btn-sm text-primary' href='"+url+"qi/fishbone?indikator_ref_id="+encodeURIComponent(result[i].transaksi_id)+"'><i class='bi bi-diagram-3 text-primary me-4'></i>Fishbone</a>";
                 
 
                 tableResult += "<tr>";
@@ -469,11 +500,11 @@ $(document).on("submit", "#formaddindikatorunit", function (e) {
             });
         },
 		success: function (response) {
-            if (response.responCode !== "00") {
+            if (response.responseCode !== "00") {
                 Swal.fire({
                     title            : "<h1 class='font-weight-bold'>For Your Information</h1>",
-                    html             : "<b>"+response.responDesc+"</b>",
-                    icon             : response.responHead,
+                    html             : "<b>"+response.responseDesc+"</b>",
+                    icon             : response.responseHead,
                     confirmButtonText: 'Please Try Again',
                     customClass      : {confirmButton: 'btn btn-danger'},
                     timerProgressBar : true,
@@ -486,7 +517,7 @@ $(document).on("submit", "#formaddindikatorunit", function (e) {
 
             $('#modal_add_pengajuanindikatorunit').modal('hide');
             Swal.close();
-            location.reload();
+			load();
 		},
         error: function () {
             Swal.fire({
@@ -522,11 +553,11 @@ $(document).on("submit", "#formeditindikatorunit", function (e) {
             });
         },
         success: function (response) {
-            if (response.responCode !== "00") {
+            if (response.responseCode !== "00") {
                 Swal.fire({
                     title            : "<h1 class='font-weight-bold'>For Your Information</h1>",
-                    html             : "<b>" + response.responDesc + "</b>",
-                    icon             : response.responHead,
+                    html             : "<b>" + response.responseDesc + "</b>",
+                    icon             : response.responseHead,
                     confirmButtonText: 'Please Try Again',
                     customClass      : { confirmButton: 'btn btn-danger' },
                     timerProgressBar : true,
@@ -539,7 +570,7 @@ $(document).on("submit", "#formeditindikatorunit", function (e) {
 
             $('#modal_edit_pengajuanindikatorunit').modal('hide');
             Swal.close();
-            location.reload();
+			load();
         },
         error: function () {
             Swal.fire({
@@ -627,11 +658,11 @@ $(document).on("submit", "#forminputnilaiindikator", function (e) {
         },
         success: function (response) {
 
-             if (response.responCode !== "00") {
+             if (response.responseCode !== "00") {
                 Swal.fire({
                     title            : "<h1 class='font-weight-bold'>For Your Information</h1>",
-                    html             : "<b>" + response.responDesc + "</b>",
-                    icon             : response.responHead,
+                    html             : "<b>" + response.responseDesc + "</b>",
+                    icon             : response.responseHead,
                     confirmButtonText: 'Please Try Again',
                     customClass      : { confirmButton: 'btn btn-danger' },
                     timerProgressBar : true,
@@ -644,7 +675,6 @@ $(document).on("submit", "#forminputnilaiindikator", function (e) {
 
             $("#modal_input_nilai_indikator").modal("hide");
             Swal.close();
-            location.reload();
         },
         complete: function () {
             load();

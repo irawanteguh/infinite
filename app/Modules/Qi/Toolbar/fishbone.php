@@ -1,0 +1,3 @@
+<button type="button" class="btn btn-primary" id="fishboneAddButton">
+    <i class="bi bi-plus-lg me-2"></i>Buat Analisis Fishbone
+</button>

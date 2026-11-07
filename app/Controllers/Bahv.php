@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Controllers;
 
@@ -22,7 +22,7 @@ class Bahv extends BaseController{
 
         if (!is_array($headers) || empty($headers) || !is_array($rows)) {
             return $this->response->setJSON([
-                "responCode"   => "01",
+                "responseCode"   => "01",
                 "responMsg"    => "Data or header is empty.",
                 "responResult" => [
                     "total"   => 0,
@@ -109,7 +109,7 @@ class Bahv extends BaseController{
         }
 
         return $this->response->setJSON([
-            "responCode"   => "00",
+            "responseCode"   => "00",
             "responMsg"    => "Import BAHV berhasil diproses.",
             "responResult" => [
                 "total"   => count($rows),

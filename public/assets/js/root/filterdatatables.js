@@ -1,7 +1,11 @@
 function initDataTable(tableSelector, searchSelector = null, pageLength = 10, options = {}) {
 
     if ($.fn.DataTable.isDataTable(tableSelector)) {
+        // Data rows may already have been replaced by an AJAX refresh. Keep
+        // that current markup while removing the old DataTables instance.
+        const currentRows = $(tableSelector).find("tbody").html();
         $(tableSelector).DataTable().destroy();
+        $(tableSelector).find("tbody").html(currentRows);
     }
 
     const defaultOptions = {

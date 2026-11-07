@@ -9,7 +9,7 @@
                     </span>
                 </div>
             </div>
-            <form action="<?php echo base_url();?>index.php/qi/indikatorunit/addindikatorunit" id="formaddindikatorunit">
+            <form action="<?= site_url('qi/indikatorunit/addindikatorunit') ?>" id="formaddindikatorunit">
                 <div class="modal-body">
                     <div class="text-start mb-5">
                         <div class="text-muted fw-bold fs-5">Please add unit indicator.</div>
@@ -77,7 +77,7 @@
                     <span class="svg-icon svg-icon-1"><i class="bi bi-x-lg"></i></span>
                 </div>
             </div>
-            <form action="<?php echo base_url(); ?>index.php/qi/indikatorunit/updateindikatorunit" id="formeditindikatorunit" method="post">
+            <form action="<?= site_url('qi/indikatorunit/updateindikatorunit') ?>" id="formeditindikatorunit" method="post">
                 <div class="modal-body">
                     <div class="text-start mb-5">
                         <div class="text-muted fw-bold fs-5">Please update unit indicator.</div>
@@ -141,14 +141,14 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header pb-0">
-                <h1 class="mb-3">Submit Penilaian Indikator</h1>
+                <h1 class="mb-3" id="modal_input_nilai_indikator_title">Submit Penilaian Indikator</h1>
                 <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
                     <span class="svg-icon svg-icon-1">
                         <i class="bi bi-x-lg"></i>
                     </span>
                 </div>
             </div>
-            <form action="<?php echo base_url();?>index.php/qi/indikatorunit/inputnilaiindikator" id="forminputnilaiindikator">
+            <form action="<?= site_url('qi/indikatorunit/inputnilaiindikator') ?>" id="forminputnilaiindikator" enctype="multipart/form-data">
                 <input type="hidden" id="modal_input_nilai_indikator_referensiid" name="modal_input_nilai_indikator_referensiid">
                 <input type="hidden" id="modal_input_nilai_indikator_indikatorid" name="modal_input_nilai_indikator_indikatorid">
                 <input type="hidden" id="modal_input_nilai_indikator_bulan" name="modal_input_nilai_indikator_bulan">
@@ -187,10 +187,17 @@
                                 <textarea name="modal_add_pengajuanindikatorunit_rtl" id="modal_add_pengajuanindikatorunit_rtl" class="form-control form-control-solid" rows="5" required></textarea>
                             </div>
                         </div>
+                        <div class="col-12 mb-5">
+                            <label class="d-flex align-items-center fs-5 fw-bold mb-2" for="modal_input_nilai_indikator_dokumen">
+                                <span>Dokumen Pendukung</span>
+                            </label>
+                            <input type="file" class="form-control form-control-solid" id="modal_input_nilai_indikator_dokumen" name="supporting_document" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png">
+                            <div class="text-muted fs-7 mt-2">Format PDF, Word, Excel, JPG, atau PNG. Maksimal 10 MB.</div>
+                        </div>
                     </div>
                 </div> 
                 <div class="modal-footer p-1">	
-                    <input class="btn btn-light-primary" id="btnproses" type="submit" value="SUBMIT" name="simpan" >			
+                    <input class="btn btn-light-primary" id="btn_submit_nilai_indikator" type="submit" value="SUBMIT" name="simpan" >
                 </div>  
             </form>  
         </div>

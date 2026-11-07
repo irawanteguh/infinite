@@ -96,3 +96,32 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal_quality_team" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header pb-0">
+                <h1 class="mb-3">Quality Team Members <span class="text-muted fs-6" id="quality_team_period"></span></h1>
+                <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="bi bi-x-lg"></i>
+                </div>
+            </div>
+            <form id="form_quality_team">
+                <div class="modal-body">
+                    <input type="hidden" name="periode_id" id="quality_team_periode_id">
+                    <label for="quality_team_members" class="form-label fw-bold">Pilih anggota tim</label>
+                    <select class="form-select form-select-solid" id="quality_team_members" name="members[]" multiple data-control="select2" data-dropdown-parent="#modal_quality_team" data-placeholder="Pilih satu atau beberapa anggota">
+                        <?php foreach (($teamusers ?? []) as $teamuser): ?>
+                            <option value="<?= esc($teamuser->user_id) ?>"><?= esc($teamuser->name) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <div class="text-muted fs-7 mt-2">Hapus pilihan anggota untuk mengeluarkannya dari tim.</div>
+                </div>
+                <div class="modal-footer p-1">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-light-primary">Simpan Anggota</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

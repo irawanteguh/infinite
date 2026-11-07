@@ -1,4 +1,4 @@
-datamasterperiodepelaporan();
+﻿datamasterperiodepelaporan();
 
 function getdata(btn){
     $("#modal_edit_periodepelaporan_id").val(btn.data("periodeid"));
@@ -7,7 +7,8 @@ function getdata(btn){
     $("#modal_edit_periodepelaporan_status").val(btn.data("status")).trigger("change");
 }
 
-function datamasterperiodepelaporan() {
+function datamasterperiodepelaporan(onComplete = null) {
+    let refreshSucceeded = false;
     $.ajax({
         url       : url+"qi/periodepelaporan/datamasterperiodepelaporan",
         type      : "POST",
@@ -33,8 +34,12 @@ function datamasterperiodepelaporan() {
                     showConfirmButton: false,
                     timer            : 2000
                 });
+                $("#resultdatamasterperiodepelaporan").empty();
+                initDataTable("#datamasterperiodepelaporan_table", "#searchtable", 10);
                 return;
             }
+
+            refreshSucceeded = true;
 
             const result = Array.isArray(response.responseResult) ? response.responseResult : [];
 
@@ -55,6 +60,7 @@ function datamasterperiodepelaporan() {
                 let btnaction = "";
 
                 btnaction += "<a class='dropdown-item btn btn-sm text-primary' data-bs-toggle='modal' data-bs-target='#modal_edit_periodepelaporan' "+getvariabel+" onclick='getdata($(this));'><i class='bi bi-pencil text-primary me-4'></i>Edit</a>";
+                btnaction += "<a class='dropdown-item btn btn-sm text-primary' href='#' onclick=\"manageTeam('"+result[i].periode_id+"','"+result[i].tahun+"'); return false;\"><i class='bi bi-people text-primary me-4'></i>Manage Quality Team</a>";
 
                 tableResult += "<tr>";
                 tableResult += "<td class='text-start ps-4'>"+(parseInt(i) + 1)+"</td>";
@@ -143,9 +149,67 @@ function datamasterperiodepelaporan() {
         },
         complete: function () {
             Swal.close();
+            if (typeof onComplete === "function") {
+                onComplete(refreshSucceeded);
+            }
         }
     });
 }
+
+function manageTeam(periodeId, periode) {
+    $("#quality_team_periode_id").val(periodeId);
+    $("#quality_team_period").text("— " + periode);
+    $("#quality_team_members").val(null).trigger("change");
+
+    $.ajax({
+        url: url + "qi/periodepelaporan/datateam",
+        type: "POST",
+        dataType: "JSON",
+        data: { periode_id: periodeId },
+        success: function (response) {
+            if (response.responseCode !== "00") {
+                Swal.fire({ icon: "error", title: "Gagal memuat anggota", text: response.responseDesc || "Silakan coba kembali." });
+                return;
+            }
+
+            const selected = (response.responseResult || []).map(function (member) { return String(member.user_id); });
+            $("#quality_team_members").val(selected).trigger("change");
+            $("#modal_quality_team").modal("show");
+        },
+        error: function () {
+            Swal.fire({ icon: "error", title: "Request Failed", text: "Anggota tim tidak dapat dimuat." });
+        }
+    });
+}
+
+$(document).on("submit", "#form_quality_team", function (e) {
+    e.preventDefault();
+    $.ajax({
+        url: url + "qi/periodepelaporan/updateteam",
+        type: "POST",
+        data: $(this).serialize(),
+        dataType: "JSON",
+        success: function (response) {
+            if (response.responseCode !== "00") {
+                Swal.fire({ icon: "error", title: "Gagal menyimpan", text: response.responseDesc || "Silakan coba kembali." });
+                return;
+            }
+            $("#modal_quality_team").one("hidden.bs.modal", function () {
+                datamasterperiodepelaporan(function (refreshSucceeded) {
+                    if (refreshSucceeded) {
+                        Swal.fire({ icon: "success", title: "Berhasil", text: response.responseDesc, timer: 1600, showConfirmButton: false });
+                    } else {
+                        Swal.fire({ icon: "warning", title: "Tersimpan", text: "Data tersimpan, tetapi tabel gagal dimuat ulang." });
+                    }
+                });
+            }).modal("hide");
+        },
+        error: function () {
+            Swal.fire({ icon: "error", title: "Request Failed", text: "Anggota tim tidak dapat disimpan." });
+        }
+    });
+    return false;
+});
 
 $(document).on("submit", "#formaddperiode", function (e) {
 	e.preventDefault();
@@ -169,11 +233,11 @@ $(document).on("submit", "#formaddperiode", function (e) {
             });
         },
 		success: function (response) {
-            if (response.responCode !== "00") {
+            if (response.responseCode !== "00") {
                 Swal.fire({
                     title            : "<h1 class='font-weight-bold'>For Your Information</h1>",
-                    html             : "<b>"+response.responDesc+"</b>",
-                    icon             : response.responHead,
+                    html             : "<b>"+response.responseDesc+"</b>",
+                    icon             : response.responseHead,
                     confirmButtonText: 'Please Try Again',
                     customClass      : {confirmButton: 'btn btn-danger'},
                     timerProgressBar : true,
@@ -186,7 +250,7 @@ $(document).on("submit", "#formaddperiode", function (e) {
 
             $('#modal_add_periodepelaporan').modal('hide');
             Swal.close();
-            location.reload();
+			datamasterperiodepelaporan();
 		},
         error: function () {
             Swal.fire({
@@ -222,11 +286,11 @@ $(document).on("submit", "#formeditperiode", function (e) {
             });
         },
 		success: function (response) {
-            if (response.responCode !== "00") {
+            if (response.responseCode !== "00") {
                 Swal.fire({
                     title            : "<h1 class='font-weight-bold'>For Your Information</h1>",
-                    html             : "<b>"+response.responDesc+"</b>",
-                    icon             : response.responHead,
+                    html             : "<b>"+response.responseDesc+"</b>",
+                    icon             : response.responseHead,
                     confirmButtonText: 'Please Try Again',
                     customClass      : {confirmButton: 'btn btn-danger'},
                     timerProgressBar : true,
@@ -239,7 +303,7 @@ $(document).on("submit", "#formeditperiode", function (e) {
 
             $('#modal_edit_periodepelaporan').modal('hide');
             Swal.close();
-            location.reload();
+			datamasterperiodepelaporan();
 		},
         error: function () {
             Swal.fire({

@@ -97,9 +97,9 @@ class Users extends BaseController{
         $resultcheckemail = $this->md->checkemail($userid,$email);
 
         if(!empty($resultcheckemail) && $email !=""){
-            $json['responCode'] = "01";
-            $json['responHead'] = "error";
-            $json['responDesc'] = "Email already exists.";
+            $json['responseCode'] = "01";
+            $json['responseHead'] = "error";
+            $json['responseDesc'] = "Email already exists.";
 
             return response()->setJSON($json);
         }
@@ -115,9 +115,9 @@ class Users extends BaseController{
 
             if (!in_array($extension, ['jpg', 'jpeg'])) {
 
-                $json['responCode'] = "01";
-                $json['responHead'] = "error";
-                $json['responDesc'] = "Format file harus JPG atau JPEG.";
+                $json['responseCode'] = "01";
+                $json['responseHead'] = "error";
+                $json['responseDesc'] = "Format file harus JPG atau JPEG.";
 
                 return response()->setJSON($json);
 
@@ -126,9 +126,9 @@ class Users extends BaseController{
             // Validasi MIME type
             if (!in_array($file->getMimeType(), ['image/jpeg'])) {
 
-                $json['responCode'] = "01";
-                $json['responHead'] = "error";
-                $json['responDesc'] = "File bukan gambar JPEG yang valid.";
+                $json['responseCode'] = "01";
+                $json['responseHead'] = "error";
+                $json['responseDesc'] = "File bukan gambar JPEG yang valid.";
 
                 return response()->setJSON($json);
 
@@ -147,9 +147,9 @@ class Users extends BaseController{
             // Upload file dengan nama userid.jpg
             if (!$file->move($uploadPath, $fileName)) {
 
-                $json['responCode'] = "01";
-                $json['responHead'] = "error";
-                $json['responDesc'] = "Gagal mengupload avatar.";
+                $json['responseCode'] = "01";
+                $json['responseHead'] = "error";
+                $json['responseDesc'] = "Gagal mengupload avatar.";
 
                 return response()->setJSON($json);
 
@@ -179,9 +179,9 @@ class Users extends BaseController{
 
                 @unlink($fullPath);
 
-                $json['responCode'] = "01";
-                $json['responHead'] = "error";
-                $json['responDesc'] = "File tidak valid.";
+                $json['responseCode'] = "01";
+                $json['responseHead'] = "error";
+                $json['responseDesc'] = "File tidak valid.";
 
                 return response()->setJSON($json);
 
@@ -189,9 +189,9 @@ class Users extends BaseController{
 
         } elseif ($file && !$file->isValid() && $file->getError() !== UPLOAD_ERR_NO_FILE) {
 
-            $json['responCode'] = "01";
-            $json['responHead'] = "error";
-            $json['responDesc'] = $file->getErrorString();
+            $json['responseCode'] = "01";
+            $json['responseHead'] = "error";
+            $json['responseDesc'] = $file->getErrorString();
 
             return response()->setJSON($json);
         }
@@ -210,13 +210,13 @@ class Users extends BaseController{
         ];
 
         if($this->md->insertuser($datainsert)){
-            $json['responCode']="00";
-            $json['responHead']="success";
-            $json['responDesc']="Data Updated Successfully";
+            $json['responseCode']="00";
+            $json['responseHead']="success";
+            $json['responseDesc']="Data Updated Successfully";
         }else{
-            $json['responCode']="01";
-            $json['responHead']="info";
-            $json['responDesc']="Data failed to update";
+            $json['responseCode']="01";
+            $json['responseHead']="info";
+            $json['responseDesc']="Data failed to update";
         }
         
 
@@ -235,9 +235,9 @@ class Users extends BaseController{
 
         // Validasi email duplikat
         if(!empty($resultcheckemail) && $email !=""){
-            $json['responCode'] = "01";
-            $json['responHead'] = "error";
-            $json['responDesc'] = "Email already exists.";
+            $json['responseCode'] = "01";
+            $json['responseHead'] = "error";
+            $json['responseDesc'] = "Email already exists.";
 
             return response()->setJSON($json);
         }
@@ -253,18 +253,18 @@ class Users extends BaseController{
             $extension = strtolower($file->getClientExtension());
 
             if (!in_array($extension, ['jpg', 'jpeg'])) {
-                $json['responCode'] = "01";
-                $json['responHead'] = "error";
-                $json['responDesc'] = "Format file harus JPG atau JPEG.";
+                $json['responseCode'] = "01";
+                $json['responseHead'] = "error";
+                $json['responseDesc'] = "Format file harus JPG atau JPEG.";
 
                 return response()->setJSON($json);
             }
 
             // Validasi MIME type
             if ($file->getMimeType() !== 'image/jpeg') {
-                $json['responCode'] = "01";
-                $json['responHead'] = "error";
-                $json['responDesc'] = "File bukan gambar JPEG yang valid.";
+                $json['responseCode'] = "01";
+                $json['responseHead'] = "error";
+                $json['responseDesc'] = "File bukan gambar JPEG yang valid.";
 
                 return response()->setJSON($json);
             }
@@ -276,9 +276,9 @@ class Users extends BaseController{
 
             // Upload dengan nama userid.jpg
             if (!$file->move($uploadPath, $fileName, true)) {
-                $json['responCode'] = "01";
-                $json['responHead'] = "error";
-                $json['responDesc'] = "Gagal mengupload avatar.";
+                $json['responseCode'] = "01";
+                $json['responseHead'] = "error";
+                $json['responseDesc'] = "Gagal mengupload avatar.";
 
                 return response()->setJSON($json);
             }
@@ -305,18 +305,18 @@ class Users extends BaseController{
             } else {
                 @unlink($fullPath);
 
-                $json['responCode'] = "01";
-                $json['responHead'] = "error";
-                $json['responDesc'] = "File tidak valid.";
+                $json['responseCode'] = "01";
+                $json['responseHead'] = "error";
+                $json['responseDesc'] = "File tidak valid.";
 
                 return response()->setJSON($json);
             }
 
         } elseif ($file && !$file->isValid() && $file->getError() !== UPLOAD_ERR_NO_FILE) {
 
-            $json['responCode'] = "01";
-            $json['responHead'] = "error";
-            $json['responDesc'] = $file->getErrorString();
+            $json['responseCode'] = "01";
+            $json['responseHead'] = "error";
+            $json['responseDesc'] = $file->getErrorString();
 
             return response()->setJSON($json);
         }
@@ -333,13 +333,13 @@ class Users extends BaseController{
         ];
 
         if($this->md->updateuser($userid, $dataupdate)){
-            $json['responCode'] = "00";
-            $json['responHead'] = "success";
-            $json['responDesc'] = "Data Updated Successfully";
+            $json['responseCode'] = "00";
+            $json['responseHead'] = "success";
+            $json['responseDesc'] = "Data Updated Successfully";
         }else{
-            $json['responCode'] = "01";
-            $json['responHead'] = "info";
-            $json['responDesc'] = "Data failed to update";
+            $json['responseCode'] = "01";
+            $json['responseHead'] = "info";
+            $json['responseDesc'] = "Data failed to update";
         }
 
         return response()->setJSON($json);

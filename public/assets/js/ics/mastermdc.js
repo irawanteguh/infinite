@@ -1,4 +1,4 @@
-var mdcRows = {};   // cache data MDC per ID (dipakai modal edit)
+﻿var mdcRows = {};   // cache data MDC per ID (dipakai modal edit)
 
 load();
 
@@ -743,13 +743,13 @@ $(document).on("submit", "#formaddmastermdc", function (e) {
         },
 		success: function (data) {
 
-            if(data.responCode == "00"){
+            if(data.responseCode == "00"){
                 load();
                 $("#modal_add_master_mdc").modal("hide");
 			}
 
             toastr.clear();
-            toastr[data.responHead](data.responDesc, "INFORMATION");
+            toastr[data.responseHead](data.responseDesc, "INFORMATION");
 		},
         complete: function(){
             toastr.clear();
@@ -785,12 +785,12 @@ $(document).on("submit", "#formeditmastermdc", function (e) {
             $("#modal_edit_master_mdc_btn").addClass("disabled");
         },
         success: function (data) {
-            if (data.responCode == "00") {
+            if (data.responseCode == "00") {
                 load();
                 $("#modal_edit_master_mdc").modal("hide");
             }
             toastr.clear();
-            toastr[data.responHead](data.responDesc, "INFORMATION");
+            toastr[data.responseHead](data.responseDesc, "INFORMATION");
         },
         complete: function () {
             toastr.clear();
@@ -826,12 +826,12 @@ $(document).on("submit", "#formeditreules", function (e) {
             $("#modal_edit_master_rules_btn").addClass("disabled");
         },
         success: function (data) {
-            if (data.responCode == "00") {
+            if (data.responseCode == "00") {
                 load();
                 $("#modal_edit_master_rules").modal("hide");
             }
             toastr.clear();
-            toastr[data.responHead](data.responDesc, "INFORMATION");
+            toastr[data.responseHead](data.responseDesc, "INFORMATION");
         },
         complete: function () {
             toastr.clear();
@@ -867,12 +867,12 @@ $(document).on("submit", "#formaddrules", function (e) {
             $("#modal_add_master_rules_btn").addClass("disabled");
         },
         success: function (data) {
-            if (data.responCode == "00") {
+            if (data.responseCode == "00") {
                 load();
                 $("#modal_add_master_rules").modal("hide");
             }
             toastr.clear();
-            toastr[data.responHead](data.responDesc, "INFORMATION");
+            toastr[data.responseHead](data.responseDesc, "INFORMATION");
         },
         complete: function () {
             toastr.clear();
@@ -904,19 +904,19 @@ $(document).on("submit", "#formaddrulenotes", function (e) {
         dataType: "JSON",
 
         success: function (response) {
-            if (response.responCode === "00") {
+            if (response.responseCode === "00") {
                 $("#modal_add_rule_notes").modal("hide");
 
                 Swal.fire({
                     icon: "success",
                     title: "Success",
-                    text: response.responDesc
+                    text: response.responseDesc
                 });
             } else {
                 Swal.fire({
                     icon: "info",
                     title: "Information",
-                    text: response.responDesc
+                    text: response.responseDesc
                 });
             }
         },

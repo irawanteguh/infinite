@@ -102,4 +102,64 @@ class PeriodepelaporanModel extends Model{
         return $this->db->table('dt01_qi_periode_mutu')->where('periode_id', $periodeid)->update($data);
     }
 
+    function periodeExists($periodeid, $groupid, $orgid){
+        return $this->db->table('dt01_qi_periode_mutu')
+            ->where('periode_id', $periodeid)
+            ->where('group_id', $groupid)
+            ->where('org_id', $orgid)
+            ->where('active', '1')
+            ->countAllResults() > 0;
+    }
+
+    function teamMembers($periodeid, $groupid, $orgid){
+        return $this->db->table('dt01_qi_komite_mutu_hd x')
+            ->select('x.user_id, u.name')
+            ->join('dt01_qi_periode_mutu p', 'p.periode_id = x.periode_id', 'inner')
+            ->join('dt01_gen_user_data u', 'u.user_id = x.user_id', 'left')
+            ->where('x.periode_id', $periodeid)
+            ->where('x.active', '1')
+            ->where('p.group_id', $groupid)
+            ->where('p.org_id', $orgid)
+            ->orderBy('u.name', 'ASC')
+            ->get()->getResult();
+    }
+
+    function replaceTeamMembers($periodeid, array $memberids, $userid, $groupid, $orgid){
+        $table = $this->db->table('dt01_qi_komite_mutu_hd');
+        $current = $table->select('user_id')->where('periode_id', $periodeid)->get()->getResultArray();
+        $currentIds = array_map(static function ($row) { return (string) $row['user_id']; }, $current);
+
+        $this->db->transStart();
+
+        $removed = array_values(array_diff($currentIds, $memberids));
+        if ($removed) {
+            $this->db->table('dt01_qi_komite_mutu_hd')
+                ->where('periode_id', $periodeid)
+                ->whereIn('user_id', $removed)
+                ->update(['active' => '0']);
+        }
+
+        foreach ($memberids as $memberid) {
+            if (in_array($memberid, $currentIds, true)) {
+                $this->db->table('dt01_qi_komite_mutu_hd')
+                    ->where('periode_id', $periodeid)
+                    ->where('user_id', $memberid)
+                    ->update(['active' => '1']);
+                continue;
+            }
+
+            $this->db->table('dt01_qi_komite_mutu_hd')->insert([
+                'periode_id' => $periodeid,
+                'user_id' => $memberid,
+                'group_id' => $groupid,
+                'org_id' => $orgid,
+                'active' => '1',
+                'created_by' => $userid
+            ]);
+        }
+
+        $this->db->transComplete();
+        return $this->db->transStatus();
+    }
+
 }

@@ -1,4 +1,4 @@
-datamasterindikator();
+﻿datamasterindikator();
 
 function getdata(btn){
 
@@ -66,7 +66,7 @@ function updateActivation (el) {
                             timer             : 1500,
                             showConfirmButton : false,
                             didClose          : function() {
-                                location.reload();
+                                datamasterindikator();
                             }
                         });
                     } else {
@@ -267,11 +267,11 @@ $(document).on("submit", "#formeditmasterindikator", function (e) {
             });
         },
 		success: function (response) {
-            if (response.responCode !== "00") {
+            if (response.responseCode !== "00") {
                 Swal.fire({
                     title            : "<h1 class='font-weight-bold'>For Your Information</h1>",
-                    html             : "<b>"+response.responDesc+"</b>",
-                    icon             : response.responHead,
+                    html             : "<b>"+response.responseDesc+"</b>",
+                    icon             : response.responseHead,
                     confirmButtonText: 'Please Try Again',
                     customClass      : {confirmButton: 'btn btn-danger'},
                     timerProgressBar : true,
@@ -284,7 +284,7 @@ $(document).on("submit", "#formeditmasterindikator", function (e) {
 
             $('#modal_edit_masterindikator').modal('hide');
             Swal.close();
-            location.reload();
+			datamasterindikator();
 		},
         error: function () {
             Swal.fire({
@@ -320,11 +320,11 @@ $(document).on("submit", "#formaddmasterindikator", function (e) {
             });
         },
 		success: function (response) {
-            if (response.responCode !== "00") {
+            if (response.responseCode !== "00") {
                 Swal.fire({
                     title            : "<h1 class='font-weight-bold'>For Your Information</h1>",
-                    html             : "<b>"+response.responDesc+"</b>",
-                    icon             : response.responHead,
+                    html             : "<b>"+response.responseDesc+"</b>",
+                    icon             : response.responseHead,
                     confirmButtonText: 'Please Try Again',
                     customClass      : {confirmButton: 'btn btn-danger'},
                     timerProgressBar : true,
@@ -337,7 +337,7 @@ $(document).on("submit", "#formaddmasterindikator", function (e) {
 
             $('#modal_add_masterindikator').modal('hide');
             Swal.close();
-            location.reload();
+			datamasterindikator();
 		},
         error: function () {
             Swal.fire({

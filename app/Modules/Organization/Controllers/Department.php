@@ -93,13 +93,13 @@ class Department extends BaseController{
             $dataupdateuser['department_id'] = $departmentid;
             $this->md->updatemasteruser($userid, $dataupdateuser);
 
-            $json['responCode']="00";
-            $json['responHead']="success";
-            $json['responDesc']="Data Updated Successfully";
+            $json['responseCode']="00";
+            $json['responseHead']="success";
+            $json['responseDesc']="Data Updated Successfully";
         }else{
-            $json['responCode']="01";
-            $json['responHead']="info";
-            $json['responDesc']="Data failed to update";
+            $json['responseCode']="01";
+            $json['responseHead']="info";
+            $json['responseDesc']="Data failed to update";
         }
 
         return response()->setJSON($json);
@@ -121,13 +121,13 @@ class Department extends BaseController{
             $dataupdateuser['department_id'] = $departmentid;
             $this->md->updatemasteruser($userid, $dataupdateuser);
 
-            $json['responCode']="00";
-            $json['responHead']="success";
-            $json['responDesc']="Data Updated Successfully";
+            $json['responseCode']="00";
+            $json['responseHead']="success";
+            $json['responseDesc']="Data Updated Successfully";
         }else{
-            $json['responCode']="01";
-            $json['responHead']="info";
-            $json['responDesc']="Data failed to update";
+            $json['responseCode']="01";
+            $json['responseHead']="info";
+            $json['responseDesc']="Data failed to update";
         }
 
         return response()->setJSON($json);

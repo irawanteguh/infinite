@@ -79,13 +79,13 @@ class Indikatorunit extends BaseController{
 
 
         if($this->md->insertindikatorunit($datainsert)){
-            $json['responCode']="00";
-            $json['responHead']="success";
-            $json['responDesc']="Data Updated Successfully";
+            $json['responseCode']="00";
+            $json['responseHead']="success";
+            $json['responseDesc']="Data Updated Successfully";
         }else{
-            $json['responCode']="01";
-            $json['responHead']="info";
-            $json['responDesc']="Data failed to update";
+            $json['responseCode']="01";
+            $json['responseHead']="info";
+            $json['responseDesc']="Data failed to update";
         }
         
 
@@ -111,13 +111,13 @@ class Indikatorunit extends BaseController{
         ];
 
         if ($this->md->updateindikator($uuid, $dataupdate)) {
-            $json['responCode'] = "00";
-            $json['responHead'] = "success";
-            $json['responDesc'] = "Data Updated Successfully";
+            $json['responseCode'] = "00";
+            $json['responseHead'] = "success";
+            $json['responseDesc'] = "Data Updated Successfully";
         } else {
-            $json['responCode'] = "01";
-            $json['responHead'] = "info";
-            $json['responDesc'] = "Data failed to update";
+            $json['responseCode'] = "01";
+            $json['responseHead'] = "info";
+            $json['responseDesc'] = "Data failed to update";
         }
 
         return response()->setJSON($json);
@@ -125,6 +125,19 @@ class Indikatorunit extends BaseController{
 
     public function dataindikatorunit(){
         $result = $this->md->dataindikatorunit(session()->get('groupid'), session()->get('orgid'), session()->get('userid'));
+
+        $submitReference = (string) (request()->getPost('uuid') ?: request()->getGet('uuid'));
+        if ($submitReference !== '') {
+            foreach ($result as $row) {
+                if ((string) $row->transaksi_id !== $submitReference) {
+                    continue;
+                }
+                for ($month = 1; $month <= 12; $month++) {
+                    $monthKey = str_pad((string) $month, 2, '0', STR_PAD_LEFT);
+                    $row->{'attachments' . $monthKey} = array_map('basename', $this->attachmentFiles($submitReference, $monthKey));
+                }
+            }
+        }
 
         if (!empty($result)) {
             $json["responseCode"]   = "00";
@@ -138,6 +151,64 @@ class Indikatorunit extends BaseController{
         }
 
         return response()->setJSON($json);
+    }
+
+    public function viewattachment(){
+        $referenceid = (string) request()->getGet('reference_id');
+        $bulan = (string) request()->getGet('bulan');
+
+        if (!$this->md->indikatorReferenceBelongsTo($referenceid, session()->get('groupid'), session()->get('orgid'), session()->get('userid'))) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        $files = $this->attachmentFiles($referenceid, $bulan);
+        if (empty($files)) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        $requestedFile = (string) request()->getGet('file');
+        if ($requestedFile !== '') {
+            $files = array_values(array_filter($files, static function ($path) use ($requestedFile) {
+                return basename($path) === $requestedFile;
+            }));
+            if (empty($files)) {
+                throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+            }
+        }
+
+        $path = $files[0];
+        $mimeType = mime_content_type($path) ?: 'application/octet-stream';
+
+        return response()
+            ->setContentType($mimeType)
+            ->setHeader('Content-Disposition', 'inline; filename="' . basename($path) . '"')
+            ->setHeader('X-Content-Type-Options', 'nosniff')
+            ->setBody(file_get_contents($path));
+    }
+
+    private function attachmentDirectory($referenceid, $bulan){
+        $safeReferenceId = preg_replace('/[^A-Za-z0-9_-]/', '', (string) $referenceid);
+        $safeMonth = (string) $bulan;
+        if ($safeReferenceId === '' || !preg_match('/^(0[1-9]|1[0-2])$/', $safeMonth)) {
+            return null;
+        }
+
+        return WRITEPATH . 'uploads' . DIRECTORY_SEPARATOR . 'qi' . DIRECTORY_SEPARATOR
+            . 'penilaian' . DIRECTORY_SEPARATOR . $safeReferenceId . DIRECTORY_SEPARATOR . $safeMonth;
+    }
+
+    private function attachmentFiles($referenceid, $bulan){
+        $directory = $this->attachmentDirectory($referenceid, $bulan);
+        if (!$directory || !is_dir($directory)) {
+            return [];
+        }
+
+        $files = array_values(array_filter(glob($directory . DIRECTORY_SEPARATOR . '*') ?: [], 'is_file'));
+        usort($files, static function ($left, $right) {
+            return filemtime($right) <=> filemtime($left);
+        });
+
+        return $files;
     }
 
     public function datateam(){
@@ -186,6 +257,77 @@ class Indikatorunit extends BaseController{
         $alasan      = request()->getPost("modal_add_pengajuanindikatorunit_alasan");
         $rtl         = request()->getPost("modal_add_pengajuanindikatorunit_rtl");
 
+        if (!preg_match('/^(0[1-9]|1[0-2])$/', (string) $bulan)
+            || !$this->md->indikatorBelongsTo($referenceid, $indikator, session()->get('groupid'), session()->get('orgid'), session()->get('userid'))) {
+            return response()->setJSON([
+                'responseCode' => '01',
+                'responseHead' => 'error',
+                'responseDesc' => 'Referensi indikator atau bulan penilaian tidak valid.'
+            ]);
+        }
+
+        $document = request()->getFile('supporting_document');
+        $storedDocumentPath = null;
+
+        if ($document && $document->getError() !== UPLOAD_ERR_NO_FILE) {
+            if (!$document->isValid()) {
+                return response()->setJSON([
+                    'responseCode' => '01',
+                    'responseHead' => 'error',
+                    'responseDesc' => 'Dokumen gagal diunggah. Periksa ukuran file dan coba kembali.'
+                ]);
+            }
+
+            if ($document->getSize() > 10 * 1024 * 1024) {
+                return response()->setJSON([
+                    'responseCode' => '01',
+                    'responseHead' => 'error',
+                    'responseDesc' => 'Ukuran dokumen maksimal 10 MB.'
+                ]);
+            }
+
+            $allowedMimeTypes = [
+                'application/pdf' => 'pdf',
+                'application/msword' => 'doc',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
+                'application/vnd.ms-excel' => 'xls',
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'xlsx',
+                'image/jpeg' => 'jpg',
+                'image/png' => 'png'
+            ];
+            $mimeType = strtolower($document->getMimeType());
+
+            if (!isset($allowedMimeTypes[$mimeType])) {
+                return response()->setJSON([
+                    'responseCode' => '01',
+                    'responseHead' => 'error',
+                    'responseDesc' => 'Format dokumen harus PDF, Word, Excel, JPG, atau PNG.'
+                ]);
+            }
+
+            $uploadDirectory = $this->attachmentDirectory($referenceid, $bulan);
+            if (!is_dir($uploadDirectory) && !mkdir($uploadDirectory, 0775, true) && !is_dir($uploadDirectory)) {
+                return response()->setJSON([
+                    'responseCode' => '01',
+                    'responseHead' => 'error',
+                    'responseDesc' => 'Folder penyimpanan dokumen tidak dapat dibuat.'
+                ]);
+            }
+
+            try {
+                $storedName = bin2hex(random_bytes(16)) . '.' . $allowedMimeTypes[$mimeType];
+                $document->move($uploadDirectory, $storedName);
+                $storedDocumentPath = $uploadDirectory . DIRECTORY_SEPARATOR . $storedName;
+            } catch (\Throwable $exception) {
+                log_message('error', 'Gagal menyimpan dokumen penilaian indikator: {message}', ['message' => $exception->getMessage()]);
+                return response()->setJSON([
+                    'responseCode' => '01',
+                    'responseHead' => 'error',
+                    'responseDesc' => 'Dokumen gagal disimpan ke penyimpanan.'
+                ]);
+            }
+        }
+
         $datainsert = [
             'group_id'     => session()->get('groupid') ?? null,
             'org_id'       => session()->get('orgid') ?? null,
@@ -199,18 +341,30 @@ class Indikatorunit extends BaseController{
             'created_by'   => session()->get('userid') ?? null
         ];
 
-        if($this->md->insertnilaiindikator($datainsert)){
-            $json['responCode']="00";
-            $json['responHead']="success";
-            $json['responDesc']="Data Updated Successfully";
+        try {
+            $saved = $this->md->saveNilaiindikator($datainsert);
+        } catch (\Throwable $exception) {
+            log_message('error', 'Gagal menyimpan penilaian indikator: {message}', ['message' => $exception->getMessage()]);
+            $saved = false;
+        }
+
+        if ($saved) {
+            $json['responseCode']="00";
+            $json['responseHead']="success";
+            $json['responseDesc'] = $storedDocumentPath
+                ? 'Penilaian dan dokumen pendukung berhasil disimpan.'
+                : 'Penilaian berhasil disimpan.';
         }else{
-            $json['responCode']="01";
-            $json['responHead']="info";
-            $json['responDesc']="Data failed to update";
+            if ($storedDocumentPath && is_file($storedDocumentPath)) {
+                unlink($storedDocumentPath);
+            }
+            $json['responseCode']="01";
+            $json['responseHead']="info";
+            $json['responseDesc']="Data failed to update";
         }
         
 
-        echo json_encode($json);
+        return response()->setJSON($json);
     }
 
 }

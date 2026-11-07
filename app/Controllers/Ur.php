@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Controllers;
 
@@ -22,7 +22,7 @@ class Ur extends BaseController{
 
         if (!is_array($headers) || empty($headers) || !is_array($rows)) {
             echo json_encode([
-                "responCode"   => "01",
+                "responseCode"   => "01",
                 "responMsg"    => "Data or header is empty.",
                 "responResult" => [
                     "total"   => 0,
@@ -193,7 +193,7 @@ class Ur extends BaseController{
         }
 
         echo json_encode([
-            "responCode"   => "00",
+            "responseCode"   => "00",
             "responMsg"    => "Import E-Klaim berhasil diproses.",
             "responResult" => [
                 "total"   => count($rows),

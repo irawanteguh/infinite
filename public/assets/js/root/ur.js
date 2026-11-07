@@ -1,4 +1,4 @@
-
+﻿
 $("#modal_upload_txt_eklaim").on("show.bs.modal", function() {
 
     $("#filetxteklaim").val("");
@@ -666,7 +666,7 @@ function prosesImportTxtEklaim(data) {
             dataType: "JSON",
             data    : {headers: JSON.stringify(headers),data: JSON.stringify(batch)},
             success : function(res) {
-                if (!res || res.responCode !== "00") {
+                if (!res || res.responseCode !== "00") {
                     Swal.fire({
                         icon: "error",
                         title: "Import Failed",

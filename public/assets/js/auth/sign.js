@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 
 $(function () {
 
@@ -69,10 +69,10 @@ $(function () {
 
         .done(function (response) {
 
-            const code = response.responCode || "01";
+            const code = response.responseCode || "01";
 
             const message = (
-                response.responDesc ||
+                response.responseDesc ||
                 "An unexpected error occurred. Please try again."
             ).replace(/<br\s*\/?>/gi, "\n");
 
@@ -134,8 +134,8 @@ $(function () {
             let message =
                 "Unable to process your sign-in request. Please try again.";
 
-            if (xhr.responseJSON && xhr.responseJSON.responDesc) {
-                message = xhr.responseJSON.responDesc;
+            if (xhr.responseJSON && xhr.responseJSON.responseDesc) {
+                message = xhr.responseJSON.responseDesc;
             }
 
             Swal.fire({

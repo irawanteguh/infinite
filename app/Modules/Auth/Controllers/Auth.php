@@ -25,9 +25,9 @@ class Auth extends BaseController{
 
         if ($username === '' || $password === '') {
             return $this->response->setJSON([
-                'responCode' => '01',
-                'responHead' => 'error',
-                'responDesc' => 'Username dan password wajib diisi'
+                'responseCode' => '01',
+                'responseHead' => 'error',
+                'responseDesc' => 'Username dan password wajib diisi'
             ]);
         }
 
@@ -37,9 +37,9 @@ class Auth extends BaseController{
 
             if ($checkauth->active === '0') {
                 return $this->response->setJSON([
-                    'responCode' => '02',
-                    'responHead' => 'failed',
-                    'responDesc' => 'Your account is deactivated',
+                    'responseCode' => '02',
+                    'responseHead' => 'failed',
+                    'responseDesc' => 'Your account is deactivated',
                     'url'        => site_url('additional/deactive')
                 ]);
             }
@@ -48,9 +48,9 @@ class Auth extends BaseController{
 
             if (empty($datasession)) {
                 return $this->response->setJSON([
-                    'responCode' => '01',
-                    'responHead' => 'error',
-                    'responDesc' => 'Data session user tidak ditemukan'
+                    'responseCode' => '01',
+                    'responseHead' => 'error',
+                    'responseDesc' => 'Data session user tidak ditemukan'
                 ]);
             }
 
@@ -76,17 +76,17 @@ class Auth extends BaseController{
             $this->session->set($sessiondata);
 
             return $this->response->setJSON([
-                'responCode' => '00',
-                'responHead' => 'success',
-                'responDesc' => 'Hey, ' . $datasession->name . '<br>Welcome Back and Have a nice day',
+                'responseCode' => '00',
+                'responseHead' => 'success',
+                'responseDesc' => 'Hey, ' . $datasession->name . '<br>Welcome Back and Have a nice day',
                 'url'        => site_url('additional/welcomepage')
             ]);
         }
 
         return $this->response->setJSON([
-            'responCode' => '01',
-            'responHead' => 'error',
-            'responDesc' => 'Username dan/atau password tidak sesuai'
+            'responseCode' => '01',
+            'responseHead' => 'error',
+            'responseDesc' => 'Username dan/atau password tidak sesuai'
         ]);
     }
 

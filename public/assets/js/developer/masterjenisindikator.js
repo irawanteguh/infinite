@@ -34,7 +34,7 @@ function updateActivation (el) {
                             timer             : 1500,
                             showConfirmButton : false,
                             didClose          : function() {
-                                location.reload();
+                                datamasterjenisindikator();
                             }
                         });
                     } else {

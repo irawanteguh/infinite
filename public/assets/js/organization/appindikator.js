@@ -39,7 +39,7 @@ function updateApproval(el) {
                             timer: 1500,
                             showConfirmButton: false,
                             didClose: function() {
-                                location.reload();
+                                datamasterindikator();
                             }
                         });
                     } else {

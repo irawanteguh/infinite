@@ -79,13 +79,13 @@ class Mastermdc extends BaseController{
         $data['created_by']  = $this->session->get('userid');
 
         if($this->md->insertmastermdc($data)){
-            $json['responCode']="00";
-            $json['responHead']="success";
-            $json['responDesc']="Data Added Successfully";
+            $json['responseCode']="00";
+            $json['responseHead']="success";
+            $json['responseDesc']="Data Added Successfully";
         } else {
-            $json['responCode']="01";
-            $json['responHead']="info";
-            $json['responDesc']="Data Failed to Add";
+            $json['responseCode']="01";
+            $json['responseHead']="info";
+            $json['responseDesc']="Data Failed to Add";
         }
 
         return response()->setJSON($json);
@@ -95,9 +95,9 @@ class Mastermdc extends BaseController{
         $id = request()->getPost('ID');
 
         if(empty($id)){
-            $json['responCode']="01";
-            $json['responHead']="info";
-            $json['responDesc']="ID is required";
+            $json['responseCode']="01";
+            $json['responseHead']="info";
+            $json['responseDesc']="ID is required";
 
             return response()->setJSON($json);
         }
@@ -114,13 +114,13 @@ class Mastermdc extends BaseController{
         $data['updated_by']             = $this->session->get('userid');
 
         if($this->md->updatemastermcd($id, $data)){
-            $json['responCode']="00";
-            $json['responHead']="success";
-            $json['responDesc']="Data Updated Successfully";
+            $json['responseCode']="00";
+            $json['responseHead']="success";
+            $json['responseDesc']="Data Updated Successfully";
         } else {
-            $json['responCode']="01";
-            $json['responHead']="info";
-            $json['responDesc']="Data Failed to Update";
+            $json['responseCode']="01";
+            $json['responseHead']="info";
+            $json['responseDesc']="Data Failed to Update";
         }
 
         return response()->setJSON($json);
@@ -130,9 +130,9 @@ class Mastermdc extends BaseController{
         $id = request()->getPost('ID');
 
         if(empty($id)){
-            $json['responCode']="01";
-            $json['responHead']="info";
-            $json['responDesc']="ID is required";
+            $json['responseCode']="01";
+            $json['responseHead']="info";
+            $json['responseDesc']="ID is required";
 
             return response()->setJSON($json);
         }
@@ -149,13 +149,13 @@ class Mastermdc extends BaseController{
         $data['PAGE_PDF']         = request()->getPost('PAGE_PDF');
 
         if($this->md->updatemasterrule($id, $data)){
-            $json['responCode']="00";
-            $json['responHead']="success";
-            $json['responDesc']="Data Updated Successfully";
+            $json['responseCode']="00";
+            $json['responseHead']="success";
+            $json['responseDesc']="Data Updated Successfully";
         } else {
-            $json['responCode']="01";
-            $json['responHead']="info";
-            $json['responDesc']="Data Failed to Update";
+            $json['responseCode']="01";
+            $json['responseHead']="info";
+            $json['responseDesc']="Data Failed to Update";
         }
 
         return response()->setJSON($json);
@@ -174,21 +174,21 @@ class Mastermdc extends BaseController{
         $data['PAGE_PDF']         = request()->getPost('PAGE_PDF');
 
         if (empty($data['SECTION_ID'])) {
-            $json['responCode'] = "01";
-            $json['responHead'] = "info";
-            $json['responDesc'] = "Section ID is required";
+            $json['responseCode'] = "01";
+            $json['responseHead'] = "info";
+            $json['responseDesc'] = "Section ID is required";
 
             return response()->setJSON($json);
         }
 
         if ($this->md->insertmasterrule($data)) {
-            $json['responCode'] = "00";
-            $json['responHead'] = "success";
-            $json['responDesc'] = "Coding Rule Added Successfully";
+            $json['responseCode'] = "00";
+            $json['responseHead'] = "success";
+            $json['responseDesc'] = "Coding Rule Added Successfully";
         } else {
-            $json['responCode'] = "01";
-            $json['responHead'] = "info";
-            $json['responDesc'] = "Coding Rule Failed to Add";
+            $json['responseCode'] = "01";
+            $json['responseHead'] = "info";
+            $json['responseDesc'] = "Coding Rule Failed to Add";
         }
 
         return response()->setJSON($json);
@@ -201,9 +201,9 @@ class Mastermdc extends BaseController{
         $json = [];
 
         if ($ruleId <= 0 || !is_array($notes)) {
-            $json['responCode'] = "01";
-            $json['responHead'] = "info";
-            $json['responDesc'] = "Invalid Coding Rule or Notes";
+            $json['responseCode'] = "01";
+            $json['responseHead'] = "info";
+            $json['responseDesc'] = "Invalid Coding Rule or Notes";
             return response()->setJSON($json);
         }
 
@@ -232,13 +232,13 @@ class Mastermdc extends BaseController{
         }
 
         if ($success) {
-            $json['responCode'] = "00";
-            $json['responHead'] = "success";
-            $json['responDesc'] = "Notes Added Successfully";
+            $json['responseCode'] = "00";
+            $json['responseHead'] = "success";
+            $json['responseDesc'] = "Notes Added Successfully";
         } else {
-            $json['responCode'] = "01";
-            $json['responHead'] = "info";
-            $json['responDesc'] = "Notes Failed to Add";
+            $json['responseCode'] = "01";
+            $json['responseHead'] = "info";
+            $json['responseDesc'] = "Notes Failed to Add";
         }
 
         return response()->setJSON($json);

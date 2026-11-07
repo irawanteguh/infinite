@@ -1,4 +1,4 @@
-$("#modal_upload_txt_bahv").on("show.bs.modal", function() {
+﻿$("#modal_upload_txt_bahv").on("show.bs.modal", function() {
     resetPreviewBahv();
 });
 
@@ -618,7 +618,7 @@ function prosesImportTxtBahv(data) {
             },
 
             success: function(res) {
-                if (!res || res.responCode !== "00") {
+                if (!res || res.responseCode !== "00") {
                     Swal.fire({
                         icon             : "error",
                         title            : "Import Failed",

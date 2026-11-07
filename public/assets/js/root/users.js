@@ -1,4 +1,4 @@
-function activationuser(el) {
+﻿function activationuser(el) {
 
     let userid     = el.data("userid");
     let active     = String(el.data("active"));
@@ -121,11 +121,11 @@ $(document).on("submit", "#formadduser", function (e) {
             });
         },
 		success: function (response) {
-            if (response.responCode !== "00") {
+            if (response.responseCode !== "00") {
                 Swal.fire({
                     title            : "<h1 class='font-weight-bold'>For Your Information</h1>",
-                    html             : "<b>"+response.responDesc+"</b>",
-                    icon             : response.responHead,
+                    html             : "<b>"+response.responseDesc+"</b>",
+                    icon             : response.responseHead,
                     confirmButtonText: 'Please Try Again',
                     customClass      : {confirmButton: 'btn btn-danger'},
                     timerProgressBar : true,
@@ -174,11 +174,11 @@ $(document).on("submit", "#formedituser", function (e) {
             });
         },
 		success: function (response) {
-            if (response.responCode !== "00") {
+            if (response.responseCode !== "00") {
                 Swal.fire({
                     title            : "<h1 class='font-weight-bold'>For Your Information</h1>",
-                    html             : "<b>"+response.responDesc+"</b>",
-                    icon             : response.responHead,
+                    html             : "<b>"+response.responseDesc+"</b>",
+                    icon             : response.responseHead,
                     confirmButtonText: 'Please Try Again',
                     customClass      : {confirmButton: 'btn btn-danger'},
                     timerProgressBar : true,

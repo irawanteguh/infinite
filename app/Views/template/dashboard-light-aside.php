@@ -79,7 +79,7 @@
                 }
             }
 
-            $modulePath = APPPATH . 'Modules/' . $segment1;
+            $modulePath = APPPATH . 'Modules/' . ucfirst($segment1);
 
             $directory = $modulePath . '/drawer/' . $segment2 . '.php';
             if (file_exists($directory)) {
@@ -91,7 +91,7 @@
                 include $directory;
             }
 
-            $directory = $modulePath . '/modal/' . $segment2 . '.php';
+            $directory = $modulePath . '/Modal/' . $segment2 . '.php';
             if (file_exists($directory)) {
                 include $directory;
             }

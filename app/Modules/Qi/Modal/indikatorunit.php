@@ -68,6 +68,36 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal_create_fishbone_from_indicator" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <form id="form_create_fishbone_from_indicator">
+                <div class="modal-header">
+                    <h2 class="mb-0">Buat Analisis Fishbone</h2>
+                    <button type="button" class="btn btn-sm btn-icon" data-bs-dismiss="modal" aria-label="Tutup"><i class="bi bi-x-lg"></i></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="fishbone_indicator_ref_id" name="indikator_ref_id">
+                    <div class="mb-5">
+                        <label class="form-label required" for="fishbone_indicator_period">Periode</label>
+                        <select class="form-select form-select-solid" id="fishbone_indicator_period" name="periode_id" required>
+                            <?php echo $masterperiodepelaporan; ?>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label required" for="fishbone_indicator_problem">Masalah</label>
+                        <textarea class="form-control form-control-solid" id="fishbone_indicator_problem" name="problem" rows="5" maxlength="2000" placeholder="Masukkan masalah mutu yang akan dianalisis" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary" id="btn_save_fishbone_from_indicator">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modal_edit_pengajuanindikatorunit" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">

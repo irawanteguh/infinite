@@ -4,6 +4,8 @@
     const indicatorRef = String($('#fishboneRoot').data('indicator-ref') || '');
     const indicatorDepartment = String($('#fishboneRoot').data('department') || '');
     const indicatorPeriod = String($('#fishboneRoot').data('period') || '');
+    const mode = String($('#fishboneRoot').data('mode') || 'list');
+    const initialAnalysisId = String($('#fishboneRoot').data('selected-id') || '');
     const categories = ['Man (SDM)', 'Method (Metode)', 'Machine (Mesin/Peralatan)', 'Material (Bahan)', 'Measurement (Pengukuran)', 'Environment (Lingkungan)'];
     let selectedId = "";
     let analyses = [];
@@ -15,8 +17,8 @@
         const $rows = $('#fishboneRows').empty();
         $('#fishboneEmpty').toggle(analyses.length === 0);
         analyses.forEach(item => {
-            const active = String(item.fishbone_id) === String(selectedId);
-            $rows.append(`<tr class="${active ? 'bg-light-primary' : ''}"><td><span class="fw-bolder text-gray-800">${escapeHtml(item.problem)}</span>${item.indikator ? `<div class="text-muted fs-8">${escapeHtml(item.indikator)}</div>` : ''}</td><td>${escapeHtml(item.department || '-')}</td><td>${escapeHtml(item.tahun || '-')}</td><td class="text-end text-nowrap"><button type="button" class="btn btn-sm ${active ? 'btn-primary' : 'btn-light-primary'} fishbone-select" data-id="${escapeHtml(item.fishbone_id)}">${active ? 'Dipilih' : 'Pilih'}</button> <button type="button" class="btn btn-sm btn-icon btn-light-primary fishbone-edit" data-id="${escapeHtml(item.fishbone_id)}" title="Ubah"><i class="bi bi-pencil"></i></button> <button type="button" class="btn btn-sm btn-icon btn-light-danger fishbone-delete" data-id="${escapeHtml(item.fishbone_id)}" title="Hapus"><i class="bi bi-trash"></i></button></td></tr>`);
+            const diagramUrl = `${base}diagram?fishbone_id=${encodeURIComponent(item.fishbone_id)}`;
+            $rows.append(`<tr><td><span class="fw-bolder text-gray-800">${escapeHtml(item.problem)}</span></td><td>${escapeHtml(item.indikator || '-')}</td><td>${escapeHtml(item.department || '-')}</td><td>${escapeHtml(item.tahun || '-')}</td><td class="text-end text-nowrap"><a class="btn btn-sm btn-light-primary" href="${diagramUrl}">Pilih</a> <button type="button" class="btn btn-sm btn-icon btn-light-primary fishbone-edit" data-id="${escapeHtml(item.fishbone_id)}" title="Ubah"><i class="bi bi-pencil"></i></button> <button type="button" class="btn btn-sm btn-icon btn-light-danger fishbone-delete" data-id="${escapeHtml(item.fishbone_id)}" title="Hapus"><i class="bi bi-trash"></i></button></td></tr>`);
         });
     }
     function renderCauses() {
@@ -59,26 +61,27 @@
         $.post(base + 'fishbonedata', {fishbone_id:id}).done(res => {
             if (res.responseCode !== '00') return notify('error','Gagal memuat',res.responseDesc || 'Analisis tidak dapat dimuat.');
             selectedId = id; causes = res.responseCauses || [];
+            if (mode === 'diagram') analyses = [res.responseResult];
             $('#fishboneDepartmentLabel').text(res.responseResult.department || ''); $('#fishboneAddCauseButton').prop('disabled',false);
-            renderList(); renderCauses();
+            if (mode === 'list') renderList();
+            renderCauses();
         }).fail(() => notify('error','Gagal memuat','Analisis Fishbone tidak dapat dimuat.'));
     }
-    function loadList(selectId) {
+    function loadList() {
         return $.post(base + 'analysislist', {indikator_ref_id: indicatorRef}).done(res => {
             if (res.responseCode !== '00') return notify('error','Gagal memuat',res.responseDesc || 'Daftar tidak dapat dimuat.');
-            analyses = res.responseResult || []; selectedId = selectId || (analyses[0] && analyses[0].fishbone_id) || '';
+            analyses = res.responseResult || []; selectedId = '';
             renderList();
-            if (selectedId) loadAnalysis(selectedId); else { causes = []; $('#fishboneDiagram,#fishboneCauseList').empty(); $('#fishboneAddCauseButton').prop('disabled',true); $('#fishboneDepartmentLabel').text('Pilih analisis dari daftar'); }
+            causes = [];
         }).fail(() => notify('error','Gagal memuat','Daftar Fishbone tidak dapat dimuat.'));
     }
     $(document).on('click','#fishboneAddButton',function(){ $('#fishboneAnalysisForm')[0].reset(); $('#fishboneId').val(''); $('#fishboneIndicatorRef').val(indicatorRef); if(indicatorRef){$('#fishboneDepartment').val(indicatorDepartment);$('#fishbonePeriod').val(indicatorPeriod);} $('#fishboneAnalysisTitle').text(indicatorRef ? 'Buat Fishbone dari Indikator' : 'Buat Analisis Fishbone'); modal('fishboneAnalysisModal').show(); });
-    $(document).on('submit','#fishboneAnalysisForm',function(e){ e.preventDefault(); $.post(base+'saveanalysis',$(this).serialize()).done(res=>{ if(res.responseCode!=='00') return notify('error','Gagal menyimpan',res.responseDesc); analyses=res.responseAnalyses||[]; selectedId=res.responseResult; renderList(); modal('fishboneAnalysisModal').hide(); loadAnalysis(selectedId); }).fail(()=>notify('error','Request gagal','Analisis Fishbone tidak dapat disimpan.')); });
-    $(document).on('click','.fishbone-select',function(){loadAnalysis($(this).data('id'));});
+    $(document).on('submit','#fishboneAnalysisForm',function(e){ e.preventDefault(); $.post(base+'saveanalysis',$(this).serialize()).done(res=>{ if(res.responseCode!=='00') return notify('error','Gagal menyimpan',res.responseDesc); modal('fishboneAnalysisModal').hide(); loadList(); }).fail(()=>notify('error','Request gagal','Analisis Fishbone tidak dapat disimpan.')); });
     $(document).on('click','.fishbone-edit',function(){const a=analyses.find(x=>String(x.fishbone_id)===String($(this).data('id'))); if(!a)return; $('#fishboneId').val(a.fishbone_id);$('#fishboneIndicatorRef').val(a.indikator_ref_id || '');$('#fishboneProblem').val(a.problem);$('#fishboneDepartment').val(a.department_id);$('#fishbonePeriod').val(a.periode_id);$('#fishboneAnalysisTitle').text('Ubah Analisis Fishbone');modal('fishboneAnalysisModal').show();});
     $(document).on('click','.fishbone-delete',function(){const id=$(this).data('id');Swal.fire({icon:'warning',title:'Hapus analisis?',text:'Seluruh penyebab pada analisis ini juga akan diarsipkan.',showCancelButton:true,confirmButtonText:'Hapus',cancelButtonText:'Batal'}).then(result=>{if(!result.isConfirmed)return;$.post(base+'deleteanalysis',{fishbone_id:id}).done(res=>{if(res.responseCode!=='00')return notify('error','Gagal menghapus',res.responseDesc);analyses=res.responseAnalyses||[];selectedId='';loadList();}).fail(()=>notify('error','Request gagal','Analisis tidak dapat dihapus.'));});});
     $(document).on('click','#fishboneAddCauseButton',function(){if(!selectedId)return;$('#fishboneCauseForm')[0].reset();$('#causeFishboneId').val(selectedId);$('#causeId').val('');$('#fishboneCauseTitle').text('Tambah Penyebab');modal('fishboneCauseModal').show();});
     $(document).on('click','.fishbone-cause-edit',function(){const c=causes.find(x=>String(x.cause_id)===String($(this).data('id')));if(!c)return;$('#causeFishboneId').val(selectedId);$('#causeId').val(c.cause_id);$('#causeCategory').val(c.category);$('#causeDescription').val(c.cause);$('#causePriority').val(c.priority || 'medium');$('#fishboneCauseTitle').text('Ubah Penyebab');modal('fishboneCauseModal').show();});
     $(document).on('submit','#fishboneCauseForm',function(e){e.preventDefault();$.post(base+'savecause',$(this).serialize()).done(res=>{if(res.responseCode!=='00')return notify('error','Gagal menyimpan',res.responseDesc);causes=res.responseCauses||[];renderCauses();modal('fishboneCauseModal').hide();}).fail(()=>notify('error','Request gagal','Penyebab tidak dapat disimpan.'));});
     $(document).on('click','.fishbone-cause-delete',function(){const causeId=$(this).data('id');Swal.fire({icon:'warning',title:'Hapus penyebab?',showCancelButton:true,confirmButtonText:'Hapus',cancelButtonText:'Batal'}).then(result=>{if(!result.isConfirmed)return;$.post(base+'deletecause',{fishbone_id:selectedId,cause_id:causeId}).done(res=>{if(res.responseCode!=='00')return notify('error','Gagal menghapus',res.responseDesc);causes=res.responseCauses||[];renderCauses();}).fail(()=>notify('error','Request gagal','Penyebab tidak dapat dihapus.'));});});
-    $(function(){loadList();});
+    $(function(){ if(mode === 'diagram' && initialAnalysisId){ loadAnalysis(initialAnalysisId); } else { loadList(); } });
 })(jQuery);

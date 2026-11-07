@@ -3,6 +3,30 @@ let   indikatorUnitMap  = {};
 
 load();
 
+$(document).on("click", ".indikatorunit-fishbone", function () {
+    const item = indikatorUnitMap[String($(this).data("uuid"))] || {};
+    $("#fishbone_indicator_ref_id").val(item.transaksi_id || "");
+    $("#fishbone_indicator_period").val(item.periode_id || "").trigger("change");
+    $("#fishbone_indicator_problem").val("");
+    bootstrap.Modal.getOrCreateInstance(document.getElementById("modal_create_fishbone_from_indicator")).show();
+});
+
+$(document).on("submit", "#form_create_fishbone_from_indicator", function (e) {
+    e.preventDefault();
+    const $button = $("#btn_save_fishbone_from_indicator").prop("disabled", true);
+    $.post(url + "qi/fishbone/saveanalysis", $(this).serialize())
+        .done(function (response) {
+            if (response.responseCode !== "00") {
+                Swal.fire("Gagal menyimpan", response.responseDesc || "Analisis Fishbone gagal disimpan.", "error");
+                return;
+            }
+            bootstrap.Modal.getOrCreateInstance(document.getElementById("modal_create_fishbone_from_indicator")).hide();
+            window.location.href = url + "qi/fishbone";
+        })
+        .fail(function () { Swal.fire("Error", "Analisis Fishbone gagal disimpan.", "error"); })
+        .always(function () { $button.prop("disabled", false); });
+});
+
 $("#modal_add_pengajuanindikatorunit_numerator, #modal_add_pengajuanindikatorunit_denumerator").on("input", function () {
     this.value = this.value.replace(/[^0-9]/g, "");
 });
@@ -369,7 +393,8 @@ function dataindikatorunit() {
                     }
                 }
 
-                btnaction += "<a class='dropdown-item btn btn-sm text-primary' href='"+url+"qi/fishbone?indikator_ref_id="+encodeURIComponent(result[i].transaksi_id)+"'><i class='bi bi-diagram-3 text-primary me-4'></i>Fishbone</a>";
+                btnaction += "<a href='javascript:void(0);' class='dropdown-item btn btn-sm text-primary indikatorunit-fishbone' data-uuid='"+String(result[i].transaksi_id || "").replace(/&/g,"&amp;").replace(/'/g,"&#39;")+"'><i class='bi bi-diagram-3 text-primary me-4'></i>Fishbone</a>";
+                btnaction += "<a class='dropdown-item btn btn-sm text-primary' href='"+url+"qi/pdsa?indikator_ref_id="+encodeURIComponent(result[i].transaksi_id)+"'><i class='bi bi-arrow-repeat text-primary me-4'></i>Siklus PDSA</a>";
                 
 
                 tableResult += "<tr>";

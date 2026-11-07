@@ -8,6 +8,10 @@ class AddPriorityToQiFishboneCause extends Migration
 {
     public function up()
     {
+        if ($this->db->fieldExists('priority', 'dt01_qi_fishbone_dt')) {
+            return;
+        }
+
         $this->forge->addColumn('dt01_qi_fishbone_dt', [
             'priority' => [
                 'type' => 'VARCHAR',
@@ -20,6 +24,8 @@ class AddPriorityToQiFishboneCause extends Migration
 
     public function down()
     {
-        $this->forge->dropColumn('dt01_qi_fishbone_dt', 'priority');
+        if ($this->db->fieldExists('priority', 'dt01_qi_fishbone_dt')) {
+            $this->forge->dropColumn('dt01_qi_fishbone_dt', 'priority');
+        }
     }
 }

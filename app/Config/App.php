@@ -17,7 +17,7 @@ class App extends BaseConfig
 
         $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
 
-        $this->baseURL = $protocol . '://' . $host . '/infinite_V2/';
+        $this->baseURL = $protocol . '://' . $host . '/infinite/';
     }
     /**
      * --------------------------------------------------------------------------

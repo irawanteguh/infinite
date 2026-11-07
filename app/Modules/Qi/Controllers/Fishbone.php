@@ -37,6 +37,32 @@ class Fishbone extends BaseController
         ]);
     }
 
+    public function diagram()
+    {
+        $groupid = session()->get('groupid');
+        $orgid = session()->get('orgid');
+        $fishboneId = trim((string) request()->getGet('fishbone_id'));
+        $analysis = $fishboneId !== '' ? $this->md->analysis($fishboneId, $groupid, $orgid) : null;
+        if (!$analysis) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        $data = [
+            'departments' => $this->md->departments($groupid, $orgid),
+            'periods' => $this->md->periods($groupid, $orgid),
+            'categories' => $this->categories,
+            'linkedIndicator' => null,
+            'selectedAnalysis' => $analysis,
+        ];
+        return view('template/dashboard-light-aside', [
+            'contents' => view('Modules\\Qi\\Views\\v_fishbonediagram', $data),
+            'fishboneDepartments' => $data['departments'],
+            'fishbonePeriods' => $data['periods'],
+            'fishboneCategories' => $data['categories'],
+            'linkedIndicator' => null,
+        ]);
+    }
+
     public function fishbonedata()
     {
         $groupid = session()->get('groupid');
@@ -68,12 +94,8 @@ class Fishbone extends BaseController
         $department = trim((string) request()->getPost('department_id'));
         $period = trim((string) request()->getPost('periode_id'));
         $referenceId = trim((string) request()->getPost('indikator_ref_id'));
-        if ($problem === '' || $department === '') {
-            return $this->jsonError('Masalah dan departemen wajib diisi.');
-        }
-        if (!$this->md->departmentExists($department, session()->get('groupid'), session()->get('orgid'))
-            || ($period !== '' && !$this->md->periodExists($period, session()->get('groupid'), session()->get('orgid')))) {
-            return $this->jsonError('Departemen atau periode tidak tersedia.');
+        if ($problem === '') {
+            return $this->jsonError('Masalah wajib diisi.');
         }
         $indicator = null;
         if ($referenceId !== '') {
@@ -82,7 +104,11 @@ class Fishbone extends BaseController
                 return $this->jsonError('Indikator tidak tersedia.');
             }
             $department = $indicator->department_id;
-            $period = $indicator->periode_id;
+        }
+        if ($department === '' || !$this->md->departmentExists($department, session()->get('groupid'), session()->get('orgid'))
+            || ($referenceId !== '' && $period === '')
+            || ($period !== '' && !$this->md->periodExists($period, session()->get('groupid'), session()->get('orgid')))) {
+            return $this->jsonError('Departemen atau periode tidak tersedia.');
         }
         if ($id !== '' && !$this->md->analysis($id, session()->get('groupid'), session()->get('orgid'))) {
             return $this->jsonError('Analisis Fishbone tidak ditemukan.');

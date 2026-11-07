@@ -10,7 +10,7 @@
     <span class="h-20px border-gray-200 border-start mx-4"></span>
 
     <?php
-        $directory = APPPATH . 'Modules/' . $segment1 . '/breadcrumb/' . $segment2 . '.php';
+        $directory = APPPATH . 'Modules/' . ucfirst($segment1) . '/Breadcrumb/' . $segment2 . '.php';
         if (file_exists($directory)) {
             include $directory;
         }
@@ -43,7 +43,7 @@
             }
         }
 
-        $directory = APPPATH . 'Modules/' . $segment1 . '/toolbar/' . $segment2 . '.php';
+        $directory = APPPATH . 'Modules/' . ucfirst($segment1) . '/Toolbar/' . $segment2 . '.php';
         if (file_exists($directory)) {
             include $directory;
         }

@@ -1,4 +1,78 @@
 masterorganization();
+loadParentOrganizations();
+
+toggleParentOrganizationField();
+$(document).on("change", "#modal_add_organization_type", toggleParentOrganizationField);
+
+function toggleParentOrganizationField() {
+    const type = $("#modal_add_organization_type").val();
+    if (type === "Y") {
+        $("#parentOrganizationContainer").hide();
+        $("#modal_add_organization_header").val("").trigger("change");
+    } else {
+        $("#parentOrganizationContainer").show();
+    }
+}
+
+function loadParentOrganizations() {
+    $.ajax({
+        url     : url + "developer/organization/headerorganizations",
+        type    : "POST",
+        dataType: "JSON",
+        success : function (response) {
+            const $select = $("#modal_add_organization_header");
+            $select.find("option:not(:first)").remove();
+            if (response.responseCode !== "00" || !Array.isArray(response.responseResult)) {
+                return;
+            }
+            for (const row of response.responseResult) {
+                const label = (row.org_name || "-") + (row.holding ? " (" + row.holding + ")" : "");
+                $select.append($("<option>", { value: row.org_id, text: label }));
+            }
+        }
+    });
+}
+
+function addAdministratorUser(el) {
+    const orgid   = el.data("orgid");
+    const koders  = el.data("koders");
+    const username = "admin_" + koders;
+
+    Swal.fire({
+        title             : "Add User Administrator?",
+        html              : "Akan dibuat user <b>" + username + "</b> untuk organization ini.<br><small class=\"text-muted\">Password default: 12345678</small>",
+        icon              : "question",
+        showCancelButton  : true,
+        confirmButtonColor: "#50CD89",
+        cancelButtonColor : "#6c757d",
+        confirmButtonText : '<i class="bi bi-person-add text-white"></i> Ya, Buat',
+        cancelButtonText  : "Cancel",
+        reverseButtons    : true
+    }).then(function (result) {
+        if (!result.isConfirmed) {
+            return;
+        }
+        $.ajax({
+            url     : url + "developer/organization/addadministratoruser",
+            type    : "POST",
+            data    : { orgid: orgid },
+            dataType: "JSON",
+            success : function (response) {
+                if (response.responseCode === "00") {
+                    Swal.fire({
+                        title            : "Success",
+                        text             : response.responseDesc,
+                        icon             : "success",
+                        timer            : 2500,
+                        showConfirmButton: false
+                    });
+                } else {
+                    Swal.fire("Info", response.responseDesc, response.responseHead === "error" ? "error" : "info");
+                }
+            }
+        });
+    });
+}
 
 function updateActivation (el) {
     const orgid     = el.data("orgid");
@@ -91,6 +165,10 @@ function masterorganization() {
                                 "data-active='"+result[i].active+"'";
 
                 let btnaction = "";
+
+                if (result[i].kode_rs) {
+                    btnaction += "<a href='javascript:void(0);' class='dropdown-item btn btn-sm' data-orgid='"+result[i].org_id+"' data-koders='"+result[i].kode_rs+"' onclick='addAdministratorUser($(this));'><i class='bi bi-person-add me-4'></i>Add User Administrator</a>";
+                }
 
                 btnaction += "<a href='javascript:void(0);' class='dropdown-item btn btn-sm "+(result[i].active === '1' ? 'text-danger' : 'text-success')+"' "+getvariabel+" data-active='"+result[i].active+"' onclick='updateActivation($(this));'><i class='bi "+(result[i].active === '1' ? 'bi-x-circle text-danger' : 'bi-check-circle text-success')+" me-4'></i>"+(result[i].active === '1' ? 'Non Active' : 'Active')+"</a>";
 
@@ -195,3 +273,54 @@ function masterorganization() {
         }
     });
 }
+
+$(document).on("submit", "#formaddorganization", function (e) {
+    e.preventDefault();
+    const data = new FormData(this);
+    $.ajax({
+        url        : url + "developer/organization/addorganization",
+        data       : data,
+        method     : "POST",
+        dataType   : "JSON",
+        cache      : false,
+        processData: false,
+        contentType: false,
+        beforeSend : function () {
+            Swal.fire({
+                title            : "Processing",
+                html             : "Please wait while the system saves organization data.",
+                allowOutsideClick: false,
+                allowEscapeKey   : false,
+                showConfirmButton: false,
+                didOpen          : () => Swal.showLoading()
+            });
+        },
+        success: function (response) {
+            if (response.responseCode !== "00") {
+                Swal.fire("Info", response.responseDesc, response.responseHead === "error" ? "error" : "info");
+                return;
+            }
+            $("#modal_add_organization")[0].reset();
+            $("#modal_add_organization").modal("hide");
+            $("#modal_add_organization_type, #modal_add_organization_header").val("").trigger("change");
+            toggleParentOrganizationField();
+            Swal.fire({
+                title            : "Success",
+                text             : response.responseDesc,
+                icon             : "success",
+                timer            : 2000,
+                showConfirmButton: false,
+                didClose         : function () {
+                    masterorganization();
+                }
+            });
+        },
+        error: function () {
+            Swal.fire("Error", "An error occurred while processing your request.", "error");
+        },
+        complete: function () {
+            Swal.close();
+        }
+    });
+    return false;
+});

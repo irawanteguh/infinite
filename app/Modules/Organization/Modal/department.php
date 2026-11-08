@@ -11,7 +11,7 @@
                 </div>
             </div>
             <form action="<?php echo base_url();?>index.php/qi/masterdepartment/addmasterdepartment" id="formaddmasterdepartment">
-                <div class="modal-body" style="max-height:80vh; overflow-y:auto;">
+                <div class="modal-body">
 
                     <div class="text-start mb-7">
                         <div class="text-muted fw-bold fs-6">
@@ -53,7 +53,7 @@
             </div>
             <form action="<?php echo base_url();?>index.php/qi/masterdepartment/editmasterdepartment" id="formeditmasterdepartment">
                 <input type="hidden" id="modal_edit_masterdepartment_departmentid" name="modal_edit_masterdepartment_departmentid">
-                <div class="modal-body" style="max-height:80vh; overflow-y:auto;">
+                <div class="modal-body">
 
                     <div class="text-start mb-7">
                         <div class="text-muted fw-bold fs-6">

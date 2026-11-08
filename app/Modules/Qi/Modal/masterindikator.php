@@ -10,7 +10,7 @@
                 </div>
             </div>
             <form action="<?php echo base_url();?>index.php/qi/masterindikator/addmasterindikator" id="formaddmasterindikator">
-                <div class="modal-body" style="max-height:80vh; overflow-y:auto;">
+                <div class="modal-body">
 
                     <div class="text-start mb-7">
                         <div class="text-muted fw-bold fs-6">
@@ -208,7 +208,7 @@
             </div>
             <form action="<?php echo base_url();?>index.php/qi/masterindikator/editmasterindikator" id="formeditmasterindikator">
                 <input type="hidden" id="modal_edit_masterindikator_indikatorid" name="modal_edit_masterindikator_indikatorid">
-                <div class="modal-body" style="max-height:80vh; overflow-y:auto;">
+                <div class="modal-body">
 
                     <div class="text-start mb-7">
                         <div class="text-muted fw-bold fs-6">

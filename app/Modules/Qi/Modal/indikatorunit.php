@@ -68,7 +68,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal_create_fishbone_from_indicator" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="modal_create_fishbone_from_indicator" tabindex="-1" aria-hidden="true" data-bs-focus="false">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <form id="form_create_fishbone_from_indicator">

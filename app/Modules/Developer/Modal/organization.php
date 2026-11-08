@@ -18,6 +18,12 @@
                         <label class="d-flex align-items-center fs-5 fw-bold mb-2"><span class="required">Organization</span><i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Organization"></i></label>
                         <input type="text" class="form-control form-control-solid mb-5" id="modal_add_organization_name" name="modal_add_organization_name" placeholder="Enter Organization" required>
 
+                        <label class="d-flex align-items-center fs-5 fw-bold mb-2"><span>Kode RS</span><i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Diisi untuk rumah sakit; user admin akan dibuat otomatis (admin_{kode_rs})"></i></label>
+                        <input type="text" class="form-control form-control-solid mb-5" id="modal_add_organization_koders" name="modal_add_organization_koders" placeholder="Contoh: 3171795">
+
+                        <label class="d-flex align-items-center fs-5 fw-bold mb-2"><span>Kode PPK</span></label>
+                        <input type="text" class="form-control form-control-solid mb-5" id="modal_add_organization_kodeppk" name="modal_add_organization_kodeppk" placeholder="Kode PPK (opsional)">
+
                         <label class="d-flex align-items-center fs-5 fw-bold mb-2"><span class="required">Type</span><i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Organization Type"></i></label>
                         <select class="form-select form-select-solid mb-5" data-control="select2" data-dropdown-parent="#modal_add_organization" id="modal_add_organization_type" name="modal_add_organization_type" required><option value="">Select Type</option><option value="Y">Headquarters</option><option value="B">Branch</option></select>
 

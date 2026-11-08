@@ -10,12 +10,12 @@
     </div>
 </div>
 
-<div class="modal fade" id="pdsaModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="pdsaModal" tabindex="-1" aria-hidden="true" data-bs-focus="false">
     <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <form id="pdsaForm">
                 <div class="modal-header"><div><h3 id="pdsaFormTitle" class="modal-title fw-bolder">Buat header PDSA</h3><div class="text-muted fs-7 mt-1">Buat header perbaikan dan tentukan indikator yang akan diperbaiki.</div></div><button type="button" class="btn btn-icon btn-sm btn-active-light-primary" data-bs-dismiss="modal" aria-label="Tutup"><i class="bi bi-x-lg"></i></button></div>
-                <div class="modal-body" style="max-height:70vh; overflow-y:auto;">
+                <div class="modal-body">
                 <input type="hidden" name="pdsa_id" id="pdsaId">
                 <div class="row g-4 mb-4">
                         <div class="col-12"><label class="form-label required">Judul perubahan</label><input class="form-control" name="title" required maxlength="255" placeholder="Contoh: Mempercepat asesmen awal pasien"></div>
@@ -37,7 +37,7 @@
     <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable"><div class="modal-content">
         <form id="pdsaStagesForm">
             <div class="modal-header"><div><h3 class="modal-title fw-bolder">Kelola item PDSA</h3><div id="pdsaStagesSubtitle" class="text-muted fs-7 mt-1"></div></div><button type="button" class="btn btn-icon btn-sm btn-active-light-primary" data-bs-dismiss="modal" aria-label="Tutup"><i class="bi bi-x-lg"></i></button></div>
-            <div class="modal-body" style="max-height:70vh;overflow-y:auto">
+            <div class="modal-body">
                 <input type="hidden" name="pdsa_id">
                 <?php foreach (['Plan' => 'Rencana dan prediksi', 'Do' => 'Pelaksanaan dan pengumpulan data', 'Study' => 'Hasil dan pembelajaran', 'Act' => 'Tindak lanjut'] as $phase => $label): ?>
                     <section class="border rounded p-4 mb-4" data-phase-section="<?= esc($phase) ?>"><div class="d-flex align-items-center justify-content-between mb-3"><div><div class="fw-bolder text-gray-800"><?= esc(strtoupper($phase)) ?></div><div class="text-muted fs-7"><?= esc($label) ?></div></div><button type="button" class="btn btn-sm btn-light-primary" data-add-item="<?= esc($phase) ?>"><i class="bi bi-plus-lg me-1"></i>Tambah item</button></div><div data-item-list="<?= esc($phase) ?>"></div></section>

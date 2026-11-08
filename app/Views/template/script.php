@@ -13,8 +13,11 @@
     $segments = $uri->getSegments();
     $segment1 = $segments[0] ?? '';
     $segment2 = $segments[1] ?? '';
+    $segment3 = $segments[2] ?? '';
 
-    if ($segment1 === '' && $segment2 === '') {
+    $isAuthLogin = ($segment1 === 'auth' && in_array($segment2, ['login', 'sign'], true));
+
+    if ($isAuthLogin) {
         $jsFile = FCPATH . 'assets/js/auth/sign.js';
         if (file_exists($jsFile)) {
             echo '<script type="text/javascript" src="' . base_url('assets/js/auth/sign.js?v=' . time()) . '"></script>' . PHP_EOL;
@@ -34,6 +37,13 @@
         $jspath = FCPATH . 'assets/js/' . $segment1 . '/' . $segment2 . '.js';
         if (file_exists($jspath)) {
             echo '<script type="text/javascript" src="' . base_url('assets/js/' . $segment1 . '/' . $segment2 . '.js?v=' . time()) . '"></script>' . PHP_EOL;
+        }
+    }
+
+    if ($segment1 === 'qi' && $segment2 === 'pdsa' && $segment3 === 'diagram') {
+        $diagramJs = FCPATH . 'assets/js/qi/pdsadiagram.js';
+        if (file_exists($diagramJs)) {
+            echo '<script type="text/javascript" src="' . base_url('assets/js/qi/pdsadiagram.js?v=' . time()) . '"></script>' . PHP_EOL;
         }
     }
 ?>

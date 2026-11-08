@@ -14,6 +14,20 @@ class Auth extends BaseController{
     }
 
     public function index(){
+        if ($this->session->get('loggedin')) {
+            return redirect()->to(site_url('additional/welcomepage'));
+        }
+
+        return view('template/dashboard-light-blank', [
+            'contents' => view('Modules\Auth\Views\v_landing')
+        ]);
+    }
+
+    public function login(){
+        if ($this->session->get('loggedin')) {
+            return redirect()->to(site_url('additional/welcomepage'));
+        }
+
         return view('template/dashboard-light-blank', [
             'contents' => view('Modules\Auth\Views\v_sign')
         ]);

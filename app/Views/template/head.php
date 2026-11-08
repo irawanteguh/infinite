@@ -31,7 +31,18 @@
     $segment1 = $segments[0] ?? '';
     $segment2 = $segments[1] ?? '';
 
-    if ($segment1 === '' && $segment2 === '') {
+    $isLanding = ($segment1 === '' && $segment2 === '');
+    $isAuthLogin = ($segment1 === 'auth' && in_array($segment2, ['login', 'sign'], true));
+
+    if ($isLanding) {
+        $cssFile = FCPATH . 'assets/css/auth/landing.css';
+        if (file_exists($cssFile)) {
+            echo PHP_EOL.'<!-- Load Auth Landing CSS -->'.PHP_EOL;
+            echo "\t\t<link rel='stylesheet' type='text/css' href='".base_url('assets/css/auth/landing.css?v=' . time())."' />".PHP_EOL;
+        }
+    }
+
+    if ($isAuthLogin) {
         $cssFile = FCPATH . 'assets/css/auth/sign.css';
         if (file_exists($cssFile)) {
             echo PHP_EOL.'<!-- Load Auth Sign CSS -->'.PHP_EOL;

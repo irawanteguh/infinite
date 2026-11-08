@@ -130,24 +130,58 @@ class PdsaModel extends Model
     {
         $now = date('Y-m-d H:i:s');
         $this->db->transBegin();
-        $this->db->table('dt01_qi_pdsa_items')->where('pdsa_id', $pdsaId)->where('active', '1')->update([
-            'active' => '0', 'last_update_by' => $userId, 'last_update_date' => $now,
-        ]);
+        $existingRows = $this->db->table('dt01_qi_pdsa_items')->where('pdsa_id', $pdsaId)->where('active', '1')->get()->getResult();
+        $existingIds = [];
+        foreach ($existingRows as $row) $existingIds[(string) $row->pdsa_item_id] = true;
+        $retainedIds = [];
         foreach ($items as $index => $item) {
             if (trim((string) ($item['item_text'] ?? '')) === '') continue;
+            $id = trim((string) ($item['pdsa_item_id'] ?? ''));
+            if ($id !== '' && isset($existingIds[$id])) {
+                $this->db->table('dt01_qi_pdsa_items')->where('pdsa_item_id', $id)->where('pdsa_id', $pdsaId)->where('active', '1')->update([
+                    'phase' => $item['phase'], 'item_text' => trim((string) $item['item_text']),
+                    'sort_order' => (int) $index + 1, 'last_update_by' => $userId, 'last_update_date' => $now,
+                ]);
+                $retainedIds[] = $id;
+                continue;
+            }
+
             $id = function_exists('generateuuid') ? generateuuid() : bin2hex(random_bytes(16));
             $this->db->table('dt01_qi_pdsa_items')->insert([
                 'pdsa_item_id' => $id, 'pdsa_id' => $pdsaId,
-                'phase' => $item['phase'], 'item_text' => trim((string) $item['item_text']),
+                'phase' => $item['phase'], 'item_text' => trim((string) $item['item_text']), 'completed' => 0,
                 'sort_order' => (int) $index + 1, 'active' => '1', 'created_by' => $userId,
                 'created_date' => $now, 'last_update_by' => $userId, 'last_update_date' => $now,
             ]);
+            $retainedIds[] = $id;
         }
+        $archive = $this->db->table('dt01_qi_pdsa_items')->where('pdsa_id', $pdsaId)->where('active', '1');
+        if ($retainedIds) {
+            $archive->whereNotIn('pdsa_item_id', $retainedIds);
+        }
+        $archive->update(['active' => '0', 'last_update_by' => $userId, 'last_update_date' => $now]);
         if ($this->db->transStatus() === false) {
             $this->db->transRollback();
             return false;
         }
         return $this->db->transCommit();
+    }
+
+    public function itemCycle($itemId, $groupId, $orgId)
+    {
+        return $this->db->table('dt01_qi_pdsa_items i')
+            ->select('i.pdsa_item_id, i.pdsa_id, x.department_id')
+            ->join('dt01_qi_pdsa x', 'x.pdsa_id = i.pdsa_id', 'inner')
+            ->where('i.pdsa_item_id', $itemId)->where('i.active', '1')
+            ->where('x.group_id', $groupId)->where('x.org_id', $orgId)->where('x.active', '1')
+            ->get()->getRow();
+    }
+
+    public function setItemCompleted($itemId, $pdsaId, $completed, array $audit)
+    {
+        return $this->db->table('dt01_qi_pdsa_items')->where('pdsa_item_id', $itemId)
+            ->where('pdsa_id', $pdsaId)->where('active', '1')
+            ->update(['completed' => $completed ? 1 : 0] + $audit);
     }
 
     public function archiveCycle($id, $groupId, $orgId, $departmentIds, array $data)

@@ -15,7 +15,6 @@
     const archiveButton = document.getElementById('pdsaArchive');
     const headerModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('pdsaModal'));
     const itemsModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('pdsaStagesModal'));
-    const diagramModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('pdsaDiagramModal'));
     const phases = [
         { key: 'Plan', color: '#009ef7', fill: '#f1faff', cx: 400, cy: 125 },
         { key: 'Do', color: '#50cd89', fill: '#e8fff3', cx: 675, cy: 400 },
@@ -45,7 +44,7 @@
     }
 
     function render() {
-        rows.innerHTML = headers.map((header) => `<tr><td><div class="fw-bold text-gray-800">${esc(header.title)}</div><div class="text-muted fs-8">${esc(header.indikator || 'Perbaikan unit')}</div></td><td>${esc(header.department || '-')}<div class="text-muted fs-8">${esc(header.tahun || '-')}</div></td><td><span class="badge badge-light-primary">${esc(header.item_count || 0)} item</span></td><td class="text-end text-nowrap"><button type="button" class="btn btn-sm btn-light-primary me-1" data-action="diagram" data-id="${esc(header.pdsa_id)}"><i class="bi bi-diagram-3 me-1"></i>Lihat Diagram</button>${header.can_manage ? `<button type="button" class="btn btn-sm btn-light-success me-1" data-action="items" data-id="${esc(header.pdsa_id)}"><i class="bi bi-list-check me-1"></i>Item PDSA</button><button type="button" class="btn btn-sm btn-icon btn-light" title="Ubah header" data-action="header" data-id="${esc(header.pdsa_id)}"><i class="bi bi-gear"></i></button>` : ''}</td></tr>`).join('');
+        rows.innerHTML = headers.map((header) => `<tr><td><div class="fw-bold text-gray-800">${esc(header.title)}</div><div class="text-muted fs-8">${esc(header.indikator || 'Perbaikan unit')}</div></td><td>${esc(header.department || '-')}<div class="text-muted fs-8">${esc(header.tahun || '-')}</div></td><td><span class="badge badge-light-primary">${esc(header.item_count || 0)} item</span></td><td class="text-end text-nowrap"><a class="btn btn-sm btn-light-primary me-1" href="${endpoint}/diagram?pdsa_id=${encodeURIComponent(header.pdsa_id)}"><i class="bi bi-diagram-3 me-1"></i>Lihat Diagram</a>${header.can_manage ? `<button type="button" class="btn btn-sm btn-light-success me-1" data-action="items" data-id="${esc(header.pdsa_id)}"><i class="bi bi-list-check me-1"></i>Item PDSA</button><button type="button" class="btn btn-sm btn-icon btn-light" title="Ubah header" data-action="header" data-id="${esc(header.pdsa_id)}"><i class="bi bi-gear"></i></button>` : ''}</td></tr>`).join('');
         empty.classList.toggle('d-none', headers.length > 0);
     }
 
@@ -72,7 +71,7 @@
         headerModal.show();
     }
 
-    function addItemField(phase, value) {
+    function addItemField(phase, value, itemId = '') {
         const list = itemsForm.querySelector(`[data-item-list="${phase}"]`);
         const row = document.createElement('div');
         row.className = 'd-flex align-items-start gap-2 mb-2';
@@ -84,13 +83,17 @@
         textarea.placeholder = `Tulis item ${phase}...`;
         textarea.value = value || '';
         textarea.dataset.itemText = '1';
+        const itemIdInput = document.createElement('input');
+        itemIdInput.type = 'hidden';
+        itemIdInput.value = itemId || '';
+        itemIdInput.dataset.itemId = '1';
         const remove = document.createElement('button');
         remove.type = 'button';
         remove.className = 'btn btn-icon btn-light-danger';
         remove.title = 'Hapus item';
         remove.innerHTML = '<i class="bi bi-trash"></i>';
         remove.addEventListener('click', () => row.remove());
-        row.append(textarea, remove);
+        row.append(textarea, itemIdInput, remove);
         list.appendChild(row);
     }
 
@@ -98,7 +101,7 @@
         phases.forEach((phase) => {
             const list = itemsForm.querySelector(`[data-item-list="${phase.key}"]`);
             list.replaceChildren();
-            (items || []).filter((item) => item.phase === phase.key).forEach((item) => addItemField(phase.key, item.item_text));
+            (items || []).filter((item) => item.phase === phase.key).forEach((item) => addItemField(phase.key, item.item_text, item.pdsa_item_id));
             if (!list.children.length) addItemField(phase.key, '');
         });
     }
@@ -116,39 +119,11 @@
         itemsModal.show();
     }
 
-    function renderDiagram(header, items) {
-        const centerTitle = esc(header.title || 'PDSA');
-        let svg = `<svg viewBox="0 0 800 800" role="img" aria-label="Diagram PDSA berbentuk lingkaran" style="display:block;width:min(100%,760px);height:auto;margin:0 auto"><defs><marker id="pdsaRoundArrow" markerWidth="12" markerHeight="12" refX="9" refY="4" orient="auto"><path d="M0,0 L0,8 L10,4 z" fill="#7e8299"/></marker></defs><circle cx="400" cy="400" r="350" fill="#fff" stroke="#d7d9e3" stroke-width="6"/>`;
-        svg += '<path d="M492 98 Q610 145 675 260" fill="none" stroke="#7e8299" stroke-width="4" marker-end="url(#pdsaRoundArrow)"/><path d="M702 492 Q655 610 540 675" fill="none" stroke="#7e8299" stroke-width="4" marker-end="url(#pdsaRoundArrow)"/><path d="M308 702 Q190 655 125 540" fill="none" stroke="#7e8299" stroke-width="4" marker-end="url(#pdsaRoundArrow)"/><path d="M98 308 Q145 190 260 125" fill="none" stroke="#7e8299" stroke-width="4" marker-end="url(#pdsaRoundArrow)"/>';
-        phases.forEach((phase) => {
-            const phaseItems = (items || []).filter((item) => item.phase === phase.key);
-            const itemMarkup = phaseItems.length ? phaseItems.map((item, index) => `<div style="text-align:left;border-bottom:1px solid #e4e6ef;padding:3px 0"><b>${index + 1}.</b> ${esc(item.item_text)}</div>`).join('') : '<div style="color:#a1a5b7;font-style:italic">Belum ada item</div>';
-            const x = phase.cx - 94;
-            const y = phase.cy - 94;
-            svg += `<circle cx="${phase.cx}" cy="${phase.cy}" r="104" fill="${phase.fill}" stroke="${phase.color}" stroke-width="4"/><foreignObject x="${x}" y="${y}" width="188" height="188"><div xmlns="http://www.w3.org/1999/xhtml" style="box-sizing:border-box;width:188px;height:188px;padding:23px 15px 12px;font-family:Arial,sans-serif;text-align:center;display:flex;flex-direction:column"><strong style="font-size:18px;color:${phase.color};margin-bottom:8px">${phase.key.toUpperCase()}</strong><div style="font-size:11px;line-height:1.3;color:#5e6278;overflow:auto;max-height:130px">${itemMarkup}</div></div></foreignObject>`;
-        });
-        svg += `<circle cx="400" cy="400" r="94" fill="#fff" stroke="#e4e6ef" stroke-width="3"/><foreignObject x="322" y="355" width="156" height="90"><div xmlns="http://www.w3.org/1999/xhtml" title="${centerTitle}" style="height:90px;display:flex;align-items:center;justify-content:center;text-align:center;padding:8px;overflow:hidden;word-break:break-word;font:700 14px Arial;color:#181c32">${centerTitle}</div></foreignObject></svg>`;
-        document.getElementById('pdsaDiagram').innerHTML = svg;
-    }
-
-    async function showDiagram(id) {
-        const response = await (await fetch(`${endpoint}/itemsdata?pdsa_id=${encodeURIComponent(id)}`, { headers: { 'Accept': 'application/json' } })).json();
-        if (response.responseCode !== '00') {
-            window.alert(response.responseDesc || 'Diagram tidak dapat dimuat.');
-            return;
-        }
-        const header = response.responseCycle;
-        document.getElementById('pdsaDiagramTitle').textContent = header.title;
-        renderDiagram(header, response.responseItems || []);
-        diagramModal.show();
-    }
-
     rows.addEventListener('click', (event) => {
         const button = event.target.closest('[data-action][data-id]');
         if (!button) return;
         const header = headers.find((item) => String(item.pdsa_id) === button.dataset.id);
         if (!header) return;
-        if (button.dataset.action === 'diagram') showDiagram(header.pdsa_id);
         if (button.dataset.action === 'items') editItems(header.pdsa_id);
         if (button.dataset.action === 'header') editHeader(header);
     });
@@ -185,6 +160,7 @@
         const items = Array.from(itemsForm.querySelectorAll('[data-item-phase]')).map((row) => ({
             phase: row.dataset.itemPhase,
             item_text: row.querySelector('[data-item-text]').value.trim(),
+            pdsa_item_id: row.querySelector('[data-item-id]').value,
         })).filter((item) => item.item_text !== '');
         try {
             const result = await post('saveitems', { pdsa_id: field(itemsForm, 'pdsa_id').value, items: JSON.stringify(items) });

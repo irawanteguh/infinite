@@ -22,7 +22,7 @@
             <form class="form w-100" novalidate="novalidate" id="kt_sign_in_form" action="<?= site_url('auth/signin') ?>" method="post">
                 <?= csrf_field() ?>
                 <div class="text-center mb-1">
-                    <a href="<?= site_url('auth/sign') ?>"><img alt="Logo" src="<?= base_url('assets/media/logos/rsudpasarminggu.png') ?>" class="h-80px" /></a>
+                    <a href="<?= base_url() ?>"><img alt="Logo" src="<?= base_url('assets/media/logos/rsudpasarminggu.png') ?>" class="h-80px" /></a>
                 </div>
                 <!-- <div class="text-center mb-10">
                     <h2 class="text-dark mb-3">Integrated Information System</h2>
@@ -42,6 +42,9 @@
                         <span class="indicator-label">Sign In</span>
                         <span class="indicator-progress">Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                     </button>
+                    <a href="<?= base_url() ?>" class="fs-7 text-muted text-hover-primary">
+                        <i class="bi bi-arrow-left me-1"></i> Kembali ke beranda
+                    </a>
                 </div>
             </form>
         </div>

@@ -1,7 +1,6 @@
 <div id="pdsaRoot" data-endpoint="<?= esc($endpoint) ?>" data-indicator-ref="<?= esc($linkedIndicator->transaksi_id ?? '') ?>" data-department="<?= esc($linkedIndicator->department_id ?? '') ?>" data-period="<?= esc($linkedIndicator->periode_id ?? '') ?>" class="d-flex flex-wrap flex-stack mb-6">
     <?php if (!empty($linkedIndicator)): ?><div class="text-primary fw-bold mt-2"><i class="bi bi-link-45deg me-1"></i>Indikator: <?= esc($linkedIndicator->indikator) ?> — <?= esc($linkedIndicator->department) ?> (<?= esc($linkedIndicator->tahun) ?>)</div><?php endif; ?>
 </div>
-
 <div class="card">
     <div class="card-header border-0 pt-5"><h3 class="card-title fw-bolder">Daftar PDSA</h3></div>
     <div class="card-body pt-0">
@@ -46,13 +45,5 @@
             </div>
             <div class="modal-footer flex-shrink-0 bg-white"><button type="button" class="btn btn-light" data-bs-dismiss="modal">Tutup</button><button type="submit" class="btn btn-primary">Simpan item</button></div>
         </form>
-    </div></div>
-</div>
-
-<div class="modal fade" id="pdsaDiagramModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable"><div class="modal-content">
-        <div class="modal-header"><div><h3 class="modal-title fw-bolder">Diagram PDSA</h3><div id="pdsaDiagramTitle" class="text-muted fs-7 mt-1"></div></div><button type="button" class="btn btn-icon btn-sm btn-active-light-primary" data-bs-dismiss="modal" aria-label="Tutup"><i class="bi bi-x-lg"></i></button></div>
-        <div class="modal-body text-center" style="max-height:80vh;overflow:auto"><div id="pdsaDiagram"></div></div>
-        <div class="modal-footer"><button type="button" class="btn btn-light" data-bs-dismiss="modal">Tutup</button></div>
     </div></div>
 </div>

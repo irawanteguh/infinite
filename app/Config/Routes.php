@@ -14,6 +14,8 @@ use CodeIgniter\Router\RouteCollection;
 */
 
 $routes->get('/', '\Modules\Auth\Controllers\Auth::index');
+$routes->get('auth/login', '\Modules\Auth\Controllers\Auth::login');
+$routes->get('auth/sign', '\Modules\Auth\Controllers\Auth::login');
 $routes->post('auth/signin', '\Modules\Auth\Controllers\Auth::signin');
 $routes->get('auth/logout', '\Modules\Auth\Controllers\Auth::logoutsystem');
 

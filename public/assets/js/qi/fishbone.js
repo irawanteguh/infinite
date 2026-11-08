@@ -7,6 +7,12 @@
     const mode = String($('#fishboneRoot').data('mode') || 'list');
     const initialAnalysisId = String($('#fishboneRoot').data('selected-id') || '');
     const categories = ['Man (SDM)', 'Method (Metode)', 'Machine (Mesin/Peralatan)', 'Material (Bahan)', 'Measurement (Pengukuran)', 'Environment (Lingkungan)'];
+    const categoryLabels = {
+        'Man (SDM)': 'Man', 'Method (Metode)': 'Method', 'Machine (Mesin/Peralatan)': 'Machine',
+        'Material (Bahan)': 'Material', 'Measurement (Pengukuran)': 'Measurement', 'Environment (Lingkungan)': 'Environment'
+    };
+    const diagramColors = ['#009ef7', '#50cd89', '#7239ea', '#f1416c', '#ffc700', '#17c653'];
+    const diagramTints = ['#f1faff', '#e8fff3', '#f8f5ff', '#fff5f8', '#fff8dd', '#effff3'];
     let selectedId = "";
     let analyses = [];
     let causes = [];
@@ -29,32 +35,30 @@
         categories.forEach((category, i) => {
             const items = causes.filter(c => c.category === category);
             const entries = items.length ? items.map(c => `<li class="d-flex align-items-start justify-content-between gap-2 mb-2"><span><span class="badge badge-light-${priorityBadge[c.priority] || 'warning'} me-2">${priorityLabel[c.priority] || 'Sedang'}</span>${escapeHtml(c.cause)}</span><span class="text-nowrap"><button class="btn btn-sm btn-icon btn-light fishbone-cause-edit" data-id="${escapeHtml(c.cause_id)}" title="Ubah"><i class="bi bi-pencil"></i></button> <button class="btn btn-sm btn-icon btn-light-danger fishbone-cause-delete" data-id="${escapeHtml(c.cause_id)}" title="Hapus"><i class="bi bi-x-lg"></i></button></span></li>`).join('') : '<li class="text-muted">Belum ada penyebab</li>';
-            $list.append(`<div class="col-md-6"><div class="border border-${color[i]} border-dashed rounded p-4 h-100"><div class="fw-bolder text-${color[i]} mb-3">${escapeHtml(category)}</div><ul class="list-unstyled mb-0">${entries}</ul></div></div>`);
+            $list.append(`<div class="col-md-6"><div class="border border-${color[i]} border-dashed rounded p-4 h-100"><div class="fw-bolder text-${color[i]} mb-3">${escapeHtml(categoryLabels[category] || category)}</div><ul class="list-unstyled mb-0">${entries}</ul></div></div>`);
         });
         drawDiagram();
     }
     function drawDiagram() {
-        const width = 1000, height = 440, spineY = 220, headX = 880;
-        let svg = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Diagram fishbone sebab akibat" class="w-100"><defs><marker id="fishboneArrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#7e8299"/></marker></defs><line x1="42" y1="${spineY}" x2="${headX}" y2="${spineY}" stroke="#7e8299" stroke-width="4" marker-end="url(#fishboneArrow)"/>`;
-        const positions = [{x:170, top:true},{x:405, top:true},{x:640, top:true},{x:170, top:false},{x:405, top:false},{x:640, top:false}];
+        const width = 1000, height = 470, spineY = 235, headX = 790;
+        const headW = 118, headH = 88, headTop = spineY - headH / 2;
+        let svg = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Diagram fishbone sebab akibat" class="w-100"><defs><marker id="fishboneArrow" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0,0 L0,8 L9,4 z" fill="#315b80"/></marker></defs><line x1="42" y1="${spineY}" x2="${headX - 1}" y2="${spineY}" stroke="#315b80" stroke-width="5" stroke-linecap="round" marker-end="url(#fishboneArrow)"/>`;
+        const positions = [{x:120, top:true},{x:315, top:true},{x:510, top:true},{x:120, top:false},{x:315, top:false},{x:510, top:false}];
         categories.forEach((category, i) => {
-            const p = positions[i], anchorY = p.top ? 85 : 355, branchX = p.x + 56;
-            svg += `<line x1="${branchX}" y1="${anchorY}" x2="${p.x + 116}" y2="${spineY}" stroke="#a1a5b7" stroke-width="3"/><text x="${p.x}" y="${p.top ? 28 : 414}" fill="#181c32" font-size="16" font-weight="700">${escapeHtml(category)}</text>`;
+            const p = positions[i], anchorY = p.top ? 88 : 382, branchX = p.x + 48;
+            const color = diagramColors[i], tint = diagramTints[i];
+            svg += `<line x1="${branchX}" y1="${anchorY}" x2="${p.x + 78}" y2="${spineY}" stroke="${color}" stroke-width="3.5" stroke-linecap="round"/><circle cx="${p.x + 78}" cy="${spineY}" r="6" fill="#fff" stroke="${color}" stroke-width="3"/><text x="${p.x + 46}" y="${p.top ? 58 : 425}" text-anchor="middle" fill="${color}" font-size="16" font-weight="700">${escapeHtml(categoryLabels[category] || category)}</text>`;
             const bucket = causes.filter(c => c.category === category).slice(0, 4);
             bucket.forEach((cause, j) => {
-                const ty = p.top ? 105 + j * 18 : 275 + j * 18;
-                const branchAtY = p.top
-                    ? branchX + ((ty - anchorY) / (spineY - anchorY)) * 60
-                    : p.x + 116 - ((ty - spineY) / (anchorY - spineY)) * 60;
-                const tx = branchAtY - 12;
+                const ty = p.top ? 106 + j * 22 : 282 + j * 22;
+                const tx = p.x - 84;
                 const label = cause.cause.length > 22 ? cause.cause.slice(0, 19) + '…' : cause.cause;
-                const badgeColor = {urgent: 'danger', medium: 'warning', low: 'success'}[cause.priority] || 'warning';
-                svg += `<foreignObject x="${tx - 135}" y="${ty - 15}" width="130" height="20"><div xmlns="http://www.w3.org/1999/xhtml" style="text-align:right;white-space:nowrap;overflow:hidden"><span class="badge badge-light-${badgeColor}" title="${escapeHtml(cause.cause)}" style="display:inline-block;max-width:130px;overflow:hidden;text-overflow:ellipsis;font-size:10px">${escapeHtml(label)}</span></div></foreignObject>`;
+                svg += `<line x1="${tx + 110}" y1="${ty}" x2="${tx + 128}" y2="${ty}" stroke="${color}" stroke-width="2"/><foreignObject x="${tx - 20}" y="${ty - 11}" width="126" height="21"><div xmlns="http://www.w3.org/1999/xhtml" style="text-align:right;white-space:nowrap;overflow:hidden"><span title="${escapeHtml(cause.cause)}" style="display:inline-block;max-width:126px;overflow:hidden;text-overflow:ellipsis;font:600 10px Arial,sans-serif;color:${color};background:${tint};border:1px solid ${color};border-radius:12px;padding:3px 7px">${escapeHtml(label)}</span></div></foreignObject>`;
             });
         });
         const item = analyses.find(a => String(a.fishbone_id) === String(selectedId));
         const problem = item ? item.problem : 'Pilih analisis';
-        svg += `<path d="M880 180 L962 180 L990 220 L962 260 L880 260 Z" fill="#f1faff" stroke="#009ef7" stroke-width="3"/><foreignObject x="886" y="188" width="76" height="64"><div xmlns="http://www.w3.org/1999/xhtml" style="font:700 12px Arial;color:#181c32;text-align:center;display:flex;align-items:center;height:100%;overflow:hidden">${escapeHtml(problem)}</div></foreignObject></svg>`;
+        svg += `<rect x="${headX}" y="${headTop}" width="${headW}" height="${headH}" rx="14" fill="#fff" stroke="#009ef7" stroke-width="3"/><foreignObject x="${headX + 6}" y="${headTop + 8}" width="${headW - 12}" height="${headH - 16}"><div xmlns="http://www.w3.org/1999/xhtml" style="font:700 13px Arial;color:#181c32;text-align:center;display:flex;align-items:center;justify-content:center;height:100%;overflow:hidden;line-height:1.25;padding:2px">${escapeHtml(problem)}</div></foreignObject></svg>`;
         $('#fishboneDiagram').html(svg);
     }
     function loadAnalysis(id) {

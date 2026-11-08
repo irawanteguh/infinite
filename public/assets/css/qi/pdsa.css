@@ -1,0 +1,79 @@
+.pdsa-board-scroll {
+    overflow-x: auto;
+}
+
+.pdsa-board {
+    position: relative;
+    width: min(100%, 1100px);
+    min-width: 880px;
+    aspect-ratio: 1 / 1;
+    isolation: isolate;
+    background: radial-gradient(circle at center, rgba(0, 158, 247, 0.035), transparent 37%);
+}
+
+.pdsa-board-arrows {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.pdsa-stage {
+    position: absolute;
+    z-index: 1;
+    width: 33%;
+    height: 29%;
+}
+
+.pdsa-stage--plan {
+    top: 1%;
+    left: 33.5%;
+}
+
+.pdsa-stage--do {
+    top: 35.5%;
+    right: 0;
+}
+
+.pdsa-stage--study {
+    bottom: 1%;
+    left: 33.5%;
+}
+
+.pdsa-stage--act {
+    top: 35.5%;
+    left: 0;
+}
+
+.pdsa-stage-items {
+    overflow-y: auto;
+}
+
+.pdsa-center {
+    position: absolute;
+    z-index: 2;
+    top: 34.5%;
+    left: 34.5%;
+    width: 31%;
+    height: 31%;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #ffffff 0%, #f1faff 100%);
+    box-shadow: 0 12px 36px rgba(24, 28, 50, 0.15), 0 0 0 2px #e4e6ef;
+    overflow: hidden;
+}
+
+.pdsa-center-problem {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+}
+
+@media (min-width: 1200px) {
+    .pdsa-stage-items {
+        max-height: calc(100% - 65px);
+    }
+}

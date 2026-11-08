@@ -32,6 +32,27 @@ class Pdsa extends BaseController
         ]);
     }
 
+    public function diagram()
+    {
+        $groupId = session()->get('groupid');
+        $orgId = session()->get('orgid');
+        $pdsaId = trim((string) request()->getGet('pdsa_id'));
+        $cycle = $pdsaId !== '' ? $this->md->getCycleForOrganization($pdsaId, $groupId, $orgId) : null;
+        if (!$cycle) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+        $canManage = $this->md->getCycle($pdsaId, $groupId, $orgId, session()->get('userid')) !== null;
+
+        return view('template/dashboard-light-aside', [
+            'contents' => view('Modules\\Qi\\Views\\v_pdsadiagram', [
+                'cycle' => $cycle,
+                'items' => $this->md->items($pdsaId),
+                'canManage' => $canManage,
+                'endpoint' => site_url('qi/pdsa'),
+            ]),
+        ]);
+    }
+
     public function data()
     {
         return response()->setJSON([
@@ -130,7 +151,11 @@ class Pdsa extends BaseController
             $text = trim((string) ($item['item_text'] ?? ''));
             if ($text === '') continue;
             if (mb_strlen($text) > 5000) return $this->jsonError('Isi setiap item maksimal 5.000 karakter.');
-            $cleanItems[] = ['phase' => $item['phase'], 'item_text' => $text];
+            $cleanItems[] = [
+                'phase' => $item['phase'],
+                'item_text' => $text,
+                'pdsa_item_id' => trim((string) ($item['pdsa_item_id'] ?? '')),
+            ];
         }
 
         $now = date('Y-m-d H:i:s');
@@ -138,6 +163,28 @@ class Pdsa extends BaseController
         $saved = $this->md->replaceItems($id, $cleanItems, $userId);
         if (!$saved) return $this->jsonError('Item PDSA gagal disimpan.');
         return response()->setJSON(['responseCode' => '00', 'responseHead' => 'success', 'responseDesc' => 'Item PDSA berhasil disimpan.', 'responseResult' => $id]);
+    }
+
+    public function toggleitem()
+    {
+        $groupId = session()->get('groupid');
+        $orgId = session()->get('orgid');
+        $userId = session()->get('userid');
+        $itemId = trim((string) request()->getPost('pdsa_item_id'));
+        $completedValue = (string) request()->getPost('completed');
+        if (!in_array($completedValue, ['0', '1'], true)) {
+            return $this->jsonError('Status item tidak valid.');
+        }
+        $item = $this->md->itemCycle($itemId, $groupId, $orgId);
+        if (!$item || !$this->md->getCycle($item->pdsa_id, $groupId, $orgId, $userId)) {
+            return $this->jsonError('Item tidak ditemukan atau di luar departemen Anda.');
+        }
+        $saved = $this->md->setItemCompleted($itemId, $item->pdsa_id, $completedValue === '1', [
+            'last_update_by' => $userId,
+            'last_update_date' => date('Y-m-d H:i:s'),
+        ]);
+        if (!$saved) return $this->jsonError('Status selesai item gagal disimpan.');
+        return response()->setJSON(['responseCode' => '00', 'responseHead' => 'success', 'responseDesc' => 'Status item berhasil diperbarui.']);
     }
 
     public function archive()

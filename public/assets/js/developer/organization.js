@@ -1,17 +1,35 @@
+let parentOrganizationOptions = [];
+const organizationParentTypes = {
+    private_hospital: { holding: 'H', label: 'PT / Badan Penyelenggara' },
+    subdistrict_health_department: { holding: 'A', label: 'Dinas Kesehatan' },
+    government_hospital: { holding: 'B', label: 'Suku Dinas Kesehatan' }
+};
+const organizationHierarchyDescriptions = {
+    private_company: 'Hirarki swasta: PT / Badan Penyelenggara.',
+    private_hospital: 'Hirarki swasta: PT / Badan Penyelenggara → Rumah Sakit Swasta.',
+    health_department: 'Hirarki pemerintah daerah: Dinas Kesehatan → Suku Dinas Kesehatan → Rumah Sakit.',
+    subdistrict_health_department: 'Hirarki pemerintah daerah: Dinas Kesehatan → Suku Dinas Kesehatan → Rumah Sakit.',
+    government_hospital: 'Hirarki pemerintah daerah: Dinas Kesehatan → Suku Dinas Kesehatan → Rumah Sakit Pemerintah Daerah.'
+};
+const escapeOrganizationText = value => $('<div>').text(value == null ? '' : String(value)).html();
+
 masterorganization();
 loadParentOrganizations();
-
 toggleParentOrganizationField();
 $(document).on("change", "#modal_add_organization_type", toggleParentOrganizationField);
 
 function toggleParentOrganizationField() {
     const type = $("#modal_add_organization_type").val();
-    if (type === "Y") {
-        $("#parentOrganizationContainer").hide();
-        $("#modal_add_organization_header").val("").trigger("change");
-    } else {
-        $("#parentOrganizationContainer").show();
-    }
+    const parentConfig = organizationParentTypes[type];
+    const isHospital = type === 'private_hospital' || type === 'government_hospital';
+    $("#parentOrganizationContainer").toggle(Boolean(parentConfig));
+    $("#modal_add_organization_header").prop('required', Boolean(parentConfig));
+    $("#parentOrganizationLabel").text(parentConfig ? `Pilih ${parentConfig.label}` : 'Organisasi Induk');
+    $("#organizationHospitalCodeContainer, #organizationPpkContainer").toggle(isHospital);
+    $("#organizationHierarchyHelp").text(organizationHierarchyDescriptions[type] || 'Pilih jenis organisasi untuk melihat jalur hirarkinya.');
+    if (!isHospital) $("#modal_add_organization_koders, #modal_add_organization_kodeppk").val('');
+    if (!parentConfig) $("#modal_add_organization_header").val("").trigger("change");
+    renderParentOrganizationOptions(parentConfig ? parentConfig.holding : '');
 }
 
 function loadParentOrganizations() {
@@ -20,17 +38,48 @@ function loadParentOrganizations() {
         type    : "POST",
         dataType: "JSON",
         success : function (response) {
-            const $select = $("#modal_add_organization_header");
-            $select.find("option:not(:first)").remove();
             if (response.responseCode !== "00" || !Array.isArray(response.responseResult)) {
                 return;
             }
-            for (const row of response.responseResult) {
-                const label = (row.org_name || "-") + (row.holding ? " (" + row.holding + ")" : "");
-                $select.append($("<option>", { value: row.org_id, text: label }));
-            }
+            parentOrganizationOptions = response.responseResult;
+            toggleParentOrganizationField();
         }
     });
+}
+
+function renderParentOrganizationOptions(requiredHolding) {
+    const $select = $("#modal_add_organization_header");
+    const previousValue = $select.val();
+    $select.find("option:not(:first)").remove();
+    parentOrganizationOptions.filter(row => !requiredHolding || row.holding === requiredHolding).forEach(row => {
+        const typeLabel = row.holding === 'H' ? 'PT / Badan Penyelenggara' : row.holding === 'A' ? 'Dinas Kesehatan' : 'Suku Dinas Kesehatan';
+        $select.append($("<option>", { value: row.org_id, text: `${row.org_name || '-'} — ${typeLabel}` }));
+    });
+    const previousOptionExists = previousValue && $select.find('option').toArray().some(option => option.value === previousValue);
+    if (previousOptionExists) {
+        $select.val(previousValue);
+    } else {
+        $select.val('');
+    }
+    $select.trigger('change');
+}
+
+function organizationTypeLabel(row) {
+    if (row.holding === 'H') return 'PT / Badan Penyelenggara';
+    if (row.holding === 'A') return 'Dinas Kesehatan';
+    if (row.holding === 'B') return 'Suku Dinas Kesehatan';
+    if (row.holding === 'C' && row.parent_holding === 'H') return 'Rumah Sakit Swasta';
+    if (row.holding === 'C') return 'Rumah Sakit Pemerintah Daerah';
+    return 'Organisasi';
+}
+
+function organizationHierarchyCell(row) {
+    const level = Math.max(0, Math.min(2, Number(row.hierarchy_level) || 0));
+    const parentLine = row.hierarchy_parent_name
+        ? `<div class="text-muted fs-8 mt-1"><i class="bi bi-diagram-3 me-1"></i>${escapeOrganizationText(row.hierarchy_parent_name)}</div>`
+        : '';
+    const connector = level > 0 ? `<span class="text-gray-400 me-2"><i class="bi bi-arrow-return-right"></i></span>` : '';
+    return `<div class="d-flex align-items-start" style="padding-left:${level * 28}px">${connector}<div class="d-flex flex-column"><span class="text-gray-800 fw-bold">${escapeOrganizationText(row.org_name || '-')}</span><span class="badge badge-light-${row.holding === 'A' ? 'primary' : row.holding === 'B' ? 'warning' : row.holding === 'C' ? (row.parent_holding === 'H' ? 'success' : 'danger') : 'info'} mt-1 align-self-start">${organizationTypeLabel(row)}</span>${parentLine}</div></div>`;
 }
 
 function addAdministratorUser(el) {
@@ -161,7 +210,7 @@ function masterorganization() {
                 const avatarpic        = `${url}assets/media/avatars/${result[i].user_id}.jpg`;
                 const avatarDefaultpic = `${url}assets/media/avatars/blank.png`;
 
-                getvariabel =   "data-orgid='"+result[i].org_id+"'"+
+                    const getvariabel =   "data-orgid='"+result[i].org_id+"'"+
                                 "data-active='"+result[i].active+"'";
 
                 let btnaction = "";
@@ -182,16 +231,7 @@ function masterorganization() {
                                     tableResult += "<img src='" + iconrs + "' class='w-100' alt='" + (result[i].org_name || "") + "' onerror=\"this.onerror=null;this.src='" + iconrsDefault + "';\">";
                                 tableResult += "</div>";
                             tableResult += "</div>";
-                            tableResult += "<div class='d-flex flex-column align-items-start'>";
-                                tableResult += "<span class='text-gray-800 fw-bold'>" + (result[i].org_name || "-") + "</span>";
-                                tableResult += (
-                                    result[i].holding === "H"  ? '<span class="badge badge-light-primary mt-1">Headquarters</span>' :
-                                    result[i].holding === "A"  ? '<span class="badge badge-light-success mt-1">Dinas Kesehatan</span>' :
-                                    result[i].holding === "B" ? '<span class="badge badge-light-warning mt-1">Suku Dinas</span>' :
-                                    result[i].holding === "C"  ? '<span class="badge badge-light-danger mt-1">Rumah Sakit Pemprov</span>' :
-                                    '<span class="badge badge-light-info mt-1">Branch</span>'
-                                );
-                            tableResult += "</div>";
+                            tableResult += organizationHierarchyCell(result[i]);
                         tableResult += "</div>";
                     tableResult += "</td>";
 

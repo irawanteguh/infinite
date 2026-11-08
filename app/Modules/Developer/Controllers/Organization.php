@@ -95,28 +95,51 @@ class Organization extends BaseController{
             return response()->setJSON([
                 'responseCode' => '01',
                 'responseHead' => 'error',
-                'responseDesc' => 'Nama organization dan tipe wajib diisi.',
+                'responseDesc' => 'Nama organisasi dan jenis organisasi wajib diisi.',
             ]);
         }
 
-        if ($type === 'B' && $headerId === '') {
+        $organizationTypes = [
+            'private_company' => ['holding' => 'H', 'parents' => [], 'name' => 'PT / badan penyelenggara'],
+            'private_hospital' => ['holding' => 'C', 'parents' => ['H'], 'name' => 'Rumah Sakit Swasta'],
+            'health_department' => ['holding' => 'A', 'parents' => [], 'name' => 'Dinas Kesehatan'],
+            'subdistrict_health_department' => ['holding' => 'B', 'parents' => ['A'], 'name' => 'Suku Dinas Kesehatan'],
+            'government_hospital' => ['holding' => 'C', 'parents' => ['B'], 'name' => 'Rumah Sakit Pemerintah Daerah'],
+        ];
+        if (!isset($organizationTypes[$type])) {
             return response()->setJSON([
                 'responseCode' => '01',
                 'responseHead' => 'error',
-                'responseDesc' => 'Parent organization wajib dipilih untuk tipe Branch.',
+                'responseDesc' => 'Jenis organisasi tidak valid.',
             ]);
         }
 
-        $holding = 'A';
-        if ($type === 'B') {
-            $holding = $kodeRs !== '' ? 'C' : 'B';
+        $typeConfig = $organizationTypes[$type];
+        if ($typeConfig['holding'] !== 'C') {
+            $kodeRs = '';
+            $kodePpk = '';
+        }
+        if ($typeConfig['parents'] && $headerId === '') {
+            return response()->setJSON([
+                'responseCode' => '01',
+                'responseHead' => 'error',
+                'responseDesc' => 'Pilih organisasi induk yang sesuai untuk ' . $typeConfig['name'] . '.',
+            ]);
+        }
+        if ($typeConfig['parents'] && !$this->md->parentOrganizationAllowed($headerId, $typeConfig['parents'])) {
+            return response()->setJSON([
+                'responseCode' => '01',
+                'responseHead' => 'error',
+                'responseDesc' => 'Organisasi induk tidak sesuai dengan hirarki yang dipilih.',
+            ]);
         }
 
+        $holding = $typeConfig['holding'];
         $orgId = generateuuid();
 
         $datainsert = [
             'org_id'      => $orgId,
-            'header_id'   => $type === 'B' ? $headerId : null,
+            'header_id'   => $typeConfig['parents'] ? $headerId : null,
             'kode_rs'     => $kodeRs !== '' ? $kodeRs : null,
             'kode_ppk'    => $kodePpk !== '' ? $kodePpk : null,
             'org_name'    => $orgName,

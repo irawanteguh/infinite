@@ -11,6 +11,63 @@ $(document).on("click", ".indikatorunit-fishbone", function () {
     bootstrap.Modal.getOrCreateInstance(document.getElementById("modal_create_fishbone_from_indicator")).show();
 });
 
+$(document).on("click", ".indikatorunit-edit-pic", function (e) {
+    e.preventDefault();
+    const transaksiId = String($(this).data("uuid") || "");
+    const $select = $("#edit_indikator_pic_user_id").empty().append(new Option("Memuat daftar PIC...", ""));
+
+    $.ajax({
+        url: url + "qi/indikatorunit/picusers",
+        method: "POST",
+        dataType: "JSON",
+        data: { transaksi_id: transaksiId },
+        success: function (response) {
+            if (response.responseCode !== "00") {
+                Swal.fire("Tidak dapat mengubah PIC", response.responseDesc || "Indikator tidak dapat diubah.", "warning");
+                return;
+            }
+
+            const result = response.responseResult || {};
+            $select.empty().append(new Option("Pilih PIC", ""));
+            (Array.isArray(result.users) ? result.users : []).forEach(function (user) {
+                $select.append(new Option(user.name || user.user_id, user.user_id));
+            });
+            $("#edit_indikator_pic_transaksi_id").val(transaksiId);
+            $select.val(String(result.currentPic || "")).trigger("change");
+            bootstrap.Modal.getOrCreateInstance(document.getElementById("modal_edit_indikator_pic")).show();
+        },
+        error: function () {
+            Swal.fire("Gagal memuat PIC", "Daftar PIC untuk indikator ini tidak dapat dimuat.", "error");
+        }
+    });
+});
+
+$(document).on("submit", "#form_edit_indikator_pic", function (e) {
+    e.preventDefault();
+    const $button = $("#btn_update_indikator_pic").prop("disabled", true);
+    $.ajax({
+        url: url + "qi/indikatorunit/updatepic",
+        method: "POST",
+        dataType: "JSON",
+        data: $(this).serialize(),
+        success: function (response) {
+            if (response.responseCode !== "00") {
+                Swal.fire("Tidak dapat mengganti PIC", response.responseDesc || "PIC gagal diperbarui.", response.responseHead || "warning");
+                return;
+            }
+            bootstrap.Modal.getOrCreateInstance(document.getElementById("modal_edit_indikator_pic")).hide();
+            Swal.fire({ icon: "success", title: "PIC diperbarui", text: response.responseDesc, timer: 1600, showConfirmButton: false });
+            load();
+        },
+        error: function () {
+            Swal.fire("Gagal menyimpan", "Perubahan PIC indikator tidak dapat disimpan.", "error");
+        },
+        complete: function () {
+            $button.prop("disabled", false);
+        }
+    });
+});
+
 $(document).on("submit", "#form_create_fishbone_from_indicator", function (e) {
     e.preventDefault();
     const $button = $("#btn_save_fishbone_from_indicator").prop("disabled", true);
@@ -390,6 +447,7 @@ function dataindikatorunit() {
                 if(result[i].status_id==="3"){
                     if(result[i].statusidindikatorunit==="1"){
                         btnaction += "<a class='dropdown-item btn btn-sm text-primary' "+getvariabel+" href='"+url+"qi/indikatorunit?uuid="+result[i].transaksi_id+"'><i class='bi bi-pencil-square text-primary me-4'></i>Submit</a>";
+                        btnaction += "<a href='javascript:void(0);' class='dropdown-item btn btn-sm text-primary indikatorunit-edit-pic' "+getvariabel+"><i class='bi bi-person-gear text-primary me-4'></i>Edit PIC Indikator</a>";
                     }
                 }
 

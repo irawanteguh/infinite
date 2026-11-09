@@ -8,16 +8,20 @@ class SummaryModel extends Model
 {
     protected $DBGroup = 'default';
 
-    public function periods($groupid, $orgid)
-    {
-        return $this->db->table('dt01_qi_periode_mutu')
-            ->distinct()
-            ->select('tahun')
-            ->where('active', '1')
-            ->where('group_id', $groupid)
-            ->where('org_id', $orgid)
-            ->orderBy('tahun', 'DESC')
-            ->get()->getResult();
+    function periods($groupid,$orgid){
+        $query =
+                "
+                    select a.periode_id, tahun
+                    from dt01_qi_periode_mutu a
+                    where a.active='1'
+                    and   a.status_id in ('3','4')
+                    and   a.group_id='".$groupid."'
+                    and   a.org_id='".$orgid."'
+                    order by tahun desc
+                ";
+
+        $recordset = $this->db->query($query);
+        return $recordset->getResult();
     }
 
     public function summaryRows($groupid, $orgid, $year)

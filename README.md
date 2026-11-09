@@ -28,6 +28,16 @@ to your `app` folder. The affected files can be copied or merged from
 Copy `env` to `.env` and tailor for your app, specifically the baseURL
 and any database settings.
 
+After cloning or pulling this repository on another computer, install the
+PHP dependencies from the committed lock file:
+
+```bash
+composer install
+```
+
+The `vendor` directory is intentionally excluded from Git. This installs
+`mpdf/mpdf` and the other required packages locally.
+
 ## Important Change with index.php
 
 `index.php` is no longer in the root of the project! It has been moved inside the *public* folder,

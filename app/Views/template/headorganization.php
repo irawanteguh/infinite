@@ -15,7 +15,7 @@
                     <?php if (session()->get('trial') === 'Y') : ?>
                         <a href="#kt_modal_upgrade_plan" class="badge badge-light-danger text-hover-danger" data-bs-toggle="modal" data-bs-target="#kt_modal_upgrade_plan">Masa uji coba</a>
                     <?php elseif (session()->get('trial') === 'N') : ?>
-                        <span class="badge badge-light-success"><i class="bi bi-patch-check-fill me-1"></i> Terverifikasi</span>
+                        <span class="badge badge-light-success"><i class="bi bi-patch-check-fill me-1 text-primary"></i> Terverifikasi</span>
                     <?php endif; ?>
                 </div>
                 <h1 class="text-gray-900 fw-bolder mb-2">

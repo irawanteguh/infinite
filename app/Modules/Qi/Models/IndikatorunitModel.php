@@ -292,6 +292,83 @@ class IndikatorunitModel extends Model{
         return $this->db->table('dt01_qi_indikator_hd')->where('transaksi_id', $transaksiid)->update($data);
     }
 
+    public function indicatorForPicChange($transaksiId, $groupId, $orgId, $userId)
+    {
+        $indicator = $this->db->table('dt01_qi_indikator_hd a')
+            ->select('a.transaksi_id, a.department_id, a.pic')
+            ->join('dt01_qi_periode_mutu p', 'p.periode_id = a.periode_id', 'inner')
+            ->where('a.transaksi_id', $transaksiId)
+            ->where('a.group_id', $groupId)
+            ->where('a.org_id', $orgId)
+            ->where('a.active', '1')
+            ->where('a.status_id', '1')
+            ->where('p.status_id', '3')
+            ->get()->getRow();
+
+        if (!$indicator || !$this->departmentManagedBy($indicator->department_id, $groupId, $orgId, $userId)) {
+            return null;
+        }
+
+        return $indicator;
+    }
+
+    public function departmentManagedBy($departmentId, $groupId, $orgId, $userId)
+    {
+        return $this->db->table('dt01_gen_department_ms')
+            ->where('department_id', $departmentId)
+            ->where('group_id', $groupId)
+            ->where('org_id', $orgId)
+            ->where('user_id', $userId)
+            ->where('active', '1')
+            ->countAllResults() > 0;
+    }
+
+    public function usersForDepartment($groupId, $orgId, $departmentId)
+    {
+        return $this->db->table('dt01_gen_user_data')
+            ->select('user_id, name')
+            ->where('group_id', $groupId)
+            ->where('org_id', $orgId)
+            ->where('department_id', $departmentId)
+            ->where('active', '1')
+            ->orderBy('name', 'ASC')
+            ->get()->getResult();
+    }
+
+    public function userBelongsToDepartment($userId, $groupId, $orgId, $departmentId)
+    {
+        return $this->db->table('dt01_gen_user_data')
+            ->where('user_id', $userId)
+            ->where('group_id', $groupId)
+            ->where('org_id', $orgId)
+            ->where('department_id', $departmentId)
+            ->where('active', '1')
+            ->countAllResults() > 0;
+    }
+
+    public function changeIndicatorPic($transaksiId, $userId, $groupId, $orgId, $actorId)
+    {
+        $indicator = $this->indicatorForPicChange($transaksiId, $groupId, $orgId, $actorId);
+        if (!$indicator || !$this->userBelongsToDepartment($userId, $groupId, $orgId, $indicator->department_id)) {
+            return false;
+        }
+
+        $updated = $this->db->table('dt01_qi_indikator_hd')
+            ->where('transaksi_id', $transaksiId)
+            ->where('group_id', $groupId)
+            ->where('org_id', $orgId)
+            ->where('department_id', $indicator->department_id)
+            ->where('active', '1')
+            ->where('status_id', '1')
+            ->update([
+                'pic' => $userId,
+                'last_update_by' => $actorId,
+                'last_update_date' => date('Y-m-d H:i:s'),
+            ]);
+
+        return $updated && $this->db->affectedRows() >= 0;
+    }
+
     function insertindikatorunit($data){
         return $this->db->table('dt01_qi_indikator_hd')->insert($data);
     }

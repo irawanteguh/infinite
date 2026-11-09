@@ -36,8 +36,14 @@ class Summaryreport extends BaseController
         $periodeId = trim((string) request()->getGet('periode_id'));
         $groupId = session()->get('groupid');
         $orgId = session()->get('orgid');
-        if ($periodeId === '' || !$this->md->periodeExists($periodeId, $groupId, $orgId)) {
+        if (!preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i', $periodeId)
+            || !$this->md->periodeExists($periodeId, $groupId, $orgId)) {
             return response()->setStatusCode(404)->setBody('Periode pelaporan tidak ditemukan.');
+        }
+
+        if (!class_exists(Mpdf::class)) {
+            log_message('error', 'Gagal membuat PDF summary report: dependensi mpdf/mpdf belum terpasang.');
+            return response()->setStatusCode(500)->setBody('Dependensi PDF belum terpasang. Jalankan composer install pada folder aplikasi.');
         }
 
         $organization = $this->md->periodeHeader($groupId, $orgId, $periodeId);
@@ -96,7 +102,7 @@ class Summaryreport extends BaseController
                 ->setBody($mpdf->Output($filename, 'S'));
         } catch (\Throwable $e) {
             log_message('error', 'Gagal membuat PDF summary report: ' . $e->getMessage());
-            return response()->setStatusCode(500)->setBody('PDF gagal dibuat. Periksa konfigurasi PDF server.');
+            return response()->setStatusCode(500)->setBody('PDF gagal dibuat. Periksa log aplikasi dan pastikan folder writable/cache dapat ditulis.');
         }
     }
 }

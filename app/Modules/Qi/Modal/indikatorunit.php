@@ -68,6 +68,31 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal_edit_indikator_pic" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="form_edit_indikator_pic">
+                <div class="modal-header">
+                    <h2 class="modal-title fs-4">Ganti PIC Indikator</h2>
+                    <button type="button" class="btn btn-sm btn-icon" data-bs-dismiss="modal" aria-label="Tutup"><i class="bi bi-x-lg"></i></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="transaksi_id" id="edit_indikator_pic_transaksi_id">
+                    <label class="form-label required" for="edit_indikator_pic_user_id">PIC baru</label>
+                    <select class="form-select form-select-solid" name="pic" id="edit_indikator_pic_user_id" data-control="select2" data-dropdown-parent="#modal_edit_indikator_pic" required>
+                        <option value="">Pilih PIC</option>
+                    </select>
+                    <div class="form-text">Daftar hanya menampilkan pengguna aktif pada departemen indikator ini.</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary" id="btn_update_indikator_pic">Simpan PIC</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modal_create_fishbone_from_indicator" tabindex="-1" aria-hidden="true" data-bs-focus="false">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">

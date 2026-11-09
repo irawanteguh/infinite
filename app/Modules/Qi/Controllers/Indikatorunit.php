@@ -123,6 +123,59 @@ class Indikatorunit extends BaseController{
         return response()->setJSON($json);
     }
 
+    public function picusers()
+    {
+        $indicator = $this->md->indicatorForPicChange(
+            trim((string) request()->getPost('transaksi_id')),
+            session()->get('groupid'),
+            session()->get('orgid'),
+            session()->get('userid')
+        );
+
+        if (!$indicator) {
+            return response()->setStatusCode(404)->setJSON([
+                'responseCode' => '01',
+                'responseHead' => 'info',
+                'responseDesc' => 'Indikator tidak ditemukan atau tidak dapat diubah.',
+            ]);
+        }
+
+        return response()->setJSON([
+            'responseCode' => '00',
+            'responseResult' => [
+                'currentPic' => $indicator->pic,
+                'users' => $this->md->usersForDepartment(session()->get('groupid'), session()->get('orgid'), $indicator->department_id),
+            ],
+        ]);
+    }
+
+    public function updatepic()
+    {
+        $transaksiId = trim((string) request()->getPost('transaksi_id'));
+        $userId = trim((string) request()->getPost('pic'));
+        if ($transaksiId === '' || $userId === '') {
+            return response()->setJSON([
+                'responseCode' => '01',
+                'responseHead' => 'warning',
+                'responseDesc' => 'Indikator dan PIC wajib dipilih.',
+            ]);
+        }
+
+        $updated = $this->md->changeIndicatorPic(
+            $transaksiId,
+            $userId,
+            session()->get('groupid'),
+            session()->get('orgid'),
+            session()->get('userid')
+        );
+
+        return response()->setJSON([
+            'responseCode' => $updated ? '00' : '01',
+            'responseHead' => $updated ? 'success' : 'warning',
+            'responseDesc' => $updated ? 'PIC indikator berhasil diperbarui.' : 'PIC tidak dapat diperbarui. Pastikan PIC aktif pada departemen yang sama.',
+        ]);
+    }
+
     public function dataindikatorunit(){
         $result = $this->md->dataindikatorunit(session()->get('groupid'), session()->get('orgid'), session()->get('userid'));
 

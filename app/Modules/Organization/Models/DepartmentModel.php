@@ -38,7 +38,8 @@ class DepartmentModel extends Model{
                             )
                             from dt01_gen_user_data x
                             where x.active = '1'
-                            and x.department_id = a.department_id
+                            and   x.department_id = a.department_id
+                            and   x.user_id not in (select user_id from dt01_gen_department_ms where active='1' and user_id=x.user_id and department_id=x.department_id)
                         ) as memberdepartment
 
                     from dt01_gen_department_ms a

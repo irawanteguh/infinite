@@ -1,11 +1,3 @@
-<div class="d-flex flex-wrap flex-stack mb-6">
-    <div>
-        <h2 class="text-gray-900 fw-bolder mb-2">Ringkasan Indikator Mutu</h2>
-        <p class="text-muted mb-0">Pantau capaian, kelengkapan penilaian, dan performa unit dalam satu periode.</p>
-    </div>
-    <span class="badge badge-light-primary fs-6 mt-3 mt-md-0"><i class="bi bi-calendar3 me-2"></i>Periode <span id="summary-period-label"><?= esc($selectedPeriod ?: '-') ?></span></span>
-</div>
-
 <div class="row row-cols-2 row-cols-md-3 row-cols-xxl-5 g-5 mb-6">
     <div class="col">
         <div class="card card-flush h-100 border-start border-4 border-primary">

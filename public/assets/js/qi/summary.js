@@ -40,7 +40,6 @@ function loadQualitySummary() {
             }
 
             renderQualitySummary(response.responseResult || [], response.responseTrend || []);
-            $("#summary-period-label").text(year || "-");
         },
         error: function () {
             Swal.fire({ icon: "error", title: "Gagal memuat data", text: "Ringkasan indikator tidak dapat dimuat." });
@@ -67,7 +66,6 @@ function renderQualitySummary(rows, monthlyTrend) {
     $("#summary-assessed-indicators").text(scoredRows.length.toLocaleString("id-ID"));
     $("#summary-average").text(average.toLocaleString("id-ID", { maximumFractionDigits: 2 }) + "%");
     $("#summary-departments").text(departments.size.toLocaleString("id-ID"));
-    $("#summary-period-label").text($("#selectsummaryperiode").val() || "-");
 
     const tableRows = rows.map(function (row, index) {
         const categoryBadge = row.kategori === "Nasional Mutu"

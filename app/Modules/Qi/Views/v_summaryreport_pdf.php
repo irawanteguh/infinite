@@ -2,6 +2,21 @@
 $esc = static function ($value): string { return htmlspecialchars((string) ($value ?? '-'), ENT_QUOTES, 'UTF-8'); };
 $fmt = static function ($value, int $decimals = 2): string { return number_format((float) $value, $decimals, ',', '.'); };
 $monthNames = [1=>'Jan', 2=>'Feb', 3=>'Mar', 4=>'Apr', 5=>'Mei', 6=>'Jun', 7=>'Jul', 8=>'Agu', 9=>'Sep', 10=>'Okt', 11=>'Nov', 12=>'Des'];
+// mPDF mengecilkan seluruh tabel jika satu baris lebih tinggi dari halaman.
+// Pecah teks ke baris lanjutan dengan batas sesuai lebar masing-masing kolom.
+$measurementTextParts = static function ($value, int $limit): array {
+    $text = preg_replace('/\s+/u', ' ', trim((string) $value));
+    $parts = [];
+    while (mb_strlen($text, 'UTF-8') > $limit) {
+        $prefix = mb_substr($text, 0, $limit, 'UTF-8');
+        $space = mb_strrpos($prefix, ' ', 0, 'UTF-8');
+        $length = $space !== false && $space >= (int) ($limit / 2) ? $space + 1 : $limit;
+        $parts[] = mb_substr($text, 0, $length, 'UTF-8');
+        $text = mb_substr($text, $length, null, 'UTF-8');
+    }
+    $parts[] = $text;
+    return $parts;
+};
 $isMet = static function ($row): bool {
     if ($row->rata_pencapaian === null || $row->target === null || $row->target === '') return false;
     return ($row->target_capaian ?? '') === 'L'
@@ -93,7 +108,7 @@ $areaChart = static function (array $values, string $color = '#1597a6'): string 
         }
         foreach ($points as $month => $value) {
             $svg .= '<circle cx="' . round($x((int) $month), 1) . '" cy="' . round($y($value), 1) . '" r="4" fill="' . $color . '" stroke="#fff" stroke-width="1.5"/>';
-            $svg .= '<text x="' . round($x((int) $month), 1) . '" y="' . max(12, round($y($value) - 8, 1)) . '" text-anchor="middle" fill="#34495e" font-size="8">' . round($value) . '%</text>';
+            $svg .= '<text x="' . round($x((int) $month), 1) . '" y="' . max(12, round($y($value) - 8, 1)) . '" text-anchor="middle" fill="#34495e" font-size="8">' . number_format($value, 2, ',', '.') . '%</text>';
         }
     }
     if (!$segments) $svg .= '<text x="360" y="112" text-anchor="middle" fill="#8494a4" font-size="13">Belum ada data capaian per bulan</text>';
@@ -106,6 +121,10 @@ $areaChart = static function (array $values, string $color = '#1597a6'): string 
 <meta charset="utf-8">
 <style>
 body{font-family:sans-serif;font-size:9pt;color:#25364a;line-height:1.45}h1{font-size:22pt;color:#123b5d;margin:3px 0 5px}h2{font-size:14pt;color:#123b5d;margin:20px 0 8px;border-bottom:2px solid #c9e1ed;padding-bottom:5px}h3{font-size:10.5pt;color:#126b78;margin:13px 0 5px}.muted{color:#65798b}.small{font-size:8pt}.cover{background:#eaf5fb;padding:18px;border-left:6px solid #168aad;margin-bottom:13px}.meta{width:100%;border-collapse:collapse}.meta td{padding:3px 7px}.kpis{width:100%;border-collapse:separate;border-spacing:5px}.kpis td{width:25%;background:#f0f7fa;padding:9px;text-align:center;border:1px solid #d8e7ef}.kpi-value{font-size:16pt;font-weight:bold;color:#087e8b}.kpi-label{font-size:8pt;color:#637588}table.data{width:100%;border-collapse:collapse;font-size:8pt}table.data th{background:#e7f0f5;color:#183b56;text-align:left}table.data th,table.data td{border:1px solid #cad8e0;padding:5px;vertical-align:top}.narrative{background:#f6fafc;border:1px solid #d8e7ef;padding:9px;margin:5px 0 8px}.callout{background:#fff8e9;border-left:4px solid #e2a63a;padding:8px;margin:7px 0}.page-break{page-break-before:always}.footer{margin-top:20px;border-top:1px solid #ccd8df;padding-top:6px;font-size:8pt;color:#64748b}.bar-row{width:100%;margin:3px 0}.bar-label{display:inline-block;width:14%;font-size:7.5pt}.bar-track{display:inline-block;width:72%;height:11px;background:#edf2f6;vertical-align:middle}.bar-fill{height:11px;background:#19a3a8}.bar-value{display:inline-block;width:12%;text-align:right;font-size:7.5pt}.phase-table{width:100%;border-collapse:separate;border-spacing:4px}.phase-table td{width:50%;border:1px solid #dce6ef;background:#f8fbfd;padding:7px;vertical-align:top}.phase-title{font-weight:bold;color:#fff;padding:4px 7px;margin:-7px -7px 6px}.fishbone{width:100%;border-collapse:collapse;margin:7px 0}.fishbone td{width:33.33%;border:1px solid #dbe5ed;padding:5px;vertical-align:top}.fishbone .spine{background:#eaf5fb;text-align:center;color:#123b5d;font-weight:bold}.check{color:#168a67;font-weight:bold}.pending{color:#9aa8b5}
+</style>
+<style>
+table.measurements{font-size:9pt;overflow:wrap;border-bottom:1px solid #cad8e0}
+table.measurements th,table.measurements td{font-size:9pt}
 </style>
 </head>
 <body>
@@ -142,12 +161,30 @@ body{font-family:sans-serif;font-size:9pt;color:#25364a;line-height:1.45}h1{font
 <?php $overallTrendValues = []; foreach ($trend as $row) $overallTrendValues[(int) $row->bulan] = (float) $row->rata_pencapaian; ?>
 <div style="border:1px solid #dbe5ed;border-radius:5px;padding:8px 10px;margin-bottom:6px"><?= $areaChart($overallTrendValues) ?></div>
 <p class="small muted">Sumbu vertikal menunjukkan rerata persentase capaian semua indikator yang memiliki data pada bulan tersebut. Area yang kosong berarti tidak ada data pengukuran untuk bulan itu.</p>
-<?php if ($measurements): ?><h3>Rincian pengukuran per bulan</h3>
-<table class="data"><thead><tr><th>Bulan</th><th>Unit</th><th>Indikator</th><th>Numerator</th><th>Denominator</th><th>Capaian</th><th>Analisis / kendala</th><th>Rencana tindak lanjut</th></tr></thead><tbody>
-<?php foreach ($measurements as $measurement): ?><tr><td><?= $esc($monthNames[(int) $measurement->bulan] ?? $measurement->bulan) ?></td><td><?= $esc($measurement->department) ?></td><td><?= $esc($measurement->indikator_code) ?> · <?= $esc($measurement->indikator) ?></td><td><?= $fmt($measurement->numerator ?? 0, 0) ?></td><td><?= $fmt($measurement->denumerator ?? 0, 0) ?></td><td><?= $fmt($measurement->capaian) ?>%</td><td><?= $esc($measurement->reason ?: '—') ?></td><td><?= $esc($measurement->rtl ?: '—') ?></td></tr><?php endforeach; ?>
+<?php if ($measurements): ?><pagebreak orientation="L" />
+<h3>Rincian pengukuran per bulan</h3>
+<table class="data measurements" autosize="1"><thead><tr><th width="5%">Bulan</th><th width="9%">Unit</th><th width="15%">Indikator</th><th width="11%">Numerator</th><th width="11%">Denominator</th><th width="7%">Capaian</th><th width="27%">Analisis / kendala</th><th width="15%">Rencana tindak lanjut</th></tr></thead><tbody>
+<?php foreach ($measurements as $measurement):
+    $cells = [
+        $monthNames[(int) $measurement->bulan] ?? $measurement->bulan,
+        $measurement->department,
+        $measurement->indikator_code . ' · ' . $measurement->indikator,
+        $fmt($measurement->numerator ?? 0, 0),
+        $fmt($measurement->denumerator ?? 0, 0),
+        $fmt($measurement->capaian) . '%',
+        $measurement->reason ?: '—',
+        $measurement->rtl ?: '—',
+    ];
+    $limits = [30, 90, 180, 90, 90, 50, 600, 300];
+    $parts = [];
+    foreach ($cells as $column => $value) $parts[$column] = $measurementTextParts($value, $limits[$column]);
+    $partCount = max(array_map('count', $parts));
+    for ($part = 0; $part < $partCount; $part++): ?>
+<tr><?php foreach ($parts as $cellParts): ?><td style="<?= $part > 0 ? 'border-top:0;padding-top:0;' : '' ?><?= $part < $partCount - 1 ? 'border-bottom:0;padding-bottom:0;' : '' ?>"><?= $esc($cellParts[$part] ?? '') ?></td><?php endforeach; ?></tr>
+<?php endfor; endforeach; ?>
 </tbody></table><?php endif; ?>
 
-<div class="page-break"></div>
+<pagebreak orientation="P" />
 <h2>Grafik area capaian tiap indikator</h2>
 <p>Setiap grafik menampilkan rerata capaian indikator per bulan pada skala 0–100%. Celah pada grafik menandakan tidak ada pengukuran tercatat pada bulan tersebut.</p>
 <?php foreach ($indicators as $index => $row): $values = $indicatorTrend[$row->transaksi_id] ?? []; ?>

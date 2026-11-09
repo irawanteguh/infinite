@@ -55,36 +55,36 @@ class IndikatorunitModel extends Model{
     }
 
     function datateam($groupid,$orgid,$userid){
-            $query =
-                    "
-                        select
-                            group_concat(
-                                distinct concat(
-                                    a.pic, ':',
-                                    u.name
-                                )
-                                order by u.name asc
-                                separator ';'
-                            ) as pic_list
-                        from dt01_qi_indikator_hd a
-                        left join dt01_gen_user_data u
-                            on u.user_id = a.pic
-                        where a.active = '1'
-                            and a.group_id = '".$groupid."'
-                            and a.org_id = '".$orgid."'
-                            and a.department_id in (
-                                select department_id
-                                from dt01_gen_department_ms
-                                where active = '1'
-                                    and group_id = '".$groupid."'
-                                    and org_id = '".$orgid."'
-                                    and user_id = '".$userid."'
-                            );
-                    ";
+        $query =
+                "
+                    select
+                        group_concat(
+                            distinct concat(
+                                a.pic, ':',
+                                u.name
+                            )
+                            order by u.name asc
+                            separator ';'
+                        ) as pic_list
+                    from dt01_qi_indikator_hd a
+                    left join dt01_gen_user_data u
+                        on u.user_id = a.pic
+                    where a.active = '1'
+                        and a.group_id = '".$groupid."'
+                        and a.org_id = '".$orgid."'
+                        and a.department_id in (
+                            select department_id
+                            from dt01_gen_department_ms
+                            where active = '1'
+                                and group_id = '".$groupid."'
+                                and org_id = '".$orgid."'
+                                and user_id = '".$userid."'
+                        );
+                ";
 
-            $recordset = $this->db->query($query);
-            return $recordset->getResult();
-        }
+        $recordset = $this->db->query($query);
+        return $recordset->getResult();
+    }
 
     function datauser($groupid,$orgid,$departmentid){
         $query =
@@ -205,18 +205,18 @@ class IndikatorunitModel extends Model{
                         /* ===========================
                         PENCAPAIAN (%)
                         =========================== */
-                        round(max(case when it.bulan = '01' then case when coalesce(it.numerator, 0) = 0 and coalesce(it.denumerator, 0) = 0 then 100 when coalesce(it.denumerator, 0) = 0 then 0 else (it.numerator / it.denumerator) * 100 end end), 2) as nilai01,
-                        round(max(case when it.bulan = '02' then case when coalesce(it.numerator, 0) = 0 and coalesce(it.denumerator, 0) = 0 then 100 when coalesce(it.denumerator, 0) = 0 then 0 else (it.numerator / it.denumerator) * 100 end end), 2) as nilai02,
-                        round(max(case when it.bulan = '03' then case when coalesce(it.numerator, 0) = 0 and coalesce(it.denumerator, 0) = 0 then 100 when coalesce(it.denumerator, 0) = 0 then 0 else (it.numerator / it.denumerator) * 100 end end), 2) as nilai03,
-                        round(max(case when it.bulan = '04' then case when coalesce(it.numerator, 0) = 0 and coalesce(it.denumerator, 0) = 0 then 100 when coalesce(it.denumerator, 0) = 0 then 0 else (it.numerator / it.denumerator) * 100 end end), 2) as nilai04,
-                        round(max(case when it.bulan = '05' then case when coalesce(it.numerator, 0) = 0 and coalesce(it.denumerator, 0) = 0 then 100 when coalesce(it.denumerator, 0) = 0 then 0 else (it.numerator / it.denumerator) * 100 end end), 2) as nilai05,
-                        round(max(case when it.bulan = '06' then case when coalesce(it.numerator, 0) = 0 and coalesce(it.denumerator, 0) = 0 then 100 when coalesce(it.denumerator, 0) = 0 then 0 else (it.numerator / it.denumerator) * 100 end end), 2) as nilai06,
-                        round(max(case when it.bulan = '07' then case when coalesce(it.numerator, 0) = 0 and coalesce(it.denumerator, 0) = 0 then 100 when coalesce(it.denumerator, 0) = 0 then 0 else (it.numerator / it.denumerator) * 100 end end), 2) as nilai07,
-                        round(max(case when it.bulan = '08' then case when coalesce(it.numerator, 0) = 0 and coalesce(it.denumerator, 0) = 0 then 100 when coalesce(it.denumerator, 0) = 0 then 0 else (it.numerator / it.denumerator) * 100 end end), 2) as nilai08,
-                        round(max(case when it.bulan = '09' then case when coalesce(it.numerator, 0) = 0 and coalesce(it.denumerator, 0) = 0 then 100 when coalesce(it.denumerator, 0) = 0 then 0 else (it.numerator / it.denumerator) * 100 end end), 2) as nilai09,
-                        round(max(case when it.bulan = '10' then case when coalesce(it.numerator, 0) = 0 and coalesce(it.denumerator, 0) = 0 then 100 when coalesce(it.denumerator, 0) = 0 then 0 else (it.numerator / it.denumerator) * 100 end end), 2) as nilai10,
-                        round(max(case when it.bulan = '11' then case when coalesce(it.numerator, 0) = 0 and coalesce(it.denumerator, 0) = 0 then 100 when coalesce(it.denumerator, 0) = 0 then 0 else (it.numerator / it.denumerator) * 100 end end), 2) as nilai11,
-                        round(max(case when it.bulan = '12' then case when coalesce(it.numerator, 0) = 0 and coalesce(it.denumerator, 0) = 0 then 100 when coalesce(it.denumerator, 0) = 0 then 0 else (it.numerator / it.denumerator) * 100 end end), 2) as nilai12
+                        ROUND(LEAST(100, MAX(CASE WHEN it.bulan = '01' THEN CASE WHEN COALESCE(it.numerator, 0) = 0 AND COALESCE(it.denumerator, 0) = 0 THEN 100 WHEN COALESCE(it.denumerator, 0) = 0 THEN 0 ELSE (it.numerator / it.denumerator) * 100 END END)), 2) AS nilai01,
+                        ROUND(LEAST(100, MAX(CASE WHEN it.bulan = '02' THEN CASE WHEN COALESCE(it.numerator, 0) = 0 AND COALESCE(it.denumerator, 0) = 0 THEN 100 WHEN COALESCE(it.denumerator, 0) = 0 THEN 0 ELSE (it.numerator / it.denumerator) * 100 END END)), 2) AS nilai02,
+                        ROUND(LEAST(100, MAX(CASE WHEN it.bulan = '03' THEN CASE WHEN COALESCE(it.numerator, 0) = 0 AND COALESCE(it.denumerator, 0) = 0 THEN 100 WHEN COALESCE(it.denumerator, 0) = 0 THEN 0 ELSE (it.numerator / it.denumerator) * 100 END END)), 2) AS nilai03,
+                        ROUND(LEAST(100, MAX(CASE WHEN it.bulan = '04' THEN CASE WHEN COALESCE(it.numerator, 0) = 0 AND COALESCE(it.denumerator, 0) = 0 THEN 100 WHEN COALESCE(it.denumerator, 0) = 0 THEN 0 ELSE (it.numerator / it.denumerator) * 100 END END)), 2) AS nilai04,
+                        ROUND(LEAST(100, MAX(CASE WHEN it.bulan = '05' THEN CASE WHEN COALESCE(it.numerator, 0) = 0 AND COALESCE(it.denumerator, 0) = 0 THEN 100 WHEN COALESCE(it.denumerator, 0) = 0 THEN 0 ELSE (it.numerator / it.denumerator) * 100 END END)), 2) AS nilai05,
+                        ROUND(LEAST(100, MAX(CASE WHEN it.bulan = '06' THEN CASE WHEN COALESCE(it.numerator, 0) = 0 AND COALESCE(it.denumerator, 0) = 0 THEN 100 WHEN COALESCE(it.denumerator, 0) = 0 THEN 0 ELSE (it.numerator / it.denumerator) * 100 END END)), 2) AS nilai06,
+                        ROUND(LEAST(100, MAX(CASE WHEN it.bulan = '07' THEN CASE WHEN COALESCE(it.numerator, 0) = 0 AND COALESCE(it.denumerator, 0) = 0 THEN 100 WHEN COALESCE(it.denumerator, 0) = 0 THEN 0 ELSE (it.numerator / it.denumerator) * 100 END END)), 2) AS nilai07,
+                        ROUND(LEAST(100, MAX(CASE WHEN it.bulan = '08' THEN CASE WHEN COALESCE(it.numerator, 0) = 0 AND COALESCE(it.denumerator, 0) = 0 THEN 100 WHEN COALESCE(it.denumerator, 0) = 0 THEN 0 ELSE (it.numerator / it.denumerator) * 100 END END)), 2) AS nilai08,
+                        ROUND(LEAST(100, MAX(CASE WHEN it.bulan = '09' THEN CASE WHEN COALESCE(it.numerator, 0) = 0 AND COALESCE(it.denumerator, 0) = 0 THEN 100 WHEN COALESCE(it.denumerator, 0) = 0 THEN 0 ELSE (it.numerator / it.denumerator) * 100 END END)), 2) AS nilai09,
+                        ROUND(LEAST(100, MAX(CASE WHEN it.bulan = '10' THEN CASE WHEN COALESCE(it.numerator, 0) = 0 AND COALESCE(it.denumerator, 0) = 0 THEN 100 WHEN COALESCE(it.denumerator, 0) = 0 THEN 0 ELSE (it.numerator / it.denumerator) * 100 END END)), 2) AS nilai10,
+                        ROUND(LEAST(100, MAX(CASE WHEN it.bulan = '11' THEN CASE WHEN COALESCE(it.numerator, 0) = 0 AND COALESCE(it.denumerator, 0) = 0 THEN 100 WHEN COALESCE(it.denumerator, 0) = 0 THEN 0 ELSE (it.numerator / it.denumerator) * 100 END END)), 2) AS nilai11,
+                        ROUND(LEAST(100, MAX(CASE WHEN it.bulan = '12' THEN CASE WHEN COALESCE(it.numerator, 0) = 0 AND COALESCE(it.denumerator, 0) = 0 THEN 100 WHEN COALESCE(it.denumerator, 0) = 0 THEN 0 ELSE (it.numerator / it.denumerator) * 100 END END)), 2) AS nilai12
 
                     FROM dt01_qi_indikator_hd a
 

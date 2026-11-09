@@ -47,7 +47,7 @@ class SummaryModel extends Model
                         WHEN it.bulan IS NULL THEN NULL
                         WHEN COALESCE(it.numerator, 0) = 0 AND COALESCE(it.denumerator, 0) = 0 THEN 100
                         WHEN COALESCE(it.denumerator, 0) = 0 THEN 0
-                        ELSE (it.numerator / it.denumerator) * 100
+                        ELSE LEAST(100, (it.numerator / it.denumerator) * 100)
                     END
                 ), 2) AS rata_pencapaian
             FROM dt01_qi_indikator_hd a

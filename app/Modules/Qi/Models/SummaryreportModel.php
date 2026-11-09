@@ -102,6 +102,21 @@ class SummaryreportModel extends Model
             ->orderBy('category')->orderBy('priority', 'ASC')->orderBy('created_date')->get()->getResult();
     }
 
+    public function fishboneCausesForAnalyses(array $fishboneIds): array
+    {
+        if (!$fishboneIds) {
+            return [];
+        }
+        $grouped = [];
+        $rows = $this->db->table('dt01_qi_fishbone_dt')
+            ->whereIn('fishbone_id', $fishboneIds)->where('active', '1')
+            ->orderBy('category')->orderBy('priority', 'ASC')->orderBy('created_date')->get()->getResult();
+        foreach ($rows as $row) {
+            $grouped[$row->fishbone_id][] = $row;
+        }
+        return $grouped;
+    }
+
     public function pdsaCyclesForPeriode($groupId, $orgId, $periodeId)
     {
         return $this->db->table('dt01_qi_pdsa x')
@@ -118,6 +133,21 @@ class SummaryreportModel extends Model
     {
         return $this->db->table('dt01_qi_pdsa_items')->where(['pdsa_id' => $pdsaId, 'active' => '1'])
             ->orderBy('phase')->orderBy('sort_order')->orderBy('created_date')->get()->getResult();
+    }
+
+    public function pdsaItemsForCycles(array $pdsaIds): array
+    {
+        if (!$pdsaIds) {
+            return [];
+        }
+        $grouped = [];
+        $rows = $this->db->table('dt01_qi_pdsa_items')
+            ->whereIn('pdsa_id', $pdsaIds)->where('active', '1')
+            ->orderBy('phase')->orderBy('sort_order')->orderBy('created_date')->get()->getResult();
+        foreach ($rows as $row) {
+            $grouped[$row->pdsa_id][] = $row;
+        }
+        return $grouped;
     }
 
     public function measurementDetails($groupId, $orgId, $periodeId)

@@ -1,6 +1,6 @@
 <div class="modal fade" id="modal_add_masterindikator" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
-        <div class="modal-content">
+        <div class="modal-content d-flex flex-column overflow-hidden">
             <div class="modal-header pb-0">
                 <h1 class="mb-3">Add Master Indikator Mutu</h1>
                 <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
@@ -10,7 +10,7 @@
                 </div>
             </div>
             <form action="<?php echo base_url();?>index.php/qi/masterindikator/addmasterindikator" id="formaddmasterindikator">
-                <div class="modal-body">
+                <div class="modal-body overflow-auto" style="max-height: calc(100vh - 180px);">
 
                     <div class="text-start mb-7">
                         <div class="text-muted fw-bold fs-6">
@@ -197,7 +197,7 @@
 
 <div class="modal fade" id="modal_edit_masterindikator" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
-        <div class="modal-content">
+        <div class="modal-content d-flex flex-column overflow-hidden">
             <div class="modal-header pb-0">
                 <h1 class="mb-3">Edit Master Indikator Mutu</h1>
                 <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
@@ -208,7 +208,7 @@
             </div>
             <form action="<?php echo base_url();?>index.php/qi/masterindikator/editmasterindikator" id="formeditmasterindikator">
                 <input type="hidden" id="modal_edit_masterindikator_indikatorid" name="modal_edit_masterindikator_indikatorid">
-                <div class="modal-body">
+                <div class="modal-body overflow-auto" style="max-height: calc(100vh - 180px);">
 
                     <div class="text-start mb-7">
                         <div class="text-muted fw-bold fs-6">

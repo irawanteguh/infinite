@@ -21,14 +21,21 @@ class Pdsa extends BaseController
         $userId = session()->get('userid');
         $indicatorRefId = trim((string) request()->getGet('indikator_ref_id'));
         $linkedIndicator = $indicatorRefId !== '' ? $this->md->indicatorReference($indicatorRefId, $groupId, $orgId, $userId) : null;
+        $departments = $this->md->departments($groupId, $orgId, $userId);
+        $periods = $this->md->periods($groupId, $orgId);
+        $indicators = $this->md->indicators($groupId, $orgId, $userId);
+
         return view('template/dashboard-light-aside', [
             'contents' => view('Modules\\Qi\\Views\\v_pdsa', [
                 'endpoint' => site_url('qi/pdsa'),
-                'departments' => $this->md->departments($groupId, $orgId, $userId),
-                'periods' => $this->md->periods($groupId, $orgId),
-                'indicators' => $this->md->indicators($groupId, $orgId, $userId),
+                'departments' => $departments,
+                'periods' => $periods,
+                'indicators' => $indicators,
                 'linkedIndicator' => $linkedIndicator,
             ]),
+            'pdsaDepartments' => $departments,
+            'pdsaPeriods' => $periods,
+            'pdsaIndicators' => $indicators,
         ]);
     }
 

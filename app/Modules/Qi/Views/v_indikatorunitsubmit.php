@@ -40,7 +40,8 @@
                             <th class="text-center">Numerator</th>
                             <th class="text-center">Denominator</th>
                             <th>Achievement</th>
-                            <th>Status</th>
+                            <th>Status Capaian</th>
+                            <th>Status Pengisian</th>
                             <th>Reason</th>
                             <th>Follow-up Plan</th>
                             <th>Attachment</th>

@@ -58,7 +58,8 @@ class Summary extends BaseController
             'responseHead' => 'success',
             'responseDesc' => 'Data ringkasan ditemukan.',
             'responseResult' => $this->md->summaryRows($groupid, $orgid, $year),
-            'responseTrend' => $this->md->monthlyTrend($groupid, $orgid, $year)
+            'responseTrend' => $this->md->monthlyTrend($groupid, $orgid, $year),
+            'responseOverdue' => $this->md->overdueIndicators($groupid, $orgid, $year)
         ]);
     }
 }

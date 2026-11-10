@@ -1,5 +1,5 @@
 <?php if (!request()->getGet('pdsa_id')): ?>
-    <button type="button" class="btn btn-primary" id="pdsaNew">
+    <button type="button" class="btn btn-sm btn-primary" id="pdsaNew">
         <i class="bi bi-plus-lg me-2"></i>Buat Header PDSA
     </button>
 <?php endif; ?>

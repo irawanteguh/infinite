@@ -26,7 +26,7 @@
     <div class="col">
         <div class="card card-flush h-100 border-start border-4 border-warning">
             <div class="card-body d-flex align-items-center justify-content-between py-5">
-                <div><span class="text-muted fw-bold fs-7">Rata-rata capaian</span><div class="text-warning fw-bolder fs-2x mt-1" id="summary-average">0%</div><span class="text-muted fs-8">Dari indikator yang dinilai</span></div>
+                <div><span class="text-muted fw-bold fs-7">Ketercapaian target</span><div class="text-warning fw-bolder fs-2x mt-1" id="summary-average">—</div><span class="text-muted fs-8">Persentase penilaian bulanan yang memenuhi target</span></div>
                 <span class="symbol symbol-50px"><span class="symbol-label bg-light-warning"><i class="bi bi-speedometer2 fs-2x text-warning"></i></span></span>
             </div>
         </div>
@@ -46,11 +46,11 @@
     <span class="text-muted fs-7">Capaian pada periode terpilih; jenis indikator Department menggabungkan seluruh unit</span>
 </div>
 <div class="row row-cols-1 row-cols-md-2 row-cols-xxl-5 g-5 mb-6" id="summaryIndicatorTypes">
-    <div class="col" data-indicator-type="1f513f16-d546-11f1-91d6-202b2018cf5a"><div class="card card-flush h-100 border-start border-4 border-primary"><div class="card-body py-5"><div class="d-flex align-items-center justify-content-between mb-3"><span class="text-muted fw-bold fs-7">Indikator Global</span><i class="bi bi-globe2 fs-2 text-primary"></i></div><div class="text-gray-900 fw-bolder fs-2x" data-type-count>0</div><div class="text-muted fs-8">indikator · <span data-type-assessed>0</span> dinilai</div><div class="separator my-3"></div><div class="text-primary fw-bold">Rata-rata <span data-type-average>—</span></div></div></div></div>
-    <div class="col" data-indicator-type="25ae8766-7384-11f1-a5e6-e0be037258a4"><div class="card card-flush h-100 border-start border-4 border-info"><div class="card-body py-5"><div class="d-flex align-items-center justify-content-between mb-3"><span class="text-muted fw-bold fs-7">Indikator Mutu Nasional</span><i class="bi bi-award fs-2 text-info"></i></div><div class="text-gray-900 fw-bolder fs-2x" data-type-count>0</div><div class="text-muted fs-8">indikator · <span data-type-assessed>0</span> dinilai</div><div class="separator my-3"></div><div class="text-info fw-bold">Rata-rata <span data-type-average>—</span></div></div></div></div>
-    <div class="col" data-indicator-type="25ae8926-7384-11f1-a5e6-e0be037258a4"><div class="card card-flush h-100 border-start border-4 border-warning"><div class="card-body py-5"><div class="d-flex align-items-center justify-content-between mb-3"><span class="text-muted fw-bold fs-7">Indikator Prioritas Rumah Sakit</span><i class="bi bi-hospital fs-2 text-warning"></i></div><div class="text-gray-900 fw-bolder fs-2x" data-type-count>0</div><div class="text-muted fs-8">indikator · <span data-type-assessed>0</span> dinilai</div><div class="separator my-3"></div><div class="text-warning fw-bold">Rata-rata <span data-type-average>—</span></div></div></div></div>
-    <div class="col" data-indicator-type="25ae899b-7384-11f1-a5e6-e0be037258a4"><div class="card card-flush h-100 border-start border-4 border-success"><div class="card-body py-5"><div class="d-flex align-items-center justify-content-between mb-3"><span class="text-muted fw-bold fs-7">Indikator Mutu Department</span><i class="bi bi-diagram-3 fs-2 text-success"></i></div><div class="text-gray-900 fw-bolder fs-2x" data-type-count>0</div><div class="text-muted fs-8">indikator · <span data-type-assessed>0</span> dinilai</div><div class="separator my-3"></div><div class="text-success fw-bold">Gabungan unit <span data-type-average>—</span></div></div></div></div>
-    <div class="col" data-indicator-type="38505839-d546-11f1-91d6-202b2018cf5a"><div class="card card-flush h-100 border-start border-4 border-danger"><div class="card-body py-5"><div class="d-flex align-items-center justify-content-between mb-3"><span class="text-muted fw-bold fs-7">Indikator Keselamatan Pasien</span><i class="bi bi-shield-check fs-2 text-danger"></i></div><div class="text-gray-900 fw-bolder fs-2x" data-type-count>0</div><div class="text-muted fs-8">indikator · <span data-type-assessed>0</span> dinilai</div><div class="separator my-3"></div><div class="text-danger fw-bold">Rata-rata <span data-type-average>—</span></div></div></div></div>
+    <div class="col" data-indicator-type="1f513f16-d546-11f1-91d6-202b2018cf5a"><div class="card card-flush h-100 border-start border-4 border-primary"><div class="card-body py-5"><div class="d-flex align-items-center justify-content-between mb-3"><span class="text-muted fw-bold fs-7">Indikator Global</span><i class="bi bi-globe2 fs-2 text-primary"></i></div><div class="text-gray-900 fw-bolder fs-2x" data-type-count>0</div><div class="text-muted fs-8">indikator · <span data-type-assessed>0</span> dinilai</div><div class="separator my-3"></div><div class="text-primary fw-bold">Ketercapaian target <span data-type-average>—</span></div></div></div></div>
+    <div class="col" data-indicator-type="25ae8766-7384-11f1-a5e6-e0be037258a4"><div class="card card-flush h-100 border-start border-4 border-info"><div class="card-body py-5"><div class="d-flex align-items-center justify-content-between mb-3"><span class="text-muted fw-bold fs-7">Indikator Mutu Nasional</span><i class="bi bi-award fs-2 text-info"></i></div><div class="text-gray-900 fw-bolder fs-2x" data-type-count>0</div><div class="text-muted fs-8">indikator · <span data-type-assessed>0</span> dinilai</div><div class="separator my-3"></div><div class="text-info fw-bold">Ketercapaian target <span data-type-average>—</span></div></div></div></div>
+    <div class="col" data-indicator-type="25ae8926-7384-11f1-a5e6-e0be037258a4"><div class="card card-flush h-100 border-start border-4 border-warning"><div class="card-body py-5"><div class="d-flex align-items-center justify-content-between mb-3"><span class="text-muted fw-bold fs-7">Indikator Prioritas Rumah Sakit</span><i class="bi bi-hospital fs-2 text-warning"></i></div><div class="text-gray-900 fw-bolder fs-2x" data-type-count>0</div><div class="text-muted fs-8">indikator · <span data-type-assessed>0</span> dinilai</div><div class="separator my-3"></div><div class="text-warning fw-bold">Ketercapaian target <span data-type-average>—</span></div></div></div></div>
+    <div class="col" data-indicator-type="25ae899b-7384-11f1-a5e6-e0be037258a4"><div class="card card-flush h-100 border-start border-4 border-success"><div class="card-body py-5"><div class="d-flex align-items-center justify-content-between mb-3"><span class="text-muted fw-bold fs-7">Indikator Mutu Department</span><i class="bi bi-diagram-3 fs-2 text-success"></i></div><div class="text-gray-900 fw-bolder fs-2x" data-type-count>0</div><div class="text-muted fs-8">indikator · <span data-type-assessed>0</span> dinilai</div><div class="separator my-3"></div><div class="text-success fw-bold">Ketercapaian target <span data-type-average>—</span></div></div></div></div>
+    <div class="col" data-indicator-type="38505839-d546-11f1-91d6-202b2018cf5a"><div class="card card-flush h-100 border-start border-4 border-danger"><div class="card-body py-5"><div class="d-flex align-items-center justify-content-between mb-3"><span class="text-muted fw-bold fs-7">Indikator Keselamatan Pasien</span><i class="bi bi-shield-check fs-2 text-danger"></i></div><div class="text-gray-900 fw-bolder fs-2x" data-type-count>0</div><div class="text-muted fs-8">indikator · <span data-type-assessed>0</span> dinilai</div><div class="separator my-3"></div><div class="text-danger fw-bold">Ketercapaian target <span data-type-average>—</span></div></div></div></div>
 </div>
 
 <div class="row g-5 mb-6">
@@ -58,8 +58,8 @@
         <div class="card h-100">
             <div class="card-header border-0 pt-6">
                 <div class="card-title flex-column">
-                    <h3 class="fw-bolder text-gray-900 mb-1">Tren capaian bulanan</h3>
-                    <span class="text-muted fs-7">Perbandingan indikator departemen dan nasional</span>
+                    <h3 class="fw-bolder text-gray-900 mb-1">Tren ketercapaian target bulanan</h3>
+                    <span class="text-muted fs-7">Persentase penilaian bulanan yang memenuhi target: departemen dan nasional</span>
                 </div>
             </div>
             <div class="card-body pt-0">
@@ -71,8 +71,8 @@
         <div class="card h-100">
             <div class="card-header border-0 pt-6">
                 <div class="card-title flex-column">
-                    <h3 class="fw-bolder text-gray-900 mb-1">Capaian berdasarkan dimensi mutu</h3>
-                    <span class="text-muted fs-7">Rata-rata per dimensi mutu</span>
+                    <h3 class="fw-bolder text-gray-900 mb-1">Ketercapaian target per dimensi mutu</h3>
+                    <span class="text-muted fs-7">Persentase penilaian bulanan yang memenuhi target</span>
                 </div>
             </div>
             <div class="card-body pt-0">
@@ -88,8 +88,8 @@
         <div class="card h-100">
             <div class="card-header border-0 pt-6">
                 <div class="card-title flex-column">
-                    <h3 class="fw-bolder text-gray-900 mb-1">Peringkat capaian departemen</h3>
-                    <span class="text-muted fs-7" id="summaryDepartmentCaption">Rata-rata dari indikator yang sudah dinilai</span>
+                    <h3 class="fw-bolder text-gray-900 mb-1">Peringkat ketercapaian target departemen</h3>
+                    <span class="text-muted fs-7" id="summaryDepartmentCaption">Persentase penilaian bulanan yang memenuhi target</span>
                 </div>
             </div>
             <div class="card-body pt-0">
@@ -99,6 +99,53 @@
         </div>
     </div>
 </div>
+
+<div class="card mb-6">
+    <div class="card-header border-0 pt-6">
+        <div class="card-title flex-column align-items-start">
+            <h3 class="fw-bolder text-gray-900 mb-1">Indikator belum diisi melewati batas waktu</h3>
+            <span class="text-muted fs-7">Periode terpilih · <span id="summary-overdue-count">0</span> indikator/departemen · Izin khusus yang masih berlaku tidak termasuk</span>
+        </div>
+        <div class="card-toolbar"><input type="search" class="form-control form-control-solid w-250px" id="summary-overdue-search" placeholder="Cari indikator atau departemen" aria-label="Cari indikator terlambat"></div>
+    </div>
+    <div class="card-body pt-0"><div class="table-responsive">
+        <table class="table align-middle table-row-dashed gy-3" id="summary-overdue-table">
+            <thead><tr class="fw-bolder text-muted bg-light">
+                <th class="ps-4 rounded-start">#</th><th>Departemen</th><th>Indikator</th><th>Jenis</th>
+                <th>Bulan belum diisi</th><th class="text-center">Jumlah bulan</th><th class="text-end pe-4 rounded-end">Status</th>
+            </tr></thead>
+            <tbody class="fw-semibold text-gray-700" id="summary-overdue-rows"></tbody>
+        </table>
+    </div></div>
+</div>
+
+<?php foreach ([
+    'global' => 'Indikator Global',
+    'national' => 'Indikator Mutu Nasional',
+    'priority' => 'Indikator Prioritas Rumah Sakit',
+] as $aggregateKey => $aggregateTitle): ?>
+<div class="card mb-6">
+    <div class="card-header border-0 pt-6">
+        <div class="card-title flex-column align-items-start">
+            <h3 class="fw-bolder text-gray-900 mb-1"><?= esc($aggregateTitle) ?> — Agregat</h3>
+            <span class="text-muted fs-7">Gabungan seluruh departemen pada periode terpilih</span>
+        </div>
+        <div class="card-toolbar"><input type="search" class="form-control form-control-solid w-250px" id="aggregate-<?= esc($aggregateKey, 'attr') ?>-search" placeholder="Cari indikator" aria-label="Cari <?= esc($aggregateTitle, 'attr') ?>"></div>
+    </div>
+    <div class="card-body pt-0"><div class="table-responsive">
+        <table class="table align-middle table-row-dashed gy-3" id="aggregate-<?= esc($aggregateKey, 'attr') ?>-table">
+            <thead><tr class="fw-bolder text-muted bg-light">
+                <th class="ps-4 rounded-start">#</th><th>Indikator</th><th class="text-center">Departemen</th>
+                <th class="text-center">Target</th><th class="text-center">Penilaian</th>
+                <th class="text-center">Total numerator</th><th class="text-center">Total denominator</th>
+                <th class="text-center">Capaian gabungan</th><th class="text-center">Ketercapaian target</th>
+                <th class="text-end pe-4 rounded-end">Actions</th>
+            </tr></thead>
+            <tbody class="fw-semibold text-gray-700" id="aggregate-<?= esc($aggregateKey, 'attr') ?>-rows"></tbody>
+        </table>
+    </div></div>
+</div>
+<?php endforeach; ?>
 
 <div class="card">
     <div class="card-header border-0 pt-6">

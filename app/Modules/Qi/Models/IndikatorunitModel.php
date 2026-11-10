@@ -122,6 +122,7 @@ class IndikatorunitModel extends Model{
 
                         j.jenis,
                         i.indikator,
+                        i.target_capaian,
                         i.definisi,
                         i.dimensi_mutu_keselamatan,
                         i.dimensi_mutu_waktu,
@@ -241,6 +242,7 @@ class IndikatorunitModel extends Model{
 
                     LEFT JOIN dt01_qi_indikator_it it
                         ON it.referensi_id = a.transaksi_id
+                        AND it.active = '1'
                     
                     LEFT JOIN dt01_qi_satuan_ms sat
                         ON sat.satuan_id = i.satuan_id
@@ -268,6 +270,7 @@ class IndikatorunitModel extends Model{
                         u.name,
                         j.jenis,
                         i.indikator,
+                        i.target_capaian,
                         i.definisi,
                         i.dimensi_mutu_keselamatan,
                         i.dimensi_mutu_waktu,
@@ -425,6 +428,7 @@ class IndikatorunitModel extends Model{
     function saveNilaiindikator($data){
         $builder = $this->db->table('dt01_qi_indikator_it');
         $exists = $builder->where('referensi_id', $data['referensi_id'])
+            ->where('active', '1')
             ->where('bulan', $data['bulan'])
             ->where('group_id', $data['group_id'])
             ->where('org_id', $data['org_id'])
@@ -433,6 +437,7 @@ class IndikatorunitModel extends Model{
         if ($exists) {
             unset($data['created_by']);
             return $this->db->table('dt01_qi_indikator_it')
+                ->where('active', '1')
                 ->where('referensi_id', $data['referensi_id'])
                 ->where('bulan', $data['bulan'])
                 ->where('group_id', $data['group_id'])

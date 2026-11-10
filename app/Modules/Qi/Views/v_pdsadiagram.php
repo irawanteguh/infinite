@@ -41,7 +41,6 @@ foreach ($phases as $phase => $config) {
             <h3 class="card-title fw-bolder text-gray-900">Diagram perbaikan</h3>
             <div class="text-gray-600 fs-7">Ikuti alur Plan, Do, Study, Act dan lihat item pada setiap tahap.</div>
         </div>
-        <a href="<?= esc(site_url('qi/pdsa')) ?>" class="btn btn-sm btn-light-primary"><i class="bi bi-list-ul me-2"></i>Daftar PDSA</a>
     </div>
     <div class="card-body p-4 p-lg-8">
         <div class="table-responsive pdsa-board-scroll">

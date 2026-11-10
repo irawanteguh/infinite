@@ -50,7 +50,7 @@ class SummaryreportModel extends Model
             LEFT JOIN dt01_qi_indikator_ms i ON i.indikator_id=a.indikator_id
             LEFT JOIN dt01_qi_jenis_indikator_ms j ON j.jenis_indikator_id=i.jenis_indikator_id
             LEFT JOIN dt01_qi_satuan_ms s ON s.satuan_id=i.satuan_id
-            LEFT JOIN dt01_qi_indikator_it it ON it.referensi_id=a.transaksi_id AND it.group_id=a.group_id AND it.org_id=a.org_id AND it.bulan IS NOT NULL
+            LEFT JOIN dt01_qi_indikator_it it ON it.referensi_id=a.transaksi_id AND it.group_id=a.group_id AND it.org_id=a.org_id AND it.bulan IS NOT NULL AND it.active='1'
             WHERE a.active='1' AND a.group_id=? AND a.org_id=?
             GROUP BY a.transaksi_id, d.department, i.indikator_code, i.indikator, j.jenis, a.target, i.target_capaian, s.satuan, s.keterangan
             ORDER BY kategori, d.department, i.indikator_code, i.indikator";
@@ -65,7 +65,7 @@ class SummaryreportModel extends Model
             FROM dt01_qi_indikator_it it
             INNER JOIN dt01_qi_indikator_hd a ON a.transaksi_id=it.referensi_id AND a.group_id=it.group_id AND a.org_id=it.org_id AND a.active='1'
             INNER JOIN dt01_qi_periode_mutu p ON p.periode_id=a.periode_id AND p.active='1' AND p.periode_id=?
-            WHERE a.group_id=? AND a.org_id=? AND it.bulan IS NOT NULL
+            WHERE a.group_id=? AND a.org_id=? AND it.bulan IS NOT NULL AND it.active='1'
             GROUP BY it.bulan ORDER BY CAST(it.bulan AS UNSIGNED)";
         return $this->db->query($sql, [$periodeId, $groupId, $orgId])->getResult();
     }
@@ -78,7 +78,7 @@ class SummaryreportModel extends Model
             FROM dt01_qi_indikator_it it
             INNER JOIN dt01_qi_indikator_hd a ON a.transaksi_id=it.referensi_id AND a.group_id=it.group_id AND a.org_id=it.org_id AND a.active='1'
             INNER JOIN dt01_qi_periode_mutu p ON p.periode_id=a.periode_id AND p.active='1' AND p.periode_id=?
-            WHERE a.group_id=? AND a.org_id=? AND it.bulan IS NOT NULL
+            WHERE a.group_id=? AND a.org_id=? AND it.bulan IS NOT NULL AND it.active='1'
             GROUP BY a.transaksi_id, it.bulan
             ORDER BY a.transaksi_id, CAST(it.bulan AS UNSIGNED)";
         return $this->db->query($sql, [$periodeId, $groupId, $orgId])->getResult();
@@ -159,7 +159,7 @@ class SummaryreportModel extends Model
             INNER JOIN dt01_qi_periode_mutu p ON p.periode_id=a.periode_id AND p.active='1' AND p.periode_id=?
             LEFT JOIN dt01_gen_department_ms d ON d.department_id=a.department_id
             LEFT JOIN dt01_qi_indikator_ms i ON i.indikator_id=a.indikator_id
-            WHERE a.group_id=? AND a.org_id=? AND it.bulan IS NOT NULL
+            WHERE a.group_id=? AND a.org_id=? AND it.bulan IS NOT NULL AND it.active='1'
             ORDER BY d.department,i.indikator_code,CAST(it.bulan AS UNSIGNED)";
         return $this->db->query($sql, [$periodeId, $groupId, $orgId])->getResult();
     }

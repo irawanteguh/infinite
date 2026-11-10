@@ -185,6 +185,12 @@ class Indikatorunit extends BaseController{
                 if ((string) $row->transaksi_id !== $submitReference) {
                     continue;
                 }
+                try {
+                    $row->inputStatuses = (new \Modules\Organization\Models\SettingModel())->inputStatuses($submitReference);
+                } catch (\Throwable $exception) {
+                    log_message('error', 'Gagal memeriksa status pengisian indikator: {message}', ['message' => $exception->getMessage()]);
+                    $row->inputStatuses = [];
+                }
                 for ($month = 1; $month <= 12; $month++) {
                     $monthKey = str_pad((string) $month, 2, '0', STR_PAD_LEFT);
                     $row->{'attachments' . $monthKey} = array_map('basename', $this->attachmentFiles($submitReference, $monthKey));
@@ -316,6 +322,19 @@ class Indikatorunit extends BaseController{
                 'responseCode' => '01',
                 'responseHead' => 'error',
                 'responseDesc' => 'Referensi indikator atau bulan penilaian tidak valid.'
+            ]);
+        }
+
+        try {
+            $allowed = (new \Modules\Organization\Models\SettingModel())->allowsInput($referenceid, $bulan);
+        } catch (\Throwable $exception) {
+            log_message('error', 'Gagal memeriksa batas pengisian indikator: {message}', ['message' => $exception->getMessage()]);
+            return response()->setJSON(['responseCode' => '01', 'responseHead' => 'error', 'responseDesc' => 'Batas pengisian tidak dapat diperiksa. Silakan coba kembali.']);
+        }
+        if (!$allowed) {
+            return response()->setJSON([
+                'responseCode' => '01', 'responseHead' => 'warning',
+                'responseDesc' => 'Batas waktu pengisian bulan ini telah berakhir. Hubungi pengelola organisasi untuk izin khusus 24 jam.',
             ]);
         }
 

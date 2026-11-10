@@ -247,9 +247,25 @@ function loadIndikatorUnitSubmit(){
             getvariabel += " data-indikatoriid='" + data.indikator_id + "'";
 
         const hasSubmitted = numerator[i] !== null && numerator[i] !== undefined && numerator[i] !== "";
-        btnaction += "<a class='dropdown-item btn btn-sm text-primary' data-bs-toggle='modal' data-bs-target='#modal_input_nilai_indikator' "+getvariabel+" onclick='getdatapenilaian($(this));'><i class='bi bi-pencil text-primary me-4'></i>"+(hasSubmitted ? "Edit Penilaian" : "Submit Penilaian")+"</a>";
-
+        const target = Number(data.target);
+        const targetMet = hasSubmitted && (target === 0 ? pencapaian === 0
+            : data.target_capaian === 'L' ? pencapaian <= target : pencapaian >= target);
         const monthKey = String(i + 1).padStart(2, "0");
+        const inputStatus = (data.inputStatuses || {})[monthKey];
+        const canInput = inputStatus && inputStatus.allowed === true;
+        const statusLabels = {
+            unlimited: ['badge-light-success', 'Tanpa batas tanggal'],
+            open: ['badge-light-success', 'Masih dibuka'],
+            upcoming: ['badge-light-secondary', 'Belum masuk periode'],
+            granted: ['badge-light-warning', 'Izin khusus 24 jam'],
+            closed: ['badge-light-danger', 'Batas waktu berakhir']
+        };
+        const statusDisplay = inputStatus && statusLabels[inputStatus.status]
+            ? statusLabels[inputStatus.status] : ['badge-light-secondary', 'Status tidak tersedia'];
+        if (canInput) {
+        btnaction += "<a class='dropdown-item btn btn-sm text-primary' data-bs-toggle='modal' data-bs-target='#modal_input_nilai_indikator' "+getvariabel+" onclick='getdatapenilaian($(this));'><i class='bi bi-pencil text-primary me-4'></i>"+(hasSubmitted ? "Edit Penilaian" : "Submit Penilaian")+"</a>";
+        }
+
         const attachments = data["attachments" + monthKey] || [];
         const attachmentCell = attachments.length
             ? attachments.map(function (file, fileIndex) {
@@ -265,17 +281,25 @@ function loadIndikatorUnitSubmit(){
             tableresult += "<td class='text-center'>"+data.target+"%</td>";
             tableresult += "<td class='text-center'>"+(numerator[i] ?? "")+"</td>";
             tableresult += "<td class='text-center'>"+(denumerator[i] ?? "")+"</td>";
-            tableresult += "<td><span class='badge " + (pencapaian >= parseFloat(data.target) ? "badge-light-success" : "badge-light-danger") + "'>" + pencapaian.toFixed(2) + "%</span></td>";
+            tableresult += hasSubmitted
+                ? "<td><span class='badge " + (targetMet ? "badge-light-success" : "badge-light-danger") + "'>" + pencapaian.toFixed(2) + "%</span></td>"
+                : "<td><span class='text-muted'>-</span></td>";
             tableresult += "<td>";
-                tableresult += "<span class='badge " + (pencapaian >= parseFloat(data.target) ? "badge-light-success" : "badge-light-danger") + "'>";
-                tableresult += pencapaian >= parseFloat(data.target) ? "<i class='bi bi-check-circle-fill me-2 text-success'></i>Achieved" : "<i class='bi bi-x-circle-fill me-2 text-danger'></i>Not Achieved";
+            if (!hasSubmitted) {
+                tableresult += "<span class='badge badge-light-secondary'>Belum diisi</span>";
+            } else {
+                tableresult += "<span class='badge " + (targetMet ? "badge-light-success" : "badge-light-danger") + "'>";
+                tableresult += targetMet ? "<i class='bi bi-check-circle-fill me-2 text-success'></i>Achieved" : "<i class='bi bi-x-circle-fill me-2 text-danger'></i>Not Achieved";
                 tableresult += "</span>";
+            }
             tableresult += "</td>";
+            tableresult += "<td><span class='badge " + statusDisplay[0] + "'>" + statusDisplay[1] + "</span></td>";
             tableresult += "<td>"+(reason[i] ?? "")+"</td>";
             tableresult += "<td>"+(rtl[i] ?? "")+"</td>";
             tableresult += "<td>"+attachmentCell+"</td>";
 
             tableresult += "<td class='text-end'>";
+            if (canInput) {
                 tableresult += "<div class='btn-group'>";
                     tableresult += "<button ";
                     tableresult += "type='button' ";
@@ -287,6 +311,9 @@ function loadIndikatorUnitSubmit(){
                     tableresult += btnaction;
                     tableresult += "</div>";
                 tableresult += "</div>";
+            } else {
+                tableresult += "<span class='text-muted'>-</span>";
+            }
             tableresult += "</td>";
 
         tableresult += "</tr>";
@@ -468,7 +495,7 @@ function dataindikatorunit() {
                         tableResult += badgeDimensiMutu(result[i].dimensi_mutu_pasien, "Berorientasi Pada Pasien", "info");
                         tableResult += badgeDimensiMutu(result[i].dimensi_mutu_integrasi, "Integrasi", "info");
                     tableResult += "</div>";
-                    tableResult += "<div><span class='badge badge-light-info mt-4'>"+result[i].jenis+"</span></div>";
+                    tableResult += "<div><span class='badge badge-light-primary mt-4'>"+result[i].jenis+"</span></div>";
                 tableResult += "</td>";
 
                 tableResult += "</td>";

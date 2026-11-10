@@ -9,12 +9,128 @@ function qualitySummaryNumber(value) {
     return Number.isFinite(number) ? number : 0;
 }
 
+function qualitySummaryHasScore(row) {
+    return row.rata_pencapaian != null
+        && String(row.rata_pencapaian).trim() !== ""
+        && Number.isFinite(Number(row.rata_pencapaian));
+}
+
+function qualitySummaryTargetRate(rows) {
+    const assessed = rows.reduce((total, row) => total + qualitySummaryNumber(row.jumlah_dinilai_target), 0);
+    const achieved = rows.reduce((total, row) => total + qualitySummaryNumber(row.jumlah_memenuhi_target), 0);
+    return assessed ? achieved / assessed * 100 : null;
+}
+
 function qualitySummaryEscape(value) {
     return $("<div>").text(value == null || value === "" ? "-" : String(value)).html();
 }
 
+function aggregateQualityIndicators(rows, typeId) {
+    const grouped = new Map();
+    rows.filter(row => String(row.jenis_indikator_id || '').toLowerCase() === typeId).forEach(row => {
+        const key = row.indikator_id || row.indikator_code || row.transaksi_id;
+        if (!grouped.has(key)) grouped.set(key, {
+            code: row.indikator_code, name: row.indikator, departments: new Set(), targets: new Set(),
+            numerator: 0, denominator: 0, measurements: 0, rows: []
+        });
+        const item = grouped.get(key);
+        if (row.department_id) item.departments.add(row.department_id);
+        if (row.target != null && String(row.target).trim() !== '') item.targets.add(String(row.target));
+        item.numerator += qualitySummaryNumber(row.total_numerator);
+        item.denominator += qualitySummaryNumber(row.total_denominator);
+        item.measurements += qualitySummaryNumber(row.jumlah_penilaian);
+        item.rows.push(row);
+    });
+    return Array.from(grouped.values()).map(item => ({
+        ...item,
+        achievement: !item.measurements ? null : item.denominator === 0
+            ? (item.numerator === 0 ? 100 : 0) : Math.min(100, item.numerator / item.denominator * 100),
+        targetRate: qualitySummaryTargetRate(item.rows)
+    }));
+}
+
+function renderQualityAggregateTables(rows) {
+    const types = {
+        global: '1f513f16-d546-11f1-91d6-202b2018cf5a',
+        national: '25ae8766-7384-11f1-a5e6-e0be037258a4',
+        priority: '25ae8926-7384-11f1-a5e6-e0be037258a4'
+    };
+    const percent = value => value === null ? 'Belum dinilai'
+        : value.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%';
+    Object.entries(types).forEach(([key, typeId]) => {
+        const table = '#aggregate-' + key + '-table';
+        if ($.fn.DataTable.isDataTable(table)) $(table).DataTable().destroy();
+        const items = aggregateQualityIndicators(rows, typeId);
+        const html = items.map((item, index) => '<tr>'
+            + '<td class="ps-4">' + (index + 1) + '</td>'
+            + '<td><div>' + qualitySummaryEscape(item.code) + '</div><div>' + qualitySummaryEscape(item.name) + '</div></td>'
+            + '<td class="text-center">' + item.departments.size + '</td>'
+            + '<td class="text-center">' + qualitySummaryEscape(Array.from(item.targets).join('%; ') + (item.targets.size ? '%' : '')) + '</td>'
+            + '<td class="text-center">' + item.measurements.toLocaleString('id-ID') + '</td>'
+            + '<td class="text-center">' + item.numerator.toLocaleString('id-ID') + '</td>'
+            + '<td class="text-center">' + item.denominator.toLocaleString('id-ID') + '</td>'
+            + '<td class="text-center">' + percent(item.achievement) + '</td>'
+            + '<td class="text-center"><span class="badge badge-light-primary">' + percent(item.targetRate) + '</span></td>'
+            + '<td class="text-end pe-4"><button type="button" class="btn btn-sm btn-light-primary aggregate-departments" data-index="' + index + '" aria-expanded="false">Lihat departemen</button></td></tr>').join('');
+        $('#aggregate-' + key + '-rows').html(html);
+        const dataTable = initDataTable(table, '#aggregate-' + key + '-search', 25);
+        $(table).off('click.aggregate', '.aggregate-departments').on('click.aggregate', '.aggregate-departments', function () {
+            const row = dataTable.row($(this).closest('tr'));
+            const opened = row.child.isShown();
+            if (opened) {
+                row.child.hide();
+            } else {
+                Object.keys(types).forEach(typeKey => {
+                    const selector = '#aggregate-' + typeKey + '-table';
+                    if (!$.fn.DataTable.isDataTable(selector)) return;
+                    $(selector).DataTable().rows().every(function () {
+                        if (!this.child.isShown()) return;
+                        this.child.hide();
+                        $(this.node()).find('.aggregate-departments')
+                            .attr('aria-expanded', 'false').text('Lihat departemen');
+                    });
+                });
+                row.child(renderAggregateDepartments(items[Number(this.dataset.index)].rows)).show();
+            }
+            this.setAttribute('aria-expanded', String(!opened));
+            this.textContent = opened ? 'Lihat departemen' : 'Tutup departemen';
+        });
+    });
+}
+
+function renderAggregateDepartments(rows) {
+    const departments = new Map();
+    rows.forEach(row => {
+        const key = row.department_id || row.department || '';
+        if (!departments.has(key)) departments.set(key, []);
+        departments.get(key).push(row);
+    });
+    const percent = value => value === null ? 'Belum dinilai'
+        : value.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%';
+    const body = Array.from(departments.values()).map((departmentRows, index) => {
+        const numerator = departmentRows.reduce((sum, row) => sum + qualitySummaryNumber(row.total_numerator), 0);
+        const denominator = departmentRows.reduce((sum, row) => sum + qualitySummaryNumber(row.total_denominator), 0);
+        const measurements = departmentRows.reduce((sum, row) => sum + qualitySummaryNumber(row.jumlah_penilaian), 0);
+        const targets = [...new Set(departmentRows.filter(row => row.target != null && String(row.target).trim() !== '').map(row => String(row.target)))];
+        const achievement = !measurements ? null : denominator === 0 ? (numerator === 0 ? 100 : 0) : Math.min(100, numerator / denominator * 100);
+        return '<tr><td class="ps-4">' + (index + 1) + '</td>'
+            + '<td>' + qualitySummaryEscape(departmentRows[0].department) + '</td>'
+            + '<td class="text-center">' + qualitySummaryEscape(targets.map(target => target + '%').join('; ')) + '</td>'
+            + '<td class="text-center">' + measurements.toLocaleString('id-ID') + '</td>'
+            + '<td class="text-center">' + numerator.toLocaleString('id-ID') + '</td>'
+            + '<td class="text-center">' + denominator.toLocaleString('id-ID') + '</td>'
+            + '<td class="text-center">' + percent(achievement) + '</td>'
+            + '<td class="text-end pe-4"><span class="badge badge-light-primary">' + percent(qualitySummaryTargetRate(departmentRows)) + '</span></td></tr>';
+    }).join('');
+    return '<div class="bg-light rounded p-5 my-3"><h4 class="fs-6 mb-4">Rincian per departemen</h4>'
+        + '<div class="table-responsive"><table class="table align-middle table-row-dashed gy-3 mb-0">'
+        + '<thead><tr class="fw-bolder text-muted"><th class="ps-4">#</th><th>Departemen</th><th class="text-center">Target</th>'
+        + '<th class="text-center">Penilaian</th><th class="text-center">Total numerator</th><th class="text-center">Total denominator</th>'
+        + '<th class="text-center">Capaian gabungan</th><th class="text-center pe-4">Ketercapaian target</th></tr></thead>'
+        + '<tbody>' + body + '</tbody></table></div></div>';
+}
+
 function renderIndicatorTypeSummary(rows) {
-    const departmentType = "25ae899b-7384-11f1-a5e6-e0be037258a4";
     const typeCards = document.querySelectorAll("#summaryIndicatorTypes [data-indicator-type]");
 
     typeCards.forEach(card => {
@@ -22,37 +138,8 @@ function renderIndicatorTypeSummary(rows) {
         const typeRows = rows.filter(row => String(row.jenis_indikator_id || "").toLowerCase() === typeId);
         const indicatorKey = row => String(row.indikator_id || row.indikator_code || row.transaksi_id || "");
         const indicators = new Set(typeRows.map(indicatorKey));
-        let assessedCount = 0;
-        let average = null;
-
-        if (typeId === departmentType) {
-            const aggregated = new Map();
-            typeRows.forEach(row => {
-                const key = indicatorKey(row);
-                if (!aggregated.has(key)) aggregated.set(key, { numerator: 0, denominator: 0, assessed: false });
-                const item = aggregated.get(key);
-                item.numerator += qualitySummaryNumber(row.total_numerator);
-                item.denominator += qualitySummaryNumber(row.total_denominator);
-                item.assessed = item.assessed || qualitySummaryNumber(row.jumlah_penilaian) > 0;
-            });
-
-            const scores = [];
-            aggregated.forEach(item => {
-                if (!item.assessed) return;
-                assessedCount++;
-                const score = item.denominator === 0
-                    ? (item.numerator === 0 ? 100 : 0)
-                    : Math.min(100, (item.numerator / item.denominator) * 100);
-                scores.push(score);
-            });
-            average = scores.length ? scores.reduce((sum, score) => sum + score, 0) / scores.length : null;
-        } else {
-            const scored = typeRows.filter(row => row.rata_pencapaian !== null && row.rata_pencapaian !== "");
-            assessedCount = new Set(scored.map(indicatorKey)).size;
-            average = scored.length
-                ? scored.reduce((sum, row) => sum + qualitySummaryNumber(row.rata_pencapaian), 0) / scored.length
-                : null;
-        }
+        const assessedCount = new Set(typeRows.filter(qualitySummaryHasScore).map(indicatorKey)).size;
+        const average = qualitySummaryTargetRate(typeRows);
 
         card.querySelector("[data-type-count]").textContent = indicators.size.toLocaleString("id-ID");
         card.querySelector("[data-type-assessed]").textContent = assessedCount.toLocaleString("id-ID");
@@ -88,7 +175,7 @@ function loadQualitySummary() {
                 return;
             }
 
-            renderQualitySummary(response.responseResult || [], response.responseTrend || []);
+            renderQualitySummary(response.responseResult || [], response.responseTrend || [], response.responseOverdue || []);
         },
         error: function () {
             Swal.fire({ icon: "error", title: "Gagal memuat data", text: "Ringkasan indikator tidak dapat dimuat." });
@@ -99,10 +186,32 @@ function loadQualitySummary() {
     });
 }
 
-function renderQualitySummary(rows, monthlyTrend) {
+function renderOverdueIndicators(rows) {
+    const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+    const table = '#summary-overdue-table';
+    if ($.fn.DataTable.isDataTable(table)) $(table).DataTable().destroy();
+    $('#summary-overdue-count').text(rows.length.toLocaleString('id-ID'));
+    $('#summary-overdue-rows').html(rows.map((row, index) => {
+        const missing = Array.isArray(row.overdue_months) ? row.overdue_months : [];
+        return '<tr><td class="ps-4">' + (index + 1) + '</td>'
+            + '<td>' + qualitySummaryEscape(row.department) + '</td>'
+            + '<td><div>' + qualitySummaryEscape(row.indikator_code) + '</div><div>' + qualitySummaryEscape(row.indikator) + '</div></td>'
+            + '<td>' + qualitySummaryEscape(row.jenis) + '</td>'
+            + '<td>' + qualitySummaryEscape(missing.map(month => months[Number(month) - 1]).join(', ')) + '</td>'
+            + '<td class="text-center">' + missing.length + '</td>'
+            + '<td class="text-end pe-4"><span class="badge badge-light-danger">Batas waktu berakhir</span></td></tr>';
+    }).join(''));
+    initDataTable(table, '#summary-overdue-search', 25, {
+        language: { emptyTable: 'Tidak ada indikator yang belum diisi melewati batas waktu pada periode ini.' }
+    });
+}
+
+function renderQualitySummary(rows, monthlyTrend, overdueRows = []) {
     rows = Array.isArray(rows) ? rows : [];
     monthlyTrend = Array.isArray(monthlyTrend) ? monthlyTrend : [];
     renderIndicatorTypeSummary(rows);
+    renderQualityAggregateTables(rows);
+    renderOverdueIndicators(Array.isArray(overdueRows) ? overdueRows : []);
 
     const dimensionRadar = document.getElementById("summaryDimensionRadar");
     if (dimensionRadar) {
@@ -117,10 +226,8 @@ function renderQualitySummary(rows, monthlyTrend) {
         ];
         const dimensionValues = dimensions.map(([label, field]) => {
             const assessed = rows.filter(row => (row[field] === "Y" || row[field] === 1 || row[field] === "1")
-                && row.rata_pencapaian !== null && row.rata_pencapaian !== "");
-            return { label, value: assessed.length
-                ? assessed.reduce((sum, row) => sum + qualitySummaryNumber(row.rata_pencapaian), 0) / assessed.length
-                : null };
+                && qualitySummaryHasScore(row));
+            return { label, value: qualitySummaryTargetRate(assessed) };
         });
         const hasValues = dimensionValues.some(item => item.value !== null);
         $("#summaryDimensionRadarEmpty").toggleClass("d-none", hasValues);
@@ -129,7 +236,7 @@ function renderQualitySummary(rows, monthlyTrend) {
             dimensionRadar.chart = new ApexCharts(dimensionRadar, {
                 chart: { type: "radar", height: 380, toolbar: { show: false }, fontFamily: "inherit" },
                 plotOptions: { radar: { size: 145 } },
-                series: [{ name: "Rata-rata capaian", data: dimensionValues.map(item => item.value ?? 0) }],
+                series: [{ name: "Ketercapaian target", data: dimensionValues.map(item => item.value) }],
                 xaxis: { categories: dimensionValues.map(item => item.label), labels: { style: { fontSize: "12px" } } },
                 yaxis: { min: 0, max: 100, tickAmount: 5, labels: { formatter: value => `${Number(value).toLocaleString("id-ID", { maximumFractionDigits: 0 })}%` } },
                 colors: ["#009ef7"],
@@ -144,16 +251,14 @@ function renderQualitySummary(rows, monthlyTrend) {
     }
 
     const nationalRows = rows.filter(row => row.kategori === "Nasional Mutu");
-    const scoredRows = rows.filter(row => row.rata_pencapaian !== null && row.rata_pencapaian !== "");
-    const average = scoredRows.length
-        ? scoredRows.reduce((total, row) => total + qualitySummaryNumber(row.rata_pencapaian), 0) / scoredRows.length
-        : 0;
+    const scoredRows = rows.filter(qualitySummaryHasScore);
+    const average = qualitySummaryTargetRate(rows);
     const departments = new Set(rows.map(row => row.department).filter(Boolean));
 
     $("#summary-total-indicators").text(rows.length.toLocaleString("id-ID"));
     $("#summary-national-indicators").text(nationalRows.length.toLocaleString("id-ID"));
     $("#summary-assessed-indicators").text(scoredRows.length.toLocaleString("id-ID"));
-    $("#summary-average").text(average.toLocaleString("id-ID", { maximumFractionDigits: 2 }) + "%");
+    $("#summary-average").text(average === null ? "Belum dinilai" : average.toLocaleString("id-ID", { maximumFractionDigits: 2 }) + "%");
     $("#summary-departments").text(departments.size.toLocaleString("id-ID"));
 
     const tableRows = rows.map(function (row, index) {
@@ -164,7 +269,7 @@ function renderQualitySummary(rows, monthlyTrend) {
             : row.target_capaian === "R" ? "Rentang"
             : "";
         const unit = row.satuan ? " " + qualitySummaryEscape(row.satuan) : "";
-        const achievement = row.rata_pencapaian == null
+        const achievement = !qualitySummaryHasScore(row)
             ? "<span class='text-muted'>Belum dinilai</span>"
             : "<span class='badge badge-light-success'>" + qualitySummaryNumber(row.rata_pencapaian).toLocaleString("id-ID", { maximumFractionDigits: 2 }) + "%</span>";
         return "<tr>"
@@ -192,38 +297,50 @@ function renderQualitySummary(rows, monthlyTrend) {
         const national = monthlyTrend.find(item => String(item.bulan).padStart(2, "0") === monthKey && item.kategori === "Nasional Mutu");
         return {
             periode: month,
-            department: department ? qualitySummaryNumber(department.rata_pencapaian) : 0,
-            national: national ? qualitySummaryNumber(national.rata_pencapaian) : 0
+            department: department ? qualitySummaryTargetRate([department]) : null,
+            national: national ? qualitySummaryTargetRate([national]) : null
         };
     });
 
-    renderchartarea(
-        "summaryTrendChart",
-        trendData,
-        "Bulan",
-        "Rata-rata capaian (%)",
-        ["Indikator Departemen", "Indikator Nasional Mutu"],
-        ["department", "national"]
-    );
+    const trendChart = document.getElementById('summaryTrendChart');
+    if (trendChart) {
+        if (trendChart.chart) trendChart.chart.destroy();
+        trendChart.chart = new ApexCharts(trendChart, {
+            chart: { type: 'area', height: 380, toolbar: { show: false }, fontFamily: 'inherit' },
+            series: [
+                { name: 'Indikator Departemen', data: trendData.map(item => item.department) },
+                { name: 'Indikator Nasional Mutu', data: trendData.map(item => item.national) }
+            ],
+            xaxis: { categories: qualitySummaryMonths, title: { text: 'Bulan' } },
+            yaxis: {
+                min: 0, max: 100, title: { text: 'Ketercapaian target (%)' },
+                labels: { formatter: value => Number(value).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%' }
+            },
+            stroke: { curve: 'straight', width: 3 },
+            markers: { size: 4 },
+            dataLabels: { enabled: false },
+            tooltip: { y: { formatter: value => value == null ? 'Belum dinilai' : value.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%' } }
+        });
+        trendChart.chart.render();
+    }
 
     const departmentStats = {};
     rows.forEach(function (row) {
         if (!row.department) return;
         if (!departmentStats[row.department]) {
-            departmentStats[row.department] = { department: row.department, total: 0, count: 0, indicators: 0 };
+            departmentStats[row.department] = { department: row.department, total: 0, count: 0, indicators: 0, assessed: 0 };
         }
         departmentStats[row.department].indicators++;
-        if (row.rata_pencapaian !== null && row.rata_pencapaian !== "") {
-            departmentStats[row.department].total += qualitySummaryNumber(row.rata_pencapaian);
-            departmentStats[row.department].count++;
-        }
+        departmentStats[row.department].total += qualitySummaryNumber(row.jumlah_memenuhi_target);
+        departmentStats[row.department].count += qualitySummaryNumber(row.jumlah_dinilai_target);
+        if (qualitySummaryNumber(row.jumlah_dinilai_target) > 0) departmentStats[row.department].assessed++;
     });
 
     qualitySummaryDepartmentData = Object.values(departmentStats).map(function (item) {
         return {
             department: item.department,
-            average: item.count ? Number((item.total / item.count).toFixed(2)) : null,
-            assessed: item.count,
+            average: item.count ? Number((item.total / item.count * 100).toFixed(2)) : null,
+            assessed: item.assessed,
             indicators: item.indicators
         };
     }).filter(item => item.average !== null);
@@ -244,18 +361,18 @@ function drawQualitySummaryDepartmentChart() {
 
     chartElement.chart = new ApexCharts(chartElement, {
         chart: { type: "bar", height: 380, toolbar: { show: false }, fontFamily: "inherit" },
-        series: [{ name: "Rata-rata capaian", data: visible.map(item => item.average) }],
+        series: [{ name: "Ketercapaian target", data: visible.map(item => item.average) }],
         colors: visible.map(item => item.average < 50 ? "#f1416c" : (item.average < 80 ? "#ffc700" : "#50cd89")),
         plotOptions: { bar: { horizontal: false, borderRadius: 4, columnWidth: "52%", distributed: true } },
         dataLabels: { enabled: true, formatter: value => `${Number(value).toLocaleString("id-ID", { maximumFractionDigits: 2 })}%`, style: { fontSize: "11px" }, offsetY: -18 },
         legend: { show: false },
         xaxis: { categories: visible.map(item => item.department), labels: { rotate: -35, rotateAlways: visible.length > 5, trim: true, hideOverlappingLabels: true, style: { fontSize: "11px" } } },
-        yaxis: { min: 0, max: 100, tickAmount: 5, title: { text: "Rata-rata capaian (%)" }, labels: { formatter: value => `${Number(value).toLocaleString("id-ID", { maximumFractionDigits: 0 })}%` } },
+        yaxis: { min: 0, max: 100, tickAmount: 5, title: { text: "Ketercapaian target (%)" }, labels: { formatter: value => `${Number(value).toLocaleString("id-ID", { maximumFractionDigits: 0 })}%` } },
         grid: { borderColor: "#eff2f5", strokeDashArray: 4 },
         tooltip: { custom: ({ dataPointIndex }) => {
             const item = visible[dataPointIndex];
             if (!item) return "";
-            return `<div class="p-3"><div class="fw-bold mb-1">${qualitySummaryEscape(item.department)}</div><div>Rata-rata: ${item.average.toLocaleString("id-ID", { maximumFractionDigits: 2 })}%</div><div class="text-muted">Dinilai: ${item.assessed} dari ${item.indicators} indikator</div></div>`;
+            return `<div class="p-3"><div class="fw-bold mb-1">${qualitySummaryEscape(item.department)}</div><div>Ketercapaian target: ${item.average.toLocaleString("id-ID", { maximumFractionDigits: 2 })}%</div><div class="text-muted">Dinilai: ${item.assessed} dari ${item.indicators} indikator</div></div>`;
         } },
         noData: { text: "Tidak ada data capaian" }
     });

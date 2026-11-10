@@ -1,94 +1,23 @@
-<div class="col-xl-12 mb-5">
-    <div class="card card-flush">
-        <div class="card-header pt-5">
-            <h3 class="card-title align-items-start flex-column">
-                <span class="card-label fw-bolder fs-3 mb-1">Monthly Negative Revenue Comparison: INA-CBG vs IDRG</span>
-                <span class="text-muted mt-1 fw-bold fs-7">Perbandingan selisih pendapatan negatif per bulan</span>
-            </h3>
-        </div>
-        <div class="card-body py-3">
-            <div class="card-rounded-bottom" id="trenpendapatan"></div>
-        </div>
+<link rel="stylesheet" href="<?= base_url('assets/css/ur/dashboard.css?v=' . filemtime(FCPATH . 'assets/css/ur/dashboard.css')) ?>">
+<div id="ur-executive" class="ur-dashboard tn-page">
+    <section class="ur-hero"><div><div class="ur-eyebrow">KMKB / REVIEW TARIF NEGATIF</div><h1>Kenali pola selisih tarif negatif.</h1><p>Ringkasan episode dengan total INA-CBG di bawah tarif RS, dari tren bulanan hingga rekap per DPJP.</p><div id="tn-coverage" class="ur-coverage">Memuat cakupan data…</div></div><div class="ur-hero-actions"><button id="tn-refresh" type="button" class="btn btn-sm ur-button"><i class="bi bi-arrow-clockwise"></i> Perbarui</button><button id="tn-print" type="button" class="btn btn-sm ur-button"><i class="bi bi-printer"></i> Cetak ringkasan</button></div></section>
+    <div class="ur-filterbar"><div class="ur-filter"><label for="tn-month">Bulan pulang</label><select id="tn-month" class="form-select form-select-sm form-select-solid"><option value="">Semua bulan</option><?php foreach (['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'] as $i => $month): ?><option value="<?= $i + 1 ?>"><?= $month ?></option><?php endforeach; ?></select></div><div class="ur-filter"><label for="tn-service">Jenis layanan</label><select id="tn-service" class="form-select form-select-sm form-select-solid"><option value="">Semua layanan</option><option value="1">Rawat inap</option><option value="2">Rawat jalan</option></select></div><span class="ur-filter-note">Acuan: tanggal pulang · INA-CBG menggunakan TOTAL_TARIF</span></div>
+    <div id="tn-status" class="ur-status" role="status" aria-live="polite" hidden></div>
+    <div id="tn-content" hidden>
+        <section id="tn-kpis" class="ur-kpis" aria-label="Ringkasan tarif negatif"></section>
+        <div class="ur-grid-equal"><section class="card card-flush ur-panel"><div class="ur-panel-head"><div><div class="ur-eyebrow"><i class="bi bi-graph-up-arrow me-2"></i>TREN SELISIH NEGATIF</div><h2>Kontribusi bulanan</h2><p>Akumulasi INA-CBG dikurangi tarif RS pada episode negatif.</p></div></div><div id="tn-trend" class="ur-chart"></div></section><section class="card card-flush ur-panel"><div class="ur-panel-head"><div><div class="ur-eyebrow">KOMPOSISI LAYANAN</div><h2>Rawat inap dan rawat jalan</h2><p>Perbandingan episode dan selisih negatif per jenis layanan.</p></div></div><div id="tn-services"></div></section></div>
+        <section class="card card-flush ur-panel mb-5"><div class="ur-panel-head"><div><div class="ur-eyebrow">REKAP BULANAN</div><h2>Selisih negatif dalam konteks layanan</h2><p>Proporsi negatif menggunakan seluruh episode pada bulan dan layanan terpilih.</p></div></div><div class="ur-table-wrap"><table class="table table-row-dashed align-middle ur-table"><thead><tr><th>Bulan</th><th>Seluruh episode</th><th>Episode negatif</th><th>Proporsi negatif</th><th>Tarif RS*</th><th>INA-CBG*</th><th>Selisih negatif</th></tr></thead><tbody id="tn-monthly"></tbody></table></div><small class="text-muted mt-3">* Tarif RS dan INA-CBG hanya untuk episode berselisih negatif.</small></section>
+        <div class="ur-method"><strong>Dasar pembacaan.</strong> Episode negatif memenuhi TOTAL_TARIF &lt; TARIF_RS; episode dengan tarif sama atau kosong tidak termasuk. Selisih = total INA-CBG − tarif RS, ditampilkan sebagai nilai negatif. Tarif RS bukan biaya aktual, sehingga angka ini bukan rugi akuntansi maupun konfirmasi pembayaran. IDRG merupakan pembanding dari data impor. Bulan terakhir bisa belum lengkap.</div>
     </div>
-</div>
-
-<div class="card">
-    <div class="card-header border-0 pt-6">
-        <div class="card-title">
-            <div class="d-flex align-items-center position-relative my-1">
-                <span class="svg-icon svg-icon-1 position-absolute ms-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2" rx="1" transform="rotate(45 17.0365 15.1223)" fill="black"></rect>
-                        <path d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z" fill="black"></path>
-                    </svg>
-                </span>
-                <input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Search Data" id="searchtable">
-            </div>
+    <section id="tn-dpjp" class="card card-flush ur-panel mt-5" hidden>
+        <div class="ur-panel-head"><div><div class="ur-eyebrow">REKAP PER DPJP</div><h2>Agregat tarif negatif per dokter</h2><p>Dipisahkan menurut rawat inap dan rawat jalan; mengikuti filter tahun, bulan, dan layanan.</p></div></div>
+        <label for="tn-dpjp-search" class="visually-hidden">Cari nama DPJP</label><input id="tn-dpjp-search" type="search" class="form-control form-control-sm form-control-solid mb-5" placeholder="Cari nama DPJP" maxlength="200">
+        <?php foreach (['1' => 'Rawat inap', '2' => 'Rawat jalan'] as $service => $label): ?>
+        <div id="tn-dpjp-service-<?= $service ?>" class="mb-6">
+            <h3 class="fs-5 mb-4"><span class="badge badge-light-primary me-2"><?= $label ?></span></h3>
+            <div class="ur-table-wrap"><table class="table table-row-dashed align-middle ur-table tn-dpjp-table"><thead><tr><th>DPJP</th><th>Episode negatif</th><th>Proporsi DPJP</th><th>Tarif RS</th><th>Total INA-CBG</th><th>IDRG</th><th>Selisih negatif</th><th>Rasio cakupan</th></tr></thead><tbody id="tn-dpjp-rows-<?= $service ?>"></tbody><tfoot id="tn-dpjp-total-<?= $service ?>"></tfoot></table></div>
         </div>
-        <div class="card-toolbar m-0">
-            <ul class="nav nav-tabs nav-line-tabs nav-stretch fs-6 border-0 fw-bolder" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link justify-content-center text-active-gray-800 active" data-bs-toggle="tab" role="tab" href="#outpatient">Outpatient</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link justify-content-center text-active-gray-800" data-bs-toggle="tab" role="tab" href="#inpatient">Inpatient</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="card-body pt-0">
-        <div class="tab-content">
-            <div id="outpatient" class="card-body p-0 tab-pane fade show active" role="tabpanel">
-                <div class="table-responsive">
-                    <table class="table align-middle table-row-dashed gy-2" id="rawdataoutpatient_table">
-                        <thead>
-                            <tr class="fw-bolder text-muted bg-light">
-                                <th class="text-start rounded-start ps-4">#</th>
-                                <th>SEP Number</th>
-                                <th>Card Number</th>
-                                <th>Patient Name</th>
-                                <th>DPJP</th>
-                                <th>Diagnosis</th>
-                                <th>Procedure</th>
-                                <th>Admission Date</th>
-                                <th>Discharge Date</th>
-                                <th class="text-end">Hospital Cost</th>
-                                <th class="text-end">INA-CBG</th>
-                                <th class="text-end">iDRG</th>
-                                <th class="text-end">Difference</th>
-                                <th class="text-end rounded-end pe-4">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody class="fw-bold text-gray-600" id="resultrawdataoutpatient"></tbody>
-                    </table>
-                </div>
-            </div>
-            <div id="inpatient" class="card-body p-0 tab-pane fade" role="tabpanel">
-                <div class="table-responsive">
-                    <table class="table align-middle table-row-dashed gy-2" id="rawdatainpatient_table">
-                        <thead>
-                            <tr class="fw-bolder text-muted bg-light">
-                                <th class="text-start rounded-start ps-4">#</th>
-                                <th>SEP Number</th>
-                                <th>Card Number</th>
-                                <th>Medical Record</th>
-                                <th>Patient Name</th>
-                                <th>DPJP</th>
-                                <th>Diagnosis</th>
-                                <th>Procedure</th>
-                                <th>Admission Date</th>
-                                <th>Discharge Date</th>
-                                <th class="text-end">Hospital Cost</th>
-                                <th class="text-end">INA-CBG</th>
-                                <th class="text-end">iDRG</th>
-                                <th class="text-end">Difference</th>
-                                <th class="text-end rounded-end pe-4">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody class="fw-bold text-gray-600" id="resultrawdatainpatient"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+        <?php endforeach; ?>
+        <small class="text-muted">Hanya DPJP dengan episode berselisih negatif yang ditampilkan. Proporsi DPJP = episode negatif ÷ seluruh episode DPJP pada cakupan terpilih. Nama DPJP diseragamkan menjadi huruf kapital; nama kosong dikelompokkan sebagai Belum terisi. Pencarian hanya memengaruhi tabel DPJP.</small>
+    </section>
 </div>

@@ -1,0 +1,4 @@
+.mal-page .ur-hero{background:linear-gradient(115deg,#9a3412,#ea580c 52%,#eab308)}
+.mal-page #mal-search{max-width:380px}
+.mal-table td:first-child,.mal-table th:first-child{min-width:220px;white-space:normal}
+@media print{.mal-page #mal-search{display:none}.mal-table{font-size:8px!important}}

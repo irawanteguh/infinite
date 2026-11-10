@@ -1,0 +1,4 @@
+.los-page .ur-hero{background:linear-gradient(115deg,#116b91,#2e91a5 55%,#5478d4)}
+.los-table td:first-child,.los-table th:first-child{min-width:220px;white-space:normal}
+.los-page #los-search{max-width:380px}
+@media print{.los-page #los-search{display:none}.los-table{font-size:8px!important}}

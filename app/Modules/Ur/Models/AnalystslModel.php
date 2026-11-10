@@ -7,6 +7,20 @@ use CodeIgniter\Model;
 class AnalystslModel extends Model{
     protected $DBGroup = 'default';
 
+    public function summary($koders, $year)
+    {
+        return $this->db->query("SELECT MONTH(discharge_date) month,
+            CASE WHEN UPPER(TRIM(sl)) IN ('I','II','III') THEN UPPER(TRIM(sl)) ELSE 'Belum valid' END severity,
+            COUNT(*) episodes, SUM(COALESCE(los,0)) total_los, COUNT(los) los_cases,
+            SUM(COALESCE(tarif_rs,0)) tarif_rs, SUM(COALESCE(total_tarif,0)) total_tarif,
+            SUM(total_tarif < tarif_rs) negative_cases,
+            SUM(sl = 'I' AND los > 7) long_sl1, SUM(sl = 'III' AND los < 4) short_sl3
+            FROM dt01_bpjs_ur_dt WHERE kode_rs = ? AND ptd = 1
+            AND discharge_date >= ? AND discharge_date < ?
+            GROUP BY MONTH(discharge_date), CASE WHEN UPPER(TRIM(sl)) IN ('I','II','III') THEN UPPER(TRIM(sl)) ELSE 'Belum valid' END
+            ORDER BY month, severity", [$koders, sprintf('%04d-01-01', $year), sprintf('%04d-01-01', $year + 1)])->getResult();
+    }
+
     function periode(){
         $query = "
                     with recursive periode as (

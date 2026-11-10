@@ -22,8 +22,9 @@ class DashboardModel extends Model{
 
                 ";
 
-        $recordset = $this->db->query($query);
-        return $recordset->getResult();
+        return array_map(static function ($year) {
+            return (object) ['periode' => $year];
+        }, range((int) date('Y'), 2014));
     }
 
     function dataraweklaim($koders,$periode){
@@ -34,6 +35,15 @@ class DashboardModel extends Model{
                         a.sl,
                         COUNT(*) AS jumlah_kasus,
                         SUM(a.tarif_rs) AS tarif_rs,
+                        MIN(a.discharge_date) AS first_discharge,
+                        MAX(a.discharge_date) AS last_discharge,
+                        SUM(CASE WHEN a.total_tarif < a.tarif_rs THEN 1 ELSE 0 END) AS negative_cases,
+                        SUM(CASE WHEN a.total_tarif < a.tarif_rs THEN a.tarif_rs - a.total_tarif ELSE 0 END) AS negative_gap,
+                        SUM(CASE WHEN a.ptd = 1 THEN a.los ELSE 0 END) AS total_los,
+                        SUM(CASE WHEN a.ptd = 1 AND a.los IS NOT NULL THEN 1 ELSE 0 END) AS los_cases,
+                        SUM(CASE WHEN a.ptd = 1 AND a.los < 2 THEN 1 ELSE 0 END) AS short_stay,
+                        SUM(CASE WHEN a.ptd = 1 AND a.sl = 'I' AND a.los > 7 THEN 1 ELSE 0 END) AS long_sl1,
+                        SUM(CASE WHEN a.ptd = 1 AND a.sl = 'III' AND a.los < 4 THEN 1 ELSE 0 END) AS short_sl3,
                         SUM(a.total_tarif) AS total_tarif,
                         SUM(a.idrg_total_tarif) AS idrg_total_tarif,
                         SUM(a.prosedur_non_bedah) AS prosedur_non_bedah,
@@ -55,8 +65,9 @@ class DashboardModel extends Model{
                         SUM(a.obat_kronis) AS obat_kronis,
                         SUM(a.obat_kemo) AS obat_kemo
                     FROM dt01_bpjs_ur_dt a
-                    WHERE  a.kode_rs = '".$koders."'
-                    AND year(a.discharge_date) = ".$periode."
+                    WHERE a.kode_rs = ?
+                    AND a.discharge_date >= ?
+                    AND a.discharge_date < ?
                     GROUP BY
                         MONTH(a.discharge_date),
                         a.ptd,
@@ -67,7 +78,9 @@ class DashboardModel extends Model{
                         a.sl;
                 ";
 
-        $recordset = $this->db->query($query);
+        $recordset = $this->db->query($query, [
+            $koders, sprintf('%04d-01-01', $periode), sprintf('%04d-01-01', $periode + 1)
+        ]);
         return $recordset->getResult();
     }
     

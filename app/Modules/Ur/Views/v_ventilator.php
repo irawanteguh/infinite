@@ -1,38 +1,13 @@
-<div class="card">
-    <div class="card-header border-0 pt-6">
-        <div class="card-title">
-            <div class="d-flex align-items-center position-relative my-1">
-                <span class="svg-icon svg-icon-1 position-absolute ms-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2" rx="1" transform="rotate(45 17.0365 15.1223)" fill="black"></rect>
-                        <path d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z" fill="black"></path>
-                    </svg>
-                </span>
-                <input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Search Data" id="searchtable">
-            </div>
-        </div>
-    </div>
-
-    <div class="card-body pt-0">
-        <div class="table-responsive">
-            <table class="table align-middle table-row-dashed gy-2" id="dataraweklaim_table">
-                <thead>
-                    <tr class="fw-bolder text-muted bg-light">
-                        <th class="text-start rounded-start ps-4">#</th>
-                        <th>SEP Number</th>
-                        <th>Card Number</th>
-                        <th>Medical Record</th>
-                        <th>Patient Name</th>
-                        <th>Admission Date</th>
-                        <th>Inpatient / Outpatient</th>
-                        <th class="text-end">Hospital Cost</th>
-                        <th class="text-end">INA-CBG</th>
-                        <th class="text-end">iDRG</th>
-                        <th class="text-end rounded-end pe-4">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="fw-bold text-gray-600" id="resultdataraweklaim"></tbody>
-            </table>
-        </div>
+<link rel="stylesheet" href="<?= base_url('assets/css/ur/dashboard.css?v=' . filemtime(FCPATH . 'assets/css/ur/dashboard.css')) ?>">
+<div id="ur-executive" class="ur-dashboard vent-page">
+    <section class="ur-hero"><div><div class="ur-eyebrow">UTILIZATION REVIEW / VENTILATOR</div><h1>Analisis diagnosis dan prosedur ventilasi</h1><p>Telaah episode dengan diagnosis gagal napas/ketergantungan respirator dan prosedur ventilasi mekanik.</p><div class="ur-coverage" id="vent-coverage">Memuat cakupan data…</div></div><div class="ur-hero-actions"><button id="vent-refresh" type="button" class="btn btn-sm ur-button"><i class="bi bi-arrow-clockwise"></i> Perbarui</button><button id="vent-print" type="button" class="btn btn-sm ur-button"><i class="bi bi-printer"></i> Cetak ringkasan</button></div></section>
+    <div class="ur-filterbar"><div class="ur-filter"><label for="vent-month">Bulan pulang</label><select id="vent-month" class="form-select form-select-sm form-select-solid"><option value="">Semua bulan</option><?php foreach (['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'] as $i => $month): ?><option value="<?= $i + 1 ?>"><?= $month ?></option><?php endforeach; ?></select></div><div class="ur-filter"><label for="vent-care">Jenis layanan</label><select id="vent-care" class="form-select form-select-sm form-select-solid"><option value="">Semua layanan</option><option value="1">Rawat inap</option><option value="2">Rawat jalan</option></select></div><span class="badge badge-light-primary">J96.x / Z99.1 · 96.70–96.72</span><span class="ur-filter-note">Berdasarkan tanggal pulang</span></div>
+    <div id="vent-status" class="ur-status" role="status" aria-live="polite" hidden></div>
+    <div id="vent-content" hidden>
+        <section id="vent-kpis" class="ur-kpis" aria-label="Ringkasan ventilator"></section>
+        <div class="ur-grid-equal"><section class="card card-flush ur-panel"><div class="ur-panel-head"><div><div class="ur-eyebrow">KESESUAIAN KODE</div><h2>Diagnosis dan prosedur per bulan</h2><p>Memisahkan episode selaras dan episode yang memerlukan telaah dokumentasi.</p></div></div><div id="vent-trend" class="ur-chart"></div></section><section class="card card-flush ur-panel"><div class="ur-panel-head"><div><div class="ur-eyebrow">DURASI VENTILASI</div><h2>Komposisi prosedur ICD-9-CM</h2><p>96.70 tidak spesifik, 96.71 kurang dari 96 jam, dan 96.72 selama 96 jam atau lebih.</p></div></div><div id="vent-procedure" class="ur-chart"></div></section></div>
+        <section class="card card-flush ur-panel mb-5"><div class="ur-panel-head"><div><div class="ur-eyebrow">REKAP BULANAN</div><h2>Keselarasan kode, utilisasi, dan tarif</h2></div></div><div class="ur-table-wrap"><table class="table table-row-dashed align-middle ur-table"><thead><tr><th>Bulan</th><th>Episode terkait ventilasi</th><th>Diagnosis + prosedur</th><th>Prosedur tanpa diagnosis terkait</th><th>Diagnosis tanpa prosedur ventilasi</th><th>Keselarasan</th><th>Rata-rata LOS RI</th><th>Total INA-CBG</th></tr></thead><tbody id="vent-monthly"></tbody></table></div></section>
+        <section class="card card-flush ur-panel mb-5"><div class="ur-panel-head"><div><div class="ur-eyebrow">ANALISIS PER DPJP</div><h2>Agregat diagnosis dan prosedur per dokter</h2><p>Prioritaskan baris dengan prosedur tanpa diagnosis terkait atau diagnosis tanpa prosedur ventilasi untuk validasi dokumentasi dan koding.</p></div></div><label for="vent-search" class="visually-hidden">Cari nama DPJP</label><input id="vent-search" type="search" class="form-control form-control-sm form-control-solid mb-5" placeholder="Cari nama DPJP"><div class="ur-table-wrap"><table class="table table-row-dashed align-middle ur-table vent-table"><thead><tr><th>DPJP</th><th>Episode terkait ventilasi</th><th>Diagnosis</th><th>Prosedur</th><th>Keduanya</th><th>Prosedur tanpa diagnosis terkait</th><th>Diagnosis tanpa prosedur ventilasi</th><th>96.70</th><th>96.71</th><th>96.72</th><th>Total INA-CBG</th></tr></thead><tbody id="vent-dpjp"></tbody></table></div></section>
+        <div class="ur-method"><strong>Dasar pembacaan.</strong> Sinyal diagnosis menggunakan token J96.x (gagal napas) atau Z99.1 (ketergantungan pada respirator). Sinyal prosedur menggunakan ICD-9-CM 96.70, 96.71, atau 96.72. Episode dihitung satu kali bila memiliki salah satu sinyal. “Prosedur tanpa diagnosis terkait” dan “diagnosis tanpa prosedur ventilasi” adalah prioritas telaah, bukan otomatis kesalahan koding; indikasi klinis lain dan kelengkapan dokumentasi tetap harus diverifikasi. Keselarasan adalah proporsi episode prosedur yang juga memiliki diagnosis terkait. LOS hanya dihitung untuk rawat inap. Dashboard tidak menggantikan audit klinis individual.</div>
     </div>
 </div>

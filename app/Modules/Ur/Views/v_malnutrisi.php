@@ -1,38 +1,13 @@
-<div class="card">
-    <div class="card-header border-0 pt-6">
-        <div class="card-title">
-            <div class="d-flex align-items-center position-relative my-1">
-                <span class="svg-icon svg-icon-1 position-absolute ms-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2" rx="1" transform="rotate(45 17.0365 15.1223)" fill="black"></rect>
-                        <path d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z" fill="black"></path>
-                    </svg>
-                </span>
-                <input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Search Data" id="searchtable">
-            </div>
-        </div>
-    </div>
-
-    <div class="card-body pt-0">
-        <div class="table-responsive">
-            <table class="table align-middle table-row-dashed gy-2" id="dataraweklaim_table">
-                <thead>
-                    <tr class="fw-bolder text-muted bg-light">
-                        <th class="text-start rounded-start ps-4">#</th>
-                        <th>SEP Number</th>
-                        <th>Card Number</th>
-                        <th>Medical Record</th>
-                        <th>Patient Name</th>
-                        <th>Admission Date</th>
-                        <th>Inpatient / Outpatient</th>
-                        <th class="text-end">Hospital Cost</th>
-                        <th class="text-end">INA-CBG</th>
-                        <th class="text-end">iDRG</th>
-                        <th class="text-end rounded-end pe-4">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="fw-bold text-gray-600" id="resultdataraweklaim"></tbody>
-            </table>
-        </div>
+<link rel="stylesheet" href="<?= base_url('assets/css/ur/dashboard.css?v=' . filemtime(FCPATH . 'assets/css/ur/dashboard.css')) ?>">
+<div id="ur-executive" class="ur-dashboard mal-page">
+    <section class="ur-hero"><div><div class="ur-eyebrow">UTILIZATION REVIEW / MALNUTRISI</div><h1>Analisis kasus malnutrisi</h1><p>Gambaran episode dengan diagnosis malnutrisi energi-protein ICD-10 E40–E46.</p><div class="ur-coverage" id="mal-coverage">Memuat cakupan data…</div></div><div class="ur-hero-actions"><button id="mal-refresh" type="button" class="btn btn-sm ur-button"><i class="bi bi-arrow-clockwise"></i> Perbarui</button><button id="mal-print" type="button" class="btn btn-sm ur-button"><i class="bi bi-printer"></i> Cetak ringkasan</button></div></section>
+    <div class="ur-filterbar"><div class="ur-filter"><label for="mal-month">Bulan pulang</label><select id="mal-month" class="form-select form-select-sm form-select-solid"><option value="">Semua bulan</option><?php foreach (['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'] as $i => $month): ?><option value="<?= $i + 1 ?>"><?= $month ?></option><?php endforeach; ?></select></div><div class="ur-filter"><label for="mal-care">Jenis layanan</label><select id="mal-care" class="form-select form-select-sm form-select-solid"><option value="">Semua layanan</option><option value="1">Rawat inap</option><option value="2">Rawat jalan</option></select></div><span class="badge badge-light-warning">ICD-10 E40–E46</span><span class="ur-filter-note">Berdasarkan tanggal pulang</span></div>
+    <div id="mal-status" class="ur-status" role="status" aria-live="polite" hidden></div>
+    <div id="mal-content" hidden>
+        <section id="mal-kpis" class="ur-kpis" aria-label="Ringkasan malnutrisi"></section>
+        <div class="ur-grid-equal"><section class="card card-flush ur-panel"><div class="ur-panel-head"><div><div class="ur-eyebrow">TREN KASUS</div><h2>Diagnosis utama dan sekunder</h2><p>Episode unik dengan setidaknya satu kode malnutrisi.</p></div></div><div id="mal-trend" class="ur-chart"></div></section><section class="card card-flush ur-panel"><div class="ur-panel-head"><div><div class="ur-eyebrow">KELOMPOK DIAGNOSIS</div><h2>Komposisi kode malnutrisi</h2><p>E40–E43 berat, E44.0–E44.1 sedang/ringan, serta E45–E46 lainnya/tidak spesifik.</p></div></div><div id="mal-codes" class="ur-chart"></div></section></div>
+        <section class="card card-flush ur-panel mb-5"><div class="ur-panel-head"><div><div class="ur-eyebrow">REKAP BULANAN</div><h2>Frekuensi, prevalensi, dan utilisasi</h2></div></div><div class="ur-table-wrap"><table class="table table-row-dashed align-middle ur-table"><thead><tr><th>Bulan</th><th>Seluruh episode</th><th>Kasus malnutrisi</th><th>Prevalensi kode</th><th>Diagnosis utama</th><th>Diagnosis sekunder</th><th>Rata-rata LOS RI</th><th>Total INA-CBG</th></tr></thead><tbody id="mal-monthly"></tbody></table></div></section>
+        <section class="card card-flush ur-panel mb-5"><div class="ur-panel-head"><div><div class="ur-eyebrow">ANALISIS PER DPJP</div><h2>Agregat kasus per dokter</h2><p>Memudahkan pemilihan unit klinis untuk telaah dokumentasi dan tata laksana.</p></div></div><label for="mal-search" class="visually-hidden">Cari nama DPJP</label><input id="mal-search" type="search" class="form-control form-control-sm form-control-solid mb-5" placeholder="Cari nama DPJP"><div class="ur-table-wrap"><table class="table table-row-dashed align-middle ur-table mal-table"><thead><tr><th>DPJP</th><th>Seluruh episode</th><th>Kasus</th><th>Prevalensi kode</th><th>Utama</th><th>Sekunder</th><th>Berat</th><th>Sedang/ringan</th><th>Lainnya/tidak spesifik</th><th>Total INA-CBG</th></tr></thead><tbody id="mal-dpjp"></tbody></table></div></section>
+        <div class="ur-method"><strong>Dasar pembacaan.</strong> Kasus adalah episode yang memiliki token diagnosis E40, E41, E42, E43, E44.0, E44.1, E45, atau E46 pada DIAGLIST. Diagnosis pertama dibaca sebagai diagnosis utama; sisanya sebagai sekunder. Satu episode dihitung sekali sebagai kasus, tetapi dapat masuk lebih dari satu kelompok kode bila memuat beberapa kode malnutrisi. Prevalensi kode menggunakan seluruh episode pada filter yang sama dan bukan prevalensi klinis populasi. LOS hanya ditampilkan untuk rawat inap. Dashboard ini merupakan sinyal telaah dokumentasi, skrining, dan tata laksana—bukan penetapan diagnosis baru.</div>
     </div>
 </div>

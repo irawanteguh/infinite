@@ -7,6 +7,70 @@ use CodeIgniter\Model;
 class AuditkodingModel extends Model{
     protected $DBGroup = 'default';
 
+    public function sequencingDetails($koders, $year, $care)
+    {
+        $sql = "SELECT sep, mrn, nama_pasien, dpjp, ptd, admission_date, discharge_date,
+            diaglist, proclist, los, tarif_rs, total_tarif
+            FROM dt01_bpjs_ur_dt WHERE kode_rs = ? AND discharge_date >= ? AND discharge_date < ?
+            AND diaglist REGEXP '^[[:space:]]*I10[[:space:]]*;'
+            AND diaglist REGEXP '(^|;)[[:space:]]*I(67[.]8|69[.]3)([[:space:]]*;|[[:space:]]*$)'";
+        $params = [$koders, sprintf('%04d-01-01', $year), sprintf('%04d-01-01', $year + 1)];
+        if ($care !== '') { $sql .= ' AND ptd = ?'; $params[] = $care; }
+        return $this->db->query($sql . ' ORDER BY discharge_date DESC, sep', $params)->getResult();
+    }
+
+    public function comparison($koders, $year)
+    {
+        $bindings = [$koders, sprintf('%04d-01-01', $year), sprintf('%04d-01-01', $year + 1)];
+        $coverage = $this->db->query("SELECT COUNT(*) pending_records,
+            COUNT(DISTINCT p.NOSEP) pending_episodes,
+            COUNT(DISTINCT CASE WHEN EXISTS (SELECT 1 FROM dt01_bpjs_ur_dt u
+                WHERE u.kode_rs = p.KODEPPK AND u.sep = p.NOSEP) THEN p.NOSEP END) matched_episodes
+            FROM dt01_bpjs_pending_klaim p
+            WHERE p.KODEPPK = ? AND p.TGLPULANG >= ? AND p.TGLPULANG < ?", $bindings)->getRow();
+        $patterns = $this->db->query("SELECT TRIM(p.ALGORITMA_TYPE) category,
+            TRIM(p.ALGORITMA) rule_text, u.ptd care,
+            UPPER(TRIM(COALESCE(u.diaglist,''))) diagnoses,
+            UPPER(TRIM(COALESCE(u.proclist,''))) procedures,
+            COUNT(DISTINCT p.NOSEP) episodes
+            FROM dt01_bpjs_pending_klaim p
+            JOIN dt01_bpjs_ur_dt u ON u.kode_rs = p.KODEPPK AND u.sep = p.NOSEP
+            WHERE p.KODEPPK = ? AND p.TGLPULANG >= ? AND p.TGLPULANG < ?
+            GROUP BY TRIM(p.ALGORITMA_TYPE), TRIM(p.ALGORITMA), u.ptd,
+                UPPER(TRIM(COALESCE(u.diaglist,''))), UPPER(TRIM(COALESCE(u.proclist,'')))
+            ORDER BY episodes DESC", $bindings)->getResult();
+        return ['coverage' => $coverage, 'patterns' => $patterns];
+    }
+
+    public function pendingRules($koders, $year)
+    {
+        return $this->db->query("SELECT TRIM(ALGORITMA_TYPE) category, TRIM(ALGORITMA) rule_text,
+            JNSPEL care, COUNT(*) records, COUNT(DISTINCT NOSEP) episodes,
+            MIN(TGLPULANG) first_date, MAX(TGLPULANG) last_date
+            FROM dt01_bpjs_pending_klaim
+            WHERE KODEPPK = ? AND TGLPULANG >= ? AND TGLPULANG < ?
+              AND TRIM(COALESCE(ALGORITMA, '')) <> ''
+            GROUP BY TRIM(ALGORITMA_TYPE), TRIM(ALGORITMA), JNSPEL
+            ORDER BY episodes DESC", [$koders, sprintf('%04d-01-01', $year), sprintf('%04d-01-01', $year + 1)])->getResult();
+    }
+
+    public function summary($koders, $year)
+    {
+        $sql = "SELECT MONTH(discharge_date) month, ptd,
+                COUNT(*) all_episodes,
+                SUM(TRIM(COALESCE(diaglist,'')) = '') missing_diagnosis,
+                SUM(TRIM(COALESCE(proclist,'')) = '') missing_procedure,
+                SUM(diaglist REGEXP '^[[:space:]]*I10[[:space:]]*;' AND diaglist REGEXP '(^|;)[[:space:]]*I(67[.]8|69[.]3)([[:space:]]*;|[[:space:]]*$)') sequencing,
+                SUM(diaglist REGEXP '^[[:space:]]*R[0-9]{2}([.][0-9A-Z]+)?([[:space:]]*;|[[:space:]]*$)') symptom_primary,
+                SUM(proclist REGEXP '(^|;)[[:space:]]*96[.]7[012]([[:space:]]*;|[[:space:]]*$)' AND COALESCE(diaglist,'') NOT REGEXP '(^|;)[[:space:]]*(J96([.][0-9A-Z]+)?|Z99[.]1)([[:space:]]*;|[[:space:]]*$)') ventilation_review,
+                SUM(total_tarif < tarif_rs) negative_cases,
+                SUM(tarif_rs) tarif_rs, SUM(total_tarif) total_tarif
+                FROM dt01_bpjs_ur_dt
+                WHERE kode_rs = ? AND discharge_date >= ? AND discharge_date < ?
+                GROUP BY MONTH(discharge_date), ptd";
+        return $this->db->query($sql, [$koders, sprintf('%04d-01-01', $year), sprintf('%04d-01-01', $year + 1)])->getResult();
+    }
+
     function periode(){
         $query = "
                     with recursive periode as (

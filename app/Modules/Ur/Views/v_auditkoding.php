@@ -1,42 +1,10 @@
-<div class="card">
-    <div class="card-header border-0 pt-6">
-        <div class="card-title">
-            <div class="d-flex align-items-center position-relative my-1">
-                <span class="svg-icon svg-icon-1 position-absolute ms-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2" rx="1" transform="rotate(45 17.0365 15.1223)" fill="black"></rect>
-                        <path d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z" fill="black"></path>
-                    </svg>
-                </span>
-                <input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Search Data" id="searchtable">
-            </div>
-        </div>
-    </div>
-    <div class="card-body pt-0">
-        <div class="table-responsive">
-            <table class="table align-middle table-row-dashed gy-2" id="dataraweklaim_table">
-                <thead>
-                    <tr class="fw-bolder text-muted bg-light">
-                        <th class="text-start rounded-start ps-4">#</th>
-                        <th>Identity</th>
-                        <th>Patient Name</th>
-                        <th>AGE</th>
-                        <th>DPJP</th>
-                        <th>Diagnosis</th>
-                        <th>Procedure</th>
-                        <th>Admission Date</th>
-                        <th>Discharge Date</th>
-                        <th>LOS</th>
-                        <th>SL</th>
-                        <th class="text-end">Hospital Cost</th>
-                        <th class="text-end">INA-CBG</th>
-                        <th class="text-end">Difference</th>
-                        <th>Recomendations</th>
-                        <th class="text-end rounded-end pe-4">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="fw-bold text-gray-600" id="resultdataraweklaim"></tbody>
-            </table>
-        </div>
-    </div>
-</div>
+<link rel="stylesheet" href="<?= base_url('assets/css/ur/dashboard.css') ?>">
+<div class="modal fade" id="audit-case-modal" tabindex="-1" aria-labelledby="audit-case-title" aria-hidden="true"><div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h2 class="modal-title" id="audit-case-title">Detail kasus telaah urutan diagnosis</h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button></div><div class="modal-body" id="audit-case-body"></div><div class="modal-footer"><button type="button" class="btn btn-light" data-bs-dismiss="modal">Tutup</button></div></div></div></div>
+<div id="ur-executive" class="ur-dashboard">
+<section class="ur-hero"><div><div class="ur-eyebrow">UTILIZATION REVIEW / AUDIT KODING</div><h1>Profil kelengkapan dan prioritas audit koding</h1><p>Evaluasi dokumentasi diagnosis, pola pengodean, dan kesesuaian diagnosis dengan prosedur.</p></div><div class="ur-hero-actions"><button id="audit-refresh" class="btn ur-button">Perbarui</button></div></section>
+<div class="ur-filterbar"><label for="audit-care">Jenis layanan</label><select id="audit-care" class="form-select w-auto"><option value="">Semua layanan</option><option value="1">Rawat inap</option><option value="2">Rawat jalan</option></select><span class="ur-filter-note">Berdasarkan tahun dan tanggal pulang</span></div>
+<div id="audit-status" role="status"></div><section id="audit-kpis" class="ur-kpis"></section>
+
+
+<section class="card ur-panel mb-5"><h2>Perbandingan UR dan riwayat pending klaim</h2><div id="audit-comparison"></div></section><section class="card ur-panel mb-5"><h2>Analisis dan rencana tindak lanjut</h2><div id="audit-analysis"></div></section><section class="card ur-panel mb-5"><h2>Aturan pemeriksaan dari riwayat verifikasi klaim</h2><p>Algoritma verifikasi yang tercatat pada rumah sakit dan tahun terpilih digunakan sebagai daftar pemeriksaan. Jumlah menunjukkan episode pada riwayat verifikasi, bukan hasil penerapan aturan ke seluruh data UR.</p><div id="audit-pending-rules"></div></section>
+<div class="ur-method">Indikator merupakan pemicu pemeriksaan dokumentasi, bukan kesimpulan kesalahan koding. Satu episode dapat memenuhi beberapa indikator sehingga jumlah indikator tidak boleh dijumlahkan sebagai jumlah kasus unik. Diagnosis gejala dapat sesuai dengan hasil evaluasi klinis. Prosedur kosong tidak otomatis menunjukkan ketidaklengkapan. Penetapan diagnosis utama harus ditelaah berdasarkan rekam medis. Tarif aktual ditampilkan tanpa simulasi perubahan klaim.</div></div>

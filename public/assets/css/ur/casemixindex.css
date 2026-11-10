@@ -1,0 +1,26 @@
+.cm-page .ur-hero{background:linear-gradient(115deg,#116cbf,#514ad6 60%,#8740dd)}
+.cm-mix{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.cm-mix .badge{padding:10px 12px;font-size:11px;font-weight:600}
+.cm-casegroups{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.cm-casegroup{padding:18px;border:1px solid #e9edf5;border-radius:12px;background:linear-gradient(135deg,#fff,#f5f9ff)}
+.cm-casegroup:nth-child(3n+2){background:linear-gradient(135deg,#fff,#f8f5ff)}
+.cm-casegroup:nth-child(3n+3){background:linear-gradient(135deg,#fff,#effaf6)}
+.cm-casegroup h3{font-size:12px;line-height:1.6;margin:10px 0;color:#3f4254;min-height:38px}
+.cm-casegroup strong{font-size:23px;letter-spacing:-.5px}
+.cm-casegroup small{display:block;font-size:11px;color:#69748c;margin-top:9px}
+.cm-casegroup .ur-meter{margin-top:12px}
+.cm-casegroup:nth-child(3n+2) .ur-meter span{background:#7239ea}
+.cm-casegroup:nth-child(3n+3) .ur-meter span{background:#17a673}
+.cm-detail-head{flex-wrap:wrap}
+.cm-search{display:flex;align-items:center;gap:9px;min-width:250px}
+.cm-search input{font-size:12px}
+.cm-table th:first-child,.cm-table td:first-child{position:sticky;left:0;background:#fff;min-width:240px;max-width:300px;white-space:normal;z-index:1}
+.cm-table th:first-child{background:#f3f6fc!important}
+.cm-table td:first-child small{display:block;color:#69748c;font-weight:400;font-size:10px;line-height:1.6;margin-top:5px}
+.cm-table td.cm-heat{background:#f1faff;color:#007fca}
+.cm-table tfoot td{background:#f5f8fc;font-weight:700}
+.cm-page .alert[hidden]{display:none!important}
+@media(min-width:1600px){.cm-casegroups{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@media(max-width:900px){.cm-casegroups{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:500px){.cm-casegroups{grid-template-columns:1fr}.cm-search{width:100%;min-width:0}.cm-table th:first-child,.cm-table td:first-child{min-width:180px;max-width:200px}}
+@media print{.cm-search,.cm-page .nav-tabs{display:none}.cm-page .tab-pane{display:block!important;opacity:1!important;margin-top:20px}.cm-casegroups{grid-template-columns:repeat(3,minmax(0,1fr))}.cm-table th:first-child,.cm-table td:first-child{position:static}.cm-table{font-size:8px!important}}

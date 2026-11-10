@@ -3,6 +3,10 @@
 
 use CodeIgniter\Router\RouteCollection;
 
+$routes->get('ur/analystslsimulation', static function () {
+    return redirect()->to(site_url('ur/analystsl/simulation'));
+});
+
 /**
  * @var RouteCollection $routes
  */

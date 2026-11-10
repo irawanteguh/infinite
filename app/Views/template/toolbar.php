@@ -10,7 +10,9 @@
     <span class="h-20px border-gray-200 border-start mx-4"></span>
 
     <?php
-        $directory = APPPATH . 'Modules/' . ucfirst($segment1) . '/Breadcrumb/' . $segment2 . '.php';
+        $breadcrumbPage = ($segment1 === 'ur' && $segment2 === 'analystsl' && ($segments[2] ?? '') === 'simulation')
+            ? 'analystslsimulation' : $segment2;
+        $directory = APPPATH . 'Modules/' . ucfirst($segment1) . '/Breadcrumb/' . $breadcrumbPage . '.php';
         if (file_exists($directory)) {
             include $directory;
         }

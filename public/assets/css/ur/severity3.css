@@ -1,0 +1,4 @@
+.s3-page .ur-hero{background:linear-gradient(115deg,#b85b21,#dd8b28 55%,#b35a9f)}
+.s3-table td:first-child,.s3-table th:first-child{min-width:220px;white-space:normal}
+.s3-page #s3-search{max-width:380px}
+@media print{.s3-page #s3-search{display:none}.s3-table{font-size:8px!important}}

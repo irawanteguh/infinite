@@ -1,0 +1,4 @@
+.vent-page .ur-hero{background:linear-gradient(115deg,#164e63,#0891b2 52%,#2563eb)}
+.vent-page #vent-search{max-width:380px}
+.vent-table td:first-child,.vent-table th:first-child{min-width:220px;white-space:normal}
+@media print{.vent-page #vent-search{display:none}.vent-table{font-size:8px!important}}

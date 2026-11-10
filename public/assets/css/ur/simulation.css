@@ -1,0 +1,80 @@
+.ur-simulation .ur-filterbar { flex-wrap: wrap; box-shadow: 0 4px 18px #23365d08; }
+.ur-simulation .ur-filterbar label { font-weight: 600; }
+.ur-simulation .sim-filter { display: grid; grid-template-columns: minmax(220px, 1fr) minmax(320px, 1fr); gap: 20px 32px; padding: 24px; border-radius: 20px; border: 1px solid #dfe6f4; background: linear-gradient(115deg, #f2f5ff, #fff 65%); box-shadow: 0 8px 24px #23365d08; }
+.sim-filter-intro { display: flex; align-items: center; gap: 14px; }
+.sim-filter-icon { display: grid; place-items: center; flex-shrink: 0; width: 48px; height: 48px; background: #e5eaff; color: #5545bd; border-radius: 15px; }
+.sim-filter-icon svg { width: 25px; height: 25px; }
+.sim-filter-intro h2 { font-size: 18px; margin: 0 0 6px; color: #25365a; }
+.sim-filter-intro p { font-size: 12px; margin: 0; color: #65728a; line-height: 1.6; }
+.sim-filter-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.sim-filter-field { min-width: 0; }
+.sim-filter-field label { display: block; font-size: 12px; margin-bottom: 8px; color: #465574; }
+.ur-simulation .sim-filter-field .form-select { width: 100%; min-height: 46px; border: 1px solid #d5dff0; border-radius: 12px; background-color: #fff; color: #25365a; font-size: 15px; font-weight: 600; cursor: pointer; }
+.ur-simulation .sim-filter-field .form-select:focus { border-color: #7b6ad3; box-shadow: 0 0 0 3px #7155d51a; }
+.sim-filter-hint { grid-column: 1 / -1; border-top: 1px solid #e2e8f3; padding-top: 13px; color: #65728a; font-size: 12px; }
+.sim-filter-hint span { color: #5545bd; font-size: 17px; margin-right: 6px; }
+@media (max-width: 767px) { .ur-simulation .sim-filter { grid-template-columns: 1fr; padding: 20px; gap: 20px; } }
+@media (max-width: 400px) { .sim-filter-fields { grid-template-columns: 1fr; } }
+.ur-simulation #sim-status:not(:empty) { padding: 16px 20px; margin-bottom: 20px; background: #fff4df; color: #795300; border-radius: 12px; }
+.ur-simulation .sim-explainer { margin: 8px 0 22px; }
+.sim-severity { --sim-color: #1769c2; --sim-soft: #eef6ff; height: 100%; border: 1px solid #dce6f4; border-top: 4px solid var(--sim-color); border-radius: 16px; background: #fff; overflow: hidden; box-shadow: 0 6px 20px #22365d08; }
+.sim-severity-1 { --sim-color: #955800; --sim-soft: #fff7e8; }
+.sim-severity-2 { --sim-color: #08795d; --sim-soft: #eaf9f3; }
+.sim-card-head { display: flex; justify-content: space-between; align-items: center; padding: 20px; gap: 10px; }
+.sim-card-head h3 { margin: 0; color: var(--sim-color); font-size: 19px; }
+.sim-badge { color: var(--sim-color); background: var(--sim-soft); border-radius: 8px; padding: 6px 10px; font-weight: 700; font-size: 12px; }
+.sim-stage { padding: 18px; margin: 0 16px; border-radius: 12px; background: #f6f8fc; }
+.sim-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: #58667c; }
+.sim-count { font-size: 30px; font-weight: 750; color: #182b49; margin-top: 6px; overflow-wrap: anywhere; }
+.sim-count small { font-size: 12px; font-weight: 500; }
+.sim-share { font-size: 12px; color: #58667c; }
+.sim-money { border-top: 1px solid #dce4ee; padding-top: 12px; margin-top: 14px; }
+.sim-money span { display: block; font-size: 11px; color: #58667c; }
+.sim-money strong { display: block; font-size: clamp(17px, 1.5vw, 23px); margin-top: 5px; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.sim-flow { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 18px; }
+.sim-flow span { font-size: 12px; font-weight: 600; color: #08795d; }
+.sim-flow div:last-child span { color: #b52e51; }
+.sim-flow small { display: block; font-size: 10px; color: #58667c; margin-top: 4px; }
+.sim-stage-after { background: var(--sim-soft); }
+.sim-stage-after .sim-money strong { color: var(--sim-color); }
+.sim-card-footer { padding: 18px 20px; }
+.sim-card-footer > span { display: block; font-size: 12px; }
+.sim-card-footer strong { display: block; margin-top: 4px; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.sim-card-footer > span strong { font-size: 18px; }
+.sim-card-footer small { display: block; margin-top: 14px; font-size: 13px; line-height: 1.5; color: #58667c; }
+.sim-card-footer small strong { font-size: 22px; font-weight: 700; color: #182b49; }
+.ur-simulation .ur-kpi-value { overflow-wrap: anywhere; }
+@media (max-width: 600px) { .sim-money strong { font-size: 22px; } }
+.sim-severity { border-top-width: 0; border-radius: 20px; box-shadow: 0 8px 26px #22365d0c; }
+.sim-card-head { background: linear-gradient(120deg, var(--sim-soft), #fff); border-bottom: 1px solid #e8edf5; margin-bottom: 18px; }
+.sim-badge { border: 1px solid currentColor; border-radius: 30px; }
+.sim-stage-after { border: 1px solid var(--sim-color); }
+.sim-card-footer > span { background: var(--sim-soft); padding: 14px 16px; border-radius: 12px; color: #43516a; font-weight: 600; }
+.sim-card-footer > span strong { font-size: 23px; }
+.sim-net { background: linear-gradient(115deg, #eef4ff, #f6f1ff); border: 1px solid #dce2f7; border-radius: 18px; padding: 24px; margin-top: 24px; }
+.sim-net-heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.sim-net-heading h3 { margin: 6px 0; font-size: 20px; color: #273768; }
+.sim-net-value { font-size: clamp(23px, 2.2vw, 32px); color: #44329a; overflow-wrap: anywhere; }
+.sim-net-parts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 20px; }
+.sim-net-parts > div { background: #ffffffc9; border: 1px solid #e3e7f4; border-radius: 12px; padding: 15px; }
+.sim-net-parts span { display: block; font-size: 12px; color: #58667c; }
+.sim-net-parts strong { display: block; font-size: 19px; margin-top: 6px; overflow-wrap: anywhere; }
+.ur-simulation .sim-rounding { margin-top: 14px; }
+.ur-simulation #sim-kpis { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
+.ur-simulation #sim-kpis .sim-summary-card { display: flex; flex-direction: column; min-width: 0; min-height: 210px; padding: 18px 14px; border: 1px solid #e4eaf4; border-radius: 20px; background: linear-gradient(145deg, #fff 35%, var(--soft)); box-shadow: 0 8px 25px #23365d09; }
+.sim-summary-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
+.sim-summary-icon { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 14px; background: var(--soft); color: var(--tone); }
+.sim-summary-icon svg { width: 24px; height: 24px; }
+.sim-summary-tag { color: var(--tone); background: var(--soft); padding: 6px 10px; border-radius: 30px; font-size: 10px; font-weight: 700; letter-spacing: .7px; }
+.ur-simulation #sim-kpis .ur-kpi-label { padding: 0; min-height: 0; font-size: 13px; margin-bottom: 10px; }
+.ur-simulation #sim-kpis .ur-kpi-value { font-size: clamp(17px, 1.25vw, 24px); line-height: 1.3; letter-spacing: -.6px; font-variant-numeric: tabular-nums; color: #1c2e50; margin-bottom: 18px; }
+.sim-summary-note { border-top: 1px solid #e3e9f2; padding-top: 12px; margin-top: auto; font-size: 12px; line-height: 1.6; color: #65728a; }
+.ur-simulation #sim-kpis .sim-summary-card:nth-child(5) { background: linear-gradient(120deg, #3c43b4, #743ac9); border-color: #5142b5; box-shadow: 0 10px 26px #5142b526; }
+.ur-simulation #sim-kpis .sim-summary-card:nth-child(5) .ur-kpi-label,
+.ur-simulation #sim-kpis .sim-summary-card:nth-child(5) .ur-kpi-value { color: #fff; }
+.sim-summary-card:nth-child(5) .sim-summary-icon,
+.sim-summary-card:nth-child(5) .sim-summary-tag { background: #ffffff20; color: #fff; }
+.sim-summary-card:nth-child(5) .sim-summary-note { color: #ede8ff; border-color: #ffffff30; }
+@media (max-width: 991px) { .ur-simulation #sim-kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .ur-simulation #sim-kpis { grid-template-columns: 1fr; gap: 14px; } .ur-simulation #sim-kpis .sim-summary-card { min-height: 0; padding: 22px; } .ur-simulation #sim-kpis .ur-kpi-value { font-size: 28px; } }
+@media (max-width: 767px) { .sim-net-heading { flex-direction: column; align-items: flex-start; } .sim-net-parts { grid-template-columns: 1fr; } .sim-net { padding: 18px; } }

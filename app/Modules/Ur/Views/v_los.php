@@ -1,42 +1,19 @@
-<div class="card">
-    <div class="card-header border-0 pt-6">
-        <div class="card-title">
-            <div class="d-flex align-items-center position-relative my-1">
-                <span class="svg-icon svg-icon-1 position-absolute ms-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2" rx="1" transform="rotate(45 17.0365 15.1223)" fill="black"></rect>
-                        <path d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z" fill="black"></path>
-                    </svg>
-                </span>
-                <input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Search Data" id="searchtable">
-            </div>
+<link rel="stylesheet" href="<?= base_url('assets/css/ur/dashboard.css?v=' . filemtime(FCPATH . 'assets/css/ur/dashboard.css')) ?>">
+<div id="ur-executive" class="ur-dashboard los-page">
+    <section class="ur-hero">
+        <div><div class="ur-eyebrow">UTILIZATION REVIEW / SHORT STAY</div><h1>Analisis rawat inap dengan lama rawat singkat</h1><p>Review episode rawat inap dengan LOS kurang dari 2 hari.</p><div class="ur-coverage" id="los-coverage">Memuat cakupan data…</div></div>
+        <div class="ur-hero-actions"><button id="los-refresh" type="button" class="btn btn-sm ur-button"><i class="bi bi-arrow-clockwise"></i> Perbarui</button><button id="los-print" type="button" class="btn btn-sm ur-button"><i class="bi bi-printer"></i> Cetak ringkasan</button></div>
+    </section>
+    <div class="ur-filterbar"><div class="ur-filter"><label for="los-month">Bulan pulang</label><select id="los-month" class="form-select form-select-sm form-select-solid"><option value="">Semua bulan</option><?php foreach (['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'] as $i => $month): ?><option value="<?= $i + 1 ?>"><?= $month ?></option><?php endforeach; ?></select></div><span class="badge badge-light-info">Rawat inap · LOS &lt; 2 hari</span><span class="ur-filter-note">Seluruh analisis berdasarkan tanggal pulang</span></div>
+    <div id="los-status" class="ur-status" role="status" aria-live="polite" hidden></div>
+    <div id="los-content" hidden>
+        <section id="los-kpis" class="ur-kpis" aria-label="Ringkasan short stay"></section>
+        <div class="ur-grid-equal">
+            <section class="card card-flush ur-panel"><div class="ur-panel-head"><div><div class="ur-eyebrow">TREN SHORT STAY</div><h2>Episode LOS &lt; 2 hari per bulan</h2><p>Dibagi menjadi LOS 0 hari dan LOS lebih dari 0 hingga kurang dari 2 hari.</p></div></div><div id="los-trend" class="ur-chart"></div></section>
+            <section class="card card-flush ur-panel"><div class="ur-panel-head"><div><div class="ur-eyebrow">PERBANDINGAN TARIF</div><h2>Tarif RS dan total INA-CBG</h2><p>Hanya episode rawat inap dengan LOS &lt; 2 hari.</p></div></div><div id="los-finance" class="ur-chart"></div></section>
         </div>
-    </div>
-    <div class="card-body pt-0">
-        <div class="table-responsive">
-            <table class="table align-middle table-row-dashed gy-2" id="rawdatainpatient_table">
-                <thead>
-                    <tr class="fw-bolder text-muted bg-light">
-                        <th class="text-start rounded-start ps-4">#</th>
-                        <th>SEP Number</th>
-                        <th>Card Number</th>
-                        <th>Medical Record</th>
-                        <th>Patient Name</th>
-                        <th>DPJP</th>
-                        <th>Diagnosis</th>
-                        <th>Procedure</th>
-                        <th>Admission Date</th>
-                        <th>Discharge Date</th>
-                        <th>LOS</th>
-                        <th class="text-end">Hospital Cost</th>
-                        <th class="text-end">INA-CBG</th>
-                        <th class="text-end">iDRG</th>
-                        <th class="text-end">Difference</th>
-                        <th class="text-end rounded-end pe-4">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="fw-bold text-gray-600" id="resultrawdatainpatient"></tbody>
-            </table>
-        </div>
+        <section class="card card-flush ur-panel mb-5"><div class="ur-panel-head"><div><div class="ur-eyebrow">REKAP BULANAN</div><h2>Frekuensi, lama rawat, dan tarif</h2></div></div><div class="ur-table-wrap"><table class="table table-row-dashed align-middle ur-table"><thead><tr><th>Bulan</th><th>Seluruh rawat inap</th><th>LOS &lt; 2 hari</th><th>Proporsi</th><th>Rata-rata LOS*</th><th>Tarif RS*</th><th>Total INA-CBG*</th><th>Selisih*</th></tr></thead><tbody id="los-monthly"></tbody></table></div><small class="text-muted mt-3">* Hanya episode rawat inap dengan LOS &lt; 2 hari.</small></section>
+        <section class="card card-flush ur-panel mb-5"><div class="ur-panel-head"><div><div class="ur-eyebrow">ANALISIS PER DPJP</div><h2>Ringkasan rawat inap singkat per DPJP</h2><p>Urutan berdasarkan jumlah episode LOS &lt; 2 hari, lalu total LOS.</p></div></div><label for="los-search" class="visually-hidden">Cari nama DPJP</label><input id="los-search" type="search" class="form-control form-control-sm form-control-solid mb-5" placeholder="Cari nama DPJP"><div class="ur-table-wrap"><table class="table table-row-dashed align-middle ur-table los-table"><thead><tr><th>DPJP</th><th>LOS &lt; 2 hari</th><th>Proporsi RI DPJP</th><th>LOS 0 hari</th><th>LOS &gt; 0–&lt; 2</th><th>Rata-rata LOS</th><th>Total LOS</th><th>Tarif RS</th><th>Total INA-CBG</th><th>IDRG</th><th>Selisih</th></tr></thead><tbody id="los-dpjp"></tbody></table></div></section>
+        <div class="ur-method"><strong>Dasar pembacaan.</strong> Kriteria tetap: PTD = 1 dan LOS &lt; 2. Proporsi menggunakan seluruh episode rawat inap pada cakupan yang sama. LOS 0 hari ditampilkan sesuai nilai pada data impor dan perlu dibaca bersama aturan perhitungan LOS rumah sakit. Episode tanpa LOS tidak termasuk kriteria. INA-CBG menggunakan TOTAL_TARIF; selisih tarif bukan laba/rugi aktual. Hasil ini merupakan bahan telaah pelayanan, bukan kesimpulan klinis. Bulan terakhir mungkin belum lengkap. Pencarian DPJP hanya memengaruhi tabel dokter.</div>
     </div>
 </div>

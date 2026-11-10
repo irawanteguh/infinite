@@ -34,6 +34,9 @@
     }
 
     if ($segment1 !== '' && $segment2 !== '') {
+        if ($segment1 === 'ur' && $segment2 === 'analystsl' && $segment3 === 'simulation') {
+            $segment2 = 'analystslsimulation';
+        }
         $jspath = FCPATH . 'assets/js/' . $segment1 . '/' . $segment2 . '.js';
         if (file_exists($jspath)) {
             echo '<script type="text/javascript" src="' . base_url('assets/js/' . $segment1 . '/' . $segment2 . '.js?v=' . time()) . '"></script>' . PHP_EOL;

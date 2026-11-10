@@ -1,0 +1,4 @@
+.s1-page .ur-hero{background:linear-gradient(115deg,#4741bd,#7960d7 55%,#3186c9)}
+.s1-table td:first-child,.s1-table th:first-child{min-width:220px;white-space:normal}
+.s1-page #s1-search{max-width:380px}
+@media print{.s1-page #s1-search{display:none}.s1-table{font-size:8px!important}}

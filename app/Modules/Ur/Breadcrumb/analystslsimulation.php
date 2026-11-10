@@ -1,0 +1,1 @@
+<nav aria-label="breadcrumb"><ol class="breadcrumb mb-0"><li class="breadcrumb-item"><a class="text-muted fw-normal" href="<?= site_url('ur/analystsl') ?>">Analisis severity</a></li><li class="breadcrumb-item active text-primary fw-bold" aria-current="page">Simulasi severity</li></ol></nav>

@@ -1,91 +1,36 @@
-load();
-
-$('#selectperiode').on('change', function () {
-    load();
+(function(){'use strict';
+$(document).on('click','#audit-sequencing-details',function(event){
+event.preventDefault();
+const modal=bootstrap.Modal.getOrCreateInstance(document.getElementById('audit-case-modal'));
+$('#audit-case-body').text('Memuat detail kasus…');modal.show();
+$.ajax({url:url+'ur/auditkoding/sequencingDetails',type:'POST',dataType:'json',data:{selectperiode:$('#selectperiode').val(),care:$('#audit-care').val()||''}}).done(function(result){
+const cases=Array.isArray(result.responseResult)?result.responseResult:[];
+$('#audit-case-body').html(cases.length?'<p>'+nf.format(cases.length)+' episode. Validasi urutan diagnosis berdasarkan alasan perawatan dan resume medis.</p><div class="table-responsive"><table class="table table-row-dashed"><thead><tr><th>SEP / MRN</th><th>Pasien</th><th>DPJP</th><th>Layanan</th><th>Tanggal pulang</th><th>Diagnosis</th><th>Prosedur</th><th>LOS</th></tr></thead><tbody>'+cases.map(r=>'<tr><td>'+esc(r.sep)+'<br>'+esc(r.mrn)+'</td><td>'+esc(r.nama_pasien)+'</td><td>'+esc(r.dpjp)+'</td><td>'+(String(r.ptd)==='1'?'Rawat inap':'Rawat jalan')+'</td><td>'+esc(r.discharge_date)+'</td><td>'+esc(r.diaglist).replace(/;/g,'<br>')+'</td><td>'+esc(r.proclist).replace(/;/g,'<br>')+'</td><td>'+esc(r.los)+'</td></tr>').join('')+'</tbody></table></div>':'Tidak ada kasus pada filter terpilih.');
+}).fail(function(xhr){$('#audit-case-body').text(xhr.responseJSON?.responseDesc||'Detail kasus gagal dimuat. Tutup dan klik kembali untuk mencoba.');});
 });
-
-function load(){
-    rawdata();
-};
-
-function rawdata(){
-    let selectperiode = $("select[name='selectperiode']").val();
-    $.ajax({
-        url      : url + "ur/auditkoding/rawdata",
-        data     : {selectperiode:selectperiode},
-        type     : "POST",
-        dataType : "JSON",
-        beforeSend: function () {
-            Swal.fire({
-                title            : 'Processing',
-                html             : 'Please wait while the system displays the requested data.',
-                allowOutsideClick: false,
-                allowEscapeKey   : false,
-                showConfirmButton: false,
-                didOpen          : () => Swal.showLoading()
-            });
-
-            $("#resultdataraweklaim").empty();
-        },
-        success: function (response) {
-
-            if (!response || response.responseCode !== "00") {
-                Swal.fire({
-                    icon             : 'warning',
-                    title            : 'No Records Found',
-                    text             : 'No records are available for the selected period.',
-                    showConfirmButton: false,
-                    timer            : 2000
-                });
-                return;
-            }
-
-            const result = Array.isArray(response.responseResult) ? response.responseResult : [];
-
-            let tableResult = "";
-            for (var i in result) {
-
-                let btnaction = "";
-
-                tableResult += "<tr>";
-                tableResult += "<td class='text-start ps-4'>"+(parseInt(i) + 1)+"</td>";
-                tableResult += "<td><div>" + (result[i].sep || "") + "</div><div>" + (result[i].nokartu || "") + "</div><div><span class='badge badge-info'>" + (result[i].ptd == 1 ? "Inpatient" : "Outpatient") + "</span></div></td>";
-                tableResult += "<td><div>" + (result[i].mrn || "") + "</div><div>" + (result[i].nama_pasien || "") + "</div></td>";
-                tableResult += "<td>" + (result[i].umur_tahun || "") + "</td>";
-                tableResult += "<td>" + (result[i].dpjp || "") + "</td>";
-                tableResult += "<td>" + (result[i].diaglist || "").split(";").join("<br>") + "</td>";
-                tableResult += "<td>" + (result[i].proclist || "").split(";").join("<br>") + "</td>";
-                tableResult += "<td>" + (result[i].admission_date || "") + "</td>";
-                tableResult += "<td>" + (result[i].discharge_date || "") + "</td>";
-                tableResult += "<td>" + (result[i].los || "") + "</td>";
-                tableResult += "<td>" + (result[i].sl || "") + "</td>";
-                tableResult += "<td class='text-end'>" + todesimal(result[i].tarif_rs) + "</td>";
-                tableResult += "<td class='text-end'>" + todesimal(result[i].total_tarif) + "</td>";
-                tableResult += "<td class='text-end'>" + todesimal((parseFloat(result[i].total_tarif) || 0) - (parseFloat(result[i].tarif_rs) || 0)) + "</td>";
-                tableResult += "<td>" + (result[i].case_notes || "") + (Number(result[i].potensibiaya) > 0 ? '<br><span class="badge bg-success">Simulasi Klaim: Rp. ' + todesimal(result[i].potensibiaya) + '</span>' : "") + "</td>";
-                tableResult += "<td class='text-end'>";
-                tableResult += "<div class='btn-group'>";
-                tableResult += "<button type='button' class='btn btn-light-primary dropdown-toggle btn-sm' data-bs-toggle='dropdown'>Actions</button>";
-                tableResult += "<div class='dropdown-menu'>" + btnaction + "</div>";
-                tableResult += "</div>";
-                tableResult += "</td>";
-                tableResult += "</tr>";
-            }
-
-            $("#resultdataraweklaim").html(tableResult);
-
-            initDataTable("#dataraweklaim_table","#searchtable",10);
-        },
-        complete: function () {
-            Swal.close();
-        },
-        error: function () {
-            Swal.fire({
-                icon             : "error",
-                title            : "Request Failed",
-                text             : "An error occurred while processing your request.",
-                confirmButtonText: "OK"
-            });
-        }
-    });
-};
+function renderComparison(){
+const c=comparison.coverage||{},care=$('#audit-care').val(),patterns=(comparison.patterns||[]).filter(r=>!care||String(r.care)===care);
+$('#audit-comparison').html('<p><strong>Cakupan pencocokan seluruh layanan:</strong> '+nf.format(Number(c.matched_episodes)||0)+' dari '+nf.format(Number(c.pending_episodes)||0)+' SEP riwayat verifikasi ditemukan pada data UR. Pencocokan menggunakan nomor SEP dan kode rumah sakit; periode mengikuti tanggal pulang pada riwayat verifikasi.</p>'+(!(Number(c.matched_episodes))?'<div class="alert alert-warning"><strong>Data belum dapat dibandingkan pada tingkat episode.</strong> Periksa kesesuaian kode rumah sakit, format SEP, dan kelengkapan impor kedua sumber. Lengkapi data UR untuk periode riwayat pending sebelum menyimpulkan pola penyebab atau pengulangan kasus.</div>':'')+patterns.map(r=>'<article class="border rounded p-5 mb-4"><h3>'+esc(r.category||'Telaah verifikasi')+'</h3><p><strong>Episode cocok:</strong> '+nf.format(Number(r.episodes)||0)+'</p><p><strong>Diagnosis UR:</strong> '+esc(r.diagnoses||'Belum tercatat')+'</p><p><strong>Prosedur UR:</strong> '+esc(r.procedures||'Belum tercatat')+'</p><p><strong>Catatan algoritma verifikasi:</strong> '+esc(r.rule_text||'Belum tercatat')+'</p><p><strong>Pencegahan pengulangan:</strong> Jadikan catatan verifikasi ini sebagai daftar periksa untuk episode dengan konteks klinis serupa. Sebelum pengajuan, cocokkan diagnosis akhir dengan resume medis, validasi indikasi dan bukti tindakan, serta lengkapi dokumen yang diminta verifikator. Ajukan klarifikasi klinis bila bukti belum memadai.</p><p class="mb-0"><strong>Evaluasi perbaikan:</strong> Dokumentasikan penyebab yang telah dikonfirmasi dan hasil tindak lanjut. Kesamaan kode belum membuktikan kesamaan masalah medis atau kesalahan koding.</p></article>').join('')+(Number(c.matched_episodes)&&!patterns.length?'<p>Tidak ada pasangan episode untuk jenis layanan terpilih.</p>':''));
+}
+function renderPendingRules(){
+const care=$('#audit-care').val(),items=pendingRules.filter(r=>!care||String(r.care)===care);
+$('#audit-pending-rules').html(items.length?items.map(r=>'<article class="border rounded p-5 mb-4"><span class="badge badge-light-warning mb-3">'+esc(r.category||'Algoritma verifikasi')+'</span><h3>Aturan yang perlu diperiksa</h3><p style="white-space:pre-wrap">'+esc(r.rule_text).replace(/\|/g,'<br>')+'</p><p><strong>Riwayat:</strong> '+nf.format(Number(r.episodes)||0)+' episode pada '+nf.format(Number(r.records)||0)+' catatan verifikasi.</p><p><strong>Rekomendasi:</strong> Gunakan setiap butir algoritma di atas sebagai daftar periksa terhadap resume medis, diagnosis akhir, dan laporan tindakan. Konfirmasikan ketentuan dengan pedoman yang berlaku dan penjelasan verifikator sebelum koreksi kode.</p><p class="mb-0"><strong>Tindak lanjut:</strong> Catat bukti pendukung untuk setiap butir, ajukan klarifikasi jika dokumentasi belum jelas, lalu tandai hasilnya sebagai sesuai, perlu klarifikasi, atau perlu koreksi.</p></article>').join(''):'<p>Tidak ada algoritma verifikasi yang tercatat pada cakupan terpilih.</p>');
+}
+function renderAnalysis(data,total){
+const plans=[
+['missing_diagnosis','Lengkapi diagnosis sebelum evaluasi kode','Diagnosis kosong menghambat penilaian ketepatan kode.','Bandingkan diagnosis pada resume medis dengan data impor. Jika diagnosis ada di sumber, perbaiki pemetaan atau impor; jika belum terdokumentasi, minta klarifikasi kepada dokter melalui alur resmi.','Resume medis, diagnosis akhir, dan berkas impor.','Diagnosis terdokumentasi dan kode tercatat sesuai sumber.'],
+['sequencing','Validasi alasan penetapan diagnosis utama','I10 tercatat sebagai diagnosis utama bersama I67.8 atau I69.3; kombinasi ini memerlukan penelaahan alasan perawatan.','Baca alasan masuk, kondisi yang ditangani, dan kesimpulan akhir dokter. Konfirmasikan urutan diagnosis berdasarkan dokumentasi; jangan mengganti diagnosis utama hanya berdasarkan pasangan kode.','Resume medis, catatan perkembangan, hasil pemeriksaan, dan alasan masuk.','Urutan diagnosis dikonfirmasi atau dikoreksi dengan dasar dokumentasi.'],
+['ventilation_review','Cocokkan prosedur ventilasi dengan indikasi klinis','Kode ventilasi tercatat tanpa J96.x atau Z99.1. Kondisi lain dapat menjadi indikasi ventilasi.','Periksa indikasi ventilasi, catatan tindakan, dan durasi pemakaian. Cocokkan kode 96.70/96.71/96.72 dengan dokumentasi; ajukan klarifikasi bila diagnosis atau durasi belum jelas.','Catatan ventilator, laporan tindakan, resume medis, dan waktu mulai/selesai.','Indikasi dan durasi tervalidasi; diagnosis/prosedur dikodekan sesuai dokumentasi.'],
+['symptom_primary','Tinjau spesifisitas diagnosis akhir','Diagnosis utama menggunakan kelompok gejala R00–R99; penggunaannya dapat sesuai bila diagnosis definitif belum ditegakkan.','Periksa apakah diagnosis definitif sudah tercantum pada evaluasi akhir. Jika belum jelas, ajukan klarifikasi; pertahankan kode gejala bila sesuai kesimpulan klinis.','Diagnosis akhir, hasil penunjang, dan resume medis.','Kode gejala dipertahankan atau disesuaikan berdasarkan diagnosis akhir.'],
+['missing_procedure','Verifikasi kebutuhan pencatatan prosedur','Kolom prosedur kosong dapat sesuai pada episode tanpa tindakan yang perlu dikodekan.','Cocokkan dengan laporan tindakan. Lengkapi kode hanya untuk prosedur yang dilakukan dan terdokumentasi.','Laporan tindakan, catatan pelayanan, dan data impor.','Prosedur terverifikasi atau episode dinyatakan tidak memerlukan kode prosedur.']
+];
+if(!total){$('#audit-analysis').html('<p>Analisis belum tersedia karena tidak ada episode pada periode terpilih.</p>');return;}
+const active=plans.filter(p=>sum(data,p[0])>0);
+$('#audit-analysis').html('<p>Dari <strong>'+nf.format(total)+' episode</strong>, terdapat <strong>'+active.length+' kategori indikator</strong> yang perlu ditelaah. Mulai dari kelengkapan diagnosis, kemudian urutan diagnosis dan kesesuaian prosedur. Jumlah berikut adalah kandidat pemeriksaan, bukan jumlah kesalahan yang telah dikonfirmasi.</p>'+active.map((p,i)=>'<article class="border rounded p-5 mb-4"><span class="badge badge-light-primary mb-3">Urutan pemeriksaan '+(i+1)+'</span><h3>'+p[1]+'</h3><p><strong>Hasil data:</strong> '+nf.format(sum(data,p[0]))+' episode ('+pct(sum(data,p[0]),total)+'). '+p[2]+'</p><p><strong>Tindakan yang disarankan:</strong> '+p[3]+'</p><p><strong>Dokumen yang diperiksa:</strong> '+p[4]+'</p><p class="mb-0"><strong>Hasil yang diharapkan:</strong> '+p[5]+'</p></article>').join('')+(!active.length?'<p>Tidak ditemukan kandidat pada indikator yang diperiksa. Audit sampel tetap diperlukan untuk menilai ketepatan kode di luar indikator ini.</p>':'')+'<div class="alert alert-info">Catat hasil setiap pemeriksaan sebagai: sesuai, perlu klarifikasi, perlu koreksi, atau kendala data impor. Ukur jumlah koreksi terkonfirmasi setelah pemeriksaan rekam medis; jangan menggunakan jumlah indikator sebagai tingkat kesalahan koding.</div>');
+}
+let comparison={},pendingRules=[],rows=[],request=null;const nf=new Intl.NumberFormat('id-ID'),keys=['all_episodes','missing_diagnosis','missing_procedure','symptom_primary','sequencing','ventilation_review','negative_cases'];
+const sum=(r,k)=>r.reduce((n,x)=>n+(Number(x[k])||0),0),esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),pct=(n,d)=>d?(100*n/d).toLocaleString('id-ID',{maximumFractionDigits:1})+'%':'—';
+const rules=[['missing_diagnosis','Diagnosis belum tercatat','Periksa kelengkapan diagnosis pada data impor dan rekam medis.'],['symptom_primary','Diagnosis utama berupa gejala (R00–R99)','Tinjau hasil evaluasi klinis dan spesifisitas diagnosis akhir.'],['sequencing','Hipertensi utama dengan diagnosis serebrovaskular terkait','Validasi urutan diagnosis I10 dengan I67.8 atau I69.3 berdasarkan alasan perawatan.'],['ventilation_review','Ventilasi tanpa diagnosis gagal napas atau ketergantungan respirator','Periksa indikasi ventilasi dan dokumentasi diagnosis terkait.'],['missing_procedure','Prosedur belum tercatat','Pastikan apakah episode memang tidak memerlukan prosedur.']];
+function render(){const care=$('#audit-care').val(),data=rows.filter(r=>!care||String(r.ptd)===care),total=sum(data,'all_episodes');$('#audit-status').text(total?'':'Tidak ada data pada periode terpilih.');$('#audit-kpis').html([['Episode ditelaah',total],['Diagnosis belum tercatat',sum(data,'missing_diagnosis')],['Diagnosis utama gejala',sum(data,'symptom_primary')],['Telaah urutan diagnosis',sum(data,'sequencing')],['Telaah kode ventilasi',sum(data,'ventilation_review')],['Tarif INA-CBG di bawah tarif RS',sum(data,'negative_cases')]].map((k,i)=>'<article class="card ur-kpi ur-kpi-tone-'+i+'"><div class="ur-kpi-label">'+k[0]+'</div><div class="ur-kpi-value">'+nf.format(k[1])+'</div></article>').join(''));$('#audit-rules').html(rules.map(k=>'<tr><td>'+k[1]+'</td><td>'+nf.format(sum(data,k[0]))+'</td><td>'+pct(sum(data,k[0]),total)+'</td><td>'+k[2]+'</td></tr>').join(''));const cells=r=>['all_episodes','missing_diagnosis','symptom_primary','sequencing','ventilation_review'].map(k=>'<td>'+nf.format(sum(r,k))+'</td>').join('');$('#audit-monthly').html([...new Set(data.map(r=>Number(r.month)))].sort((a,b)=>a-b).map(m=>'<tr><td>'+new Date(2026,m-1,1).toLocaleString('id-ID',{month:'long'})+'</td>'+cells(data.filter(r=>Number(r.month)===m))+'</tr>').join(''));renderAnalysis(data,total);renderPendingRules();renderComparison();}
+window.load=function(){if(request)request.abort();$('#audit-refresh').prop('disabled',true);Swal.fire({title:'Memuat ringkasan audit koding',allowOutsideClick:false,showConfirmButton:false,didOpen:()=>Swal.showLoading()});request=$.ajax({url:url+'ur/auditkoding/summary',type:'POST',dataType:'json',data:{selectperiode:$('#selectperiode').val()}}).done(r=>{comparison=r.comparison||{};pendingRules=Array.isArray(r.pendingRules)?r.pendingRules:[];rows=r.responseCode==='00'&&Array.isArray(r.responseResult)?r.responseResult:[];render();if(r.responseCode!=='00')$('#audit-status').text(r.responseDesc||'Data gagal dimuat.');}).fail((x,s)=>{if(s!=='abort'){pendingRules=[];rows=[];render();$('#audit-status').text('Data gagal dimuat. Silakan perbarui kembali.');}}).always(()=>{Swal.close();$('#audit-refresh').prop('disabled',false);});};$('#selectperiode,#audit-refresh').on('change click',function(e){if(e.type==='change'||this.id==='audit-refresh')window.load();});$('#audit-care').on('change',render);window.load();
+})();

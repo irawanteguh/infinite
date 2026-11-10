@@ -4,131 +4,94 @@ namespace Modules\Ur\Models;
 
 use CodeIgniter\Model;
 
-class CasemixindexModel extends Model{
+class CasemixindexModel extends Model
+{
     protected $DBGroup = 'default';
+    private $aggregateCache = [];
 
-    function periode(){
-        $query = "
-                    with recursive periode as (
-                        select 2014 as periode
-                        union all
-                        select periode + 1
-                        from periode
-                        where periode < year(curdate())
-                    )
-                    select periode
-                    from periode
-                    order by periode desc
-
-                ";
-
-        $recordset = $this->db->query($query);
-        return $recordset->getResult();
+    public function periode()
+    {
+        return array_map(static function ($year) {
+            return (object) ['periode' => $year];
+        }, range((int) date('Y'), 2014));
     }
 
-    function datakelompokkasus($koders,$periode){
-        $query = "
-                    select 
-                        a.id_cg,
-                        a.name_case_group,
-                        a.notes,
-
-                        sum(case when month(b.discharge_date) = 1  then 1 else 0 end) as jan,
-                        sum(case when month(b.discharge_date) = 2  then 1 else 0 end) as feb,
-                        sum(case when month(b.discharge_date) = 3  then 1 else 0 end) as mar,
-                        sum(case when month(b.discharge_date) = 4  then 1 else 0 end) as apr,
-                        sum(case when month(b.discharge_date) = 5  then 1 else 0 end) as mei,
-                        sum(case when month(b.discharge_date) = 6  then 1 else 0 end) as jun,
-                        sum(case when month(b.discharge_date) = 7  then 1 else 0 end) as jul,
-                        sum(case when month(b.discharge_date) = 8  then 1 else 0 end) as agu,
-                        sum(case when month(b.discharge_date) = 9  then 1 else 0 end) as sep,
-                        sum(case when month(b.discharge_date) = 10 then 1 else 0 end) as okt,
-                        sum(case when month(b.discharge_date) = 11 then 1 else 0 end) as nov,
-                        sum(case when month(b.discharge_date) = 12 then 1 else 0 end) as des
-
-                    from dt01_inacbg_casegroup_ms a
-
-                    left join dt01_bpjs_ur_dt b 
-                        on b.cg = a.id_cg
-                        and   b.kode_rs='".$koders."'
-                        and   year(b.discharge_date) = " . $periode."
-
-                    group by 
-                        a.id_cg,
-                        a.name_case_group,
-                        a.notes
-
-                    order by 
-                        cast(a.id_cg as unsigned) asc;
-                ";
-
-        $recordset = $this->db->query($query);
-        return $recordset->getResult();
+    public function aggregate($koders, $periode)
+    {
+        $cacheKey = $koders . ':' . $periode;
+        if (isset($this->aggregateCache[$cacheKey])) {
+            return $this->aggregateCache[$cacheKey];
+        }
+        $query = "SELECT MONTH(a.discharge_date) AS month,
+                         a.ptd, a.cg, a.cmg, a.sl,
+                         COUNT(*) AS episodes,
+                         SUM(a.total_tarif) AS total_tarif,
+                         SUM(a.tarif_rs) AS tarif_rs,
+                         SUM(CASE WHEN a.ptd = 1 THEN a.los ELSE 0 END) AS total_los,
+                         SUM(CASE WHEN a.ptd = 1 AND a.los IS NOT NULL THEN 1 ELSE 0 END) AS los_cases,
+                         SUM(CASE WHEN a.ptd = 1 AND a.idrg_cost_weight > 0 THEN a.idrg_cost_weight ELSE 0 END) AS weight_sum,
+                         SUM(CASE WHEN a.ptd = 1 AND a.idrg_cost_weight > 0 THEN 1 ELSE 0 END) AS weight_cases,
+                         MIN(a.discharge_date) AS first_discharge,
+                         MAX(a.discharge_date) AS last_discharge
+                  FROM dt01_bpjs_ur_dt a
+                  WHERE a.kode_rs = ?
+                    AND a.discharge_date >= ? AND a.discharge_date < ?
+                  GROUP BY MONTH(a.discharge_date), a.ptd, a.cg, a.cmg, a.sl
+                  ORDER BY MONTH(a.discharge_date), a.ptd, a.cg, a.cmg, a.sl";
+        return $this->aggregateCache[$cacheKey] = $this->db->query($query, [
+            $koders, sprintf('%04d-01-01', $periode), sprintf('%04d-01-01', $periode + 1)
+        ])->getResult();
     }
 
-    function datacmg($koders,$periode){
-        $query = "
-                    select 
-                        a.group_code,
-                        a.group_name,
-                        a.description,
-
-                        sum(case when month(b.discharge_date) = 1  then 1 else 0 end) as jan,
-                        sum(case when month(b.discharge_date) = 2  then 1 else 0 end) as feb,
-                        sum(case when month(b.discharge_date) = 3  then 1 else 0 end) as mar,
-                        sum(case when month(b.discharge_date) = 4  then 1 else 0 end) as apr,
-                        sum(case when month(b.discharge_date) = 5  then 1 else 0 end) as mei,
-                        sum(case when month(b.discharge_date) = 6  then 1 else 0 end) as jun,
-                        sum(case when month(b.discharge_date) = 7  then 1 else 0 end) as jul,
-                        sum(case when month(b.discharge_date) = 8  then 1 else 0 end) as agu,
-                        sum(case when month(b.discharge_date) = 9  then 1 else 0 end) as sep,
-                        sum(case when month(b.discharge_date) = 10 then 1 else 0 end) as okt,
-                        sum(case when month(b.discharge_date) = 11 then 1 else 0 end) as nov,
-                        sum(case when month(b.discharge_date) = 12 then 1 else 0 end) as des
-
-                    from dt01_inacbg_cmg_ms a
-
-                    left join dt01_bpjs_ur_dt b 
-                        on b.cmg = a.group_code
-                        and   b.kode_rs='".$koders."'
-                        and   year(b.discharge_date) = " . $periode."
-
-                    group by 
-                        a.group_Code,
-                        a.group_name,
-                        a.description
-
-                    order by group_code asc;
-                ";
-
-        $recordset = $this->db->query($query);
-        return $recordset->getResult();
+    public function summary($koders, $periode)
+    {
+        return [
+            'rows' => $this->aggregate($koders, $periode),
+            'casegroups' => $this->db->query('SELECT id_cg, name_case_group, notes FROM dt01_inacbg_casegroup_ms ORDER BY CAST(id_cg AS UNSIGNED)')->getResult(),
+            'cmgs' => $this->db->query('SELECT group_code, group_name, description FROM dt01_inacbg_cmg_ms ORDER BY group_code')->getResult(),
+        ];
     }
 
-    function dataseveritylevel($koders,$periode){
-        $query = "
-                    SELECT a.sl,
-                        SUM(CASE WHEN MONTH(a.DISCHARGE_DATE) = 1  THEN 1 ELSE 0 END) AS jan,
-                        SUM(CASE WHEN MONTH(a.DISCHARGE_DATE) = 2  THEN 1 ELSE 0 END) AS feb,
-                        SUM(CASE WHEN MONTH(a.DISCHARGE_DATE) = 3  THEN 1 ELSE 0 END) AS mar,
-                        SUM(CASE WHEN MONTH(a.DISCHARGE_DATE) = 4  THEN 1 ELSE 0 END) AS apr,
-                        SUM(CASE WHEN MONTH(a.DISCHARGE_DATE) = 5  THEN 1 ELSE 0 END) AS mei,
-                        SUM(CASE WHEN MONTH(a.DISCHARGE_DATE) = 6  THEN 1 ELSE 0 END) AS jun,
-                        SUM(CASE WHEN MONTH(a.DISCHARGE_DATE) = 7  THEN 1 ELSE 0 END) AS jul,
-                        SUM(CASE WHEN MONTH(a.DISCHARGE_DATE) = 8  THEN 1 ELSE 0 END) AS agu,
-                        SUM(CASE WHEN MONTH(a.DISCHARGE_DATE) = 9  THEN 1 ELSE 0 END) AS sep,
-                        SUM(CASE WHEN MONTH(a.DISCHARGE_DATE) = 10 THEN 1 ELSE 0 END) AS okt,
-                        SUM(CASE WHEN MONTH(a.DISCHARGE_DATE) = 11 THEN 1 ELSE 0 END) AS nov,
-                        SUM(CASE WHEN MONTH(a.DISCHARGE_DATE) = 12 THEN 1 ELSE 0 END) AS des
-                    FROM dt01_bpjs_ur_dt a
-                    where a.kode_rs='".$koders."'
-                    and   year(a.admission_date) = ".$periode."
-                    GROUP BY  a.sl
-
-                ";
-
-        $recordset = $this->db->query($query);
-        return $recordset->getResult();
+    // Preserve the monthly response contracts of existing endpoints.
+    private function monthly($koders, $periode, $field, $key, $master = [])
+    {
+        $months = ['jan', 'feb', 'mar', 'apr', 'mei', 'jun', 'jul', 'agu', 'sep', 'okt', 'nov', 'des'];
+        $result = [];
+        foreach ($master as $item) {
+            $item = (array) $item;
+            $result[(string) $item[$key]] = array_merge($item, array_fill_keys($months, 0));
+        }
+        foreach ($this->aggregate($koders, $periode) as $row) {
+            $code = (string) $row->$field;
+            if (!isset($result[$code])) {
+                $result[$code] = array_merge([$key => $code], array_fill_keys($months, 0));
+                if ($field === 'cmg') {
+                    $result[$code]['group_name'] = 'Belum terdaftar di master';
+                    $result[$code]['description'] = '';
+                } elseif ($field === 'cg') {
+                    $result[$code]['name_case_group'] = 'Belum terdaftar di master';
+                    $result[$code]['notes'] = '';
+                }
+            }
+            $result[$code][$months[(int) $row->month - 1]] += (int) $row->episodes;
+        }
+        return array_map(static function ($item) { return (object) $item; }, array_values($result));
     }
-    
+
+    public function datakelompokkasus($koders, $periode)
+    {
+        $master = $this->db->query('SELECT id_cg, name_case_group, notes FROM dt01_inacbg_casegroup_ms ORDER BY CAST(id_cg AS UNSIGNED)')->getResult();
+        return $this->monthly($koders, $periode, 'cg', 'id_cg', $master);
+    }
+
+    public function datacmg($koders, $periode)
+    {
+        $master = $this->db->query('SELECT group_code, group_name, description FROM dt01_inacbg_cmg_ms ORDER BY group_code')->getResult();
+        return $this->monthly($koders, $periode, 'cmg', 'group_code', $master);
+    }
+
+    public function dataseveritylevel($koders, $periode)
+    {
+        return $this->monthly($koders, $periode, 'sl', 'sl');
+    }
 }

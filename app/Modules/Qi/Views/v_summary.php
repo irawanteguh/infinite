@@ -41,8 +41,20 @@
     </div>
 </div>
 
+<div class="mb-3">
+    <h3 class="fw-bolder text-gray-900 mb-1">Ringkasan berdasarkan jenis indikator</h3>
+    <span class="text-muted fs-7">Capaian pada periode terpilih; jenis indikator Department menggabungkan seluruh unit</span>
+</div>
+<div class="row row-cols-1 row-cols-md-2 row-cols-xxl-5 g-5 mb-6" id="summaryIndicatorTypes">
+    <div class="col" data-indicator-type="1f513f16-d546-11f1-91d6-202b2018cf5a"><div class="card card-flush h-100 border-start border-4 border-primary"><div class="card-body py-5"><div class="d-flex align-items-center justify-content-between mb-3"><span class="text-muted fw-bold fs-7">Indikator Global</span><i class="bi bi-globe2 fs-2 text-primary"></i></div><div class="text-gray-900 fw-bolder fs-2x" data-type-count>0</div><div class="text-muted fs-8">indikator · <span data-type-assessed>0</span> dinilai</div><div class="separator my-3"></div><div class="text-primary fw-bold">Rata-rata <span data-type-average>—</span></div></div></div></div>
+    <div class="col" data-indicator-type="25ae8766-7384-11f1-a5e6-e0be037258a4"><div class="card card-flush h-100 border-start border-4 border-info"><div class="card-body py-5"><div class="d-flex align-items-center justify-content-between mb-3"><span class="text-muted fw-bold fs-7">Indikator Mutu Nasional</span><i class="bi bi-award fs-2 text-info"></i></div><div class="text-gray-900 fw-bolder fs-2x" data-type-count>0</div><div class="text-muted fs-8">indikator · <span data-type-assessed>0</span> dinilai</div><div class="separator my-3"></div><div class="text-info fw-bold">Rata-rata <span data-type-average>—</span></div></div></div></div>
+    <div class="col" data-indicator-type="25ae8926-7384-11f1-a5e6-e0be037258a4"><div class="card card-flush h-100 border-start border-4 border-warning"><div class="card-body py-5"><div class="d-flex align-items-center justify-content-between mb-3"><span class="text-muted fw-bold fs-7">Indikator Prioritas Rumah Sakit</span><i class="bi bi-hospital fs-2 text-warning"></i></div><div class="text-gray-900 fw-bolder fs-2x" data-type-count>0</div><div class="text-muted fs-8">indikator · <span data-type-assessed>0</span> dinilai</div><div class="separator my-3"></div><div class="text-warning fw-bold">Rata-rata <span data-type-average>—</span></div></div></div></div>
+    <div class="col" data-indicator-type="25ae899b-7384-11f1-a5e6-e0be037258a4"><div class="card card-flush h-100 border-start border-4 border-success"><div class="card-body py-5"><div class="d-flex align-items-center justify-content-between mb-3"><span class="text-muted fw-bold fs-7">Indikator Mutu Department</span><i class="bi bi-diagram-3 fs-2 text-success"></i></div><div class="text-gray-900 fw-bolder fs-2x" data-type-count>0</div><div class="text-muted fs-8">indikator · <span data-type-assessed>0</span> dinilai</div><div class="separator my-3"></div><div class="text-success fw-bold">Gabungan unit <span data-type-average>—</span></div></div></div></div>
+    <div class="col" data-indicator-type="38505839-d546-11f1-91d6-202b2018cf5a"><div class="card card-flush h-100 border-start border-4 border-danger"><div class="card-body py-5"><div class="d-flex align-items-center justify-content-between mb-3"><span class="text-muted fw-bold fs-7">Indikator Keselamatan Pasien</span><i class="bi bi-shield-check fs-2 text-danger"></i></div><div class="text-gray-900 fw-bolder fs-2x" data-type-count>0</div><div class="text-muted fs-8">indikator · <span data-type-assessed>0</span> dinilai</div><div class="separator my-3"></div><div class="text-danger fw-bold">Rata-rata <span data-type-average>—</span></div></div></div></div>
+</div>
+
 <div class="row g-5 mb-6">
-    <div class="col-xl-8">
+    <div class="col-xl-8 col-12">
         <div class="card h-100">
             <div class="card-header border-0 pt-6">
                 <div class="card-title flex-column">
@@ -55,18 +67,29 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-4">
+    <div class="col-xl-4 col-12">
+        <div class="card h-100">
+            <div class="card-header border-0 pt-6">
+                <div class="card-title flex-column">
+                    <h3 class="fw-bolder text-gray-900 mb-1">Capaian berdasarkan dimensi mutu</h3>
+                    <span class="text-muted fs-7">Rata-rata per dimensi mutu</span>
+                </div>
+            </div>
+            <div class="card-body pt-0">
+                <div id="summaryDimensionRadar"></div>
+                <div id="summaryDimensionRadarEmpty" class="text-center text-muted py-8 d-none">Belum ada capaian terukur untuk dimensi mutu pada periode ini.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-5 mb-6">
+    <div class="col-12">
         <div class="card h-100">
             <div class="card-header border-0 pt-6">
                 <div class="card-title flex-column">
                     <h3 class="fw-bolder text-gray-900 mb-1">Peringkat capaian departemen</h3>
                     <span class="text-muted fs-7" id="summaryDepartmentCaption">Rata-rata dari indikator yang sudah dinilai</span>
-                </div>
-                <div class="card-toolbar">
-                    <select class="form-select form-select-sm form-select-solid w-150px" id="summaryDepartmentView" aria-label="Pilih kelompok departemen">
-                        <option value="top">10 capaian tertinggi</option>
-                        <option value="attention">Perlu perhatian</option>
-                    </select>
                 </div>
             </div>
             <div class="card-body pt-0">
@@ -99,6 +122,7 @@
                         <th class="text-center">Bulan terisi</th>
                         <th class="text-center">Penilaian</th>
                         <th class="text-center pe-4">Rata-rata capaian</th>
+                        <th class="text-center pe-4">Actions</th>
                     </tr>
                 </thead>
                 <tbody id="qualitySummaryRows" class="fw-semibold text-gray-700"></tbody>

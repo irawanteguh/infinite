@@ -59,4 +59,9 @@
         }
     }
 
+    $tableHeaderCss = FCPATH . 'assets/css/table-header.css';
+    if (is_file($tableHeaderCss)) {
+        echo '<link href="' . base_url('assets/css/table-header.css?v=' . filemtime($tableHeaderCss)) . '" rel="stylesheet" type="text/css" />' . PHP_EOL;
+    }
+
 ?>

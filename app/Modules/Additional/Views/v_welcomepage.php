@@ -54,8 +54,10 @@
     .welcome-banner{
         position:relative;
         overflow:hidden;
-        min-height:220px;      /* sebelumnya 320px */
-        border-radius:10px;
+        min-height:280px;
+        border:1px solid rgba(255,255,255,.22);
+        border-radius:22px;
+        box-shadow:0 18px 45px rgba(25,48,86,.16);
 
         background-image:url('<?= base_url('assets/media/ambient/'.$background); ?>');
         background-position:center;
@@ -70,10 +72,25 @@
         --badge-color: <?= $badgeColor ?>;
     }
 
-    /* Hilangkan overlay lama */
-    .welcome-banner::before,
+    .welcome-banner::before{
+        content:"";
+        position:absolute;
+        inset:0;
+        background:linear-gradient(100deg,rgba(8,23,54,.92) 0%,rgba(15,43,81,.75) 52%,rgba(15,43,81,.2) 100%);
+        z-index:1;
+    }
+
     .welcome-banner::after{
-        display:none;
+        content:"";
+        position:absolute;
+        width:360px;
+        height:360px;
+        right:4%;
+        top:-190px;
+        border:1px solid rgba(173,238,255,.26);
+        border-radius:50%;
+        box-shadow:0 0 0 34px rgba(173,238,255,.06),0 0 0 70px rgba(173,238,255,.04);
+        pointer-events:none;
     }
 
     .welcome-banner-content{
@@ -83,6 +100,7 @@
 
     .welcome-kicker{
         color:var(--kicker-color);
+        color:#a6edff;
         font-size:.78rem;
         font-weight:700;
         text-transform:uppercase;
@@ -90,7 +108,7 @@
     }
 
     .welcome-title{
-        color:var(--title-color);
+        color:#fff;
         font-size:clamp(1.8rem,3vw,3rem);
         font-weight:700;
         line-height:1.15;
@@ -98,23 +116,24 @@
     }
 
     .welcome-subtitle{
-        color:var(--text-color);
+        color:rgba(255,255,255,.86);
         font-size:1rem;
         max-width:560px;
     }
 
     .welcome-date{
-        color:var(--badge-color);
-        background:var(--badge-bg);
-        border:1px solid var(--badge-border);
-        border-radius:8px;
-        backdrop-filter:blur(8px);
+        color:#eafaff;
+        background:rgba(222,245,255,.12);
+        border:1px solid rgba(222,245,255,.24);
+        border-radius:999px;
+        backdrop-filter:blur(10px);
+        -webkit-backdrop-filter:blur(10px);
     }
 
     @media(max-width:768px){
 
         .welcome-banner{
-            min-height:180px;
+            min-height:220px;
         }
 
         .welcome-title{

@@ -1,0 +1,17 @@
+table thead tr > :first-child {
+    text-align: start !important;
+    padding-inline-start: 1rem !important;
+    border-start-start-radius: 0.475rem;
+    border-end-start-radius: 0.475rem;
+}
+
+table thead tr > :last-child {
+    text-align: end !important;
+    padding-inline-end: 1rem !important;
+    border-start-end-radius: 0.475rem;
+    border-end-end-radius: 0.475rem;
+}
+
+table tbody tr > :first-child {
+    padding-inline-start: 1rem !important;
+}

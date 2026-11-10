@@ -13,6 +13,55 @@ function qualitySummaryEscape(value) {
     return $("<div>").text(value == null || value === "" ? "-" : String(value)).html();
 }
 
+function renderIndicatorTypeSummary(rows) {
+    const departmentType = "25ae899b-7384-11f1-a5e6-e0be037258a4";
+    const typeCards = document.querySelectorAll("#summaryIndicatorTypes [data-indicator-type]");
+
+    typeCards.forEach(card => {
+        const typeId = card.dataset.indicatorType;
+        const typeRows = rows.filter(row => String(row.jenis_indikator_id || "").toLowerCase() === typeId);
+        const indicatorKey = row => String(row.indikator_id || row.indikator_code || row.transaksi_id || "");
+        const indicators = new Set(typeRows.map(indicatorKey));
+        let assessedCount = 0;
+        let average = null;
+
+        if (typeId === departmentType) {
+            const aggregated = new Map();
+            typeRows.forEach(row => {
+                const key = indicatorKey(row);
+                if (!aggregated.has(key)) aggregated.set(key, { numerator: 0, denominator: 0, assessed: false });
+                const item = aggregated.get(key);
+                item.numerator += qualitySummaryNumber(row.total_numerator);
+                item.denominator += qualitySummaryNumber(row.total_denominator);
+                item.assessed = item.assessed || qualitySummaryNumber(row.jumlah_penilaian) > 0;
+            });
+
+            const scores = [];
+            aggregated.forEach(item => {
+                if (!item.assessed) return;
+                assessedCount++;
+                const score = item.denominator === 0
+                    ? (item.numerator === 0 ? 100 : 0)
+                    : Math.min(100, (item.numerator / item.denominator) * 100);
+                scores.push(score);
+            });
+            average = scores.length ? scores.reduce((sum, score) => sum + score, 0) / scores.length : null;
+        } else {
+            const scored = typeRows.filter(row => row.rata_pencapaian !== null && row.rata_pencapaian !== "");
+            assessedCount = new Set(scored.map(indicatorKey)).size;
+            average = scored.length
+                ? scored.reduce((sum, row) => sum + qualitySummaryNumber(row.rata_pencapaian), 0) / scored.length
+                : null;
+        }
+
+        card.querySelector("[data-type-count]").textContent = indicators.size.toLocaleString("id-ID");
+        card.querySelector("[data-type-assessed]").textContent = assessedCount.toLocaleString("id-ID");
+        card.querySelector("[data-type-average]").textContent = average === null
+            ? "—"
+            : average.toLocaleString("id-ID", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "%";
+    });
+}
+
 function loadQualitySummary() {
     const year = $("#selectsummaryperiode").val();
 
@@ -53,6 +102,46 @@ function loadQualitySummary() {
 function renderQualitySummary(rows, monthlyTrend) {
     rows = Array.isArray(rows) ? rows : [];
     monthlyTrend = Array.isArray(monthlyTrend) ? monthlyTrend : [];
+    renderIndicatorTypeSummary(rows);
+
+    const dimensionRadar = document.getElementById("summaryDimensionRadar");
+    if (dimensionRadar) {
+        if (dimensionRadar.chart) dimensionRadar.chart.destroy();
+        const dimensions = [
+            ["Keselamatan", "dimensi_mutu_keselamatan"],
+            ["Tepat waktu", "dimensi_mutu_waktu"],
+            ["Efektif", "dimensi_mutu_efektif"],
+            ["Efisien", "dimensi_mutu_efesien"],
+            ["Berfokus pada pasien", "dimensi_mutu_pasien"],
+            ["Terintegrasi", "dimensi_mutu_integrasi"]
+        ];
+        const dimensionValues = dimensions.map(([label, field]) => {
+            const assessed = rows.filter(row => (row[field] === "Y" || row[field] === 1 || row[field] === "1")
+                && row.rata_pencapaian !== null && row.rata_pencapaian !== "");
+            return { label, value: assessed.length
+                ? assessed.reduce((sum, row) => sum + qualitySummaryNumber(row.rata_pencapaian), 0) / assessed.length
+                : null };
+        });
+        const hasValues = dimensionValues.some(item => item.value !== null);
+        $("#summaryDimensionRadarEmpty").toggleClass("d-none", hasValues);
+        $(dimensionRadar).toggleClass("d-none", !hasValues);
+        if (hasValues) {
+            dimensionRadar.chart = new ApexCharts(dimensionRadar, {
+                chart: { type: "radar", height: 380, toolbar: { show: false }, fontFamily: "inherit" },
+                plotOptions: { radar: { size: 145 } },
+                series: [{ name: "Rata-rata capaian", data: dimensionValues.map(item => item.value ?? 0) }],
+                xaxis: { categories: dimensionValues.map(item => item.label), labels: { style: { fontSize: "12px" } } },
+                yaxis: { min: 0, max: 100, tickAmount: 5, labels: { formatter: value => `${Number(value).toLocaleString("id-ID", { maximumFractionDigits: 0 })}%` } },
+                colors: ["#009ef7"],
+                fill: { opacity: 0.22 },
+                stroke: { width: 3 },
+                markers: { size: 4 },
+                dataLabels: { enabled: true, formatter: value => `${Number(value).toLocaleString("id-ID", { maximumFractionDigits: 2 })}%` },
+                tooltip: { y: { formatter: value => `${Number(value).toLocaleString("id-ID", { maximumFractionDigits: 2 })}%` } }
+            });
+            dimensionRadar.chart.render();
+        }
+    }
 
     const nationalRows = rows.filter(row => row.kategori === "Nasional Mutu");
     const scoredRows = rows.filter(row => row.rata_pencapaian !== null && row.rata_pencapaian !== "");
@@ -68,9 +157,7 @@ function renderQualitySummary(rows, monthlyTrend) {
     $("#summary-departments").text(departments.size.toLocaleString("id-ID"));
 
     const tableRows = rows.map(function (row, index) {
-        const categoryBadge = row.kategori === "Nasional Mutu"
-            ? "<span class='badge badge-light-primary'>Indikator Nasional Mutu</span>"
-            : "<span class='badge badge-light-info'>Indikator Departemen</span>";
+        const categoryBadge = "<span class='badge badge-light-primary'>" + qualitySummaryEscape(row.jenis) + "</span>";
         const targetValue = row.target == null || row.target === "" ? "-" : qualitySummaryEscape(row.target);
         const targetDirection = row.target_capaian === "H" ? "Lebih tinggi lebih baik"
             : row.target_capaian === "L" ? "Lebih rendah lebih baik"
@@ -89,6 +176,7 @@ function renderQualitySummary(rows, monthlyTrend) {
             + "<td class='text-center'>" + qualitySummaryNumber(row.jumlah_bulan).toLocaleString("id-ID") + " / 12</td>"
             + "<td class='text-center'>" + qualitySummaryNumber(row.jumlah_penilaian).toLocaleString("id-ID") + "</td>"
             + "<td class='text-center pe-4'>" + achievement + "</td>"
+            + "<td class='text-center'><a class='btn btn-sm btn-light-primary' href='" + url + "qi/summarycompare?indikator_id=" + encodeURIComponent(row.indikator_id || "") + "&department_id=" + encodeURIComponent(row.department_id || "") + "'><i class='bi bi-bar-chart-line me-1'></i>Compare</a></td>"
             + "</tr>";
     }).join("");
 
@@ -147,23 +235,22 @@ function drawQualitySummaryDepartmentChart() {
     if (!chartElement) return;
     if (chartElement.chart) chartElement.chart.destroy();
 
-    const attention = $("#summaryDepartmentView").val() === "attention";
-    const ranked = [...qualitySummaryDepartmentData].sort((a, b) => attention ? a.average - b.average : b.average - a.average);
-    const visible = ranked.slice(0, 10);
+    const visible = [...qualitySummaryDepartmentData].sort((a, b) => b.average - a.average);
     const empty = visible.length === 0;
     $("#summaryDepartmentEmpty").toggleClass("d-none", !empty);
     $(chartElement).toggleClass("d-none", empty);
-    $("#summaryDepartmentCaption").text(`${visible.length} dari ${qualitySummaryDepartmentData.length} departemen · ${attention ? "capaian terendah" : "capaian tertinggi"} ditampilkan`);
+    $("#summaryDepartmentCaption").text(`${visible.length} departemen · diurutkan dari capaian tertinggi`);
     if (empty) return;
 
     chartElement.chart = new ApexCharts(chartElement, {
-        chart: { type: "bar", height: 330, toolbar: { show: false }, fontFamily: "inherit" },
+        chart: { type: "bar", height: 380, toolbar: { show: false }, fontFamily: "inherit" },
         series: [{ name: "Rata-rata capaian", data: visible.map(item => item.average) }],
-        colors: [attention ? "#f1416c" : "#50cd89"],
-        plotOptions: { bar: { horizontal: true, borderRadius: 4, barHeight: "58%", distributed: true } },
-        dataLabels: { enabled: true, formatter: value => `${Number(value).toLocaleString("id-ID", { maximumFractionDigits: 1 })}%`, style: { fontSize: "11px" } },
-        xaxis: { categories: visible.map(item => item.department), min: 0, max: 100, tickAmount: 4, labels: { formatter: value => `${Number(value).toLocaleString("id-ID")}%` } },
-        yaxis: { labels: { maxWidth: 145, style: { fontSize: "11px" } } },
+        colors: visible.map(item => item.average < 50 ? "#f1416c" : (item.average < 80 ? "#ffc700" : "#50cd89")),
+        plotOptions: { bar: { horizontal: false, borderRadius: 4, columnWidth: "52%", distributed: true } },
+        dataLabels: { enabled: true, formatter: value => `${Number(value).toLocaleString("id-ID", { maximumFractionDigits: 2 })}%`, style: { fontSize: "11px" }, offsetY: -18 },
+        legend: { show: false },
+        xaxis: { categories: visible.map(item => item.department), labels: { rotate: -35, rotateAlways: visible.length > 5, trim: true, hideOverlappingLabels: true, style: { fontSize: "11px" } } },
+        yaxis: { min: 0, max: 100, tickAmount: 5, title: { text: "Rata-rata capaian (%)" }, labels: { formatter: value => `${Number(value).toLocaleString("id-ID", { maximumFractionDigits: 0 })}%` } },
         grid: { borderColor: "#eff2f5", strokeDashArray: 4 },
         tooltip: { custom: ({ dataPointIndex }) => {
             const item = visible[dataPointIndex];
@@ -176,5 +263,4 @@ function drawQualitySummaryDepartmentChart() {
 }
 
 $(document).on("change", "#selectsummaryperiode", loadQualitySummary);
-$(document).on("change", "#summaryDepartmentView", drawQualitySummaryDepartmentChart);
 loadQualitySummary();

@@ -2,6 +2,23 @@
 
 $(function () {
 
+    const loginPage = document.querySelector('.login-page');
+    if (loginPage) {
+        loginPage.querySelectorAll('a[href]').forEach(function (link) {
+            const target = new URL(link.href, window.location.href);
+            if (target.origin !== window.location.origin || target.pathname !== new URL(url).pathname) return;
+
+            link.addEventListener('click', function (event) {
+                if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button !== 0
+                    || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                event.preventDefault();
+                loginPage.classList.add('is-leaving');
+                window.setTimeout(function () { window.location.assign(link.href); }, 220);
+            });
+        });
+        window.addEventListener('pageshow', function () { loginPage.classList.remove('is-leaving'); });
+    }
+
     const form   = $("#kt_sign_in_form");
     const button = $("#kt_sign_in_submit");
 

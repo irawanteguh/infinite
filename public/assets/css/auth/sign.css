@@ -46,3 +46,22 @@
         0 0 320px rgba(35, 95, 220, .22),
         0 40px 90px rgba(0, 0, 0, .45);
 }
+.login-page {
+    animation: login-page-enter 420ms ease both;
+    opacity: 1;
+    transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.login-page.is-leaving {
+    opacity: 0;
+    transform: translateY(6px);
+}
+
+@keyframes login-page-enter {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .login-page { animation: none; transition: none; }
+}

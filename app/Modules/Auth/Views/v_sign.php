@@ -16,7 +16,7 @@
     }
 ?>
 
-<div class="d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-cover bgi-attachment-fixed" style="background-image: url('<?= base_url('assets/media/ambient/' . $background) ?>');">
+<div class="login-page d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-cover bgi-attachment-fixed" style="background-image: url('<?= base_url('assets/media/ambient/' . $background) ?>');">
     <div class="d-flex flex-center flex-column flex-column-fluid p-10">
         <div class="w-lg-500px bg-body rounded p-10 p-lg-15 mx-auto <?= $cardShadow ?>">
             <form class="form w-100" novalidate="novalidate" id="kt_sign_in_form" action="<?= site_url('auth/signin') ?>" method="post">

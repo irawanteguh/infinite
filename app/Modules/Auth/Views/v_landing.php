@@ -1,20 +1,25 @@
 <?php $loginUrl = site_url('auth/login'); ?>
 
 <div class="landing-page min-vh-100 d-flex flex-column bg-body">
-    <header class="bg-white bg-opacity-90 border-bottom sticky-top">
-        <nav class="container-xxl d-flex align-items-center justify-content-between py-3 px-4" aria-label="Navigasi utama">
-            <a href="<?= base_url() ?>" class="d-inline-flex align-items-center text-decoration-none" aria-label="INFINITE beranda">
+    <header class="landing-header border-bottom sticky-top" data-section="beranda">
+        <nav class="landing-navigation container-xxl d-flex align-items-center justify-content-between py-3 px-4" aria-label="Navigasi utama">
+            <a href="#beranda" class="landing-brand d-inline-flex align-items-center text-decoration-none" aria-label="INFINITE beranda">
                 <img src="<?= base_url('assets/media/logos/rsudpasarminggu.png') ?>" alt="Logo RSUD Pasar Minggu" class="h-40px w-auto">
             </a>
+            <div class="landing-section-links" aria-label="Bagian halaman">
+                <a class="landing-section-link is-active" href="#beranda" aria-current="location">Beranda</a>
+                <a class="landing-section-link" href="#platform">Platform</a>
+                <a class="landing-section-link" href="#mutu">Mutu &amp; PDSA</a>
+                <a class="landing-section-link" href="#ekosistem">Ekosistem</a>
+            </div>
             <div class="d-flex align-items-center gap-3">
-                <span class="d-none d-md-inline-flex align-items-center text-gray-600 fs-7"><i class="bi bi-heart-pulse-fill text-danger me-2"></i>Healthcare Intelligence</span>
-                <a href="<?= esc($loginUrl) ?>" class="btn btn-primary px-5"><i class="bi bi-box-arrow-in-right me-2"></i>Masuk</a>
+                <a href="<?= esc($loginUrl) ?>" class="landing-login btn btn-primary px-5"><i class="bi bi-box-arrow-in-right me-2"></i>Masuk</a>
             </div>
         </nav>
     </header>
 
     <main class="flex-grow-1">
-        <section class="landing-hero position-relative overflow-hidden py-15 py-lg-20">
+        <section id="beranda" class="landing-hero position-relative overflow-hidden py-15 py-lg-20">
             <svg class="landing-medical-pattern" viewBox="0 0 900 520" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
                 <path d="M-20 300 H170 L208 300 L235 258 L275 345 L320 205 L360 300 H500 L535 300 L565 270 L595 330 L630 285 H920" fill="none" stroke="#75e6df" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
                 <g fill="none" stroke="#a6edff" stroke-width="3" opacity=".8"><path d="M720 100v56m-28-28h56"/><path d="M815 205v40m-20-20h40"/><path d="M700 390v42m-21-21h42"/></g>
@@ -99,11 +104,11 @@
             </div>
         </section>
 
-        <section class="py-15 py-lg-20">
+        <section id="platform" class="landing-perspectives py-15 py-lg-20">
             <div class="container-xxl px-4">
                 <div class="text-center mw-750px mx-auto mb-12">
                     <span class="badge badge-light-primary rounded-pill px-4 py-3 mb-4">SATU PLATFORM, BANYAK PERSPEKTIF</span>
-                    <h2 class="display-6 fw-bolder text-gray-900 mb-4">Mendukung rumah sakit bekerja lebih terarah</h2>
+                    <h2 class="display-6 fw-bolder text-gray-900 mb-4">Mendukung rumah sakit<br class="d-none d-md-block"> bekerja <span class="landing-perspectives-highlight">lebih terarah</span></h2>
                     <p class="text-gray-600 fs-5 mb-0">Satukan proses, pahami kinerja, dan fokuskan perbaikan berdasarkan kebutuhan layanan dan unit kerja.</p>
                 </div>
                 <div class="row g-5">
@@ -129,11 +134,11 @@
             </div>
         </section>
 
-        <section class="bg-light py-15 py-lg-20">
+        <section id="mutu" class="landing-quality py-15 py-lg-20">
             <div class="container-xxl px-4">
                 <div class="text-center mw-750px mx-auto mb-12">
                     <span class="badge badge-light-success rounded-pill px-4 py-3 mb-4">QUALITY IMPROVEMENT</span>
-                    <h2 class="display-6 fw-bolder text-gray-900 mb-4">Visualisasikan analisis dan siklus mutu</h2>
+                    <h2 class="display-6 fw-bolder text-gray-900 mb-4">Visualisasikan analisis dan <span class="landing-quality-highlight">siklus mutu</span></h2>
                     <p class="text-gray-600 fs-5 mb-0">Dari pemetaan akar penyebab hingga pengujian perubahan, setiap langkah membantu tim belajar dari data layanan.</p>
                 </div>
                 <div class="row g-6 align-items-stretch">
@@ -212,9 +217,9 @@
             </div>
         </section>
 
-        <section class="py-12 py-lg-15">
+        <section id="ekosistem" class="landing-connect py-12 py-lg-15">
             <div class="container-xxl px-4">
-                <div class="rounded-4 bg-primary p-8 p-lg-12 d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-6">
+                <div class="landing-connect-banner p-8 p-lg-12 d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-6">
                     <div class="d-flex align-items-center gap-5">
                         <span class="symbol symbol-60px symbol-circle bg-white bg-opacity-10"><span class="symbol-label"><i class="bi bi-hospital text-white fs-2"></i></span></span>
                         <div><h2 class="text-white fw-bolder mb-2">Terhubung dalam satu ekosistem layanan</h2><p class="text-white text-opacity-75 mb-0">INFINITE — Integrated Healthcare Data Analytics Platform</p></div>
@@ -232,3 +237,4 @@
         </div>
     </footer>
 </div>
+<script defer src="<?= base_url('assets/js/auth/landing.js?v=' . filemtime(FCPATH . 'assets/js/auth/landing.js')) ?>"></script>

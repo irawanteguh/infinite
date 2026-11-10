@@ -231,9 +231,14 @@ table.measurements th,table.measurements td{font-size:9pt}
 <h3>4.<?= $index + 1 ?> <?= $esc($cycle->title ?: 'PDSA') ?></h3>
 <p class="small"><b>Unit:</b> <?= $esc($cycle->department) ?> &nbsp; <b>Indikator:</b> <?= $esc($cycle->indikator ?: 'Tidak ditautkan') ?> &nbsp; <b>Status:</b> <?= $esc($cycle->status) ?></p>
 <p><b>Masalah:</b> <?= nl2br($esc($cycle->problem ?: 'Belum dirumuskan')) ?><br><b>Tujuan perbaikan:</b> <?= nl2br($esc($cycle->aim ?: 'Belum ditetapkan')) ?></p>
-<table width="100%" style="border-collapse:collapse;text-align:center;margin:6px 0 3px"><tr>
-<?php foreach (['Plan','Do','Study','Act'] as $phaseIndex => $phase): ?><td style="width:22%;padding:7px 2px"><div style="margin:auto;width:74px;height:74px;border-radius:50%;background:<?= $phaseStyle[$phase][1] ?>;border:4px solid <?= $phaseStyle[$phase][0] ?>;color:<?= $phaseStyle[$phase][0] ?>;font-size:15pt;font-weight:bold;line-height:66px"><?= $phase ?></div><div class="small" style="color:<?= $phaseStyle[$phase][0] ?>"><?= count(array_filter($cycle->items, static function ($item) use ($phase) { return strcasecmp((string) $item->phase, $phase) === 0; })) ?> item</div></td><?php if ($phaseIndex < 3): ?><td style="width:4%;font-size:19pt;color:#728499">›</td><?php endif; endforeach; ?>
-</tr><tr><td colspan="7" style="text-align:right;padding-right:4%;font-size:8pt;color:#728499">Act menjadi masukan untuk perencanaan berikutnya ↻</td></tr></table>
+<table width="100%" style="border-collapse:separate;border-spacing:5px 0;table-layout:fixed;text-align:center;margin:10px 0 5px"><tr>
+<?php foreach (['Plan','Do','Study','Act'] as $phaseIndex => $phase): ?>
+<td style="width:22%;height:68px;vertical-align:middle;border:1px solid <?= $phaseStyle[$phase][0] ?>;border-top:4px solid <?= $phaseStyle[$phase][0] ?>;background:<?= $phaseStyle[$phase][1] ?>;padding:4px 2px">
+<div style="font-size:14pt;font-weight:bold;color:<?= $phaseStyle[$phase][0] ?>;line-height:1.2"><?= $phase ?></div>
+<div style="font-size:8pt;color:#526579;line-height:1.3"><?= count(array_filter($cycle->items, static function ($item) use ($phase) { return strcasecmp((string) $item->phase, $phase) === 0; })) ?> item</div>
+</td>
+<?php if ($phaseIndex < 3): ?><td style="width:4%;vertical-align:middle;font-size:16pt;color:#8195a9">&#8250;</td><?php endif; endforeach; ?>
+</tr><tr><td colspan="7" style="text-align:right;padding:8px 4% 0;font-size:8pt;color:#728499">Act menjadi masukan untuk perencanaan berikutnya &#8635;</td></tr></table>
 <table class="phase-table"><tr><?php foreach (['Plan','Do','Study','Act'] as $phase): $items = array_values(array_filter($cycle->items, static function ($item) use ($phase) { return strcasecmp((string) $item->phase, $phase) === 0; })); ?>
 <td><div class="phase-title" style="background:<?= $phaseStyle[$phase][0] ?>"><?= $phase ?> · <?= count($items) ?> item</div><?php if (!$items): ?><span class="muted">Belum diisi</span><?php else: foreach ($items as $item): ?><div style="margin:4px 0"><span class="<?= (int) ($item->completed ?? 0) === 1 ? 'check' : 'pending' ?>"><?= (int) ($item->completed ?? 0) === 1 ? '☑' : '□' ?></span> <?= $esc($item->item_text) ?></div><?php endforeach; endif; ?></td>
 <?= $phase === 'Do' ? '</tr><tr>' : '' ?>

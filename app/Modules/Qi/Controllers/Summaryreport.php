@@ -5,6 +5,7 @@ namespace Modules\Qi\Controllers;
 use App\Controllers\BaseController;
 use Mpdf\Mpdf;
 use Modules\Qi\Models\SummaryreportModel;
+use Modules\Qi\Services\StoredSummaryReport;
 
 class Summaryreport extends BaseController
 {
@@ -25,10 +26,88 @@ class Summaryreport extends BaseController
     public function periods()
     {
         $rows = $this->md->listPeriodePelaporan(session()->get('groupid'), session()->get('orgid'));
+        $storage = new StoredSummaryReport();
+        foreach ($rows as $row) {
+            $row->report_updated_at = $storage->updatedAt(session()->get('groupid'), session()->get('orgid'), $row->periode_id);
+            $row->report_view_url = $row->report_updated_at
+                ? site_url('qi/summaryreport/viewreport') . '?periode_id=' . rawurlencode($row->periode_id) : null;
+        }
         return response()->setJSON([
             'responseCode' => '00',
             'responseResult' => $rows,
         ]);
+    }
+
+    private function progressKey($jobId, $groupId, $orgId)
+    {
+        return 'qi_report_progress_' . hash('sha256', serialize([$groupId, $orgId, $jobId]));
+    }
+
+    private function reportProgress($jobId, $groupId, $orgId, $stage)
+    {
+        if (!preg_match('/^[a-f0-9]{32}$/', $jobId)) return;
+        try {
+            \Config\Services::cache()->save($this->progressKey($jobId, $groupId, $orgId), $stage, 600);
+        } catch (\Throwable $exception) {
+            log_message('warning', 'Status proses laporan gagal disimpan: ' . $exception->getMessage());
+        }
+    }
+
+    public function progress()
+    {
+        $jobId = (string) request()->getGet('job');
+        if (!preg_match('/^[a-f0-9]{32}$/', $jobId)) {
+            return response()->setStatusCode(400)->setJSON(['stage' => 'invalid']);
+        }
+        $stage = \Config\Services::cache()->get($this->progressKey($jobId, session()->get('groupid'), session()->get('orgid')));
+        return response()->setHeader('Cache-Control', 'no-store')->setJSON(['stage' => is_string($stage) ? $stage : 'waiting']);
+    }
+
+    public function viewreport()
+    {
+        $periodId = trim((string) request()->getGet('periode_id'));
+        $groupId = session()->get('groupid');
+        $orgId = session()->get('orgid');
+        if (!preg_match('/^[0-9a-f-]{36}$/i', $periodId) || !$this->md->periodeExists($periodId, $groupId, $orgId)) {
+            return response()->setStatusCode(404)->setBody('Laporan tidak ditemukan.');
+        }
+        try {
+            $storage = new StoredSummaryReport();
+            $updatedAt = $storage->updatedAt($groupId, $orgId, $periodId);
+            // Buat ulang laporan lama setelah rumus perhitungan diperbarui.
+            if ($updatedAt !== null && strtotime($updatedAt) < filemtime(APPPATH . 'Modules/Qi/Models/SummaryreportModel.php')) {
+                return $this->generate();
+            }
+            $content = $storage->read($groupId, $orgId, $periodId);
+            if ($content === null) return response()->setStatusCode(404)->setBody('Laporan belum dibuat.');
+            return $this->pdfResponse($content, 'Laporan_PMKP.pdf');
+        } catch (\Throwable $exception) {
+            log_message('error', 'PDF tersimpan gagal dibaca: {message}', ['message' => $exception->getMessage()]);
+            return response()->setStatusCode(500)->setBody('Laporan tersimpan tidak dapat dibuka.');
+        }
+    }
+
+    private function pdfResponse($content, $filename)
+    {
+        return response()->setHeader('Content-Type', 'application/pdf')
+            ->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"')
+            ->setHeader('Content-Length', (string) strlen($content))
+            ->setHeader('Cache-Control', 'private, no-store')
+            ->setHeader('X-Content-Type-Options', 'nosniff')
+            ->setBody($content);
+    }
+
+    private function saveReportResponse($content, $filename, $periodId)
+    {
+        (new StoredSummaryReport())->save(session()->get('groupid'), session()->get('orgid'), $periodId, $content);
+        $this->reportProgress((string) request()->getGet('job'), session()->get('groupid'), session()->get('orgid'), 'saved');
+        if (request()->getGet('prepare') === '1') {
+            return response()->setJSON([
+                'responseCode' => '00',
+                'viewUrl' => site_url('qi/summaryreport/viewreport') . '?periode_id=' . rawurlencode($periodId),
+            ]);
+        }
+        return $this->pdfResponse($content, $filename);
     }
 
     public function generate()
@@ -37,6 +116,7 @@ class Summaryreport extends BaseController
         $periodeId = trim((string) request()->getGet('periode_id'));
         $groupId = session()->get('groupid');
         $orgId = session()->get('orgid');
+        $jobId = (string) request()->getGet('job');
         if (!preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i', $periodeId)) {
             return response()->setStatusCode(404)->setBody('Periode pelaporan tidak ditemukan.');
         }
@@ -50,6 +130,8 @@ class Summaryreport extends BaseController
         if (!$organization) {
             return response()->setStatusCode(404)->setBody('Periode pelaporan tidak ditemukan.');
         }
+        $this->reportProgress($jobId, $groupId, $orgId, 'loading');
+        if (session_status() === PHP_SESSION_ACTIVE) session_write_close();
         $periode = $organization;
         $indicators = $this->md->summaryRowsByPeriode($groupId, $orgId, $periodeId);
         $trend = $this->md->monthlyTrendByPeriode($groupId, $orgId, $periodeId);
@@ -70,6 +152,7 @@ class Summaryreport extends BaseController
 
         $measurements = $this->md->measurementDetails($groupId, $orgId, $periodeId);
         $dataLoadedAt = microtime(true);
+        $this->reportProgress($jobId, $groupId, $orgId, 'preparing');
 
         $viewData = [
             'periode' => $periode,
@@ -92,19 +175,18 @@ class Summaryreport extends BaseController
         try {
             $pdfCache = \Config\Services::cache();
             $cached = $pdfCache->get($cacheKey);
-            if (is_array($cached) && ($cached['fingerprint'] ?? '') === $fingerprint
+            if (request()->getGet('force') !== '1' && is_array($cached) && ($cached['fingerprint'] ?? '') === $fingerprint
                 && is_string($cached['pdf'] ?? null)) {
+                $this->reportProgress($jobId, $groupId, $orgId, 'saving');
                 log_message('info', sprintf('Summary report PDF: cache hit, total=%.3fs', microtime(true) - $startedAt));
-                return response()->setHeader('Content-Type', 'application/pdf')
-                    ->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"')
-                    ->setHeader('Content-Length', (string) strlen($cached['pdf']))
-                    ->setBody($cached['pdf']);
+                return $this->saveReportResponse($cached['pdf'], $filename, $periodeId);
             }
         } catch (\Throwable $e) {
             log_message('warning', 'Cache PDF summary report tidak tersedia: ' . $e->getMessage());
         }
         $viewData['generatedAt'] = date('d-m-Y H:i');
         $html = view('Modules\\Qi\\Views\\v_summaryreport_pdf', $viewData);
+        $this->reportProgress($jobId, $groupId, $orgId, 'rendering');
 
         // try {
         //     $mpdf = new Mpdf([
@@ -186,6 +268,7 @@ class Summaryreport extends BaseController
                 '.pdf';
 
             $pdfContent = $mpdf->Output('', 'S');
+            $this->reportProgress($jobId, $groupId, $orgId, 'saving');
             if ($pdfCache !== null) {
                 try {
                     $pdfCache->save($cacheKey, ['fingerprint' => $fingerprint, 'pdf' => $pdfContent], 300);
@@ -202,13 +285,11 @@ class Summaryreport extends BaseController
                 count($indicators), count($measurements), $mpdf->page
             ));
 
-            return response()
-                ->setHeader('Content-Type', 'application/pdf')
-                ->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"')
-                ->setHeader('Content-Length', (string) strlen($pdfContent))
-                ->setBody($pdfContent);
+            return $this->saveReportResponse($pdfContent, $filename, $periodeId);
 
         } catch (\Throwable $e) {
+
+            $this->reportProgress($jobId, $groupId, $orgId, 'failed');
 
             log_message('error', 'GAGAL GENERATE PDF SUMMARY REPORT');
             log_message('error', 'Error: ' . $e->getMessage());

@@ -43,7 +43,7 @@ class SummaryreportModel extends Model
             COUNT(DISTINCT CASE WHEN it.bulan IS NOT NULL THEN it.bulan END) AS jumlah_bulan,
             COUNT(DISTINCT CASE WHEN it.bulan IS NOT NULL THEN CONCAT(it.referensi_id, '-', it.bulan) END) AS jumlah_penilaian,
             SUM(COALESCE(it.numerator, 0)) AS total_numerator, SUM(COALESCE(it.denumerator, 0)) AS total_denumerator,
-            ROUND(AVG(CASE WHEN it.bulan IS NULL THEN NULL WHEN COALESCE(it.numerator,0)=0 AND COALESCE(it.denumerator,0)=0 THEN 100 WHEN COALESCE(it.denumerator,0)=0 THEN 0 ELSE (it.numerator/it.denumerator)*100 END), 2) AS rata_pencapaian
+            ROUND(AVG(CASE WHEN it.bulan IS NULL THEN NULL WHEN COALESCE(it.numerator,0)=0 AND COALESCE(it.denumerator,0)=0 THEN 100 WHEN COALESCE(it.denumerator,0)=0 THEN 0 ELSE LEAST(100, (it.numerator/it.denumerator)*100) END), 2) AS rata_pencapaian
             FROM dt01_qi_indikator_hd a
             INNER JOIN dt01_qi_periode_mutu p ON p.periode_id=a.periode_id AND p.active='1' AND p.periode_id=?
             LEFT JOIN dt01_gen_department_ms d ON d.department_id=a.department_id
@@ -60,7 +60,7 @@ class SummaryreportModel extends Model
     public function monthlyTrendByPeriode($groupId, $orgId, $periodeId)
     {
         $sql = "SELECT it.bulan,
-            ROUND(AVG(CASE WHEN COALESCE(it.numerator,0)=0 AND COALESCE(it.denumerator,0)=0 THEN 100 WHEN COALESCE(it.denumerator,0)=0 THEN 0 ELSE (it.numerator/it.denumerator)*100 END),2) AS rata_pencapaian,
+            ROUND(AVG(CASE WHEN COALESCE(it.numerator,0)=0 AND COALESCE(it.denumerator,0)=0 THEN 100 WHEN COALESCE(it.denumerator,0)=0 THEN 0 ELSE LEAST(100, (it.numerator/it.denumerator)*100) END),2) AS rata_pencapaian,
             COUNT(DISTINCT CONCAT(a.transaksi_id,'-',it.bulan)) AS jumlah_penilaian
             FROM dt01_qi_indikator_it it
             INNER JOIN dt01_qi_indikator_hd a ON a.transaksi_id=it.referensi_id AND a.group_id=it.group_id AND a.org_id=it.org_id AND a.active='1'
@@ -73,7 +73,7 @@ class SummaryreportModel extends Model
     public function monthlyTrendByIndicator($groupId, $orgId, $periodeId)
     {
         $sql = "SELECT a.transaksi_id, it.bulan,
-            ROUND(AVG(CASE WHEN COALESCE(it.numerator,0)=0 AND COALESCE(it.denumerator,0)=0 THEN 100 WHEN COALESCE(it.denumerator,0)=0 THEN 0 ELSE (it.numerator/it.denumerator)*100 END),2) AS rata_pencapaian,
+            ROUND(AVG(CASE WHEN COALESCE(it.numerator,0)=0 AND COALESCE(it.denumerator,0)=0 THEN 100 WHEN COALESCE(it.denumerator,0)=0 THEN 0 ELSE LEAST(100, (it.numerator/it.denumerator)*100) END),2) AS rata_pencapaian,
             COUNT(*) AS jumlah_penilaian
             FROM dt01_qi_indikator_it it
             INNER JOIN dt01_qi_indikator_hd a ON a.transaksi_id=it.referensi_id AND a.group_id=it.group_id AND a.org_id=it.org_id AND a.active='1'
@@ -153,7 +153,7 @@ class SummaryreportModel extends Model
     public function measurementDetails($groupId, $orgId, $periodeId)
     {
         $sql = "SELECT d.department, i.indikator_code, i.indikator, it.bulan, it.numerator, it.denumerator, it.reason, it.rtl,
-            CASE WHEN COALESCE(it.numerator,0)=0 AND COALESCE(it.denumerator,0)=0 THEN 100 WHEN COALESCE(it.denumerator,0)=0 THEN 0 ELSE ROUND((it.numerator/it.denumerator)*100,2) END AS capaian
+            CASE WHEN COALESCE(it.numerator,0)=0 AND COALESCE(it.denumerator,0)=0 THEN 100 WHEN COALESCE(it.denumerator,0)=0 THEN 0 ELSE ROUND(LEAST(100, (it.numerator/it.denumerator)*100),2) END AS capaian
             FROM dt01_qi_indikator_it it
             INNER JOIN dt01_qi_indikator_hd a ON a.transaksi_id=it.referensi_id AND a.group_id=it.group_id AND a.org_id=it.org_id AND a.active='1'
             INNER JOIN dt01_qi_periode_mutu p ON p.periode_id=a.periode_id AND p.active='1' AND p.periode_id=?

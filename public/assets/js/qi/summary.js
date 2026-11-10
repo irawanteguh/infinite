@@ -25,6 +25,29 @@ function qualitySummaryEscape(value) {
     return $("<div>").text(value == null || value === "" ? "-" : String(value)).html();
 }
 
+function summaryProgressState(value) {
+    return value === null ? 'is-empty' : value <= 50 ? 'is-low' : value <= 80 ? 'is-medium' : 'is-complete';
+}
+
+function summaryProgressAgainstTarget(value, target, direction) {
+    if (value === null || target == null || String(target).trim() === '') return null;
+    const targetValue = Number(target);
+    if (!Number.isFinite(targetValue) || targetValue < 0) return null;
+    if (targetValue === 0) return value === 0 ? 100 : 0;
+    const progress = direction === 'L'
+        ? (value === 0 ? 100 : targetValue / value * 100)
+        : value / targetValue * 100;
+    return Math.max(0, Math.min(100, progress));
+}
+
+function renderSummaryProgress(value, progressValue = value) {
+    const empty = value === null;
+    const state = summaryProgressState(progressValue);
+    const label = empty ? 'Belum dinilai' : value.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%';
+    return '<div class="department-rate ' + state + '"><strong>' + label + '</strong>'
+        + '<div class="department-rate-track" aria-hidden="true"><span style="width:' + (progressValue === null ? 0 : Math.max(0, Math.min(100, progressValue))) + '%"></span></div></div>';
+}
+
 function aggregateQualityIndicators(rows, typeId) {
     const grouped = new Map();
     rows.filter(row => String(row.jenis_indikator_id || '').toLowerCase() === typeId).forEach(row => {
@@ -70,7 +93,7 @@ function renderQualityAggregateTables(rows) {
             + '<td class="text-center">' + item.numerator.toLocaleString('id-ID') + '</td>'
             + '<td class="text-center">' + item.denominator.toLocaleString('id-ID') + '</td>'
             + '<td class="text-center">' + percent(item.achievement) + '</td>'
-            + '<td class="text-center"><span class="badge badge-light-primary">' + percent(item.targetRate) + '</span></td>'
+            + '<td class="text-end">' + renderSummaryProgress(item.targetRate) + '</td>'
             + '<td class="text-end pe-4"><button type="button" class="btn btn-sm btn-light-primary aggregate-departments" data-index="' + index + '" aria-expanded="false">Lihat departemen</button></td></tr>').join('');
         $('#aggregate-' + key + '-rows').html(html);
         const dataTable = initDataTable(table, '#aggregate-' + key + '-search', 25);
@@ -113,21 +136,29 @@ function renderAggregateDepartments(rows) {
         const measurements = departmentRows.reduce((sum, row) => sum + qualitySummaryNumber(row.jumlah_penilaian), 0);
         const targets = [...new Set(departmentRows.filter(row => row.target != null && String(row.target).trim() !== '').map(row => String(row.target)))];
         const achievement = !measurements ? null : denominator === 0 ? (numerator === 0 ? 100 : 0) : Math.min(100, numerator / denominator * 100);
-        return '<tr><td class="ps-4">' + (index + 1) + '</td>'
-            + '<td>' + qualitySummaryEscape(departmentRows[0].department) + '</td>'
-            + '<td class="text-center">' + qualitySummaryEscape(targets.map(target => target + '%').join('; ')) + '</td>'
-            + '<td class="text-center">' + measurements.toLocaleString('id-ID') + '</td>'
+        const rate = qualitySummaryTargetRate(departmentRows);
+        const rateClass = summaryProgressState(rate);
+        const achievedCount = departmentRows.reduce((sum, row) => sum + qualitySummaryNumber(row.jumlah_memenuhi_target), 0);
+        const assessedCount = departmentRows.reduce((sum, row) => sum + qualitySummaryNumber(row.jumlah_dinilai_target), 0);
+        return '<tr><td class="ps-4"><span class="department-row-number">' + (index + 1) + '</span></td>'
+            + '<td><div class="department-name"><span class="department-icon"><i class="bi bi-building"></i></span><span>' + qualitySummaryEscape(departmentRows[0].department) + '</span></div></td>'
+            + '<td class="text-center"><span class="department-target">' + qualitySummaryEscape(targets.map(target => target + '%').join('; ')) + '</span></td>'
+            + '<td class="text-center"><span class="department-measurements">' + measurements.toLocaleString('id-ID') + '</span></td>'
             + '<td class="text-center">' + numerator.toLocaleString('id-ID') + '</td>'
             + '<td class="text-center">' + denominator.toLocaleString('id-ID') + '</td>'
-            + '<td class="text-center">' + percent(achievement) + '</td>'
-            + '<td class="text-end pe-4"><span class="badge badge-light-primary">' + percent(qualitySummaryTargetRate(departmentRows)) + '</span></td></tr>';
+            + '<td class="text-center fw-bold">' + percent(achievement) + '</td>'
+            + '<td class="text-end pe-4"><div class="department-rate ' + rateClass + '"><strong>' + percent(rate) + '</strong>'
+            + '<div class="department-rate-track" aria-hidden="true"><span style="width:' + (rate === null ? 0 : Math.max(0, Math.min(100, rate))) + '%"></span></div>'
+            + '<small>' + (rate === null ? 'Belum ada penilaian' : achievedCount.toLocaleString('id-ID') + ' dari ' + assessedCount.toLocaleString('id-ID') + ' memenuhi target') + '</small></div></td></tr>';
     }).join('');
-    return '<div class="bg-light rounded p-5 my-3"><h4 class="fs-6 mb-4">Rincian per departemen</h4>'
-        + '<div class="table-responsive"><table class="table align-middle table-row-dashed gy-3 mb-0">'
+    return '<section class="department-detail my-3" aria-label="Rincian per departemen"><div class="department-detail-heading">'
+        + '<div><span class="summary-eyebrow">KONTRIBUSI UNIT</span><h4>Rincian per departemen</h4><p>Capaian pengukuran dan pemenuhan target pada periode terpilih</p></div>'
+        + '<span class="department-count"><i class="bi bi-buildings me-2"></i>' + departments.size + ' departemen</span></div>'
+        + '<div class="table-responsive"><table class="table align-middle department-detail-table mb-0">'
         + '<thead><tr class="fw-bolder text-muted"><th class="ps-4">#</th><th>Departemen</th><th class="text-center">Target</th>'
         + '<th class="text-center">Penilaian</th><th class="text-center">Total numerator</th><th class="text-center">Total denominator</th>'
-        + '<th class="text-center">Capaian gabungan</th><th class="text-center pe-4">Ketercapaian target</th></tr></thead>'
-        + '<tbody>' + body + '</tbody></table></div></div>';
+        + '<th class="text-center">Capaian gabungan</th><th class="text-end pe-4">Ketercapaian target</th></tr></thead>'
+        + '<tbody>' + body + '</tbody></table></div></section>';
 }
 
 function renderIndicatorTypeSummary(rows) {
@@ -191,6 +222,11 @@ function renderOverdueIndicators(rows) {
     const table = '#summary-overdue-table';
     if ($.fn.DataTable.isDataTable(table)) $(table).DataTable().destroy();
     $('#summary-overdue-count').text(rows.length.toLocaleString('id-ID'));
+    $('#summary-overdue-total').text(rows.length.toLocaleString('id-ID'));
+    const overdueMonths = rows.reduce((sum, row) => sum + (Array.isArray(row.overdue_months) ? row.overdue_months.length : 0), 0);
+    $('#summary-overdue-caption').text(rows.length
+        ? rows.length.toLocaleString('id-ID') + ' indikator/departemen dengan ' + overdueMonths.toLocaleString('id-ID') + ' pengisian bulanan melewati batas waktu.'
+        : 'Tidak ada pengisian yang melewati batas waktu pada periode ini.');
     $('#summary-overdue-rows').html(rows.map((row, index) => {
         const missing = Array.isArray(row.overdue_months) ? row.overdue_months : [];
         return '<tr><td class="ps-4">' + (index + 1) + '</td>'
@@ -259,6 +295,8 @@ function renderQualitySummary(rows, monthlyTrend, overdueRows = []) {
     $("#summary-national-indicators").text(nationalRows.length.toLocaleString("id-ID"));
     $("#summary-assessed-indicators").text(scoredRows.length.toLocaleString("id-ID"));
     $("#summary-average").text(average === null ? "Belum dinilai" : average.toLocaleString("id-ID", { maximumFractionDigits: 2 }) + "%");
+    $('#summary-target-progress').css('width', (average === null ? 0 : Math.max(0, Math.min(100, average))) + '%');
+    $('[data-summary-period]').text($('#selectsummaryperiode').val() || '—');
     $("#summary-departments").text(departments.size.toLocaleString("id-ID"));
 
     const tableRows = rows.map(function (row, index) {
@@ -269,9 +307,8 @@ function renderQualitySummary(rows, monthlyTrend, overdueRows = []) {
             : row.target_capaian === "R" ? "Rentang"
             : "";
         const unit = row.satuan ? " " + qualitySummaryEscape(row.satuan) : "";
-        const achievement = !qualitySummaryHasScore(row)
-            ? "<span class='text-muted'>Belum dinilai</span>"
-            : "<span class='badge badge-light-success'>" + qualitySummaryNumber(row.rata_pencapaian).toLocaleString("id-ID", { maximumFractionDigits: 2 }) + "%</span>";
+        const score = qualitySummaryHasScore(row) ? qualitySummaryNumber(row.rata_pencapaian) : null;
+        const achievement = renderSummaryProgress(score, summaryProgressAgainstTarget(score, row.target, row.target_capaian));
         return "<tr>"
             + "<td class='ps-4'>" + (index + 1) + "</td>"
             + "<td>" + qualitySummaryEscape(row.department) + "</td>"
@@ -280,7 +317,7 @@ function renderQualitySummary(rows, monthlyTrend, overdueRows = []) {
             + "<td class='text-center'><span class='fw-bold'>" + unit + "</span>" + (targetDirection ? "<div class='text-muted fs-8'>" + targetDirection + "</div>" : "") + "</td>"
             + "<td class='text-center'>" + qualitySummaryNumber(row.jumlah_bulan).toLocaleString("id-ID") + " / 12</td>"
             + "<td class='text-center'>" + qualitySummaryNumber(row.jumlah_penilaian).toLocaleString("id-ID") + "</td>"
-            + "<td class='text-center pe-4'>" + achievement + "</td>"
+            + "<td class='text-end pe-4'>" + achievement + "</td>"
             + "<td class='text-center'><a class='btn btn-sm btn-light-primary' href='" + url + "qi/summarycompare?indikator_id=" + encodeURIComponent(row.indikator_id || "") + "&department_id=" + encodeURIComponent(row.department_id || "") + "'><i class='bi bi-bar-chart-line me-1'></i>Compare</a></td>"
             + "</tr>";
     }).join("");
@@ -380,4 +417,9 @@ function drawQualitySummaryDepartmentChart() {
 }
 
 $(document).on("change", "#selectsummaryperiode", loadQualitySummary);
+$(document).on('shown.bs.tab', '.summary-aggregate-tabs [data-bs-toggle="tab"]', function () {
+    const panel = $(this.getAttribute('data-bs-target'));
+    const table = panel.find('table').first();
+    if (table.length && $.fn.DataTable.isDataTable(table[0])) table.DataTable().columns.adjust();
+});
 loadQualitySummary();

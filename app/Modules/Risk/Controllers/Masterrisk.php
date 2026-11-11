@@ -66,7 +66,7 @@ class Masterrisk extends BaseController
             if (!in_array($data['department_id'], array_column($units, 'department_id'), true)) {
                 $error = 'Pilih department yang tersedia.';
             } elseif ($model->exists(session()->get('groupid'), session()->get('orgid'), $data['code'], $id)) {
-                $error = 'Kode risiko sudah terdaftar pada organisasi ini.';
+                $error = 'Kode risiko sudah tersedia pada organisasi ini. Gunakan kode lain atau Edit data yang sudah ada.';
             }
         }
         if ($error === '') {
@@ -80,7 +80,7 @@ class Masterrisk extends BaseController
                 }
                 if (!$saved) { $error = 'Kode risiko gagal disimpan.'; }
             } catch (\CodeIgniter\Database\Exceptions\DatabaseException $e) {
-                $error = 'Kode risiko gagal disimpan. Periksa apakah kode sudah terdaftar.';
+                $error = 'Kode risiko gagal disimpan. Gunakan kode yang belum tersedia pada organisasi ini.';
             }
         }
         $redirect = redirect()->to(site_url('risk/masterrisk'))->withCookies();

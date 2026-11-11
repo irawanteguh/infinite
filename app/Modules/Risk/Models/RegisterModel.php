@@ -11,10 +11,24 @@ class RegisterModel extends Model
         return $this->db->tableExists('dt01_risk_register') && $this->db->tableExists('dt01_risk_monitor');
     }
 
-    public function departments($group, $org): array
+    public function years($group, $org): array
     {
-        return $this->db->table('dt01_gen_department_ms')->select('department_id, department')
+        if (!$this->db->tableExists('dt01_qi_periode_mutu')) { return [(int) date('Y')]; }
+        $rows = $this->db->table('dt01_qi_periode_mutu')->distinct()->select('tahun')
             ->where('group_id', $group)->where('org_id', $org)->where('active', '1')
+            ->orderBy('tahun', 'DESC')->get()->getResultArray();
+        $years = array_values(array_filter(array_map(static function ($row) {
+            return preg_match('/^20\d{2}$/', (string) ($row['tahun'] ?? '')) ? (int) $row['tahun'] : null;
+        }, $rows), static function ($year) { return $year !== null; }));
+        return $years ?: [(int) date('Y')];
+    }
+
+    public function departments($group, $org, string $userId = ''): array
+    {
+        $query = $this->db->table('dt01_gen_department_ms')->select('department_id, department')
+            ->where('group_id', $group)->where('org_id', $org)->where('active', '1');
+        if ($userId !== '') { $query->where('user_id', $userId); }
+        return $query
             ->orderBy('department')->get()->getResultArray();
     }
 
@@ -34,12 +48,13 @@ class RegisterModel extends Model
             ->where('r.group_id', $group)->where('r.org_id', $org)->where('r.active', '1');
     }
 
-    public function risks($group, $org, int $year, string $department): array
+    public function risks($group, $org, int $year, string $department, string $userId = ''): array
     {
         $builder = $this->scoped($group, $org)->where('r.year', $year);
         if ($department !== '') {
             $builder->where('r.department_id', $department);
         }
+        if ($userId !== '') { $builder->where('d.user_id', $userId); }
         return $builder->orderBy('d.department')->orderBy('r.code')->get()->getResultArray();
     }
 

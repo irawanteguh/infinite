@@ -2,6 +2,7 @@
 $isPeta = (service('uri')->getSegments()[2] ?? '') === 'peta';
 $context = $riskPetaContext ?? [];
 ?>
+<?php if ($isPeta): ?>
 <ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1" aria-label="Breadcrumb">
     <li class="breadcrumb-item"><a href="<?= site_url('risk/register') ?>" class="text-muted text-hover-primary">Register Risiko</a></li>
     <?php if ($isPeta): ?>
@@ -11,3 +12,4 @@ $context = $riskPetaContext ?? [];
     <li class="breadcrumb-item text-dark" aria-current="page"><?= esc($context['unitName'] ?? 'Semua unit') ?> · <?= esc((string) ($context['year'] ?? '')) ?></li>
     <?php endif ?>
 </ul>
+<?php endif; ?>

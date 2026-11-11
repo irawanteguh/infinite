@@ -28,7 +28,10 @@
         const placeholder = $el.attr("data-placeholder");
         if (placeholder) {
             options.placeholder = placeholder;
-            options.allowClear = $el.prop("multiple") || $el.find("option[value='']").length > 0;
+            const allowClear = $el.attr("data-allow-clear");
+            options.allowClear = allowClear !== undefined
+                ? allowClear === "true"
+                : ($el.prop("multiple") || $el.find("option[value='']").length > 0);
         }
         return options;
     }

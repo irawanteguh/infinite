@@ -28,8 +28,8 @@ $codeInput = static function ($key) use ($codeError) {
                         </div>
                         <div class="col-md-12 mb-5">
                             <label for="mr-unit" class="required form-label fw-bold">Department</label>
-                            <select id="mr-unit" name="department_id" class="form-select form-select-solid" required>
-                                <option value="">Pilih department</option>
+                            <select id="mr-unit" name="department_id" class="form-select form-select-solid" data-control="select2" data-dropdown-parent="#modal_add_masterrisk" data-placeholder="Pilih department" data-allow-clear="false" required>
+                                <option value=""></option>
                                 <?php foreach ($modalData['departments'] as $department): ?>
                                 <option value="<?= esc($department['department_id']) ?>" <?= $codeInput('department_id') === esc($department['department_id']) ? 'selected' : '' ?>><?= esc($department['department']) ?></option>
                                 <?php endforeach ?>

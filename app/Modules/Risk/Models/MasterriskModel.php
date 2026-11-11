@@ -33,6 +33,14 @@ class MasterriskModel extends Model
             ->where('code_id', $id)->get()->getRowArray();
     }
 
+    public function codeForDepartment($group, $org, string $code, string $departmentId): ?array
+    {
+        return $this->db->table('dt01_risk_code_ms')->select('code_id, code, department_id')
+            ->where('group_id', $group)->where('org_id', $org)
+            ->where('code', $code)->where('department_id', $departmentId)
+            ->get()->getRowArray();
+    }
+
     public function updateCode($group, $org, string $id, array $data): bool
     {
         if (!$this->code($group, $org, $id)) { return false; }

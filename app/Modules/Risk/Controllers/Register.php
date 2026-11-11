@@ -4,11 +4,29 @@ namespace Modules\Risk\Controllers;
 
 use App\Controllers\BaseController;
 use Modules\Risk\Libraries\RiskMatrix;
-use Modules\Risk\Libraries\RiskCatalog;
+use Modules\Risk\Models\MasterriskModel;
 use Modules\Risk\Models\RegisterModel;
 
 class Register extends BaseController
 {
+    private function categories(): array
+    {
+        $master = new MasterriskModel();
+        return $master->categoriesReady()
+            ? array_column($master->categories(session()->get('groupid'), session()->get('orgid')), 'name')
+            : [];
+    }
+
+    private function riskCodes(): array
+    {
+        $master = new MasterriskModel();
+        if (!$master->ready()) { return []; }
+        $departments = (new RegisterModel())->departments(session()->get('groupid'), session()->get('orgid'), session()->get('userid'));
+        $departmentIds = array_flip(array_column($departments, 'department_id'));
+        return array_values(array_filter($master->codes(session()->get('groupid'), session()->get('orgid')), static function ($code) use ($departmentIds) {
+            return isset($departmentIds[$code['department_id']]);
+        }));
+    }
 
     private function model(): RegisterModel
     {
@@ -74,7 +92,8 @@ class Register extends BaseController
     {
         $model = $this->model();
         $year = $this->query('year');
-        $year = preg_match('/^20\d{2}$/', $year) ? (int) $year : (int) date('Y');
+        $years = $model->years(session()->get('groupid'), session()->get('orgid'));
+        $year = preg_match('/^20\d{2}$/', $year) && in_array((int) $year, $years, true) ? (int) $year : $years[0];
         $department = $this->query('department');
         $group = session()->get('groupid');
         $org = session()->get('orgid');
@@ -82,7 +101,7 @@ class Register extends BaseController
         $risks = [];
         $selected = null;
         if ($ready) {
-            foreach ($model->risks($group, $org, $year, $department) as $risk) {
+            foreach ($model->risks($group, $org, $year, $department, session()->get('userid')) as $risk) {
                 $risks[] = $this->enrich($risk, $model);
             }
             usort($risks, static function ($a, $b) { return $b['assessment']['score'] <=> $a['assessment']['score']; });
@@ -99,7 +118,7 @@ class Register extends BaseController
         $quarter = in_array($quarter, ['1', '2', '3', '4'], true) ? (int) $quarter : (int) ceil(date('n') / 3);
         return view('template/dashboard-light-aside', ['contents' => view('Modules\\Risk\\Views\\register', [
             'ready' => $ready, 'risks' => $risks, 'selected' => $selected, 'year' => $year, 'department' => $department,
-            'quarter' => $quarter, 'departments' => $model->departments($group, $org), 'categories' => RiskCatalog::CATEGORIES,
+            'quarter' => $quarter, 'years' => $years, 'departments' => $model->departments($group, $org, session()->get('userid')), 'riskCodes' => $this->riskCodes(), 'categories' => $this->categories(),
         ])]);
     }
 
@@ -171,9 +190,11 @@ class Register extends BaseController
                 return $this->back('Lengkapi semua kolom wajib pada profil risiko.', true, $id);
             }
         }
-        $departmentIds = array_column($model->departments($group, $org), 'department_id');
-        if (!in_array($data['department_id'], $departmentIds, true) || !preg_match('/^20\d{2}$/', $data['year'])
-            || !in_array($data['category'], RiskCatalog::CATEGORIES, true)
+        $departmentIds = array_column($model->departments($group, $org, session()->get('userid')), 'department_id');
+        $master = new MasterriskModel();
+        if (!in_array($data['department_id'], $departmentIds, true) || !in_array((int) $data['year'], $model->years($group, $org), true)
+            || !$master->codeForDepartment($group, $org, $data['code'], $data['department_id'])
+            || (!in_array($data['category'], $this->categories(), true) && (!$existing || $existing['category'] !== $data['category']))
             || !preg_match('/^[1-5]$/', $data['likelihood']) || !preg_match('/^[1-5]$/', $data['impact_level'])) {
             return $this->back('Unit, tahun, kategori atau level penilaian tidak valid.', true, $id);
         }

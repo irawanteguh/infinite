@@ -37,9 +37,10 @@
         if ($segment1 === 'ur' && $segment2 === 'analystsl' && $segment3 === 'simulation') {
             $segment2 = 'analystslsimulation';
         }
-        $jspath = FCPATH . 'assets/js/' . $segment1 . '/' . $segment2 . '.js';
+        $jsPage = ($segment1 === 'pe' && $segment2 === 'prom') ? 'prem' : $segment2;
+        $jspath = FCPATH . 'assets/js/' . $segment1 . '/' . $jsPage . '.js';
         if (file_exists($jspath)) {
-            echo '<script type="text/javascript" src="' . base_url('assets/js/' . $segment1 . '/' . $segment2 . '.js?v=' . time()) . '"></script>' . PHP_EOL;
+            echo '<script type="text/javascript" src="' . base_url('assets/js/' . $segment1 . '/' . $jsPage . '.js?v=' . time()) . '"></script>' . PHP_EOL;
         }
     }
 

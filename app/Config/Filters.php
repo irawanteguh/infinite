@@ -42,6 +42,10 @@ class Filters extends BaseConfig
                     '/',
                     'auth/*',
                     'api/*',
+                    'pe/prem',
+                    'pe/prem/submit',
+                    'pe/prom',
+                    'pe/prom/submit',
                 ],
             ],
 

@@ -14,7 +14,6 @@ class CreatePromResponses extends Migration
             'group_id' => ['type' => 'VARCHAR', 'constraint' => 64],
             'org_id' => ['type' => 'VARCHAR', 'constraint' => 64],
             'measurement_phase' => ['type' => 'CHAR', 'constraint' => 2],
-            'instrument_name' => ['type' => 'VARCHAR', 'constraint' => 200],
             'submission_key' => ['type' => 'VARCHAR', 'constraint' => 64],
             'submitted_at' => ['type' => 'DATETIME'],
         ]);
@@ -27,8 +26,6 @@ class CreatePromResponses extends Migration
             'response_id' => ['type' => 'VARCHAR', 'constraint' => 36],
             'question_id' => ['type' => 'VARCHAR', 'constraint' => 36],
             'domain_id' => ['type' => 'VARCHAR', 'constraint' => 36],
-            'domain_name' => ['type' => 'VARCHAR', 'constraint' => 150],
-            'question_text' => ['type' => 'TEXT'],
             'sort_order' => ['type' => 'INT', 'unsigned' => true],
             'score' => ['type' => 'TINYINT', 'unsigned' => true],
         ]);

@@ -13,7 +13,6 @@ class CreatePremResponses extends Migration
             'instrument_id' => ['type' => 'VARCHAR', 'constraint' => 36],
             'group_id' => ['type' => 'VARCHAR', 'constraint' => 64],
             'org_id' => ['type' => 'VARCHAR', 'constraint' => 64],
-            'instrument_name' => ['type' => 'VARCHAR', 'constraint' => 200],
             'submission_key' => ['type' => 'VARCHAR', 'constraint' => 64],
             'submitted_at' => ['type' => 'DATETIME'],
         ]);
@@ -26,8 +25,6 @@ class CreatePremResponses extends Migration
             'response_id' => ['type' => 'VARCHAR', 'constraint' => 36],
             'question_id' => ['type' => 'VARCHAR', 'constraint' => 36],
             'domain_id' => ['type' => 'VARCHAR', 'constraint' => 36],
-            'domain_name' => ['type' => 'VARCHAR', 'constraint' => 150],
-            'question_text' => ['type' => 'TEXT'],
             'sort_order' => ['type' => 'INT', 'unsigned' => true],
             'score' => ['type' => 'TINYINT', 'unsigned' => true],
         ]);

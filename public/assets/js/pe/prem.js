@@ -12,6 +12,16 @@
     let submitted = false;
     const escape = (value) => String(value).replace(/[&<>"']/g, (char) => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[char]));
     const answered = (field) => field.querySelector('input:checked');
+    const serviceType = byId('prem-service-type');
+    const serviceSelect = jQuery(serviceType);
+    if (!serviceSelect.data('select2')) {
+        serviceSelect.select2({width: '100%', placeholder: 'Pilih jenis pelayanan', minimumResultsForSearch: 0});
+    }
+    serviceSelect.on('change', () => {
+        byId('prem-service-error').classList.add('d-none');
+        serviceType.removeAttribute('aria-invalid');
+        serviceSelect.next('.select2').find('.select2-selection').removeAttr('aria-invalid aria-describedby');
+    });
 
     function startReturnTimer() {
         const deadline = Date.now() + 10000;
@@ -38,7 +48,27 @@
         });
     }
 
+    function validateVisit() {
+        const controls = [byId('prem-service-type'), byId('prem-medical-record')];
+        byId('prem-medical-record').value = byId('prem-medical-record').value.trim();
+        const invalid = controls.find((control) => !control.checkValidity());
+        if (!invalid) return true;
+        showStep(0, false);
+        if (invalid === serviceType) {
+            byId('prem-service-error').classList.remove('d-none');
+            serviceType.setAttribute('aria-invalid', 'true');
+            serviceSelect.next('.select2').find('.select2-selection')
+                .attr({'aria-invalid': 'true', 'aria-describedby': 'prem-service-error'});
+            serviceSelect.select2('open');
+        } else {
+            invalid.reportValidity();
+            invalid.focus();
+        }
+        return false;
+    }
+
     function validate(index) {
+        if (!validateVisit()) return false;
         const questions = index === undefined ? fields : Array.from(sections[index].querySelectorAll('.prem-question'));
         let first = null;
         questions.forEach((field) => {
@@ -58,7 +88,9 @@
     }
 
     function renderReview() {
-        byId('prem-review-answers').innerHTML = sections.map((section, index) => '<div class="prem-review-domain"><div class="d-flex justify-content-between gap-3 align-items-start"><h3>' + escape(section.querySelector('h2').textContent) + '</h3><button type="button" class="prem-edit-section" data-edit-step="' + index + '">Ubah</button></div>' + Array.from(section.querySelectorAll('.prem-question')).map((field) => {
+        const service = byId('prem-service-type');
+        const visitSummary = '<div class="prem-review-domain"><h3>Data kunjungan pasien</h3><div class="prem-review-item"><p>Jenis pelayanan: ' + escape(service.options[service.selectedIndex].textContent) + '</p><p>Nomor rekam medis: ' + escape(byId('prem-medical-record').value) + '</p><button type="button" class="prem-edit-section" data-edit-step="0">Ubah</button></div></div>';
+        byId('prem-review-answers').innerHTML = visitSummary + sections.map((section, index) => '<div class="prem-review-domain"><div class="d-flex justify-content-between gap-3 align-items-start"><h3>' + escape(section.querySelector('h2').textContent) + '</h3><button type="button" class="prem-edit-section" data-edit-step="' + index + '">Ubah</button></div>' + Array.from(section.querySelectorAll('.prem-question')).map((field) => {
             const value = Number(answered(field).value);
             return '<div class="prem-review-item"><p>' + escape(field.querySelector('.prem-question-number').textContent) + '. ' + escape(field.querySelector('.prem-question-text').textContent) + '</p><span class="prem-review-value">' + value + ' — ' + labels[value - 1] + '</span></div>';
         }).join('') + '</div>').join('');
@@ -67,6 +99,7 @@
     function showStep(index, focus = true) {
         step = index;
         const review = index === sections.length;
+        byId('prem-visit').classList.toggle('d-none', index !== 0);
         sections.forEach((section, i) => section.classList.toggle('d-none', i !== index));
         byId('prem-review').classList.toggle('d-none', !review);
         byId('prem-next').classList.toggle('d-none', review);
@@ -130,7 +163,7 @@
         errorBox.classList.add('d-none');
         const payload = new FormData(form);
         sending = true;
-        document.querySelectorAll('#prem-survey button, #prem-form input[type="radio"]').forEach((control) => { control.disabled = true; });
+        document.querySelectorAll('#prem-survey button, #prem-form input:not([type="hidden"]), #prem-form select').forEach((control) => { control.disabled = true; });
         button.textContent = 'Mengirim jawaban…';
         try {
             const response = await fetch(form.action, {method: 'POST', body: payload, credentials: 'same-origin', headers: {'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json'}});
@@ -152,14 +185,14 @@
             errorBox.textContent = error.message || 'Koneksi terputus. Silakan coba kirim kembali.';
             errorBox.classList.remove('d-none');
             errorBox.focus();
-            document.querySelectorAll('#prem-survey button, #prem-form input[type="radio"]').forEach((control) => { control.disabled = false; });
+            document.querySelectorAll('#prem-survey button, #prem-form input:not([type="hidden"]), #prem-form select').forEach((control) => { control.disabled = false; });
         } finally {
             sending = false;
             button.innerHTML = 'Kirim jawaban <i class="bi bi-send ms-2"></i>';
         }
     });
     window.addEventListener('beforeunload', (event) => {
-        if (!submitted && fields.some(answered)) { event.preventDefault(); event.returnValue = ''; }
+        if (!submitted && (fields.some(answered) || byId('prem-service-type').value || byId('prem-medical-record').value)) { event.preventDefault(); event.returnValue = ''; }
     });
     // Mark the server-rendered CSRF field so regenerated tokens can be used on retries.
     form.querySelector('input[type="hidden"]').setAttribute('data-prem-csrf', '');

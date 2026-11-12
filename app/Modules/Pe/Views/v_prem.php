@@ -38,7 +38,7 @@ $sections = array_values($sections);
                         <h1>Pelayanan yang lebih baik,<br><span>dimulai dari pengalaman Anda.</span></h1>
                         <p class="prem-lead">Ceritakan pengalaman Anda selama menerima pelayanan di rumah sakit. Penilaian Anda membantu kami memahami hal yang sudah baik dan yang perlu diperbaiki.</p>
                     <?php endif; ?>
-                    <div class="prem-facts"><span><i class="bi bi-list-check"></i> <?= count($questions) ?> pertanyaan</span><span><i class="bi bi-person-check"></i> Tanpa nama atau nomor rekam medis</span></div>
+                    <div class="prem-facts"><span><i class="bi bi-list-check"></i> <?= count($questions) ?> pertanyaan</span><span><i class="bi bi-person-check"></i> Siapkan nomor rekam medis pasien</span></div>
                     <button type="button" id="prem-start" class="btn prem-btn-primary">Mulai mengisi <i class="bi bi-arrow-right ms-2"></i></button>
                     <?php if ($isProm): ?><a href="<?= site_url('pe/prom') ?>" class="btn btn-light ms-2">Ganti pilihan</a><?php endif; ?>
                 </div>
@@ -73,6 +73,26 @@ $sections = array_values($sections);
                         <input type="hidden" name="submission_token" value="<?= esc($submissionToken, 'attr') ?>">
                         <input type="hidden" name="revision" value="<?= esc($revision, 'attr') ?>">
                         <div id="prem-form-error" class="alert alert-danger d-none" role="alert" tabindex="-1"></div>
+                        <div id="prem-visit" class="mb-8">
+                            <div class="prem-section-heading"><h2>Data kunjungan pasien</h2><p>Pilih jenis pelayanan dan masukkan nomor rekam medis pasien sebelum mengisi kuesioner.</p></div>
+                            <div class="row g-5">
+                                <div class="col-md-6">
+                                    <label for="prem-service-type" class="form-label required">Jenis pelayanan</label>
+                                    <select id="prem-service-type" name="service_type" class="form-select form-select-solid" data-control="select2" data-placeholder="Pilih jenis pelayanan" required>
+                                        <option value=""></option>
+                                        <option value="RJ">Rawat Jalan</option>
+                                        <option value="RI">Rawat Inap</option>
+                                        <option value="IGD">IGD</option>
+                                    </select>
+                                    <p id="prem-service-error" class="prem-question-error d-none" role="alert">Pilih jenis pelayanan.</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="prem-medical-record" class="form-label required">Nomor medical record (rekam medis)</label>
+                                    <input id="prem-medical-record" name="medical_record_number" type="text" class="form-control form-control-solid" maxlength="50" pattern="[A-Za-z0-9][A-Za-z0-9./-]{0,49}" autocomplete="off" placeholder="Masukkan nomor rekam medis" required>
+                                    <div class="form-text">Masukkan sesuai nomor rekam medis pasien, termasuk angka nol di depan.</div>
+                                </div>
+                            </div>
+                        </div>
                         <?php foreach ($sections as $index => $section): ?>
                             <section class="prem-section<?= $index !== 0 ? ' d-none' : '' ?>" data-section="<?= $index ?>" aria-labelledby="prem-section-title-<?= $index ?>">
                                 <div class="prem-section-heading"><span class="prem-eyebrow">BAGIAN <?= $index + 1 ?> DARI <?= count($sections) ?></span><h2 id="prem-section-title-<?= $index ?>" tabindex="-1"><?= esc($section['name']) ?></h2><p>Pilih satu jawaban pada setiap pernyataan di bawah ini.</p></div>

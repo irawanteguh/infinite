@@ -27,7 +27,7 @@ class Prem extends BaseController
             }
             $questions = $model->questions($instrument['instrument_id']);
             if (!$questions) throw new \InvalidArgumentException('Belum ada pertanyaan aktif pada kuesioner ini. Silakan hubungi petugas.');
-            if (!$model->responsesReady()) throw new \RuntimeException('PREM response tables are not ready.');
+            if (!$model->responsesReady()) throw new \RuntimeException('PE response tables are not ready.');
             $token = bin2hex(random_bytes(32));
             $tokens = session()->get($this->formTokenKey) ?? [];
             $tokens[$token] = $instrument['instrument_id'];
@@ -62,7 +62,7 @@ class Prem extends BaseController
                 throw new \InvalidArgumentException('Sesi pengisian tidak valid. Silakan muat ulang halaman.');
             }
             $model = new $this->modelClass();
-            if (!$model->responsesReady()) throw new \RuntimeException('PREM response tables are not ready.');
+            if (!$model->responsesReady()) throw new \RuntimeException('PE response tables are not ready.');
             $key = hash('sha256', $token);
             $existing = $model->submitted($id, $key);
             if ($existing) return $this->success($existing['response_id']);
@@ -73,7 +73,9 @@ class Prem extends BaseController
                 throw new \InvalidArgumentException('Pertanyaan telah diperbarui. Silakan muat ulang halaman dan isi kembali.');
             }
             $answers = $model->validateAnswers($questions, request()->getPost('answers'));
-            $responseId = $model->storeResponse($instrument, $questions, $answers, $key, is_array($tokens[$token]) ? $tokens[$token] : []);
+            $visit = $model->validateVisit(request()->getPost('service_type'), request()->getPost('medical_record_number'));
+            $context = (is_array($tokens[$token]) ? $tokens[$token] : []) + $visit;
+            $responseId = $model->storeResponse($instrument, $questions, $answers, $key, $context);
             return $this->success($responseId);
         } catch (\InvalidArgumentException $e) {
             return response()->setStatusCode(422)->setJSON(['success' => false, 'message' => $e->getMessage(), 'csrfHash' => csrf_hash()]);

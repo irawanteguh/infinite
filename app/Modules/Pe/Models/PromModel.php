@@ -25,6 +25,6 @@ class PromModel extends PremModel
         if (!in_array($phase, ['T0', 'T1'], true)) {
             throw new \InvalidArgumentException('Pilih tahap pengukuran T0 atau T1.');
         }
-        return ['measurement_phase' => $phase];
+        return parent::responseMetadata($context) + ['measurement_phase' => $phase];
     }
 }

@@ -19,7 +19,7 @@ class Prom extends Prem
         $phase = request()->getGet('phase');
         $id = request()->getGet('instrument_id');
         try {
-            $model = new PromModel();
+            $model = new $this->modelClass();
             if ($id !== null && (!is_string($id) || !preg_match('/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i', $id))) {
                 throw new \InvalidArgumentException('Tautan kuesioner tidak valid.');
             }

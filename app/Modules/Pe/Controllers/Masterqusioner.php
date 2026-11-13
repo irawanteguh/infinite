@@ -28,7 +28,7 @@ class Masterqusioner extends BaseController
                 'instrument_id' => 'permit_empty|regex_match[/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i]',
                 'code' => 'required|max_length[50]|regex_match[/^[A-Z0-9_-]+$/]',
                 'name' => 'required|max_length[200]',
-                'type' => 'required|in_list[PROM,PREM]',
+                'type' => 'required|in_list[SKM,PREM,PROM]',
                 'respondent' => 'required|max_length[200]',
                 'measurement' => 'required|max_length[255]',
                 'active' => 'required|in_list[0,1]',

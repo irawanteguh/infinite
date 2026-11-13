@@ -128,7 +128,7 @@ $pieChart = static function (array $counts, array $colors, string $emptyLabel = 
 };
 $distributionBars = [];
 foreach ($data['distribution'] as $score=>$count) $distributionBars[] = [
-    'label'=>'Skor '.$score, 'value'=>$data['answerCount'] ? $count/$data['answerCount']*100 : 0,
+    'label'=>\Modules\Pe\Config\SkmQuestionnaire::defaultOptions()[$score], 'value'=>$data['answerCount'] ? $count/$data['answerCount']*100 : 0,
     'color'=>[1=>'#be6464',2=>'#cd9475',3=>'#cbac55',4=>'#64a99b',5=>'#087e82'][$score],
 ];
 
@@ -296,7 +296,7 @@ body{font-family:dejavusans;font-size:9pt;color:#243b53;line-height:1.55}h1{font
 <p class="small muted">Proporsi jawaban pada setiap skor. Skor 4-5 merupakan jawaban positif PREM.</p>
 <?= $barChart($distributionBars, 100, '%') ?>
 <?php endif; ?>
-<table class="data"><thead><tr><th>Skor</th><th>Jumlah jawaban</th><th>Proporsi</th></tr></thead><tbody><?php foreach($data['distribution'] as $score=>$count): ?><tr><td><?= $score ?></td><td><?= $count ?></td><td><?= $n($data['answerCount'] ? $count/$data['answerCount']*100 : null,1) ?><?= $data['answerCount'] ? '%' : '' ?></td></tr><?php endforeach; ?></tbody></table>
+<table class="data"><thead><tr><th>Pilihan jawaban</th><th>Jumlah jawaban</th><th>Proporsi</th></tr></thead><tbody><?php foreach($data['distribution'] as $score=>$count): ?><tr><td><?= $e(\Modules\Pe\Config\SkmQuestionnaire::defaultOptions()[$score]) ?></td><td><?= $count ?></td><td><?= $n($data['answerCount'] ? $count/$data['answerCount']*100 : null,1) ?><?= $data['answerCount'] ? '%' : '' ?></td></tr><?php endforeach; ?></tbody></table>
 <div class="break"></div><h3>5.3 Area PROM yang perlu ditinjau</h3>
 <p>Untuk setiap instrumen, berikut maksimal lima pertanyaan dengan rerata T1 terendah. Nilai T0 ditampilkan sebagai konteks kondisi awal, bukan pembanding pasien yang sama.</p>
 <?php foreach ($data['promPriorities'] as $priorityIndex=>$instrument): ?>
@@ -314,10 +314,10 @@ body{font-family:dejavusans;font-size:9pt;color:#243b53;line-height:1.55}h1{font
 <?php foreach ($data['promDistributions'] as $distributionIndex=>$instrument):
     $totals = array_map('array_sum', $instrument['scores']);
     $scoreGroups = [];
-    for ($score=1; $score<=5; $score++) {
+    foreach ($instrument['options'] as $score => $answerLabel) {
         $values = [];
         foreach (['T0','T1'] as $phase) $values[$phase] = $totals[$phase] ? $instrument['scores'][$phase][$score]/$totals[$phase]*100 : null;
-        $scoreGroups[] = ['name'=>'Skor '.$score, 'averages'=>$values];
+        $scoreGroups[] = ['name'=>$instrument['options'][$score], 'averages'=>$values];
     }
 ?>
 <div class="break"></div>
@@ -325,8 +325,8 @@ body{font-family:dejavusans;font-size:9pt;color:#243b53;line-height:1.55}h1{font
 <h4>5.4.<?= $distributionIndex+1 ?> <?= $e($instrument['instrument']) ?></h4>
 <p>Grafik menunjukkan proporsi jawaban skor 1-5 pada T0 dan T1. Setiap persentase memakai total jawaban pada tahap yang bersangkutan.</p>
 <?= $groupedPhaseChart($scoreGroups, 100, '%') ?>
-<table class="data"><thead><tr><th>Skor</th><th>Jawaban T0</th><th>Proporsi T0</th><th>Jawaban T1</th><th>Proporsi T1</th></tr></thead><tbody>
-<?php for ($score=1; $score<=5; $score++): ?><tr><td><?= $score ?></td><?php foreach (['T0','T1'] as $phase): ?><td><?= $n($instrument['scores'][$phase][$score],0) ?></td><td><?= $n($totals[$phase] ? $instrument['scores'][$phase][$score]/$totals[$phase]*100 : null,1) ?><?= $totals[$phase] ? '%' : '' ?></td><?php endforeach; ?></tr><?php endfor; ?>
+<table class="data"><thead><tr><th>Pilihan jawaban</th><th>Jawaban T0</th><th>Proporsi T0</th><th>Jawaban T1</th><th>Proporsi T1</th></tr></thead><tbody>
+<?php foreach ($instrument['options'] as $score => $answerLabel): ?><tr><td><?= $e($instrument['options'][$score]) ?></td><?php foreach (['T0','T1'] as $phase): ?><td><?= $n($instrument['scores'][$phase][$score],0) ?></td><td><?= $n($totals[$phase] ? $instrument['scores'][$phase][$score]/$totals[$phase]*100 : null,1) ?><?= $totals[$phase] ? '%' : '' ?></td><?php endforeach; ?></tr><?php endforeach; ?>
 <tr><td><b>Total</b></td><?php foreach (['T0','T1'] as $phase): ?><td><b><?= $n($totals[$phase],0) ?></b></td><td><?= $totals[$phase] ? '100%' : '-' ?></td><?php endforeach; ?></tr>
 </tbody></table>
 <p class="small muted">Jumlah jawaban adalah jumlah butir pertanyaan yang dijawab, bukan jumlah pengisian atau orang unik. Grafik mencakup seluruh jawaban, termasuk pengisian yang belum berpasangan. Tanda - berarti belum ada jawaban pada tahap tersebut. Makna skor mengikuti instrumen; distribusi ini tidak menetapkan kategori positif atau negatif untuk PROM.</p>

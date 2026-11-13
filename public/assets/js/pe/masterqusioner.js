@@ -120,6 +120,13 @@
 
     function openInstrument(row) {
         const form = $('pe-instrument-form');
+        const typeSelect = $('pe-instrument-type');
+        typeSelect.querySelectorAll('[data-existing-skm]').forEach(option => option.remove());
+        if (row && row.type === 'SKM') {
+            const option = new Option('SKM', 'SKM');
+            option.dataset.existingSkm = '1';
+            typeSelect.add(option);
+        }
         form.reset();
         form.querySelector('.pe-form-error').classList.add('d-none');
         form.elements.namedItem('instrument_id').value = '';
@@ -164,7 +171,7 @@
         const parent = element.closest('.modal');
         if (parent) element.setAttribute('data-dropdown-parent', '#' + parent.id);
         if (!jQuery(element).data('select2')) {
-            const options = {width: '100%'};
+            const options = {width: '100%', minimumResultsForSearch: 0, dropdownCssClass: 'pe-master-select-menu'};
             if (parent) options.dropdownParent = jQuery(parent);
             jQuery(element).select2(options);
         }
@@ -190,7 +197,7 @@
         if (!selected) return;
         $('pe-preview-title').textContent = selected.name;
         const labels = ['Sangat tidak setuju', 'Tidak setuju', 'Ragu-ragu', 'Setuju', 'Sangat setuju'];
-        $('pe-preview-content').innerHTML = instrumentQuestions().filter((row) => row.active === '1').map((row) => '<fieldset class="border rounded p-5 mb-5"><legend class="float-none w-auto fs-7 px-2 text-muted">' + escape(row.domain) + '</legend><div class="fw-bold mb-4">' + escape(row.sort_order) + '. ' + escape(row.question) + '</div>' + labels.map((label, index) => '<label class="d-flex align-items-center gap-3 mb-3"><input class="form-check-input" type="radio" name="preview-' + escape(row.question_id) + '" value="' + (index + 1) + '"><span>' + (index + 1) + ' — ' + label + '</span></label>').join('') + '</fieldset>').join('') || '<div class="text-muted text-center py-5">Belum ada pertanyaan aktif.</div>';
+        $('pe-preview-content').innerHTML = instrumentQuestions().filter((row) => row.active === '1').map((row) => '<fieldset class="border rounded p-5 mb-5"><legend class="float-none w-auto fs-7 px-2 text-muted">' + escape(row.domain) + '</legend><div class="fw-bold mb-4">' + escape(row.sort_order) + '. ' + escape(row.question) + '</div>' + (row.answer_options ? JSON.parse(row.answer_options) : labels).map((label, index) => '<label class="d-flex align-items-center gap-3 mb-3"><input class="form-check-input" type="radio" name="preview-' + escape(row.question_id) + '" value="' + (index + 1) + '"><span>' + (index + 1) + ' — ' + label + '</span></label>').join('') + '</fieldset>').join('') || '<div class="text-muted text-center py-5">Belum ada pertanyaan aktif.</div>';
         modal('pe-preview-modal').show();
     });
     bindForm('pe-question-form', 'savequestion', 'pe-question-modal');

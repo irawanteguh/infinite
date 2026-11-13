@@ -33,7 +33,7 @@ class DashboardModel extends Model
             $rows = $this->scoped($header, $group, $org, $filters)
                 ->select('h.*, i.name AS instrument_name')
                 ->join('dt01_pe_instrument_ms i', 'i.instrument_id = h.instrument_id AND i.group_id = h.group_id AND i.org_id = h.org_id')
-                ->where('i.type', $type)->orderBy('h.submitted_at')->orderBy('h.response_id')->get()->getResultArray();
+                ->where('i.type', $type)->where($type === 'PREM' ? 'h.score_scale = 5' : '1 = 1', null, false)->orderBy('h.submitted_at')->orderBy('h.response_id')->get()->getResultArray();
             foreach ($rows as $row) {
                 $row['type'] = $type;
                 $row['phase'] = $type === 'PREM' ? 'PREM' : $row['measurement_phase'];
@@ -41,12 +41,12 @@ class DashboardModel extends Model
                 $responses[$row['response_id']] = $row;
             }
             $rows = $this->scoped($header, $group, $org, $filters)
-                ->select('r.response_id, r.question_id, r.domain_id, r.score, q.question, d.name AS domain_name')
+                ->select('r.response_id, r.question_id, r.domain_id, r.score, q.question, q.answer_options, d.name AS domain_name')
                 ->join('dt01_pe_instrument_ms i', 'i.instrument_id = h.instrument_id AND i.group_id = h.group_id AND i.org_id = h.org_id')
-                ->join($detail . ' r', 'r.response_id = h.response_id')
-                ->join('dt01_pe_question_ms q', 'q.question_id = r.question_id AND q.instrument_id = h.instrument_id')
+                ->join($detail . ' r', 'r.response_id = h.response_id AND r.group_id = h.group_id AND r.org_id = h.org_id')
+                ->join('dt01_pe_question_ms q', 'q.question_id = r.question_id AND q.instrument_id = h.instrument_id AND q.group_id = h.group_id AND q.org_id = h.org_id')
                 ->join('dt01_pe_domain_ms d', 'd.domain_id = r.domain_id AND d.group_id = h.group_id AND d.org_id = h.org_id')
-                ->where('i.type', $type)->get()->getResultArray();
+                ->where('i.type', $type)->where($type === 'PREM' ? 'h.score_scale = 5' : '1 = 1', null, false)->get()->getResultArray();
             foreach ($rows as $row) {
                 if (!isset($responses[$row['response_id']])) continue;
                 $responses[$row['response_id']]['scores'][] = (int) $row['score'];
@@ -140,11 +140,13 @@ class DashboardModel extends Model
             $domains[$key]['responseIds'][$detail['response_id']] = true;
             if ($phase !== 'PREM') {
                 $instrumentId = $response['instrument_id'];
-                if (!isset($promDistributions[$instrumentId])) $promDistributions[$instrumentId] = [
-                    'instrument' => $response['instrument_name'],
+                $answerOptions = \Modules\Pe\Config\SkmQuestionnaire::options($detail);
+                $distributionKey = $instrumentId . '/' . hash('sha256', json_encode($answerOptions));
+                if (!isset($promDistributions[$distributionKey])) $promDistributions[$distributionKey] = [
+                    'instrument' => $response['instrument_name'], 'options' => $answerOptions,
                     'scores' => ['T0' => array_fill(1, 5, 0), 'T1' => array_fill(1, 5, 0)],
                 ];
-                $promDistributions[$instrumentId]['scores'][$phase][$score]++;
+                $promDistributions[$distributionKey]['scores'][$phase][$score]++;
 
                 $questionKey = $response['instrument_id'] . '/' . $detail['question_id'];
                 if (!isset($promQuestionStats[$questionKey])) $promQuestionStats[$questionKey] = [
@@ -198,6 +200,8 @@ class DashboardModel extends Model
         $delta = $pairs ? self::mean(array_map(static fn($pair) => $pair['post'] - $pair['pre'], $pairs)) : null;
         $improved = count(array_filter($pairs, static fn($pair) => $pair['post'] > $pair['pre']));
         return [
+            'skm' => $this->skmAnalytics($group, $org, $filters),
+            'feedback' => $this->feedbackAnalytics($group, $org, $filters),
             'total' => count($responses), 'counts' => $counts, 'services' => $services,
             'premAverage' => self::mean($premScores), 'positive' => $answerCount ? $positive / $answerCount * 100 : null,
             'answerCount' => $answerCount, 'distribution' => $distribution, 'monthly' => $monthly, 'monthlyAverages' => $monthlyAverages,
@@ -211,6 +215,145 @@ class DashboardModel extends Model
             'promDistributions' => array_values($promDistributions),
             'domains' => array_values($domains), 'priorities' => array_slice($questionStats, 0, 5),
         ];
+    }
+
+    public function skmAnalytics(string $group, string $org, array $filters): array
+    {
+        $header = 'dt01_pe_skm_response_hd';
+        $distribution = array_fill(1, 4, 0);
+        $scoreCounts = $this->scoped($header, $group, $org, $filters)
+            ->select('r.score, COUNT(*) AS answer_count')
+            ->join('dt01_pe_skm_response_dt r', 'r.response_id = h.response_id AND r.group_id = h.group_id AND r.org_id = h.org_id')
+            ->where('h.score_scale', 4)->whereIn('r.score', [1, 2, 3, 4])->groupBy('r.score')->get()->getResultArray();
+        foreach ($scoreCounts as $row) $distribution[(int) $row['score']] = (int) $row['answer_count'];
+        $responses = $this->scoped($header, $group, $org, $filters)
+            ->select('h.response_id, h.instrument_id, h.score_scale, h.service_type, h.submitted_at, i.name AS instrument_name, AVG(r.score) AS average')
+            ->join('dt01_pe_instrument_ms i', 'i.instrument_id = h.instrument_id AND i.group_id = h.group_id AND i.org_id = h.org_id')
+            ->join('dt01_pe_skm_response_dt r', 'r.response_id = h.response_id AND r.group_id = h.group_id AND r.org_id = h.org_id')
+            ->groupBy('h.response_id, h.instrument_id, h.score_scale, h.service_type, h.submitted_at, i.name')->get()->getResultArray();
+        $questions = $this->scoped($header, $group, $org, $filters)
+            ->select('h.instrument_id, h.score_scale, q.question_id, q.question, AVG(r.score) AS average, COUNT(*) AS answer_count')
+            ->join('dt01_pe_skm_response_dt r', 'r.response_id = h.response_id AND r.group_id = h.group_id AND r.org_id = h.org_id')
+            ->join('dt01_pe_question_ms q', 'q.question_id = r.question_id AND q.instrument_id = h.instrument_id AND q.group_id = h.group_id AND q.org_id = h.org_id')
+            ->groupBy('h.instrument_id, h.score_scale, q.question_id, q.question, q.sort_order')->orderBy('q.sort_order')->get()->getResultArray();
+        $groups = [];
+        foreach ($responses as $row) {
+            $key = $row['instrument_id'] . '/' . $row['score_scale'];
+            if (!isset($groups[$key])) $groups[$key] = [
+                'name' => $row['instrument_name'], 'scale' => (int) $row['score_scale'], 'count' => 0, 'scores' => [], 'questions' => [],
+            ];
+            $groups[$key]['count']++;
+            $groups[$key]['scores'][] = (float) $row['average'];
+        }
+        foreach ($questions as $row) {
+            $key = $row['instrument_id'] . '/' . $row['score_scale'];
+            if (isset($groups[$key])) $groups[$key]['questions'][] = $row;
+        }
+        foreach ($groups as &$item) {
+            $item['average'] = self::mean($item['scores']);
+            unset($item['scores']);
+        }
+        unset($item);
+        $services = array_fill_keys(['IGD', 'RI', 'RJ'], ['count' => 0, 'scores' => []]);
+        $monthly = [];
+        $month = (new \DateTimeImmutable($filters['start']))->modify('first day of this month');
+        $last = (new \DateTimeImmutable($filters['end']))->modify('first day of this month');
+        while ($month <= $last) {
+            $monthly[$month->format('Y-m')] = array_fill_keys(array_keys($services), []);
+            $month = $month->modify('+1 month');
+        }
+        foreach ($responses as $row) {
+            $service = $row['service_type'];
+            if (!isset($services[$service])) continue;
+            $services[$service]['count']++;
+            // Compare only SKM responses using the current four-point scale.
+            if ((int) $row['score_scale'] !== 4) continue;
+            $services[$service]['scores'][] = (float) $row['average'];
+            $monthly[substr($row['submitted_at'], 0, 7)][$service][] = (float) $row['average'];
+        }
+        foreach ($services as &$service) {
+            $service['average'] = self::mean($service['scores']);
+            $service['scoredCount'] = count($service['scores']);
+            unset($service['scores']);
+        }
+        unset($service);
+        $monthly = array_map(static fn($rows) => array_map([self::class, 'mean'], $rows), $monthly);
+        $profiles = $this->scoped($header, $group, $org, $filters)
+            ->select('h.service_type, h.clinic, h.respondent_gender, h.respondent_age, h.occupation, h.education, h.insurance, h.ward_class')
+            ->join('dt01_pe_instrument_ms i', 'i.instrument_id = h.instrument_id AND i.group_id = h.group_id AND i.org_id = h.org_id')->get()->getResultArray();
+        $demographics = [];
+        $definitions = \Modules\Pe\Config\InpatientRespondent::OPTIONS;
+        foreach (['respondent_gender', 'respondent_age', 'occupation', 'education', 'insurance', 'ward_class'] as $field) {
+            if ($field === 'ward_class' && in_array($filters['service'], ['RJ', 'IGD'], true)) continue;
+            $labels = $field === 'respondent_age' ? array_fill_keys(['0–17 tahun', '18–25 tahun', '26–35 tahun', '36–45 tahun', '46–55 tahun', '56–65 tahun', '>65 tahun'], 0)
+                : array_fill_keys(array_values($definitions[$field]['choices']), 0);
+            $labels['Belum tercatat'] = 0;
+            $total = 0;
+            foreach ($profiles as $profile) {
+                // Class demographics apply only to Rawat Inap.
+                if ($field === 'ward_class' && $profile['service_type'] !== 'RI') continue;
+                $value = $profile[$field];
+                if ($field === 'respondent_age') {
+                    $age = $value === null || $value === '' ? null : (int) $value;
+                    $label = $age === null ? 'Belum tercatat' : ($age <= 17 ? '0–17 tahun' : ($age <= 25 ? '18–25 tahun' : ($age <= 35 ? '26–35 tahun' : ($age <= 45 ? '36–45 tahun' : ($age <= 55 ? '46–55 tahun' : ($age <= 65 ? '56–65 tahun' : '>65 tahun'))))));
+                } else {
+                    $label = $definitions[$field]['choices'][$value ?? ''] ?? 'Belum tercatat';
+                }
+                $labels[$label]++;
+                $total++;
+            }
+            $demographics[$field] = ['label' => $field === 'respondent_age' ? 'Kelompok usia' : ($field === 'ward_class' ? 'Kelas layanan · Rawat Inap' : $definitions[$field]['label']), 'total' => $total, 'counts' => $labels];
+        }
+        $clinics = [];
+        $outpatientCount = 0;
+        foreach ($profiles as $profile) {
+            if ($profile['service_type'] !== 'RJ') continue;
+            $outpatientCount++;
+            $label = trim((string) ($profile['clinic'] ?? '')) ?: 'Belum tercatat';
+            if (!isset($clinics[$label])) $clinics[$label] = ['name' => $label, 'count' => 0];
+            $clinics[$label]['count']++;
+        }
+        uasort($clinics, static fn($a, $b) => ($b['count'] <=> $a['count']) ?: strcmp($a['name'], $b['name']));
+        return ['count' => count($responses), 'groups' => array_values($groups), 'services' => $services, 'monthly' => $monthly,
+            'distribution' => $distribution, 'answerCount' => array_sum($distribution),
+            'questionDistributions' => $this->skmQuestionDistributions($group, $org, $filters),
+            'profileCount' => count($profiles), 'demographics' => $demographics, 'clinics' => array_values($clinics), 'outpatientCount' => $outpatientCount];
+    }
+    private function skmQuestionDistributions(string $group, string $org, array $filters): array
+    {
+        $rows = $this->scoped('dt01_pe_skm_response_hd', $group, $org, $filters)
+            ->select('q.question, q.answer_options, q.sort_order, r.score, COUNT(*) AS answer_count')
+            ->join('dt01_pe_skm_response_dt r', 'r.response_id=h.response_id AND r.group_id=h.group_id AND r.org_id=h.org_id')
+            ->join('dt01_pe_question_ms q', 'q.question_id=r.question_id AND q.instrument_id=h.instrument_id AND q.group_id=h.group_id AND q.org_id=h.org_id')
+            ->where('h.score_scale', 4)->whereIn('r.score', [1,2,3,4])
+            ->groupBy('q.question, q.answer_options, q.sort_order, r.score')->orderBy('q.sort_order')->orderBy('q.question')->get()->getResultArray();
+        $groups = [];
+        foreach ($rows as $row) {
+            $options = \Modules\Pe\Config\SkmQuestionnaire::options($row);
+            $key = hash('sha256', $row['question'] . json_encode($options));
+            if (!isset($groups[$key])) $groups[$key] = ['question'=>$row['question'], 'options'=>$options, 'counts'=>array_fill_keys(array_keys($options),0), 'total'=>0];
+            $score = (int) $row['score'];
+            if (!isset($options[$score])) continue;
+            $groups[$key]['counts'][$score] += (int) $row['answer_count'];
+            $groups[$key]['total'] += (int) $row['answer_count'];
+        }
+        return array_values($groups);
+    }
+
+    private function feedbackAnalytics(string $group, string $org, array $filters): array
+    {
+        $comments = [];
+        $sources = [];
+        foreach (['SKM' => 'skm', 'PREM' => 'prem'] as $label => $prefix) {
+            $rows = $this->scoped('dt01_pe_' . $prefix . '_response_hd', $group, $org, $filters)
+                ->select('h.suggestions')
+                ->join('dt01_pe_instrument_ms i', 'i.instrument_id = h.instrument_id AND i.group_id = h.group_id AND i.org_id = h.org_id')
+                ->where('h.suggestions IS NOT NULL', null, false)->get()->getResultArray();
+            $values = array_values(array_filter(array_column($rows, 'suggestions'), static fn($text) => trim($text) !== '' && preg_match('/\p{L}/u', $text)));
+            $sources[$label] = count($values);
+            $comments = array_merge($comments, $values);
+        }
+        return \Modules\Pe\Libraries\FeedbackAnalysis::summarize($comments) + ['sources' => $sources];
     }
 
     public static function mean(array $values): ?float

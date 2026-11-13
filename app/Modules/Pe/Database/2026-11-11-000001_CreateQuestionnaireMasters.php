@@ -28,6 +28,8 @@ class CreateQuestionnaireMasters extends Migration
 
         $this->forge->addField([
             'question_id' => ['type' => 'VARCHAR', 'constraint' => 36],
+            'group_id' => ['type' => 'VARCHAR', 'constraint' => 64],
+            'org_id' => ['type' => 'VARCHAR', 'constraint' => 64],
             'instrument_id' => ['type' => 'VARCHAR', 'constraint' => 36],
             'domain' => ['type' => 'VARCHAR', 'constraint' => 150],
             'question' => ['type' => 'TEXT'],

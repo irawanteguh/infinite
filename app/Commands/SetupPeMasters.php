@@ -28,6 +28,22 @@ class SetupPeMasters extends BaseCommand
         (new \Modules\Pe\Database\NormalizeResponseDetails())->up();
         require_once APPPATH . 'Modules/Pe/Database/2026-11-12-000007_NormalizeResponseHeaders.php';
         (new \Modules\Pe\Database\NormalizeResponseHeaders())->up();
+        require_once APPPATH . 'Modules/Pe/Database/2026-11-13-000008_AddTenantScopeToPeTables.php';
+        (new \Modules\Pe\Database\AddTenantScopeToPeTables())->up();
+        require_once APPPATH . 'Modules/Pe/Database/2026-11-13-000009_AddInpatientRespondentFields.php';
+        (new \Modules\Pe\Database\AddInpatientRespondentFields())->up();
+        require_once APPPATH . 'Modules/Pe/Database/2026-11-13-000010_AddSurveyOptionsAndFeedback.php';
+        (new \Modules\Pe\Database\AddSurveyOptionsAndFeedback())->up();
+        require_once APPPATH . 'Modules/Pe/Database/2026-11-13-000011_RenameGeneralInstrumentsToSkm.php';
+        (new \Modules\Pe\Database\RenameGeneralInstrumentsToSkm())->up();
+        require_once APPPATH . 'Modules/Pe/Database/2026-11-13-000012_SeparateSkmTransactions.php';
+        (new \Modules\Pe\Database\SeparateSkmTransactions())->up();
+        require_once APPPATH . 'Modules/Pe/Database/2026-11-13-000013_LinkPremToSkm.php';
+        (new \Modules\Pe\Database\LinkPremToSkm())->up();
+        require_once APPPATH . 'Modules/Pe/Database/2026-11-13-000014_AddRespondentClinic.php';
+        (new \Modules\Pe\Database\AddRespondentClinic())->up();
+        require_once APPPATH . 'Modules/Pe/Database/2026-11-13-000015_UseSkmInstrumentType.php';
+        (new \Modules\Pe\Database\UseSkmInstrumentType())->up();
         CLI::write('Master PE dan tabel jawaban PREM/PROM siap digunakan.', 'green');
     }
 }

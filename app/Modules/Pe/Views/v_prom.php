@@ -1,3 +1,7 @@
+<?php
+$tenant = $tenant ?? ['group_id' => '', 'org_id' => ''];
+$publicUrl = site_url('pe/prom') . '?' . http_build_query($tenant);
+?>
 <?php if ($error === '' && $instrument && $phase !== null): ?>
     <?= view('Modules\Pe\Views\v_prem', [
         'surveyType' => 'PROM', 'instrument' => $instrument, 'questions' => $questions,
@@ -14,7 +18,7 @@
                     <h1>Pelayanan yang lebih baik,<br><span>dimulai dari pengalaman Anda.</span></h1>
                     <p class="prem-lead">Ceritakan pengalaman Anda selama menerima pelayanan di rumah sakit. Penilaian Anda membantu kami memahami hal yang sudah baik dan yang perlu diperbaiki.</p>
                     <div class="prem-facts"><span><i class="bi bi-list-check"></i> <?= count($instruments) ?> pilihan kuesioner</span><span><i class="bi bi-person-check"></i> Siapkan nomor rekam medis pasien</span></div>
-                    <a href="<?= esc(site_url('pe/prom') . '?select=1', 'attr') ?>" class="btn prem-btn-primary">Mulai mengisi <i class="bi bi-arrow-right ms-2"></i></a>
+                    <a href="<?= esc($publicUrl . '&select=1', 'attr') ?>" class="btn prem-btn-primary">Mulai mengisi <i class="bi bi-arrow-right ms-2"></i></a>
                 </div>
                 <aside class="prem-welcome-aside">
                     <span class="prem-hero-icon"><i class="bi bi-chat-heart"></i></span>
@@ -27,9 +31,11 @@
             </section>
         <?php else: ?>
         <div class="prem-heading"><span class="prem-eyebrow">KUESIONER PROM</span><h1>Penilaian kondisi kesehatan pasien</h1><p>Pilih kuesioner yang sesuai dengan perawatan pasien.</p></div>
-        <?php if ($error !== ''): ?><div class="alert alert-danger" role="alert"><?= esc($error) ?> <a href="<?= site_url('pe/prom') ?>" class="fw-bold">Kembali ke pilihan kuesioner</a></div><?php endif; ?>
+        <?php if ($error !== ''): ?><div class="alert alert-danger" role="alert"><?= esc($error) ?> <a href="<?= esc($publicUrl, 'attr') ?>" class="fw-bold">Kembali ke pilihan kuesioner</a></div><?php endif; ?>
         <?php if ($instruments): ?>
             <form action="<?= esc(site_url('pe/prom'), 'attr') ?>" method="get" class="prem-card prom-selection">
+                <input type="hidden" name="group_id" value="<?= esc($tenant['group_id'], 'attr') ?>">
+                <input type="hidden" name="org_id" value="<?= esc($tenant['org_id'], 'attr') ?>">
                 <fieldset class="border-0 p-0 m-0">
                     <legend class="float-none fs-4 fw-bold mb-2">1. Pilih jenis PROM</legend>
                     <p class="text-muted fs-7 mb-6">Kuesioner diisi oleh pasien atau pendamping sesuai keterangan responden.</p>

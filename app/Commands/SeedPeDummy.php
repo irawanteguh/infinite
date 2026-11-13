@@ -21,7 +21,7 @@ class SeedPeDummy extends BaseCommand
         if (!$premModel->responsesReady() || !$promModel->responsesReady()) {
             throw new \RuntimeException('Jalankan pe:setup terlebih dahulu.');
         }
-        $instruments = $db->table('dt01_pe_instrument_ms')->where('active', '1')
+        $instruments = $db->table('dt01_pe_instrument_ms')->where('active', '1')->whereIn('type', ['PREM', 'PROM'])->whereNotIn('code', array_column(\Modules\Pe\Config\GeneralQuestionnaires::SERVICES, 'code'))
             ->orderBy('type')->orderBy('code')->get()->getResultArray();
         $prem = [];
         $prom = [];

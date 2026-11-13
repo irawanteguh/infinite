@@ -2,6 +2,19 @@
 $isProm = ($surveyType ?? 'PREM') === 'PROM';
 $phaseLabel = ($phase ?? '') === 'T0' ? 'PRE / T0 · Sebelum atau awal perawatan' : 'POST / T1 · Saat pulang perawatan';
 $labels = [1 => 'Sangat tidak setuju', 2 => 'Tidak setuju', 3 => 'Ragu-ragu', 4 => 'Setuju', 5 => 'Sangat setuju'];
+$surveyScale = $questions ? count(\Modules\Pe\Config\SkmQuestionnaire::options($questions[0])) : 5;
+$isSkm = !$isProm && $surveyScale === 4;
+$directStart = $isProm || isset($visit);
+$visit = $visit ?? [];
+$tenant = $tenant ?? ['group_id' => '', 'org_id' => ''];
+$surveyPath = $surveyPath ?? ($isProm ? 'pe/prom' : 'pe/prem');
+$publicUrl = site_url($surveyPath) . '?' . http_build_query($tenant);
+$submitUrl = $submissionUrl ?? (site_url($surveyPath . '/submit') . '?' . http_build_query($tenant));
+$visitQuery = $tenant + ['instrument_id' => $instrument['instrument_id'] ?? '', 'form' => $submissionToken, 'edit' => '1'];
+if ($isProm && isset($phase)) $visitQuery['phase'] = $phase;
+$visitUrl = $respondentEditUrl ?? site_url($surveyPath) . '?' . http_build_query($visitQuery);
+$respondentSummary = (\Modules\Pe\Config\GeneralQuestionnaires::service($instrument['code'] ?? '') !== null || (!empty($visit['skm_response_id']) && isset($visit['respondent_name']))) ? \Modules\Pe\Config\InpatientRespondent::summary($visit) : null;
+$serviceLabels = ['RJ' => 'Rawat Jalan', 'RI' => 'Rawat Inap', 'IGD' => 'IGD'];
 $sections = [];
 foreach ($questions as $question) {
     $key = $question['domain_id'];
@@ -24,7 +37,7 @@ $sections = array_values($sections);
                 <p class="text-muted mb-0"><?= esc($error) ?></p>
             </section>
         <?php else: ?>
-            <section id="prem-welcome" class="prem-card prem-welcome">
+            <section id="prem-welcome" class="prem-card prem-welcome<?= $directStart ? ' d-none' : '' ?>">
                 <div class="prem-welcome-copy">
                     <span class="prem-eyebrow"><?= $isProm ? 'HASIL PERAWATAN PASIEN' : 'PENGALAMAN PELAYANAN PASIEN' ?></span>
                     <?php if ($isProm): ?>
@@ -40,20 +53,28 @@ $sections = array_values($sections);
                     <?php endif; ?>
                     <div class="prem-facts"><span><i class="bi bi-list-check"></i> <?= count($questions) ?> pertanyaan</span><span><i class="bi bi-person-check"></i> Siapkan nomor rekam medis pasien</span></div>
                     <button type="button" id="prem-start" class="btn prem-btn-primary">Mulai mengisi <i class="bi bi-arrow-right ms-2"></i></button>
-                    <?php if ($isProm): ?><a href="<?= site_url('pe/prom') ?>" class="btn btn-light ms-2">Ganti pilihan</a><?php endif; ?>
+                    <?php if ($isProm): ?><a href="<?= $publicUrl ?>" class="btn btn-light ms-2">Ganti pilihan</a><?php endif; ?>
                 </div>
                 <aside class="prem-welcome-aside">
                     <span class="prem-hero-icon"><i class="bi bi-chat-heart"></i></span>
                     <h2><?= $isProm ? 'Kenali perkembangan kondisi pasien.' : 'Pengalaman Anda berarti.' ?></h2>
                     <p><?= $isProm ? 'Tidak ada jawaban benar atau salah. Pilih jawaban yang paling sesuai dengan kondisi pasien saat ini.' : 'Berikan penilaian sesuai pengalaman pelayanan yang Anda terima hari ini.' ?></p>
                     <div class="prem-guide"><span>01</span><div>Pilih satu jawaban untuk setiap pernyataan.</div></div>
-                    <div class="prem-guide"><span>02</span><div><?= $isProm ? 'Gunakan skala 1 sampai 5. Nilai lebih tinggi menunjukkan kondisi atau kemampuan yang lebih baik.' : 'Gunakan skala 1 sampai 5 sesuai pengalaman Anda.' ?></div></div>
+                    <div class="prem-guide"><span>02</span><div><?= $isProm ? 'Gunakan skala 1 sampai 5. Nilai lebih tinggi menunjukkan kondisi atau kemampuan yang lebih baik.' : 'Gunakan skala 1 sampai ' . $surveyScale . ' sesuai pengalaman Anda.' ?></div></div>
                     <div class="prem-guide"><span>03</span><div>Periksa jawaban sebelum mengirim.</div></div>
                 </aside>
             </section>
 
-            <div id="prem-survey" class="d-none">
-                <div class="prem-heading"><span class="prem-eyebrow">KUESIONER <?= $isProm ? 'PROM' : 'PREM' ?></span><h1><?= esc($instrument['name']) ?></h1><p><?= $isProm ? esc($phaseLabel) . ' — Berikan penilaian berdasarkan kondisi pasien saat ini.' : 'Mohon berikan penilaian berdasarkan pengalaman pelayanan Anda hari ini.' ?></p></div>
+            <div id="prem-survey"<?= $directStart ? '' : ' class="d-none"' ?>>
+                <?php if (($surveyType ?? '') === 'SKM' || !empty($visit['skm_response_id'])): ?>
+                    <div class="prem-combined-flow mb-6" aria-label="Tahapan pengisian">
+                        <span class="<?= empty($visit['skm_response_id']) ? 'is-current' : 'is-complete' ?>"><?= empty($visit['skm_response_id']) ? '1' : '✓' ?> · SKM</span>
+                        <i class="bi bi-arrow-right"></i>
+                        <span class="<?= !empty($visit['skm_response_id']) ? 'is-current' : '' ?>">2 · PREM RSUD Pasar Minggu</span>
+                    </div>
+                <?php endif; ?>
+                <?php if (!empty($visit['skm_response_id'])): ?><div class="alert alert-primary mb-6" role="status">Jawaban SKM sudah tersimpan. Silakan lanjutkan mengisi <?= esc($instrument['name']) ?>. Data responden telah diteruskan.</div><?php endif; ?>
+                <div class="prem-heading"><span class="prem-eyebrow">KUESIONER <?= esc($surveyType ?? 'PREM') ?></span><h1><?= esc($instrument['name']) ?></h1><p><?= $isProm ? esc($phaseLabel) . ' — Berikan penilaian berdasarkan kondisi pasien saat ini.' : 'Mohon berikan penilaian berdasarkan pengalaman pelayanan Anda hari ini.' ?></p></div>
                 <div class="prem-layout">
                     <aside class="prem-sidebar">
                         <div class="prem-card prem-sidebar-inner">
@@ -67,67 +88,50 @@ $sections = array_values($sections);
                             <div class="prem-sidebar-note"><i class="bi bi-info-circle"></i> <?= $isProm ? 'Pilih jawaban yang paling sesuai dengan kondisi pasien saat ini.' : 'Pilih jawaban yang paling sesuai dengan pengalaman Anda.' ?></div>
                         </div>
                     </aside>
-                    <form id="prem-form" class="prem-card prem-form" action="<?= esc(site_url($isProm ? 'pe/prom/submit' : 'pe/prem/submit'), 'attr') ?>" method="post" novalidate data-total="<?= count($questions) ?>">
+                    <form id="prem-form" class="prem-card prem-form" action="<?= esc($submitUrl, 'attr') ?>" method="post" novalidate data-total="<?= count($questions) ?>" data-from-skm="<?= !empty($visit['skm_response_id']) ? '1' : '0' ?>" data-visit-url="<?= esc($visitUrl, 'attr') ?>" data-service-label="<?= esc($serviceLabels[$visit['service_type'] ?? ''] ?? '', 'attr') ?>" data-medical-record="<?= esc($visit['medical_record_number'] ?? '', 'attr') ?>" data-respondent="<?= esc(json_encode($respondentSummary, JSON_UNESCAPED_UNICODE), 'attr') ?>">
                         <?= csrf_field() ?>
                         <input type="hidden" name="instrument_id" value="<?= esc($instrument['instrument_id'], 'attr') ?>">
                         <input type="hidden" name="submission_token" value="<?= esc($submissionToken, 'attr') ?>">
                         <input type="hidden" name="revision" value="<?= esc($revision, 'attr') ?>">
                         <div id="prem-form-error" class="alert alert-danger d-none" role="alert" tabindex="-1"></div>
-                        <div id="prem-visit" class="mb-8">
-                            <div class="prem-section-heading"><h2>Data kunjungan pasien</h2><p>Pilih jenis pelayanan dan masukkan nomor rekam medis pasien sebelum mengisi kuesioner.</p></div>
-                            <div class="row g-5">
-                                <div class="col-md-6">
-                                    <label for="prem-service-type" class="form-label required">Jenis pelayanan</label>
-                                    <select id="prem-service-type" name="service_type" class="form-select form-select-solid" data-control="select2" data-placeholder="Pilih jenis pelayanan" required>
-                                        <option value=""></option>
-                                        <option value="RJ">Rawat Jalan</option>
-                                        <option value="RI">Rawat Inap</option>
-                                        <option value="IGD">IGD</option>
-                                    </select>
-                                    <p id="prem-service-error" class="prem-question-error d-none" role="alert">Pilih jenis pelayanan.</p>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="prem-medical-record" class="form-label required">Nomor medical record (rekam medis)</label>
-                                    <input id="prem-medical-record" name="medical_record_number" type="text" class="form-control form-control-solid" maxlength="50" pattern="[A-Za-z0-9][A-Za-z0-9./-]{0,49}" autocomplete="off" placeholder="Masukkan nomor rekam medis" required>
-                                    <div class="form-text">Masukkan sesuai nomor rekam medis pasien, termasuk angka nol di depan.</div>
-                                </div>
-                            </div>
-                        </div>
                         <?php foreach ($sections as $index => $section): ?>
                             <section class="prem-section<?= $index !== 0 ? ' d-none' : '' ?>" data-section="<?= $index ?>" aria-labelledby="prem-section-title-<?= $index ?>">
                                 <div class="prem-section-heading"><span class="prem-eyebrow">BAGIAN <?= $index + 1 ?> DARI <?= count($sections) ?></span><h2 id="prem-section-title-<?= $index ?>" tabindex="-1"><?= esc($section['name']) ?></h2><p>Pilih satu jawaban pada setiap pernyataan di bawah ini.</p></div>
                                 <?php foreach ($section['questions'] as $question): ?>
                                     <fieldset class="prem-question" data-question-id="<?= esc($question['question_id'], 'attr') ?>">
                                         <legend><span class="prem-question-number"><?= esc($question['sort_order']) ?></span><span class="prem-question-text"><?= esc($question['question']) ?></span></legend>
-                                        <div class="prem-choices">
-                                            <?php foreach ($labels as $score => $label): ?>
-                                                <label class="prem-choice"><input type="radio" name="answers[<?= esc($question['question_id'], 'attr') ?>]" value="<?= $score ?>"><span class="prem-choice-body"><span class="prem-score"><?= $score ?></span><span><?= esc($label) ?></span><i class="bi bi-check-circle-fill"></i></span></label>
+                                        <div class="prem-choices<?= $surveyScale === 4 ? ' prem-choices-four' : '' ?>">
+                                            <?php foreach (\Modules\Pe\Config\SkmQuestionnaire::options($question) as $score => $label): ?>
+                                                <label class="prem-choice"><input type="radio" name="answers[<?= esc($question['question_id'], 'attr') ?>]" value="<?= $score ?>"><span class="prem-choice-body"><span class="prem-score"><?= $score ?></span><span class="prem-choice-label"><?= esc($label) ?></span><i class="bi bi-check-circle-fill"></i></span></label>
                                             <?php endforeach; ?>
                                         </div>
                                         <p class="prem-question-error d-none">Silakan pilih satu jawaban.</p>
                                     </fieldset>
                                 <?php endforeach; ?>
+                                <?php if ($isSkm && $index === count($sections) - 1): ?>
+                                    <div class="prem-suggestions mt-8"><label for="prem-suggestions" class="form-label fs-6 fw-bold">Saran dan Masukan</label><textarea id="prem-suggestions" name="suggestions" rows="4" maxlength="4000" class="form-control form-control-solid" placeholder="Tuliskan saran dan masukan Anda untuk perbaikan pelayanan"></textarea><div class="form-text">Opsional, maksimal 4000 karakter.</div></div>
+                                <?php endif; ?>
                             </section>
                         <?php endforeach; ?>
                         <section id="prem-review" class="d-none" aria-labelledby="prem-review-title">
                             <div class="prem-section-heading"><span class="prem-eyebrow">SATU LANGKAH LAGI</span><h2 id="prem-review-title" tabindex="-1">Periksa jawaban Anda</h2><p>Pastikan semua jawaban sudah sesuai sebelum dikirim.</p></div>
                             <div id="prem-review-answers"></div>
                         </section>
-                        <div class="prem-form-footer"><button type="button" id="prem-back" class="btn btn-light">Kembali</button><span id="prem-step-label" class="text-muted"></span><button type="button" id="prem-next" class="btn prem-btn-primary">Selanjutnya <i class="bi bi-arrow-right ms-2"></i></button><button type="submit" id="prem-submit" class="btn prem-btn-primary d-none">Kirim jawaban <i class="bi bi-send ms-2"></i></button></div>
+                        <div class="prem-form-footer"><button type="button" id="prem-back" class="btn btn-light">Kembali</button><span id="prem-step-label" class="text-muted"></span><button type="button" id="prem-next" class="btn prem-btn-primary">Selanjutnya <i class="bi bi-arrow-right ms-2"></i></button><button type="submit" id="prem-submit" class="btn prem-btn-primary d-none"><?= ($surveyType ?? '') === 'SKM' ? 'Simpan SKM &amp; lanjut PREM' : 'Kirim jawaban' ?> <i class="bi bi-send ms-2"></i></button></div>
                     </form>
                 </div>
             </div>
 
-            <section id="prem-success" class="prem-card prem-empty text-center d-none" tabindex="-1" aria-live="polite" data-return-url="<?= esc(site_url($isProm ? 'pe/prom' : 'pe/prem'), 'attr') ?>">
+            <section id="prem-success" class="prem-card prem-empty text-center d-none" tabindex="-1" aria-live="polite" data-return-url="<?= esc($publicUrl, 'attr') ?>">
                 <span class="prem-success-icon"><i class="bi bi-check-lg"></i></span>
                 <span class="prem-eyebrow d-block mt-7">JAWABAN BERHASIL DIKIRIM</span>
                 <h1 class="mt-3 mb-4">Terima kasih telah mengisi kuesioner.</h1>
                 <p class="prem-lead mx-auto">Masukan Anda menjadi bagian dari upaya kami memberikan pelayanan yang lebih baik.</p>
                 <div class="prem-receipt">Referensi pengisian: <strong id="prem-receipt"></strong></div>
                 <p class="text-muted mt-6 mb-4">Kembali ke halaman awal dalam <strong id="prem-return-seconds">10</strong> detik.</p>
-                <a href="<?= esc(site_url($isProm ? 'pe/prom' : 'pe/prem'), 'attr') ?>" class="btn btn-light">Kembali sekarang</a>
+                <a href="<?= esc($publicUrl, 'attr') ?>" class="btn btn-light">Kembali sekarang</a>
             </section>
         <?php endif; ?>
-        <footer class="prem-footer">RSUD Pasar Minggu <span>·</span> <?= $isProm ? 'Patient-Reported Outcome Measures' : 'Patient-Reported Experience Measures' ?></footer>
+        <footer class="prem-footer">RSUD Pasar Minggu <span>·</span> <?= ($surveyType ?? '') === 'SKM' ? 'Survei Kepuasan Masyarakat' : ($isProm ? 'Patient-Reported Outcome Measures' : 'Patient-Reported Experience Measures') ?></footer>
     </div>
 </main>

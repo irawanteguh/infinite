@@ -25,6 +25,8 @@ class CreatePromResponses extends Migration
         $this->forge->addField([
             'response_id' => ['type' => 'VARCHAR', 'constraint' => 36],
             'question_id' => ['type' => 'VARCHAR', 'constraint' => 36],
+            'group_id' => ['type' => 'VARCHAR', 'constraint' => 64],
+            'org_id' => ['type' => 'VARCHAR', 'constraint' => 64],
             'domain_id' => ['type' => 'VARCHAR', 'constraint' => 36],
             'sort_order' => ['type' => 'INT', 'unsigned' => true],
             'score' => ['type' => 'TINYINT', 'unsigned' => true],

@@ -27,8 +27,8 @@ class MasterqusionerModel extends Model
         return [
             'instruments' => $this->scoped($group, $org)->orderBy('type')->orderBy('name')->get()->getResultArray(),
             'domains' => $this->db->table(self::DOMAINS)->where('group_id', $group)->where('org_id', $org)->orderBy('name')->get()->getResultArray(),
-            'questions' => $this->db->table(self::QUESTIONS . ' q')->select('q.question_id, q.instrument_id, q.domain_id, d.name AS domain, q.question, q.sort_order, q.active')
-                ->join(self::INSTRUMENTS . ' i', 'i.instrument_id = q.instrument_id')
+            'questions' => $this->db->table(self::QUESTIONS . ' q')->select('q.question_id, q.instrument_id, q.domain_id, d.name AS domain, q.question, q.sort_order, q.active, q.answer_options')
+                ->join(self::INSTRUMENTS . ' i', 'i.instrument_id = q.instrument_id AND i.group_id = q.group_id AND i.org_id = q.org_id')
                 ->join(self::DOMAINS . ' d', 'd.domain_id = q.domain_id AND d.group_id = i.group_id AND d.org_id = i.org_id', 'left')
                 ->where('i.group_id', $group)->where('i.org_id', $org)
                 ->orderBy('q.sort_order')->get()->getResultArray(),
@@ -46,10 +46,21 @@ class MasterqusionerModel extends Model
 
     public function saveInstrument($group, $org, array $data, $user): void
     {
+        if (!in_array($data['type'], ['SKM', 'PREM', 'PROM'], true)) throw new \InvalidArgumentException('Jenis instrumen tidak valid.');
+        if (\Modules\Pe\Config\GeneralQuestionnaires::service($data['code']) !== null && $data['type'] !== 'SKM') {
+            throw new \InvalidArgumentException('Instrumen SKM harus menggunakan jenis SKM.');
+        }
         $id = $data['instrument_id'];
         unset($data['instrument_id']);
         if ($id !== '') {
-            $this->instrument($id, $group, $org);
+            $existing = $this->instrument($id, $group, $org);
+            if ($existing['type'] !== $data['type']) {
+                foreach (['prem', 'prom', 'skm'] as $prefix) {
+                    if ($this->db->table('dt01_pe_' . $prefix . '_response_hd')->where('instrument_id', $id)->where('group_id', $group)->where('org_id', $org)->countAllResults()) {
+                        throw new \InvalidArgumentException('Jenis instrumen yang sudah memiliki jawaban tidak dapat diubah.');
+                    }
+                }
+            }
         }
         if ($this->scoped($group, $org)->where('code', $data['code'])->where('instrument_id !=', $id)->countAllResults()) {
             throw new \InvalidArgumentException('Kode instrumen sudah digunakan.');
@@ -71,7 +82,7 @@ class MasterqusionerModel extends Model
         $instrument = $this->instrument($data['instrument_id'], $group, $org);
         $id = $data['question_id'];
         unset($data['question_id']);
-        if ($id !== '' && !$this->db->table(self::QUESTIONS)->where('question_id', $id)->where('instrument_id', $instrument['instrument_id'])->countAllResults()) {
+        if ($id !== '' && !$this->db->table(self::QUESTIONS)->where('question_id', $id)->where('instrument_id', $instrument['instrument_id'])->where('group_id', $group)->where('org_id', $org)->countAllResults()) {
             throw new \InvalidArgumentException('Pertanyaan tidak ditemukan pada instrumen ini.');
         }
         $domain = $this->db->table(self::DOMAINS)->where('domain_id', $data['domain_id'])
@@ -79,18 +90,27 @@ class MasterqusionerModel extends Model
         if (!$domain) {
             throw new \InvalidArgumentException('Domain tidak ditemukan pada organisasi ini.');
         }
-        $existing = $id === '' ? null : $this->db->table(self::QUESTIONS)->where('question_id', $id)->get()->getRowArray();
+        $existing = $id === '' ? null : $this->db->table(self::QUESTIONS)->where('question_id', $id)->where('group_id', $group)->where('org_id', $org)->get()->getRowArray();
         if ($domain['active'] !== '1' && (!$existing || $existing['domain_id'] !== $domain['domain_id'])) {
             throw new \InvalidArgumentException('Pilih domain yang aktif.');
         }
+        if ($id === '' && $instrument['type'] === 'SKM') {
+            $options = \Modules\Pe\Config\SkmQuestionnaire::QUESTIONS[0][1];
+            foreach (\Modules\Pe\Config\SkmQuestionnaire::QUESTIONS as [$question, $choices]) {
+                if (mb_strtolower(trim($question)) === mb_strtolower(trim($data['question']))) { $options = $choices; break; }
+            }
+            $data['answer_options'] = json_encode($options, JSON_UNESCAPED_UNICODE);
+        }
         $data['domain'] = $domain['name'];
-        if ($this->db->table(self::QUESTIONS)->where('instrument_id', $instrument['instrument_id'])->where('sort_order', $data['sort_order'])->where('question_id !=', $id)->countAllResults()) {
+        $data['group_id'] = $group;
+        $data['org_id'] = $org;
+        if ($this->db->table(self::QUESTIONS)->where('instrument_id', $instrument['instrument_id'])->where('group_id', $group)->where('org_id', $org)->where('sort_order', $data['sort_order'])->where('question_id !=', $id)->countAllResults()) {
             throw new \InvalidArgumentException('Nomor urut sudah digunakan. Pilih nomor urut lain.');
         }
         $data['updated_by'] = $user;
         $data['updated_at'] = date('Y-m-d H:i:s');
         if ($id !== '') {
-            $ok = $this->db->table(self::QUESTIONS)->where('question_id', $id)->where('instrument_id', $instrument['instrument_id'])->update($data);
+            $ok = $this->db->table(self::QUESTIONS)->where('question_id', $id)->where('instrument_id', $instrument['instrument_id'])->where('group_id', $group)->where('org_id', $org)->update($data);
         } else {
             $data += ['question_id' => $this->uuid(), 'created_by' => $user, 'created_at' => $data['updated_at']];
             $ok = $this->db->table(self::QUESTIONS)->insert($data);

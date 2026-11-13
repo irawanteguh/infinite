@@ -37,7 +37,7 @@
         if ($segment1 === 'ur' && $segment2 === 'analystsl' && $segment3 === 'simulation') {
             $segment2 = 'analystslsimulation';
         }
-        $jsPage = ($segment1 === 'pe' && $segment2 === 'prom') ? 'prem' : $segment2;
+        $jsPage = ($segment1 === 'pe' && in_array($segment2, ['prom', 'skm', 'premgeneral'], true)) ? 'prem' : $segment2;
         $jspath = FCPATH . 'assets/js/' . $segment1 . '/' . $jsPage . '.js';
         if (file_exists($jspath)) {
             echo '<script type="text/javascript" src="' . base_url('assets/js/' . $segment1 . '/' . $jsPage . '.js?v=' . time()) . '"></script>' . PHP_EOL;

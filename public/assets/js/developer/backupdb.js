@@ -1,269 +1,98 @@
-loadbackuplist();
+(function () {
+    'use strict';
+    const config = document.getElementById('backup-config');
+    if (!config) return;
+    const base = config.dataset.baseUrl.replace(/\/$/, '') + '/';
+    const status = document.getElementById('backup-status');
+    let busy = false;
 
-$("#btnBackupDatabase").on("click", function (e) {
-    e.preventDefault();
-    Swal.fire({
-        title            : "Backup Database",
-        text             : "Create a new database backup?",
-        icon             : "warning",
-        showCancelButton : true,
-        confirmButtonText: "Backup",
-        cancelButtonText : "Cancel"
-    }).then(function (result) {
-        if (!result.isConfirmed) {
-            return;
+    function updateToken(payload) {
+        if (payload && payload.csrfHash) {
+            config.dataset.csrfHash = payload.csrfHash;
+            config.dataset.csrfName = payload.csrfName || config.dataset.csrfName;
         }
-        $.ajax({
-            url       : url + "developer/backupdb/backup",
-            type      : "GET",
-            dataType  : "JSON",
-            beforeSend: function () {
-                Swal.fire({
-                    title            : "Creating Backup",
-                    html             : "Please wait while the database backup is being created.",
-                    allowOutsideClick: false,
-                    allowEscapeKey   : false,
-                    showConfirmButton: false,
-                    didOpen          : function () {
-                        Swal.showLoading();
-                    }
-                });
-            },
-            success: function (response) {
-                if (response.responseCode !== "00") {
-                    Swal.fire({
-                        icon             : "error",
-                        title            : "Backup Failed",
-                        text             : response.responseDesc || "Failed to create database backup.",
-                        confirmButtonText: "OK"
-                    });
-                    return;
-                }
-                loadbackuplist();
-                Swal.fire({
-                    icon             : "success",
-                    title            : "Backup Successful",
-                    text             : response.responseDesc || "Database backup successfully created.",
-                    showConfirmButton: false,
-                    timer            : 2000
-                });
-            },
-            error: function () {
-                Swal.fire({
-                    icon             : "error",
-                    title            : "Request Failed",
-                    text             : "An error occurred while creating the database backup.",
-                    confirmButtonText: "OK"
-                });
-            },
-            complete: function () {
-                Swal.close();
-            }
-        });
-    });
-});
-
-$("#btnBackupDatabaseICS").on("click", function (e) {
-    e.preventDefault();
-    Swal.fire({
-        title            : "Backup Database ICS",
-        text             : "Create a new database ICS backup?",
-        icon             : "warning",
-        showCancelButton : true,
-        confirmButtonText: "Backup",
-        cancelButtonText : "Cancel"
-    }).then(function (result) {
-        if (!result.isConfirmed) {
-            return;
-        }
-        $.ajax({
-            url       : url + "developer/backupdb/backupics",
-            type      : "GET",
-            dataType  : "JSON",
-            beforeSend: function () {
-                Swal.fire({
-                    title            : "Creating Backup ICS",
-                    html             : "Please wait while the database backup is being created.",
-                    allowOutsideClick: false,
-                    allowEscapeKey   : false,
-                    showConfirmButton: false,
-                    didOpen          : function () {
-                        Swal.showLoading();
-                    }
-                });
-            },
-            success: function (response) {
-                if (response.responseCode !== "00") {
-                    Swal.fire({
-                        icon             : "error",
-                        title            : "Backup Failed",
-                        text             : response.responseDesc || "Failed to create database ICS backup.",
-                        confirmButtonText: "OK"
-                    });
-                    return;
-                }
-                loadbackuplist();
-                Swal.fire({
-                    icon             : "success",
-                    title            : "Backup Successful",
-                    text             : response.responseDesc || "Database ICS backup successfully created.",
-                    showConfirmButton: false,
-                    timer            : 2000
-                });
-            },
-            error: function () {
-                Swal.fire({
-                    icon             : "error",
-                    title            : "Request Failed",
-                    text             : "An error occurred while processing your request.",
-                    confirmButtonText: "OK"
-                });
-            },
-            complete: function () {
-                Swal.close();
-            }
-        });
-    });
-});
-
-function loadbackuplist() {
-    $.ajax({
-        url       : url+"developer/backupdb/listbackup",
-        type      : "GET",
-        dataType  : "JSON",
-        beforeSend: function () {
-            Swal.fire({
-                title            : "Processing",
-                html             : "Please wait while the system displays the requested data.",
-                allowOutsideClick: false,
-                allowEscapeKey   : false,
-                showConfirmButton: false,
-                didOpen          : () => Swal.showLoading()
-            });
-
-            $("#resultbackup").empty();
-        },
-        success: function (response) {
-            if (response.responseCode !== "00") {
-                Swal.fire({
-                    icon             : "info",
-                    title            : "No Records Found",
-                    text             : "No records are available for the selected period.",
-                    showConfirmButton: false,
-                    timer            : 2000
-                });
-                return;
-            }
-
-            const result = Array.isArray(response.responseResult) ? response.responseResult : [];
-
-            let tableResult = "";
-
-            for (var i in result) {
-                tableResult += "<tr>";
-                tableResult += "<td class='ps-4'>" + (parseInt(i)+1) + "</td>";
-                tableResult += "<td><i class='bi bi-filetype-sql fs-2x text-danger me-3'></i>"+(result[i].filename||"")+"</td>";
-                tableResult += "<td>"+(result[i].sizeFormatted||"")+"</td>";
-                tableResult += "<td>"+(result[i].created||"")+"</td>";
-                tableResult += "<td class='text-end'>";
-                tableResult += "<a href='"+url+"developer/backupdb/download/"+encodeURIComponent(result[i].filename || "")+"' target='_blank' class='btn btn-sm btn-light-primary me-2'><i class='bi bi-download me-1'></i> Download"+"</a>";
-                tableResult += "<button type='button' class='btn btn-sm btn-light-danger' onclick='deleteBackup(\""+(result[i].filename||"")+"\")'><i class='bi bi-trash me-1'></i> Delete</button>";
-                tableResult += "</td>";
-                tableResult += "</tr>";
-            }
-
-            $("#resultbackup").html(tableResult);
-            initDataTable("#backup_table","#searchtable");
-        },
-        error: function () {
-            Swal.fire({
-                icon             : "error",
-                title            : "Request Failed",
-                text             : "An error occurred while processing your request.",
-                confirmButtonText: "OK"
-            });
-        },
-        complete: function () {
-            Swal.close();
-        }
-    });
-}
-
-function deleteBackup(filename) {
-
-    if (!filename) {
-        return;
     }
 
-    Swal.fire({
-        icon             : "warning",
-        title            : "Delete Backup?",
-        html             : "Backup file <strong>" + filename + "</strong> will be permanently deleted.",
-        showCancelButton : true,
-        confirmButtonText: "Yes, Delete",
-        cancelButtonText : "Cancel",
-        reverseButtons   : true
-    }).then(function (result) {
+    async function request(action, method = 'GET') {
+        const data = method === 'GET' ? {} : {[config.dataset.csrfName]: config.dataset.csrfHash};
+        try {
+            const payload = await $.ajax({url: base + action, method, data, dataType: 'json', timeout: 930000});
+            updateToken(payload);
+            if (payload.responseCode !== '00') throw new Error(payload.responseDesc || 'Permintaan gagal diproses.');
+            return payload.responseResult;
+        } catch (error) {
+            updateToken(error.responseJSON);
+            throw new Error(error.responseJSON?.responseDesc || error.message || (error.status === 0 ? 'Koneksi terputus atau proses melebihi batas waktu. Muat ulang daftar untuk memeriksa hasil backup.' : 'Permintaan gagal. Pastikan sesi login masih aktif.'));
+        }
+    }
 
-        if (!result.isConfirmed) {
+    function setBusy(value, message) {
+        busy = value;
+        $('#btnBackupDatabase, #btnBackupDatabaseICS, #btnRefreshBackups').prop('disabled', value);
+        $('#backup_table button').prop('disabled', value);
+        status.textContent = message;
+    }
+
+    async function loadList() {
+        const rows = await request('listbackup');
+        if ($.fn.DataTable.isDataTable('#backup_table')) $('#backup_table').DataTable().destroy();
+        const body = $('#resultbackup').empty();
+        (Array.isArray(rows) ? rows : []).forEach((row, index) => {
+            const tr = $('<tr>');
+            $('<td>').addClass('ps-4').text(index + 1).appendTo(tr);
+            $('<td>').text(row.filename).appendTo(tr);
+            $('<td>').text(row.scope).appendTo(tr);
+            $('<td>').text(row.sizeFormatted).appendTo(tr);
+            $('<td>').text(row.created).appendTo(tr);
+            const actions = $('<td>').addClass('text-end pe-4');
+            $('<a>').addClass('btn btn-sm btn-light-primary me-2').attr({href: base + 'download/' + encodeURIComponent(row.filename), target: '_blank', rel: 'noopener'}).text('Unduh SQL').appendTo(actions);
+            $('<button>').attr('type', 'button').addClass('btn btn-sm btn-light-danger backup-delete').data('filename', row.filename).prop('disabled', busy).text('Hapus').appendTo(actions);
+            tr.append(actions).appendTo(body);
+        });
+        initDataTable('#backup_table', '#searchtable', 10, {language: {emptyTable: 'Belum ada file backup SQL.', search: 'Cari:', info: 'Menampilkan _START_–_END_ dari _TOTAL_ file', infoEmpty: 'Belum ada file backup', zeroRecords: 'File tidak ditemukan', lengthMenu: 'Tampilkan _MENU_ file'}});
+        return Array.isArray(rows) ? rows.length : 0;
+    }
+
+    async function refresh() {
+        if (busy) return;
+        setBusy(true, 'Memuat daftar backup...');
+        try { const count = await loadList(); setBusy(false, count + ' file backup tersedia.'); }
+        catch (error) { setBusy(false, error.message); }
+    }
+
+    async function create(scope) {
+        if (busy) return;
+        const label = scope === 'ics' ? 'ICS' : 'seluruh database';
+        const confirm = await Swal.fire({title: 'Buat dump ' + label + '?', text: scope === 'ics' ? 'Struktur dan data tabel referensi ICS akan disimpan sebagai file SQL.' : 'Seluruh database aktif, termasuk seluruh organisasi, akan disimpan sebagai file SQL.', icon: 'question', showCancelButton: true, confirmButtonText: 'Buat dump', cancelButtonText: 'Batal'});
+        if (!confirm.isConfirmed || busy) return;
+        setBusy(true, 'Membuat dump ' + label + '... Tunggu hingga proses selesai.');
+        let result;
+        try {
+            result = await request(scope === 'ics' ? 'backupics' : 'backup', 'POST');
+
+        } catch (error) {
+            setBusy(false, error.message);
+            await Swal.fire({icon: 'error', title: 'Dump belum berhasil', text: error.message});
             return;
         }
+        let refreshNote = '';
+        try { await loadList(); } catch (error) { refreshNote = ' Daftar belum diperbarui: ' + error.message; }
+        setBusy(false, 'Dump selesai: ' + result.filename + ' (' + result.tables + ' tabel/objek, ' + result.durationSeconds + ' detik).' + refreshNote);
+        const answer = await Swal.fire({icon: 'success', title: 'Dump database selesai', text: result.filename, showCancelButton: true, confirmButtonText: 'Unduh SQL', cancelButtonText: 'Tutup'});
+        if (answer.isConfirmed) window.location.assign(base + 'download/' + encodeURIComponent(result.filename));
+    }
 
-        Swal.fire({
-            title            : "Deleting",
-            html             : "Please wait while the backup file is being deleted.",
-            allowOutsideClick: false,
-            allowEscapeKey   : false,
-            showConfirmButton: false,
-            didOpen          : function () {
-                Swal.showLoading();
-            }
-        });
-
-        $.ajax({
-            url     : url + "developer/backupdb/delete/" + encodeURIComponent(filename),
-            type    : "DELETE",
-            dataType: "JSON",
-            success : function (response) {
-
-                if (response.responseCode === "00") {
-                    Swal.fire({
-                        icon             : "success",
-                        title            : "Deleted",
-                        text             : response.responseDesc || "Backup file has been deleted successfully.",
-                        showConfirmButton: false,
-                        timer            : 1500
-                    });
-
-                    loadbackuplist();
-
-                } else {
-                    Swal.fire({
-                        icon             : "error",
-                        title            : "Delete Failed",
-                        text             : response.responseDesc || "Backup file could not be deleted.",
-                        confirmButtonText: "OK"
-                    });
-                }
-            },
-            error: function (xhr) {
-
-                let message = "An error occurred while deleting the backup file.";
-
-                if (xhr.responseJSON && xhr.responseJSON.responseDesc) {
-                    message = xhr.responseJSON.responseDesc;
-                }
-
-                Swal.fire({
-                    icon             : "error",
-                    title            : "Request Failed",
-                    text             : message,
-                    confirmButtonText: "OK"
-                });
-            },
-            complete: function () {
-                Swal.close();
-            }
-        });
+    $('#btnBackupDatabase').on('click', () => create('full'));
+    $('#btnBackupDatabaseICS').on('click', () => create('ics'));
+    $('#btnRefreshBackups').on('click', refresh);
+    $('#resultbackup').on('click', '.backup-delete', async function () {
+        if (busy) return;
+        const filename = $(this).data('filename');
+        const answer = await Swal.fire({title: 'Hapus file backup?', text: filename, icon: 'warning', showCancelButton: true, confirmButtonText: 'Hapus file', cancelButtonText: 'Batal'});
+        if (!answer.isConfirmed || busy) return;
+        setBusy(true, 'Menghapus file backup...');
+        try { await request('delete/' + encodeURIComponent(filename), 'POST'); const count = await loadList(); setBusy(false, 'File backup dihapus. ' + count + ' file tersedia.'); }
+        catch (error) { setBusy(false, error.message); await Swal.fire({icon: 'error', title: 'File belum terhapus', text: error.message}); }
     });
-}
+    refresh();
+})();

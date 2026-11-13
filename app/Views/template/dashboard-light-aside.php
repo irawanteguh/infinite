@@ -11,10 +11,8 @@
             $segments = $uri->getSegments();
             $segment1 = $segments[0] ?? '';
             $segment2 = $segments[1] ?? '';
-
             $routing     = new \App\Libraries\Routingsystem();
             $routingData = $routing->system();
-
             $menu             = $routingData['menu'] ?? '';
             $menunavbar       = $routingData['menunavbar'] ?? '';
             $menuorganization = $routingData['menuorganization'] ?? '';

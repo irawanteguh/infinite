@@ -6,13 +6,14 @@
             <a href="#beranda" class="landing-brand d-inline-flex align-items-center text-decoration-none" aria-label="INFINITE beranda">
                 <img src="<?= base_url('assets/media/logos/rsudpasarminggu.png') ?>" alt="Logo RSUD Pasar Minggu" class="h-40px w-auto">
             </a>
-            <div class="landing-section-links" aria-label="Bagian halaman">
+            <button type="button" class="landing-menu-toggle" aria-controls="landing-section-links" aria-expanded="false" aria-label="Buka menu navigasi"><i class="bi bi-list" aria-hidden="true"></i></button>
+            <div id="landing-section-links" class="landing-section-links" aria-label="Bagian halaman">
                 <a class="landing-section-link is-active" href="#beranda" aria-current="location">Beranda</a>
                 <a class="landing-section-link" href="#platform">Platform</a>
                 <a class="landing-section-link" href="#mutu">Mutu &amp; PDSA</a>
                 <a class="landing-section-link" href="#ekosistem">Ekosistem</a>
             </div>
-            <div class="d-flex align-items-center gap-3">
+            <div class="landing-auth-actions d-flex align-items-center gap-3">
                 <a href="<?= esc($loginUrl) ?>" class="landing-login btn btn-primary px-5"><i class="bi bi-box-arrow-in-right me-2"></i>Masuk</a>
             </div>
         </nav>
@@ -39,7 +40,7 @@
                         <p class="text-white text-opacity-75 fs-4 fw-normal mb-8 mw-600px">
                             INFINITE menyatukan informasi klinis, operasional, mutu, organisasi, SDM, dan keuangan dalam satu ruang kerja untuk mendukung layanan yang terus berkembang.
                         </p>
-                        <div class="d-flex flex-wrap align-items-center gap-3 mb-10">
+                        <div class="landing-hero-actions d-flex flex-wrap align-items-center gap-3 mb-10">
                             <a href="<?= esc($loginUrl) ?>" class="btn btn-info btn-lg text-white px-7"><i class="bi bi-arrow-right-circle me-2"></i>Masuk ke INFINITE</a>
                             <a href="tel:+6281288646630" class="btn btn-outline-light btn-lg px-6"><i class="bi bi-headset me-2"></i>Hubungi Admin</a>
                         </div>
@@ -50,7 +51,7 @@
                     </div>
 
                     <div class="col-lg-6">
-                        <div class="card border-0 shadow-lg overflow-hidden">
+                        <div class="landing-performance-card card border-0 shadow-lg overflow-hidden">
                             <div class="card-header border-0 pt-6 px-6">
                                 <div class="d-flex align-items-center">
                                     <span class="symbol symbol-45px symbol-circle bg-light-primary me-3"><span class="symbol-label"><i class="bi bi-heart-pulse-fill text-primary fs-3"></i></span></span>
@@ -152,7 +153,7 @@
                                 <span class="badge badge-light-primary ms-auto">ANALISIS AKAR MASALAH</span>
                             </div>
                             <div class="card-body px-4 px-md-7 pt-2 pb-7">
-                                <div class="bg-light rounded-3 p-3 p-md-5">
+                                <p class="landing-diagram-hint">Geser diagram ke samping untuk melihat rincian.</p><div class="landing-fishbone-canvas bg-light rounded-3 p-3 p-md-5" tabindex="0" role="region" aria-label="Diagram Fishbone, dapat digeser ke samping">
                                     <svg class="w-100" viewBox="0 0 780 390" role="img" aria-label="Diagram fishbone dengan enam kategori penyebab">
                                         <defs><marker id="landingFishArrow" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0 0 L0 8 L9 4Z" fill="#315b80"/></marker></defs>
                                         <line x1="42" y1="195" x2="622" y2="195" stroke="#315b80" stroke-width="5" stroke-linecap="round" marker-end="url(#landingFishArrow)"/>

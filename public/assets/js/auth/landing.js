@@ -3,6 +3,25 @@
     const header = page?.querySelector('.landing-header');
     if (!header) return;
 
+    const menuToggle = header.querySelector('.landing-menu-toggle');
+    function setMenu(open, restoreFocus = false) {
+        header.classList.toggle('is-menu-open', open);
+        if (menuToggle) {
+            menuToggle.setAttribute('aria-expanded', String(open));
+            menuToggle.setAttribute('aria-label', open ? 'Tutup menu navigasi' : 'Buka menu navigasi');
+            if (restoreFocus) menuToggle.focus();
+        }
+        updateNavigation();
+    }
+    menuToggle?.addEventListener('click', () => setMenu(menuToggle.getAttribute('aria-expanded') !== 'true'));
+    header.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && header.classList.contains('is-menu-open')) setMenu(false, true);
+    });
+    document.addEventListener('click', event => {
+        if (header.classList.contains('is-menu-open') && !header.contains(event.target)) setMenu(false);
+    });
+    window.matchMedia('(min-width: 768px)').addEventListener('change', event => { if (event.matches) setMenu(false); });
+
     const links = [...header.querySelectorAll('.landing-section-link')];
     const sections = links.map(link => document.getElementById(link.hash.slice(1))).filter(Boolean);
     const palettes = {
@@ -61,6 +80,7 @@
             const section = document.getElementById(link.hash.slice(1));
             if (!section) return;
             event.preventDefault();
+            setMenu(false);
             history.pushState(null, '', link.hash);
             section.scrollIntoView({
                 behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',

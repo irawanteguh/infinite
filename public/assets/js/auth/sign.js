@@ -19,6 +19,18 @@ $(function () {
         window.addEventListener('pageshow', function () { loginPage.classList.remove('is-leaving'); });
     }
 
+    const passwordToggle = document.getElementById('login-toggle-password');
+    const passwordInput = document.getElementById('login-password');
+    if (passwordToggle && passwordInput) {
+        passwordToggle.addEventListener('click', function () {
+            const visible = passwordInput.type === 'password';
+            passwordInput.type = visible ? 'text' : 'password';
+            passwordToggle.setAttribute('aria-pressed', String(visible));
+            passwordToggle.setAttribute('aria-label', visible ? 'Sembunyikan password' : 'Tampilkan password');
+            passwordToggle.querySelector('i').className = visible ? 'bi bi-eye-slash' : 'bi bi-eye';
+        });
+    }
+
     const form   = $("#kt_sign_in_form");
     const button = $("#kt_sign_in_submit");
 

@@ -74,7 +74,8 @@
     background: #254777;
 }
 
-.landing-navigation { gap: 16px; }
+.landing-page > .landing-header { display: block; height: auto !important; flex: 0 0 auto; }
+.landing-navigation { gap: 16px; min-height: 80px; }
 .landing-brand { padding: 0; border-radius: 0; background: transparent; flex-shrink: 0; }
 .landing-section-links { display: flex; align-items: center; gap: 5px; }
 .landing-section-link {
@@ -471,3 +472,40 @@
 @media (prefers-reduced-motion: reduce) {
     .landing-quality article.card { transition: none; }
 }
+
+.landing-menu-toggle,.landing-diagram-hint{display:none}
+@media(max-width:767.98px){
+    .landing-navigation{min-height:68px;display:grid!important;grid-template-columns:minmax(0,1fr) auto auto;gap:0 8px;padding:12px 20px!important}
+    .landing-brand{grid-column:1;grid-row:1;min-width:0;max-width:190px}
+    .landing-header .landing-brand img{width:100%!important;height:auto!important;max-height:36px;object-fit:contain;object-position:left}
+    .landing-menu-toggle{display:flex;grid-column:2;grid-row:1;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--nav-color);border-radius:10px;background:transparent;color:var(--nav-color);padding:0}
+    .landing-menu-toggle i{color:inherit;font-size:23px}.landing-header.is-menu-open .landing-menu-toggle .bi-list:before{content:"\f62a"}
+    .landing-auth-actions{grid-column:3;grid-row:1}.landing-header .landing-login{display:flex;align-items:center;justify-content:center;min-height:44px;font-size:12px;padding:10px 12px!important;white-space:nowrap}
+    .landing-section-links{display:none;grid-column:1/-1;grid-row:2;order:initial;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;width:100%;overflow:visible;padding:12px 0 0}
+    .landing-header.is-menu-open .landing-section-links{display:grid}.landing-section-link{font-size:12px;min-height:44px;display:flex;align-items:center;justify-content:center;white-space:normal;padding:10px 8px}
+    .landing-menu-toggle:focus-visible{outline:2px solid var(--nav-color);outline-offset:3px}
+    .landing-page .container-xxl{padding-left:20px!important;padding-right:20px!important}.landing-page main{min-width:0}
+    .landing-page main>section{padding-top:44px!important;padding-bottom:44px!important}
+    .landing-hero h1{font-size:clamp(28px,7.8vw,36px)!important;line-height:1.25!important;letter-spacing:-.65px}
+    .landing-hero .col-lg-6>p{font-size:14px!important;line-height:1.85;max-width:560px}
+    .landing-hero .col-lg-6>.badge{white-space:normal;font-size:10px;line-height:1.7;color:#bcefff!important;max-width:100%;padding:9px 12px!important}.landing-hero .col-lg-6>.badge i{color:inherit!important}
+    .landing-hero-actions{display:grid!important;grid-template-columns:1fr 1fr;align-items:stretch!important;gap:12px!important;margin-bottom:24px!important}
+    .landing-hero-actions .btn{display:flex;align-items:center;justify-content:center;min-height:48px;padding:13px 16px!important;font-size:12px;line-height:1.6;border-radius:10px}
+    .landing-hero .row{--bs-gutter-y:28px}.landing-performance-card{border-radius:16px}.landing-performance-card .card-header{padding:20px 18px 14px!important;gap:12px;align-items:flex-start}
+    .landing-performance-card .card-header>div{min-width:0}.landing-performance-card .card-header>.badge{margin-left:0!important;font-size:9px;padding:7px 9px}
+    .landing-performance-card .card-header h2{font-size:14px!important}.landing-performance-card .card-body{padding:8px 18px 20px!important}
+    .landing-performance-card .card-body .col-6{min-width:0}.landing-performance-card .card-body .col-6>.rounded-3{padding:14px!important}.landing-performance-card .card-body .col-6 .fs-2{font-size:22px!important}
+    .landing-page .display-6{font-size:25px!important;line-height:1.35}.landing-page section>.container-xxl>.text-center{margin-bottom:28px!important}.landing-page section>.container-xxl>.text-center>p{font-size:14px!important;line-height:1.8}
+    .landing-perspectives .row{--bs-gutter-y:18px}.landing-perspectives .card{border-radius:18px}.landing-perspectives .card-body{padding:22px!important}.landing-perspectives .card .symbol{margin-bottom:18px!important}.landing-perspectives .card p{font-size:13px;line-height:1.85}
+    .landing-quality .row{--bs-gutter-y:20px}.landing-quality article.card{border-radius:18px}.landing-quality .card-header{padding:20px!important;flex-direction:column;align-items:flex-start;gap:12px;min-height:0}
+    .landing-quality .card-header>.badge{margin-left:0!important;font-size:9px;padding:7px 9px}.landing-quality .card-header h3{font-size:16px!important}.landing-quality .card-header p{font-size:11px!important;line-height:1.8}
+    .landing-quality .card-body{padding:16px!important}.landing-quality .card-body>.bg-light{border-radius:12px!important}
+    .landing-fishbone-canvas{overflow-x:auto;-webkit-overflow-scrolling:touch}.landing-fishbone-canvas svg{width:560px!important;max-width:none;height:auto;display:block}
+    .landing-diagram-hint{display:block;font-size:10px;line-height:1.7;color:#718aa0;margin:0 0 10px}.landing-fishbone-canvas:focus-visible{outline:2px solid #188dc7;outline-offset:3px}
+    .landing-quality .landing-pdsa-diagram{max-width:350px}.landing-quality .card-body>.d-flex:last-child{font-size:12px!important;line-height:1.8}
+    .landing-connect-banner{padding:24px!important;border-radius:20px;gap:22px!important}.landing-connect-banner>div{align-items:flex-start!important;gap:14px!important}.landing-connect-banner h2{font-size:20px;line-height:1.45}.landing-connect-banner p{font-size:12px;line-height:1.8}
+    .landing-connect-banner .symbol,.landing-connect-banner .symbol-label{width:44px!important;height:44px!important;border-radius:12px!important}.landing-connect-banner .btn{width:100%;font-size:13px;min-height:48px;border-radius:10px}
+    .landing-page>footer{padding-top:22px!important;padding-bottom:22px!important}.landing-page>footer .fs-7{font-size:11px!important;line-height:1.9}
+}
+@media(max-width:479.98px){.landing-hero-actions{grid-template-columns:1fr}.landing-performance-card .card-header{flex-direction:column}.landing-hero .col-lg-6>.d-flex:last-child{gap:12px!important;font-size:11px}.landing-quality .card-header>.d-flex{align-items:flex-start!important}.landing-quality .card-header .symbol{flex-shrink:0}}
+@media(max-width:767.98px){.landing-hero-actions .btn-outline-light{border:1px solid rgba(186,227,248,.3)!important;background:rgba(255,255,255,.04);color:#d8edf9!important}}

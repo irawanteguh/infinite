@@ -5,7 +5,7 @@ namespace Modules\Additional\Models;
 use CodeIgniter\Model;
 
 class ViewMDCModel extends Model{
-    protected $DBGroup = 'default';
+    protected $DBGroup = null;
 
     function datamastermdc(){
         $query = "

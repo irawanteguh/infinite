@@ -5,7 +5,7 @@ namespace Modules\Ur\Models;
 use CodeIgniter\Model;
 
 class AnalystslModel extends Model{
-    protected $DBGroup = 'default';
+    protected $DBGroup = null;
 
     public function summary($koders, $year)
     {

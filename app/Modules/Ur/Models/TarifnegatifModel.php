@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class TarifnegatifModel extends Model
 {
-    protected $DBGroup = 'default';
+    protected $DBGroup = null;
 
     public function periode()
     {

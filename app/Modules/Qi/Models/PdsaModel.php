@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class PdsaModel extends Model
 {
-    protected $DBGroup = 'default';
+    protected $DBGroup = null;
 
     public function departments($groupId, $orgId, $userId)
     {

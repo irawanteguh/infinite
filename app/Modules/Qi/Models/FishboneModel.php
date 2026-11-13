@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class FishboneModel extends Model
 {
-    protected $DBGroup = 'default';
+    protected $DBGroup = null;
 
     public function departments($groupid, $orgid)
     {

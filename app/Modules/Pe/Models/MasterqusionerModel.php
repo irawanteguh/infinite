@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class MasterqusionerModel extends Model
 {
-    protected $DBGroup = 'default';
+    protected $DBGroup = null;
     private const INSTRUMENTS = 'dt01_pe_instrument_ms';
     private const QUESTIONS = 'dt01_pe_question_ms';
     private const DOMAINS = 'dt01_pe_domain_ms';

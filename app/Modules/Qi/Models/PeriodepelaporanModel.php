@@ -5,7 +5,7 @@ namespace Modules\Qi\Models;
 use CodeIgniter\Model;
 
 class PeriodepelaporanModel extends Model{
-    protected $DBGroup = 'default';
+    protected $DBGroup = null;
 
     function datauser($groupid,$orgid){
         $query =

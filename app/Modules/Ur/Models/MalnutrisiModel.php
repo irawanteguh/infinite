@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class MalnutrisiModel extends Model
 {
-    protected $DBGroup = 'default';
+    protected $DBGroup = null;
 
     public function periode()
     {

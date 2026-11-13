@@ -5,7 +5,7 @@ namespace Modules\Ur\Models;
 use CodeIgniter\Model;
 
 class DiagnosaModel extends Model{
-    protected $DBGroup = 'default';
+    protected $DBGroup = null;
 
     function periode(){
         $query = "

@@ -5,7 +5,7 @@ namespace Modules\Ics\Models;
 use CodeIgniter\Model;
 
 class MastermdcModel extends Model{
-    protected $DBGroup = 'default';
+    protected $DBGroup = null;
 
     function datamastersourcedocument(){
         $query = "

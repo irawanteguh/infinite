@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class PremModel extends Model
 {
-    protected $DBGroup = 'default';
+    protected $DBGroup = null;
     protected $skmTransactions = false;
     protected $instrumentType = 'PREM';
     protected $responseHeader = 'dt01_pe_prem_response_hd';

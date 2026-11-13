@@ -5,7 +5,7 @@ namespace Modules\Ur\Models;
 use CodeIgniter\Model;
 
 class AuditkodingModel extends Model{
-    protected $DBGroup = 'default';
+    protected $DBGroup = null;
 
     public function sequencingDetails($koders, $year, $care)
     {

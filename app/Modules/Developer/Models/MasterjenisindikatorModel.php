@@ -5,7 +5,7 @@ namespace Modules\Developer\Models;
 use CodeIgniter\Model;
 
 class MasterjenisindikatorModel extends Model{
-    protected $DBGroup = 'default';
+    protected $DBGroup = null;
 
     function datamasterjenisindikator(){
         $query =

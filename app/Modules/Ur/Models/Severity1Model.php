@@ -4,7 +4,7 @@ use CodeIgniter\Model;
 
 class Severity1Model extends Model
 {
-    protected $DBGroup = 'default';
+    protected $DBGroup = null;
     public function periode()
     {
         return array_map(static function ($year) { return (object) ['periode' => $year]; }, range((int) date('Y'), 2014));

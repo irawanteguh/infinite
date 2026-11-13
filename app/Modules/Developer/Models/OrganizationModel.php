@@ -5,7 +5,7 @@ namespace Modules\Developer\Models;
 use CodeIgniter\Model;
 
 class OrganizationModel extends Model{
-    protected $DBGroup = 'default';
+    protected $DBGroup = null;
 
     function masterorganization(){
         $query =

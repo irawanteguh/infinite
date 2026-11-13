@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class SummaryreportModel extends Model
 {
-    protected $DBGroup = 'default';
+    protected $DBGroup = null;
 
     public function periodeHeader($groupId, $orgId, $periodeId): ?object
     {

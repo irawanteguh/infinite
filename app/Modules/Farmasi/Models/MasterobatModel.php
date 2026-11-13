@@ -5,7 +5,7 @@ namespace Modules\Farmasi\Models;
 use CodeIgniter\Model;
 
 class MasterobatModel extends Model{
-    protected $DBGroup = 'default';
+    protected $DBGroup = null;
 
     public function masterobat(){
         $query = "

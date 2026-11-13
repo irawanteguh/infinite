@@ -5,7 +5,7 @@ namespace App\Models;
 use CodeIgniter\Model;
 
 class Modelur extends Model{
-    protected $DBGroup = 'default';
+    protected $DBGroup = null;
 
     function cekdatastatusur($nomorsep){
         $query =

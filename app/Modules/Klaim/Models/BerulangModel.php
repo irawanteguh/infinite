@@ -5,7 +5,7 @@ namespace Modules\Klaim\Models;
 use CodeIgniter\Model;
 
 class BerulangModel extends Model{
-    protected $DBGroup = 'default';
+    protected $DBGroup = null;
 
     function periode(){
         $query = "

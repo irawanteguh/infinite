@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class CasemixindexModel extends Model
 {
-    protected $DBGroup = 'default';
+    protected $DBGroup = null;
     private $aggregateCache = [];
 
     public function periode()

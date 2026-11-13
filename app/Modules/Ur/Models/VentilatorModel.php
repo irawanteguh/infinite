@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class VentilatorModel extends Model
 {
-    protected $DBGroup = 'default';
+    protected $DBGroup = null;
 
     public function periode()
     {

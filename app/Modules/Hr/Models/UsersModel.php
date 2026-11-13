@@ -5,7 +5,7 @@ namespace Modules\Hr\Models;
 use CodeIgniter\Model;
 
 class UsersModel extends Model{
-    protected $DBGroup = 'default';
+    protected $DBGroup = null;
 
     function datamasterdepartment($groupid,$orgid){
         $query =

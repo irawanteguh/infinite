@@ -5,7 +5,7 @@ namespace Modules\Qi\Models;
 use CodeIgniter\Model;
 
 class IndikatorunitModel extends Model{
-    protected $DBGroup = 'default';
+    protected $DBGroup = null;
 
     function datamasterindikator($groupid,$orgid){
         $query =

@@ -9,12 +9,26 @@
     const data = JSON.parse(source.textContent);
     if (!data || !document.getElementById('pe-trend-chart')) return;
     if (typeof ApexCharts === 'undefined') {
+        document.getElementById('pe-score-chart').textContent = 'Grafik belum dapat dimuat. Lihat nilai bulanan di bawah.';
         document.getElementById('pe-trend-chart').textContent = 'Grafik belum dapat dimuat. Lihat data bulanan di bawah.';
         document.getElementById('pe-service-chart').textContent = 'Rincian pelayanan tersedia di sebelah.';
         return;
     }
     const colors = ['#087e82', '#93b6c3', '#7fbea9'];
-    const motion = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    new ApexCharts(document.getElementById('pe-score-chart'), {
+        chart: {type: 'line', height: 300, toolbar: {show: false}, fontFamily: 'Poppins, sans-serif', animations: {enabled: false}, foreColor: '#8a9fa5'},
+        series: data.scoreSeries, colors: ['#087e82', '#527fbc', '#cb8b37'],
+        stroke: {width: 3, curve: 'straight'},
+        markers: {size: 4, hover: {sizeOffset: 2}},
+        dataLabels: {enabled: false},
+        grid: {borderColor: '#edf2f3', strokeDashArray: 4},
+        xaxis: {categories: data.labels, axisBorder: {show: false}, axisTicks: {show: false}, labels: {rotate: -35, hideOverlappingLabels: true}},
+        yaxis: {min: 1, max: 5, tickAmount: 4, labels: {formatter: (value) => value.toFixed(0)}},
+        legend: {position: 'top', horizontalAlign: 'left', fontSize: '11px'},
+        tooltip: {shared: true, intersect: false, y: {formatter: (value) => value == null ? 'Belum ada jawaban' : value.toLocaleString('id-ID', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' / 5'}},
+        noData: {text: 'Belum ada nilai pada periode ini'},
+        responsive: [{breakpoint: 576, options: {chart: {height: 280}, legend: {fontSize: '9px'}}}],
+    }).render();
     new ApexCharts(document.getElementById('pe-trend-chart'), {
         chart: {type: 'bar', height: 285, toolbar: {show: false}, fontFamily: 'Poppins, sans-serif', animations: {enabled: false}, foreColor: '#8a9fa5'},
         series: data.series, colors: colors,

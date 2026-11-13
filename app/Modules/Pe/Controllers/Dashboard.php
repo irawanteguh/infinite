@@ -52,4 +52,40 @@ class Dashboard extends BaseController
             'contents' => view('Modules\Pe\Views\v_dashboard', compact('filters', 'instruments', 'data', 'error')),
         ]);
     }
+    public function annualreport()
+    {
+        if (!session()->get('loggedin')) return redirect()->to(site_url('/'));
+        $group = (string) session()->get('groupid');
+        $org = (string) session()->get('orgid');
+        if ($group === '' || $org === '') return response()->setStatusCode(401)->setBody('Sesi organisasi tidak tersedia. Silakan login kembali.');
+        $year = request()->getGet('year');
+        if (!is_string($year) || !preg_match('/^[0-9]{4}$/D', $year) || (int) $year < 2000 || (int) $year > (int) date('Y')) {
+            return response()->setStatusCode(422)->setBody('Pilih tahun antara 2000 dan tahun berjalan.');
+        }
+        try {
+            $model = new DashboardModel();
+            $data = $model->analytics($group, $org, ['start' => $year . '-01-01', 'end' => $year . '-12-31', 'service' => '', 'instrument' => '']);
+            $html = view('Modules\Pe\Views\v_annualreport_pdf', [
+                'data' => $data, 'year' => $year,
+                'organization' => (string) (session()->get('orgname') ?: 'Rumah Sakit'),
+                'generatedAt' => date('d/m/Y H:i'), 'isCurrentYear' => $year === date('Y'),
+            ]);
+            $pdf = new \Mpdf\Mpdf([
+                'format' => 'A4', 'margin_left' => 14, 'margin_right' => 14,
+                'margin_top' => 16, 'margin_bottom' => 18,
+                'tempDir' => WRITEPATH . 'cache', 'default_font' => 'dejavusans',
+            ]);
+            $pdf->SetTitle('Laporan Tahunan Patient Experience ' . $year);
+            $pdf->SetAuthor('INFINITE');
+            $pdf->SetHTMLFooter('<div style="font-size:8pt;color:#718096;text-align:right">INFINITE | Patient Experience ' . $year . ' | Halaman {PAGENO} / {nbpg}</div>');
+            $pdf->WriteHTML($html);
+            return response()->setHeader('Content-Type', 'application/pdf')
+                ->setHeader('Content-Disposition', 'inline; filename="Laporan_PE_' . $year . '.pdf"')
+                ->setHeader('Cache-Control', 'private, no-store')->setHeader('X-Content-Type-Options', 'nosniff')
+                ->setBody($pdf->Output('', 'S'));
+        } catch (\Throwable $e) {
+            log_message('error', 'PE annual PDF: {message}', ['message' => $e->getMessage()]);
+            return response()->setStatusCode(503)->setBody('Laporan PDF belum dapat dibuat. Silakan coba kembali atau hubungi administrator.');
+        }
+    }
 }

@@ -5,6 +5,8 @@ class DatabaseDump
 {
     public const ICS_TABLES = ['dt01_ics_source_document','dt01_ics_mdc','dt01_ics_icd_code','dt01_ics_ch3_section','dt01_ics_ch3_section_icd_scope','dt01_ics_coding_rule','dt01_ics_coding_rule_code','dt01_ics_case_example','dt01_ics_case_example_item','dt01_ics_idrg_dc','dt01_ics_special_code_group','dt01_ics_special_code_group_item','dt01_ics_special_code_group_dc','dt01_ics_idrg_error_code','dt01_ics_idrg_error_required_code','dt01_ics_drug_external_cause_map'];
 
+    public const STRUCTURE_ONLY_TABLES = ['dt01_bpjs_pending_klaim', 'dt01_bpjs_ur_dt'];
+
     private $connection;
 
     public function __construct(?\CodeIgniter\Database\BaseConnection $connection = null)
@@ -34,6 +36,7 @@ class DatabaseDump
         $filename = 'infinite_backup_' . ($scope === 'ics' ? 'ics_' : '') . date('Ymd_His') . '_' . substr($id,0,8) . '.sql';
         $final = $directory . '/' . $filename;
         $partial = $final . '.part';
+        $schema = $temporary . 'schema-' . $id . '.sql';
         $process = null;
         $started = microtime(true);
         try {
@@ -50,11 +53,21 @@ class DatabaseDump
             try { if (fwrite($handle, $settings) !== strlen($settings)) throw new \RuntimeException('Konfigurasi dump sementara gagal ditulis.'); } finally { fclose($handle); }
             $command = [$binary, '--defaults-extra-file=' . $options, '--single-transaction', '--quick', '--skip-lock-tables', '--no-tablespaces', '--hex-blob', '--default-character-set=utf8mb4', '--triggers', '--result-file=' . $partial];
             if ($scope === 'full') { $command[] = '--routines'; $command[] = '--events'; }
+            // Keep these tables' definitions, while excluding their potentially large data.
+            $structureOnly = array_values(array_intersect(self::STRUCTURE_ONLY_TABLES, $tables));
+            $schemaCommand = null;
+            if ($structureOnly) {
+                $schemaCommand = [$binary, '--defaults-extra-file=' . $options, '--no-data', '--skip-lock-tables', '--no-tablespaces', '--default-character-set=utf8mb4', '--triggers', '--result-file=' . $schema, '--', $db->database];
+                $schemaCommand = array_merge($schemaCommand, $structureOnly);
+                foreach ($structureOnly as $table) $command[] = '--ignore-table=' . $db->database . '.' . $table;
+            }
             $command[] = '--';
             $command[] = $db->database;
             if ($scope === 'ics') $command = array_merge($command, $tables);
             @set_time_limit(0);
-            $process = proc_open($command, [0=>['pipe','r'], 1=>['file',PHP_OS_FAMILY === 'Windows' ? 'NUL' : '/dev/null','w'], 2=>['file',$errors,'w']], $pipes, null, null, ['bypass_shell'=>true,'create_new_console'=>false]);
+            foreach ($schemaCommand === null ? [$command] : [$command, $schemaCommand] as $dumpCommand) {
+            $output = $dumpCommand === $command ? $partial : $schema;
+            $process = proc_open($dumpCommand, [0=>['pipe','r'], 1=>['file',PHP_OS_FAMILY === 'Windows' ? 'NUL' : '/dev/null','w'], 2=>['file',$errors,'w']], $pipes, null, null, ['bypass_shell'=>true,'create_new_console'=>false]);
             if (!is_resource($process)) throw new \RuntimeException('Utilitas dump database gagal dijalankan.');
             fclose($pipes[0]);
             do {
@@ -69,12 +82,28 @@ class DatabaseDump
             $closed = proc_close($process);
             $process = null;
             $exit = $status['exitcode'] >= 0 ? $status['exitcode'] : $closed;
-            clearstatcache(true, $partial);
-            if ($exit !== 0 || !is_file($partial) || filesize($partial) === 0) {
+            clearstatcache(true, $output);
+            if ($exit !== 0 || !is_file($output) || filesize($output) === 0) {
                 $detail = is_file($errors) ? trim((string)file_get_contents($errors)) : '';
                 if ($db->password !== '') $detail = str_replace($db->password, '[redacted]', $detail);
                 log_message('error', 'Database dump failed: {detail}', ['detail'=>mb_substr($detail,0,2000)]);
                 throw new \RuntimeException('Dump database gagal. Periksa izin akun database serta log server; file yang belum lengkap tidak disimpan.');
+            }
+            }
+            if ($schemaCommand !== null) {
+                $destination = fopen($schema, 'ab');
+                $source = fopen($partial, 'rb');
+                try {
+                    if (!$destination || !$source || stream_copy_to_stream($source, $destination) !== filesize($partial)) {
+                        throw new \RuntimeException('Struktur tabel gagal digabungkan ke dump database.');
+                    }
+                } finally {
+                    if (is_resource($source)) fclose($source);
+                    if (is_resource($destination)) fclose($destination);
+                }
+            }
+            if ($schemaCommand !== null && !copy($schema, $partial)) {
+                throw new \RuntimeException('File dump gabungan gagal disimpan.');
             }
             $promoted = false;
             for ($attempt = 0; $attempt < 30; $attempt++) {
@@ -86,7 +115,7 @@ class DatabaseDump
             return ['filename'=>$filename,'size'=>filesize($final),'tables'=>count($tables),'scope'=>$scope,'durationSeconds'=>round(microtime(true)-$started,2)];
         } finally {
             if (is_resource($process)) { proc_terminate($process); proc_close($process); }
-            foreach ([$options,$errors,$partial] as $path) {
+            foreach ([$options,$errors,$partial,$schema] as $path) {
                 if (!is_file($path)) continue;
                 for ($attempt = 0; $attempt < 30; $attempt++) {
                     if (@unlink($path) || !is_file($path)) break;

@@ -13,3 +13,20 @@ table thead tr > :last-child {
 table tbody tr > :first-child {
     padding-inline-start: 1rem !important;
 }
+
+/* Tables use an open layout; the surrounding module card keeps its border. */
+body :is(.table-responsive,[class*="-table-scroll"],[class*="-table-wrap"],[class*="-table-container"],.pe-skm-table-card){
+    border:0!important;box-shadow:none!important
+}
+body table.table{
+    border:0!important;box-shadow:none!important
+}
+body table.table :is(thead,tbody,tfoot,tr){border-inline:0!important}
+body table.table :is(th,td){border-inline:0!important}
+body table.table thead,body table.table thead tr:first-child,body table.table thead tr:first-child>th{
+    border-top:0!important
+}
+body table.table>tbody:last-child,body table.table>tbody:last-child>tr:last-child,body table.table>tbody:last-child>tr:last-child>td,
+body table.table>tfoot:last-child,body table.table>tfoot:last-child>tr:last-child,body table.table>tfoot:last-child>tr:last-child>:is(th,td){
+    border-bottom:0!important
+}

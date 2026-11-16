@@ -1,9 +1,6 @@
 <link rel="stylesheet" href="<?= base_url('assets/css/ur/dashboard.css?v=' . filemtime(FCPATH . 'assets/css/ur/dashboard.css')) ?>">
 <div id="ur-executive" class="ur-dashboard cm-page">
-    <section class="ur-hero">
-        <div><div class="ur-eyebrow">UTILIZATION REVIEW / CASEMIX ANALYTICS</div><h1>Komposisi kasus, perspektif kinerja.</h1><p>Telusuri kelompok kasus, severity rawat inap, dan distribusi CMG dalam satu ringkasan.</p><div id="cm-coverage" class="ur-coverage">Pilih cakupan untuk meninjau data.</div></div>
-        <div class="ur-hero-actions"><button id="cm-refresh" type="button" class="btn btn-sm ur-button"><i class="bi bi-arrow-clockwise"></i> Perbarui</button><button id="cm-print" type="button" class="btn btn-sm ur-button"><i class="bi bi-printer"></i> Cetak ringkasan</button></div>
-    </section>
+    <?php include APPPATH . 'Modules/Ur/Pageheader/casemixindex.php'; ?>
     <div class="ur-filterbar">
         <div class="ur-filter"><label for="cm-month">Bulan pulang</label><select id="cm-month" class="form-select form-select-sm form-select-solid"><option value="">Semua bulan</option><?php foreach (['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'] as $i => $month): ?><option value="<?= $i + 1 ?>"><?= $month ?></option><?php endforeach; ?></select></div>
         <div class="ur-filter"><label for="cm-service">Jenis layanan</label><select id="cm-service" class="form-select form-select-sm form-select-solid"><option value="">Semua layanan</option><option value="1">Rawat inap</option><option value="2">Rawat jalan</option></select></div>

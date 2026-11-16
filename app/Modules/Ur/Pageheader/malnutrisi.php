@@ -1,0 +1,1 @@
+<section class="ur-hero app-page-heading"><div><h1>Analisis kasus malnutrisi</h1><p>Gambaran episode dengan diagnosis malnutrisi energi-protein ICD-10 E40–E46.</p><div class="ur-coverage" id="mal-coverage">Memuat cakupan data…</div></div></section>

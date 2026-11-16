@@ -46,6 +46,10 @@
         }
 
         $directory = APPPATH . 'Modules/' . ucfirst($segment1) . '/Toolbar/' . $segment2 . '.php';
+        if (!is_file($directory)) {
+            // Some existing modules use a lowercase toolbar directory.
+            $directory = APPPATH . 'Modules/' . ucfirst($segment1) . '/toolbar/' . $segment2 . '.php';
+        }
         if (file_exists($directory)) {
             include $directory;
         }

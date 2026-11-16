@@ -1,8 +1,5 @@
 <div id="pe-master" class="prem-page pe-master-page" data-endpoint="<?= esc(site_url('pe/masterqusioner'), 'attr') ?>" data-csrf-name="<?= esc(csrf_token(), 'attr') ?>" data-csrf-hash="<?= esc(csrf_hash(), 'attr') ?>">
-    <div class="pe-master-heading">
-        <div><span class="prem-eyebrow">PATIENT EXPERIENCE</span><h1>Master Kuesioner</h1><p>Kelola instrumen, domain, dan pertanyaan SKM, PREM, serta PROM.</p></div>
-        <div class="pe-master-actions"><button type="button" class="btn btn-light-primary" id="pe-manage-domains"><i class="bi bi-list-ul"></i> Master domain</button><button type="button" class="btn prem-btn-primary" id="pe-add-instrument"><i class="bi bi-plus-lg"></i> Tambah instrumen</button></div>
-    </div>
+    <?php include APPPATH . 'Modules/Pe/Pageheader/masterqusioner.php'; ?>
     <div id="pe-message" class="alert d-none" role="alert" aria-live="polite"></div>
     <div class="pe-master-stats" id="pe-summary" aria-label="Ringkasan master kuesioner">
         <article class="prem-card pe-master-stat"><div><span>Instrumen kuesioner</span><strong id="pe-count-instruments">0</strong><p>Instrumen pada rumah sakit aktif</p></div><i class="bi bi-clipboard-data"></i></article>
@@ -24,7 +21,6 @@
             </div>
             <div class="pe-master-table-heading"><div><span class="prem-eyebrow">DAFTAR PERTANYAAN</span><h2>Pertanyaan kuesioner</h2></div><div class="pe-master-table-filters"><div class="pe-master-search"><i class="bi bi-search"></i><input type="search" id="pe-search" class="form-control form-control-solid" placeholder="Cari pertanyaan atau domain…" aria-label="Cari pertanyaan atau domain"></div><select id="pe-status-filter" class="form-select form-select-solid" aria-label="Filter status"><option value="">Semua status</option><option value="1">Aktif</option><option value="0">Nonaktif</option></select></div></div>
             <p class="pe-master-scroll-note">Geser tabel ke samping untuk melihat semua kolom.</p><div class="table-responsive pe-master-table-scroll" tabindex="0" role="region" aria-label="Tabel pertanyaan kuesioner, dapat digulir"><table class="table pe-master-table align-middle gy-2"><thead><tr><th>Urutan</th><th>Domain</th><th>Pertanyaan</th><th>Status</th><th class="text-end">Aksi</th></tr></thead><tbody id="pe-questions"><tr><td colspan="5" class="text-center text-muted">Memuat master pertanyaan…</td></tr></tbody></table></div>
-            <div id="pe-result-count" class="pe-master-result" aria-live="polite"></div>
         </div>
     </section>
 </div>

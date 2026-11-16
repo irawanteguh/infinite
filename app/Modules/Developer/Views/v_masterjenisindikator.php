@@ -1,5 +1,5 @@
-<div class="card">
-    <div class="card-header border-0 pt-6">
+<div class="indicator-types-page"><?php include APPPATH . 'Modules/Developer/Pageheader/masterjenisindikator.php'; ?><section class="card it-card">
+    <div class="card-header border-0 pt-6"><div class="it-table-heading"><h2>Daftar jenis indikator</h2><p>Cari kategori dan kelola status aktif melalui menu Actions.</p></div>
         <div class="card-title">
             <div class="d-flex align-items-center position-relative my-1">
                 <span class="svg-icon svg-icon-1 position-absolute ms-6">
@@ -8,20 +8,20 @@
                         <path d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z" fill="black"></path>
                     </svg>
                 </span>
-                <input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Search Indikator" id="searchtable">
+                <input type="search" aria-label="Cari jenis indikator" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Cari jenis indikator..." id="searchtable">
             </div>
         </div>
     </div>
 
     <div class="card-body pt-0">
-        <div class="table-responsive">
+        <div class="table-responsive it-table-scroll" role="region" tabindex="0" aria-label="Daftar jenis indikator, dapat digulir">
             <table class="table align-middle table-row-dashed gy-2" id="datamasterjenisindikator_table">
                 <thead>
                     <tr class="fw-bolder text-muted bg-light">
                         <th class="text-start ps-4 rounded-start">#</th>
-                        <th>Indicator Category</th>
+                        <th>Jenis indikator</th>
                         <th>Status</th>
-                        <th>Created By</th>
+                        <th>Dibuat oleh</th>
                         <th class="text-end pe-4 rounded-end">Actions</th>
                     </tr>
                 </thead>
@@ -29,4 +29,4 @@
             </table>
         </div>
     </div>
-</div>
+</section></div>

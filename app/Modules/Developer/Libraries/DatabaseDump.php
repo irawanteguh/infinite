@@ -3,7 +3,6 @@ namespace Modules\Developer\Libraries;
 
 class DatabaseDump
 {
-    public const ICS_TABLES = ['dt01_ics_source_document','dt01_ics_mdc','dt01_ics_icd_code','dt01_ics_ch3_section','dt01_ics_ch3_section_icd_scope','dt01_ics_coding_rule','dt01_ics_coding_rule_code','dt01_ics_case_example','dt01_ics_case_example_item','dt01_ics_idrg_dc','dt01_ics_special_code_group','dt01_ics_special_code_group_item','dt01_ics_special_code_group_dc','dt01_ics_idrg_error_code','dt01_ics_idrg_error_required_code','dt01_ics_drug_external_cause_map'];
 
     public const STRUCTURE_ONLY_TABLES = ['dt01_bpjs_pending_klaim', 'dt01_bpjs_ur_dt'];
 
@@ -16,7 +15,7 @@ class DatabaseDump
 
     public function create(string $scope = 'full'): array
     {
-        if (!in_array($scope, ['full','ics'], true)) throw new \InvalidArgumentException('Jenis backup tidak valid.');
+        if ($scope !== 'full') throw new \InvalidArgumentException('Jenis backup tidak valid.');
         if (!function_exists('proc_open')) throw new \RuntimeException('Fungsi proc_open perlu diaktifkan agar dump database dapat dijalankan.');
         $db = $this->connection ?? db_connect();
         if ($db->DBDriver !== 'MySQLi') throw new \RuntimeException('Dump ini mendukung database MySQL/MariaDB.');
@@ -33,7 +32,7 @@ class DatabaseDump
         $id = bin2hex(random_bytes(8));
         $options = $temporary . '/dump-' . $id . '.cnf';
         $errors = $temporary . '/dump-' . $id . '.log';
-        $filename = 'infinite_backup_' . ($scope === 'ics' ? 'ics_' : '') . date('Ymd_His') . '_' . substr($id,0,8) . '.sql';
+        $filename = 'infinite_backup_' . date('Ymd_His') . '_' . substr($id,0,8) . '.sql';
         $final = $directory . '/' . $filename;
         $partial = $final . '.part';
         $schema = $temporary . 'schema-' . $id . '.sql';
@@ -41,7 +40,6 @@ class DatabaseDump
         $started = microtime(true);
         try {
             $tables = $db->listTables();
-            if ($scope === 'ics') $tables = array_values(array_intersect(self::ICS_TABLES, $tables));
             if (!$tables) throw new \RuntimeException('Tidak ada tabel yang dapat di-backup.');
             $settings = "[client]\n";
             foreach (['host'=>$db->hostname, 'port'=>$db->port, 'user'=>$db->username, 'password'=>$db->password] as $key=>$value) {
@@ -52,7 +50,7 @@ class DatabaseDump
             chmod($options, 0600);
             try { if (fwrite($handle, $settings) !== strlen($settings)) throw new \RuntimeException('Konfigurasi dump sementara gagal ditulis.'); } finally { fclose($handle); }
             $command = [$binary, '--defaults-extra-file=' . $options, '--single-transaction', '--quick', '--skip-lock-tables', '--no-tablespaces', '--hex-blob', '--default-character-set=utf8mb4', '--triggers', '--result-file=' . $partial];
-            if ($scope === 'full') { $command[] = '--routines'; $command[] = '--events'; }
+            $command[] = '--routines'; $command[] = '--events';
             // Keep these tables' definitions, while excluding their potentially large data.
             $structureOnly = array_values(array_intersect(self::STRUCTURE_ONLY_TABLES, $tables));
             $schemaCommand = null;
@@ -63,7 +61,6 @@ class DatabaseDump
             }
             $command[] = '--';
             $command[] = $db->database;
-            if ($scope === 'ics') $command = array_merge($command, $tables);
             @set_time_limit(0);
             foreach ($schemaCommand === null ? [$command] : [$command, $schemaCommand] as $dumpCommand) {
             $output = $dumpCommand === $command ? $partial : $schema;

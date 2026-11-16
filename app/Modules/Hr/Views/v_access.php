@@ -1,5 +1,5 @@
 <main id="hr-access" class="prem-page pe-dashboard access-page" data-endpoint="<?= esc(site_url('hr/access'),'attr') ?>" data-csrf-name="<?= esc(csrf_token(),'attr') ?>" data-csrf-hash="<?= esc(csrf_hash(),'attr') ?>">
-    <div class="pe-page-heading"><div><span class="prem-eyebrow">USER &amp; MODULE ACCESS</span><h1>Akses pengguna</h1><p>Atur modul yang dapat digunakan setiap pengguna dalam organisasi Anda.</p></div><div class="pe-heading-actions"><button type="button" id="access-reload" class="btn btn-light"><i class="bi bi-arrow-clockwise" aria-hidden="true"></i> Muat ulang</button></div></div>
+    <?php include APPPATH . 'Modules/Hr/Pageheader/access.php'; ?>
     <div id="access-message" class="alert d-none" role="status" aria-live="polite"></div>
     <section class="pe-kpis access-kpis" aria-label="Ringkasan hak akses">
         <article class="prem-card pe-kpi"><div class="pe-kpi-top"><span>Pengguna organisasi</span><i class="bi bi-people" aria-hidden="true"></i></div><strong id="access-user-count">—</strong><p>Akun yang masih aktif pada master pengguna</p></article>

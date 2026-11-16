@@ -1,5 +1,5 @@
-<div class="modal fade" id="modal_add_organization" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+<div class="modal fade do-organization-modal" id="modal_add_organization" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header pb-0">
                 <h1 class="mb-3">Tambah Organisasi Rumah Sakit</h1>
@@ -12,7 +12,7 @@
             <form action="<?php echo base_url();?>index.php/developer/organization/addorganization" id="formaddorganization">
                 <div class="modal-body">
                     <div class="text-start mb-5">
-                        <div class="text-muted fw-bold fs-6">Pilih jenis organisasi. Susunan induk dan unit akan mengikuti hirarki rumah sakit.</div>
+                        <div class="text-muted fw-bold fs-6">Pilih jenis organisasi. Susunan induk dan unit akan mengikuti hierarki rumah sakit.</div>
                     </div>
                     <div class="row g-4">
                         <div class="col-12">
@@ -29,7 +29,7 @@
                                     <option value="government_hospital">Rumah Sakit Pemerintah Daerah</option>
                                 </optgroup>
                             </select>
-                            <div id="organizationHierarchyHelp" class="form-text mt-2">Pilih jenis organisasi untuk melihat jalur hirarkinya.</div>
+                            <div id="organizationHierarchyHelp" class="form-text mt-2">Pilih jenis organisasi untuk melihat jalur hierarkinya.</div>
                         </div>
 
                         <div class="col-12">
@@ -70,7 +70,7 @@
                     </div>
                 </div> 
                 <div class="modal-footer p-1">	
-                    <input class="btn btn-light-primary" id="btnproses" type="submit" value="SUBMIT" name="simpan" >			
+                    <input class="btn btn-light-primary" id="btnproses" type="submit" value="Simpan organisasi" name="simpan" >			
                 </div>  
             </form>  
         </div>

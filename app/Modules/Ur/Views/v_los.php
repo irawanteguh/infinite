@@ -1,9 +1,6 @@
 <link rel="stylesheet" href="<?= base_url('assets/css/ur/dashboard.css?v=' . filemtime(FCPATH . 'assets/css/ur/dashboard.css')) ?>">
 <div id="ur-executive" class="ur-dashboard los-page">
-    <section class="ur-hero">
-        <div><div class="ur-eyebrow">UTILIZATION REVIEW / SHORT STAY</div><h1>Analisis rawat inap dengan lama rawat singkat</h1><p>Review episode rawat inap dengan LOS kurang dari 2 hari.</p><div class="ur-coverage" id="los-coverage">Memuat cakupan data…</div></div>
-        <div class="ur-hero-actions"><button id="los-refresh" type="button" class="btn btn-sm ur-button"><i class="bi bi-arrow-clockwise"></i> Perbarui</button><button id="los-print" type="button" class="btn btn-sm ur-button"><i class="bi bi-printer"></i> Cetak ringkasan</button></div>
-    </section>
+    <?php include APPPATH . 'Modules/Ur/Pageheader/los.php'; ?>
     <div class="ur-filterbar"><div class="ur-filter"><label for="los-month">Bulan pulang</label><select id="los-month" class="form-select form-select-sm form-select-solid"><option value="">Semua bulan</option><?php foreach (['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'] as $i => $month): ?><option value="<?= $i + 1 ?>"><?= $month ?></option><?php endforeach; ?></select></div><span class="badge badge-light-info">Rawat inap · LOS &lt; 2 hari</span><span class="ur-filter-note">Seluruh analisis berdasarkan tanggal pulang</span></div>
     <div id="los-status" class="ur-status" role="status" aria-live="polite" hidden></div>
     <div id="los-content" hidden>

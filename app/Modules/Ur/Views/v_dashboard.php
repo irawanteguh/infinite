@@ -1,8 +1,5 @@
 <div id="ur-executive" class="prem-page pe-dashboard ur-dashboard">
-    <section class="pe-page-heading ur-hero" aria-labelledby="ur-title">
-        <div class="ur-heading"><div><div class="prem-eyebrow ur-eyebrow">UTILIZATION REVIEW</div><h1 id="ur-title">Dashboard kinerja pelayanan</h1><p>Pantau episode BPJS, perbandingan tarif, dan pola pelayanan rumah sakit.</p></div></div>
-        <div class="pe-heading-actions ur-hero-actions"><button type="button" class="btn btn-light ur-button" id="ur-refresh"><i class="bi bi-arrow-clockwise" aria-hidden="true"></i> Perbarui</button><button type="button" class="btn btn-light ur-button" id="ur-print"><i class="bi bi-printer" aria-hidden="true"></i> Cetak ringkasan</button></div>
-    </section>
+    <?php include APPPATH . 'Modules/Ur/Pageheader/dashboard.php'; ?>
     <section class="prem-card ur-filterbar" aria-labelledby="ur-filter-title">
         <div class="ur-filter-heading"><span class="prem-eyebrow">CAKUPAN DATA</span><h2 id="ur-filter-title"><i class="bi bi-funnel me-2" aria-hidden="true"></i>Filter dashboard</h2><p>Pilih bulan pulang dan jenis layanan untuk menyesuaikan ringkasan.</p></div>
         <div class="ur-filters">

@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="<?= base_url('assets/css/ur/dashboard.css') ?>">
-<div class="modal fade" id="audit-case-modal" tabindex="-1" aria-labelledby="audit-case-title" aria-hidden="true"><div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h2 class="modal-title" id="audit-case-title">Detail kasus telaah urutan diagnosis</h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button></div><div class="modal-body" id="audit-case-body"></div><div class="modal-footer"><button type="button" class="btn btn-light" data-bs-dismiss="modal">Tutup</button></div></div></div></div>
+
 <div id="ur-executive" class="ur-dashboard">
-<section class="ur-hero"><div><div class="ur-eyebrow">UTILIZATION REVIEW / AUDIT KODING</div><h1>Profil kelengkapan dan prioritas audit koding</h1><p>Evaluasi dokumentasi diagnosis, pola pengodean, dan kesesuaian diagnosis dengan prosedur.</p></div><div class="ur-hero-actions"><button id="audit-refresh" class="btn ur-button">Perbarui</button></div></section>
+<?php include APPPATH . 'Modules/Ur/Pageheader/auditkoding.php'; ?>
 <div class="ur-filterbar"><label for="audit-care">Jenis layanan</label><select id="audit-care" class="form-select w-auto"><option value="">Semua layanan</option><option value="1">Rawat inap</option><option value="2">Rawat jalan</option></select><span class="ur-filter-note">Berdasarkan tahun dan tanggal pulang</span></div>
 <div id="audit-status" role="status"></div><section id="audit-kpis" class="ur-kpis"></section>
 

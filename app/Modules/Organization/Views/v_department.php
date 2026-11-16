@@ -1,4 +1,4 @@
-<div class="org-department-page"><header class="od-heading"><span>STRUKTUR ORGANISASI</span><h2>Departemen</h2><p>Kelola departemen, kepala departemen, dan informasi anggota organisasi Anda.</p></header><section class="card od-card">
+<div class="org-department-page"><?php include APPPATH . 'Modules/Organization/Pageheader/department.php'; ?><section class="card od-card">
     <div class="card-header border-0 pt-6"><div class="od-table-title"><h3>Daftar departemen</h3><p>Temukan dan kelola unit kerja organisasi.</p></div>
         <div class="card-title">
             <div class="d-flex align-items-center position-relative my-1">

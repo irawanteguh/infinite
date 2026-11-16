@@ -1,18 +1,10 @@
 <div class="summary-report">
-    <div class="report-hero mb-6">
-        <div class="report-hero-content">
-            <span class="report-eyebrow">LAPORAN MUTU &amp; KESELAMATAN PASIEN</span>
-            <h1>Laporan Tahunan PMKP</h1>
-            <p>Ringkasan kinerja untuk mendukung evaluasi dan pengambilan keputusan pimpinan.</p>
-            <div class="report-hero-tags"><span><i class="bi bi-bar-chart-line"></i> Capaian indikator</span><span><i class="bi bi-diagram-3"></i> Analisis fishbone</span><span><i class="bi bi-arrow-repeat"></i> Tindak lanjut PDSA</span></div>
-        </div>
-        <div class="report-hero-symbol" aria-hidden="true"><i class="bi bi-file-earmark-bar-graph"></i></div>
-    </div>
+    <?php include APPPATH . 'Modules/Qi/Pageheader/summaryreport.php'; ?>
 
     <div class="report-stats mb-7">
-        <div class="report-stat"><span class="report-stat-icon bg-light-primary text-primary"><i class="bi bi-calendar3"></i></span><div><span class="text-muted fs-7">Periode tersedia</span><strong id="report-period-count">—</strong><small>Periode pelaporan aktif</small></div></div>
-        <div class="report-stat"><span class="report-stat-icon bg-light-success text-success"><i class="bi bi-person-check"></i></span><div><span class="text-muted fs-7">Dengan penanggung jawab</span><strong id="report-pic-count">—</strong><small>Periode yang memiliki PIC</small></div></div>
-        <div class="report-stat"><span class="report-stat-icon bg-light-info text-info"><i class="bi bi-clock-history"></i></span><div><span class="text-muted fs-7">Periode terbaru</span><strong id="report-latest-period">—</strong><small>Tahun pelaporan terakhir</small></div></div>
+        <div class="report-stat"><span class="report-stat-icon bg-light-primary text-primary"><i class="bi bi-calendar3"></i></span><div><span class="text-muted fs-7">Periode tersedia</span><strong id="report-period-count">ï¿½</strong><small>Periode pelaporan aktif</small></div></div>
+        <div class="report-stat"><span class="report-stat-icon bg-light-success text-success"><i class="bi bi-person-check"></i></span><div><span class="text-muted fs-7">Dengan penanggung jawab</span><strong id="report-pic-count">ï¿½</strong><small>Periode yang memiliki PIC</small></div></div>
+        <div class="report-stat"><span class="report-stat-icon bg-light-info text-info"><i class="bi bi-clock-history"></i></span><div><span class="text-muted fs-7">Periode terbaru</span><strong id="report-latest-period">ï¿½</strong><small>Tahun pelaporan terakhir</small></div></div>
     </div>
 
     <div class="card report-period-card">
@@ -30,7 +22,7 @@
             </div>
         </div>
         <div class="card-body pt-0">
-            <div id="summaryReportLoading" class="text-center text-muted py-10" role="status"><span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>Memuat periode pelaporan…</div>
+            <div id="summaryReportLoading" class="text-center text-muted py-10" role="status"><span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>Memuat periode pelaporanï¿½</div>
             <div class="table-responsive">
                 <table class="table align-middle table-row-dashed gy-3" id="summaryReportTable">
                     <thead><tr class="text-muted fw-bolder bg-light">

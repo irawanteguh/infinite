@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="<?= base_url('assets/css/ur/dashboard.css') ?>">
 <link rel="stylesheet" href="<?= base_url('assets/css/ur/simulation.css') ?>">
 <div id="ur-executive" class="ur-dashboard ur-simulation">
-<section class="ur-hero"><div><div class="ur-eyebrow">UTILIZATION REVIEW / SIMULASI SEVERITY</div><h1>Simulasi komposisi severity dan tarif</h1><p>Perbandingan skenario dengan data aktual rawat inap pada tahun terpilih.</p></div></section>
+<?php include APPPATH . 'Modules/Ur/Pageheader/analystslsimulation.php'; ?>
 <section class="ur-filterbar sim-filter" aria-labelledby="sim-filter-title">
     <div class="sim-filter-intro"><span class="sim-filter-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="2" fill="currentColor"/><circle cx="16" cy="12" r="2" fill="currentColor"/><circle cx="10" cy="18" r="2" fill="currentColor"/></svg></span><div><h2 id="sim-filter-title">Atur skenario simulasi</h2><p>Pilih periode dan besaran perpindahan kasus.</p></div></div>
     <div class="sim-filter-fields">

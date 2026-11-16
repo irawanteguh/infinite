@@ -1,0 +1,135 @@
+/* Shared compact spacing for module workspaces. */
+:root{--app-space-xs:8px;--app-space-sm:12px;--app-space-md:16px;--app-space-card:18px;--app-space-lg:20px;--app-page-gutter:30px}
+body #kt_content{padding-top:16px;padding-bottom:16px}
+body #kt_header>.container-fluid,body #kt_content_container,body #kt_toolbar_container{padding-inline:var(--app-page-gutter)!important}
+body #kt_toolbar{padding-block:8px}
+body #kt_content .card>.card-header{padding:16px 18px!important;min-height:0;gap:12px}
+body #kt_content .card>.card-body{padding:18px!important}
+body #kt_content .card>.card-footer{padding:12px 18px!important}
+body #kt_content :is(.hu-card,.od-card,.it-card)>.card-body{padding-top:0!important}
+body #kt_content .os-container>.card-body{padding:0!important;gap:16px}
+body #kt_content :is(.os-panel,.prem-card:not(.prem-welcome):not(.pe-master-workspace),.welcome-info-card){padding:18px!important}
+body #kt_content :is(.pe-master-heading,.pe-page-heading,.backup-heading,.do-heading,.it-heading,.ur-hero,.prem-heading){margin-bottom:18px!important;gap:16px}
+body #kt_content :is(.hu-heading,.od-heading,.os-heading){padding-bottom:18px!important}
+body #kt_content :is(.pe-master-heading,.pe-page-heading,.backup-heading,.do-heading,.it-heading,.hu-heading,.od-heading,.os-heading) :is(h1,h2){margin-block:8px!important}
+body #kt_content :is(.backup-options,.os-settings-grid,.pe-master-stats,.pe-kpis,.pe-main-grid,.pe-bottom-grid,.access-layout,.access-kpis,.welcome-overview){gap:16px!important;margin-bottom:18px!important}
+body #kt_content :is(.pe-panel-heading,.backup-files-heading,.os-panel-heading,.os-panel-title,.welcome-card-header){margin-bottom:14px!important;gap:12px}
+body #kt_content :is(.backup-note,.do-hierarchy-card,.pe-master-instrument-info,.pe-demographic-card,.prem-review-profile){padding:14px!important}
+body #kt_content :is(.backup-note,.pe-master-filter,.pe-master-table-heading){margin-bottom:16px!important}
+body #kt_content :is(.pe-master-filter,.pe-master-body,.pe-filter,.pe-filter-card,.access-tools){padding:16px!important;gap:12px}
+body #kt_content :is(.prem-welcome-copy,.prem-welcome-aside){padding:24px!important}
+body #kt_content .welcome-banner{padding:20px 24px!important;gap:20px}
+body #kt_content .organization-header-detail{padding:12px}
+body #kt_content :is(.mb-6,.mb-7,.mb-8,.mb-9,.mb-10){margin-bottom:18px!important}
+body #kt_content :is(.mt-6,.mt-7,.mt-8,.mt-9,.mt-10){margin-top:18px!important}
+body #kt_content :is(.my-6,.my-7,.my-8,.my-9,.my-10){margin-block:18px!important}
+body #kt_content :is(.p-7,.p-8,.p-9,.p-10){padding:18px!important}
+body #kt_content .table :is(th,td){padding-block:8px!important}
+body #kt_content .btn:not(.btn-icon):not(.dropdown-item){padding:9px 14px;min-height:36px}
+body #kt_content .table .btn:not(.btn-icon):not(.dropdown-item){padding:6px 10px;min-height:32px}
+body .modal .modal-header{padding:16px 20px!important;min-height:0}
+body .modal .modal-body{padding:20px!important}
+body .modal .modal-footer{padding:12px 20px!important;gap:8px}
+body .modal .modal-header :is(h1,h2,h3){margin:0!important}
+body .modal .modal-body :is(.mb-7,.mb-8,.mb-9,.mb-10){margin-bottom:18px!important}
+body .modal .row{--bs-gutter-y:16px}
+@media(max-width:767.98px){
+    body #kt_content{padding-block:12px}
+    :root{--app-page-gutter:14px}
+    body #kt_content .card>.card-header{padding:14px!important}
+    body #kt_content .card>.card-body{padding:14px!important}
+    body #kt_content :is(.os-panel,.prem-card:not(.prem-welcome):not(.pe-master-workspace),.welcome-info-card){padding:14px!important}
+    body #kt_content :is(.prem-welcome-copy,.prem-welcome-aside,.welcome-banner){padding:18px!important}
+    body #kt_content :is(.backup-options,.os-settings-grid,.pe-master-stats,.pe-kpis,.pe-main-grid,.pe-bottom-grid,.access-layout,.access-kpis,.welcome-overview){gap:12px!important}
+    body .modal .modal-header,body .modal .modal-body{padding:16px!important}
+    body .modal .modal-footer{padding:12px 16px!important}
+    body #kt_content .btn:not(.btn-icon):not(.dropdown-item){min-height:42px}
+}
+/* Compact card titles and introductory text. */
+body #kt_content .card>.card-header{padding:12px 18px!important;gap:10px}
+body #kt_content .card>.card-header :is(.card-title,h1,h2,h3,h4){
+    margin-block:0!important;font-size:16px!important;line-height:1.4!important;font-weight:600
+}
+body #kt_content .card>.card-header :is(p,.card-title>div>.text-muted,.card-title>div>.text-gray-600){
+    margin-top:4px!important;margin-bottom:0!important;font-size:12px!important;line-height:1.5!important
+}
+body #kt_content :is(.pe-panel-heading,.backup-files-heading,.os-panel-heading,.os-panel-title,.hu-table-title,.od-table-title,.it-table-heading,.do-table-heading,.welcome-card-header){
+    margin-bottom:10px!important;gap:10px
+}
+body #kt_content :is(.prem-card,.os-panel,.welcome-info-card,.do-hierarchy-card,.pe-demographic-card,.access-user-panel) :is(h2,h3),
+body #kt_content :is(.hu-table-title,.od-table-title,.it-table-heading,.do-table-heading) :is(h2,h3){
+    font-size:16px!important;line-height:1.4!important;margin-top:0!important;margin-bottom:6px!important
+}
+body #kt_content :is(.pe-panel-heading,.backup-files-heading,.os-panel-heading,.os-panel-title,.hu-table-title,.od-table-title,.it-table-heading,.do-table-heading) p{
+    font-size:12px!important;line-height:1.5!important;margin:4px 0 0!important
+}
+body #kt_content :is(.pe-panel-heading,.backup-files-heading) .prem-eyebrow{
+    font-size:11px!important;line-height:1.4!important;margin-bottom:4px!important
+}
+body #kt_content :is(.backup-option-heading,.pe-master-table-heading){margin-bottom:12px!important}
+body #kt_content :is(.backup-option-heading,.os-panel-heading,.os-panel-title) :is(.backup-icon,.os-icon){
+    width:36px;height:36px;border-radius:10px
+}
+body #kt_content .os-panel-title>i{width:36px;height:36px;border-radius:10px;font-size:18px}
+@media(max-width:767.98px){
+    body #kt_content .card>.card-header{padding:12px 14px!important}
+}
+/* Card headings contain a title and description, without an extra eyebrow row. */
+body #kt_content :is(.card,.prem-card,.os-panel) :is(.prem-eyebrow,.os-eyebrow),
+body #kt_content .welcome-info-card .welcome-card-header>span:not(.welcome-card-icon){
+    display:none!important
+}
+body #kt_content :is(.pe-panel-heading,.backup-files-heading,.os-history-heading,.pe-master-table-heading) :is(h2,h3){
+    margin-top:0!important
+}
+/* Card heading reference: Developer / Organization. */
+:root{--app-card-title-size:16px;--app-card-title-weight:600;--app-card-title-color:#234a54;--app-card-description-color:#81969b}
+body #kt_content :is(.card>.card-header,.pe-panel-heading,.backup-files-heading,.os-panel-heading,.os-panel-title,.os-history-heading,.hu-table-title,.od-table-title,.it-table-heading,.do-table-heading,.pe-master-table-heading,.ur-panel-head) :is(h1,h2,h3,h4,.card-title:not(:has(h1,h2,h3,h4))),
+body #kt_content :is(.prem-card,.os-panel,.welcome-info-card,.pe-demographic-card)>:is(h2,h3){
+    font-size:var(--app-card-title-size)!important;font-weight:var(--app-card-title-weight)!important;
+    color:var(--app-card-title-color)!important;line-height:1.4!important;letter-spacing:0!important;
+    margin:0!important
+}
+body #kt_content :is(.card>.card-header,.pe-panel-heading,.backup-files-heading,.os-panel-heading,.os-panel-title,.os-history-heading,.hu-table-title,.od-table-title,.it-table-heading,.do-table-heading,.pe-master-table-heading,.ur-panel-head) :is(p,.text-gray-600,.text-muted),
+body #kt_content :is(.prem-card,.os-panel,.welcome-info-card,.pe-demographic-card)>h2+p,
+body #kt_content :is(.prem-card,.os-panel,.welcome-info-card,.pe-demographic-card)>h3+p{
+    font-size:12px!important;font-weight:400!important;color:var(--app-card-description-color)!important;
+    line-height:1.5!important;letter-spacing:0!important;margin:4px 0 0!important
+}
+/* Shared module page heading; markup lives in Modules/<Module>/Pageheader/. */
+body #kt_content .app-page-heading{
+    display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;
+    gap:12px!important;margin:0 0 16px!important;padding:0!important;min-height:0;
+    border:0;background:transparent;box-shadow:none
+}
+body #kt_content .app-page-heading:has(>h1){display:block}
+body #kt_content .app-page-heading h1{
+    font-size:22px!important;line-height:1.35!important;font-weight:600!important;
+    letter-spacing:-.3px!important;color:#15373e!important;margin:0!important
+}
+body #kt_content .app-page-heading p{
+    font-size:12px!important;line-height:1.5!important;font-weight:400!important;
+    color:#81969b!important;margin:4px 0 0!important;max-width:none
+}
+body #kt_content .app-page-heading :is(.report-hero-tags,.report-hero-symbol){display:none}
+body #kt_content .app-page-heading :is(.report-hero-content,.ur-heading){padding:0;min-width:0}
+@media(max-width:767.98px){
+    body #kt_content .app-page-heading{margin-bottom:14px!important;gap:10px!important}
+    body #kt_content .app-page-heading h1{font-size:20px!important}
+}
+/* General page actions belong to the shared toolbar. */
+.module-toolbar-actions{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:8px}
+body #kt_toolbar_container{gap:12px}
+body #kt_toolbar_container>div:last-child{gap:8px;flex-wrap:wrap;justify-content:flex-end}
+body #kt_toolbar .btn:not(.btn-icon){padding:8px 12px;min-height:36px;white-space:nowrap}
+body #kt_toolbar .module-toolbar-actions .btn i{color:inherit}
+@media(max-width:991.98px){
+    body #kt_toolbar_container{flex-wrap:wrap;align-items:center}
+    body #kt_toolbar_container>div:last-child{width:100%;justify-content:flex-start}
+    body #kt_toolbar .module-toolbar-actions{justify-content:flex-start}
+}
+#session-idle-modal{z-index:1080}
+#session-idle-modal .modal-content{border:1px solid #dceae5;border-radius:16px}
+#session-idle-modal .modal-header{background:#f1f8f6}
+#session-idle-modal .modal-title{font-size:18px!important;color:#234a54}
+#session-idle-countdown{color:#087e82;font-variant-numeric:tabular-nums}

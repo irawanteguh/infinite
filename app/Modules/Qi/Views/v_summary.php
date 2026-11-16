@@ -1,17 +1,10 @@
 <div class="quality-summary">
-    <div class="summary-heading mb-6">
-        <div>
-            <div class="summary-eyebrow">DASHBOARD MUTU</div>
-            <h1 class="fw-bolder text-gray-900 mt-2 mb-2">Ringkasan indikator</h1>
-            <p class="text-muted mb-0">Pantau target, temukan keterlambatan, dan telusuri kinerja setiap departemen.</p>
-        </div>
-        <span class="summary-period"><i class="bi bi-calendar3 me-2"></i>Periode <strong data-summary-period><?= esc($selectedPeriod ?: '—') ?></strong></span>
-    </div>
+    <?php include APPPATH . 'Modules/Qi/Pageheader/summary.php'; ?>
 
     <div class="summary-overview mb-6">
         <div class="summary-primary">
             <span class="summary-eyebrow">KETERCAPAIAN TARGET</span>
-            <div id="summary-average" class="summary-primary-value">—</div>
+            <div id="summary-average" class="summary-primary-value">ï¿½</div>
             <div class="summary-progress"><div id="summary-target-progress" style="width:0%"></div></div>
             <p class="mb-0 mt-4">Persentase penilaian bulanan yang memenuhi target.</p>
             <a href="#summary-analysis" class="summary-primary-link mt-5">Lihat analisis <i class="bi bi-arrow-down-right ms-2"></i></a>
@@ -26,8 +19,8 @@
 
     <a href="#summary-overdue-section" class="summary-attention mb-8">
         <span class="summary-attention-icon"><i class="bi bi-clock-history"></i></span>
-        <span class="flex-grow-1"><strong class="d-block">Pengisian yang perlu ditindaklanjuti</strong><span class="summary-attention-caption" id="summary-overdue-caption">Memuat status pengisian periode terpilih…</span></span>
-        <span class="summary-attention-count" id="summary-overdue-total">—</span><i class="bi bi-arrow-down"></i>
+        <span class="flex-grow-1"><strong class="d-block">Pengisian yang perlu ditindaklanjuti</strong><span class="summary-attention-caption" id="summary-overdue-caption">Memuat status pengisian periode terpilihï¿½</span></span>
+        <span class="summary-attention-count" id="summary-overdue-total">ï¿½</span><i class="bi bi-arrow-down"></i>
     </a>
     <nav class="summary-section-nav mb-8" aria-label="Navigasi ringkasan">
         <a href="#summary-types">Jenis indikator</a><a href="#summary-analysis">Analisis kinerja</a><a href="#summary-overdue-section">Keterlambatan</a><a href="#summary-aggregates">Agregat indikator</a><a href="#summary-detail">Detail departemen</a>

@@ -1,0 +1,1 @@
+<section class="ur-hero app-page-heading"><div><h1>Analisis kompleksitas pelayanan rawat inap</h1><p>Distribusi severity, lama rawat, dan perbandingan tarif berdasarkan episode aktual.</p></div></section>

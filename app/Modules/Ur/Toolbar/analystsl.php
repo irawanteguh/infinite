@@ -8,3 +8,4 @@
 </div>
 
 <a href="#" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#modal_upload_txt_eklaim"><i class="bi bi-filetype-txt"></i> Upload Txt E-Klaim</a>
+<div class="module-toolbar-actions"><a class="btn btn-sm btn-light-primary ur-button" href="<?= site_url('ur/analystsl/simulation') ?>">Simulasi severity</a><button id="sl-refresh" class="btn btn-sm btn-light-primary ur-button">Perbarui</button></div>

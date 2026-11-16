@@ -1,4 +1,4 @@
-<div class="hr-users-page"><header class="hu-heading"><span>ADMINISTRASI PENGGUNA</span><h2>Pengguna organisasi</h2><p>Kelola profil, departemen, dan status akun pengguna organisasi Anda.</p></header><section class="card hu-card">
+<div class="hr-users-page"><?php include APPPATH . 'Modules/Hr/Pageheader/users.php'; ?><section class="card hu-card">
     <div class="card-header border-0 pt-6"><div class="hu-table-title"><h3>Daftar pengguna</h3><p>Temukan pengguna berdasarkan informasi akun.</p></div>
         <div class="card-title">
             <div class="d-flex align-items-center position-relative my-1">

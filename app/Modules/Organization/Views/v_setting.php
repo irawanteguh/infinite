@@ -1,4 +1,4 @@
-<div class="organization-settings"><header class="os-heading"><span>PENGATURAN ORGANISASI</span><h2>Pengisian indikator</h2><p>Atur batas pengisian dan kelola akses khusus departemen.</p></header><div class="card os-container">
+<div class="organization-settings"><?php include APPPATH . 'Modules/Organization/Pageheader/setting.php'; ?><div class="card os-container">
     
     <div class="card-body">
         <?php if ($message = session()->getFlashdata('indicator_setting_message')): ?>

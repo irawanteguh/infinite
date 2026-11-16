@@ -12,15 +12,15 @@ class Backupdb extends BaseController
         return view('template/dashboard-light-aside', ['contents'=>view('Modules\Developer\Views\v_backupdb')]);
     }
 
-    public function backup() { return $this->createBackup('full'); }
-    public function backupics() { return $this->createBackup('ics'); }
+    public function backup() { return $this->createBackup(); }
 
-    private function createBackup(string $scope)
+
+    private function createBackup()
     {
         if ($denied = $this->authorizeMutation(['POST'])) return $denied;
         try {
             session()->close();
-            $result = (new DatabaseDump())->create($scope);
+            $result = (new DatabaseDump())->create();
             return $this->json('00', 'Dump database berhasil dibuat.', $result);
         } catch (\Throwable $e) {
             log_message('error', 'Database backup: {message}', ['message'=>$e->getMessage()]);

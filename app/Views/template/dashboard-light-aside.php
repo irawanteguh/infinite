@@ -69,6 +69,8 @@
                 }
             }
 
+            include_once APPPATH . 'Modules/Auth/Modal/sessiontimeout.php';
+
             $dirmodal = APPPATH . 'Views/modal/';
             if (is_dir($dirmodal)) {
                 $files = glob($dirmodal . '*.php');
@@ -91,7 +93,7 @@
 
             $directory = $modulePath . '/Modal/' . $segment2 . '.php';
             if (file_exists($directory)) {
-                include $directory;
+                include_once $directory;
             }
         ?>
 

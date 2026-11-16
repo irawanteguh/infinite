@@ -21,3 +21,30 @@ body .btn:is(.btn-primary,.btn-light-primary,.prem-btn-primary,.hu-add-btn,.od-a
     outline:2px solid var(--infinite-teal)!important;outline-offset:3px;box-shadow:0 0 0 3px #087e821a!important
 }
 body .btn:is(.btn-primary,.btn-light-primary,.prem-btn-primary,.hu-add-btn,.od-add-btn,.os-btn-primary,.os-btn-secondary,.backup-btn-light,.access-confirm):is(:disabled,.disabled){opacity:.55}
+/* Standard action dropdown details: icon and label share the semantic color. */
+body .btn-group .dropdown-menu{
+    min-width:170px;padding:6px;border:1px solid #e0ebe7;border-radius:10px;box-shadow:0 8px 25px #163c4914
+}
+body .btn-group .dropdown-menu .dropdown-item{
+    display:flex;align-items:center;justify-content:flex-start;gap:12px;
+    width:100%;padding:8px 12px!important;min-height:36px;
+    border:0;border-radius:6px;text-align:left;font-weight:500;line-height:1.5;
+    background:transparent;color:#42636d;white-space:nowrap
+}
+body .btn-group .dropdown-menu .dropdown-item.text-primary{color:var(--infinite-teal)!important}
+body .btn-group .dropdown-menu .dropdown-item.text-danger{color:#d34760!important}
+body .btn-group .dropdown-menu .dropdown-item.text-success{color:#198878!important}
+body .btn-group .dropdown-menu .dropdown-item :is(i,.svg-icon){
+    color:inherit!important;font-size:16px!important;width:18px;flex-shrink:0;margin:0!important;text-align:center
+}
+body .btn-group .dropdown-menu .dropdown-item:not(:disabled):not(.disabled):is(:hover,:focus,:active){
+    background:#eaf6f4!important;color:#066b6e!important
+}
+body .btn-group .dropdown-menu .dropdown-item.text-danger:not(:disabled):not(.disabled):is(:hover,:focus,:active){
+    background:#fce9ed!important;color:#b93850!important
+}
+body .btn-group .dropdown-menu .dropdown-item.text-success:not(:disabled):not(.disabled):is(:hover,:focus,:active){
+    background:#e7f5ee!important;color:#126b58!important
+}
+body .btn-group .dropdown-menu .dropdown-item:focus-visible{outline:2px solid currentColor;outline-offset:-2px}
+body .btn-group .dropdown-menu .dropdown-item:disabled{opacity:.5;cursor:not-allowed}

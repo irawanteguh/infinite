@@ -8,3 +8,4 @@
 </div>
 
 <a href="#" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#modal_upload_txt_eklaim"><i class="bi bi-filetype-txt"></i> Impor E-Klaim</a>
+<div class="module-toolbar-actions"><button id="tn-refresh" type="button" class="btn btn-sm btn-light-primary ur-button"><i class="bi bi-arrow-clockwise"></i> Perbarui</button><button id="tn-print" type="button" class="btn btn-sm btn-light-primary ur-button"><i class="bi bi-printer"></i> Cetak ringkasan</button></div>

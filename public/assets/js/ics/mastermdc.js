@@ -1,4 +1,4 @@
-﻿var mdcRows = {};   // cache data MDC per ID (dipakai modal edit)
+var mdcRows = {};   // cache data MDC per ID (dipakai modal edit)
 
 load();
 
@@ -596,7 +596,7 @@ function datamastersection(){
                 html += "data-bs-toggle='dropdown' data-bs-boundary='viewport' aria-expanded='false'>";
                 html += "<i class='ki-duotone ki-setting-2 fs-5 me-1'>";
                 html += "<span class='path1'></span><span class='path2'></span>";
-                html += "</i>Action</button>";
+                html += "</i>Actions</button>";
 
                 html += "<div class='dropdown-menu dropdown-menu-end'>";
 

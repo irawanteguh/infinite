@@ -1,0 +1,1 @@
+<section class="ur-hero app-page-heading"><div><h1>Kenali pola selisih tarif negatif.</h1><p>Ringkasan episode dengan total INA-CBG di bawah tarif RS, dari tren bulanan hingga rekap per DPJP.</p><div id="tn-coverage" class="ur-coverage">Memuat cakupan data…</div></div></section>

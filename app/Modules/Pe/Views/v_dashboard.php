@@ -26,10 +26,7 @@ $chart = $data ? [
 ?>
 <main class="prem-page pe-dashboard">
     <div class="prem-container prem-main">
-        <div class="pe-page-heading">
-            <div><span class="prem-eyebrow">PATIENT EXPERIENCE</span><h1>Dashboard Patient Experience</h1><p>Pantau pengalaman pelayanan dan perkembangan kondisi pasien dalam satu tampilan.</p></div>
-            <div class="pe-heading-actions"><a href="<?= esc(site_url('pe/skm') . '?' . http_build_query(['group_id' => session()->get('groupid'), 'org_id' => session()->get('orgid')]), 'attr') ?>" class="btn btn-light"><i class="bi bi-clipboard-check"></i> SKM</a><a href="<?= esc(site_url('pe/prem') . '?' . http_build_query(['group_id' => session()->get('groupid'), 'org_id' => session()->get('orgid')]), 'attr') ?>" class="btn btn-light"><i class="bi bi-clipboard-heart"></i> PREM</a><a href="<?= esc(site_url('pe/prom') . '?' . http_build_query(['group_id' => session()->get('groupid'), 'org_id' => session()->get('orgid')]), 'attr') ?>" class="btn btn-light"><i class="bi bi-activity"></i> PROM</a></div>
-        </div>
+        <?php include APPPATH . 'Modules/Pe/Pageheader/dashboard.php'; ?>
 
         <section class="prem-card pe-filter-card" aria-label="Filter dan laporan">
         <div class="pe-filter-heading"><i class="bi bi-sliders"></i><h2>Filter dashboard</h2><span>Tentukan periode dan cakupan data</span></div>
@@ -64,7 +61,7 @@ $chart = $data ? [
             <div class="pe-period"><span><i class="bi bi-calendar3"></i> <?= esc(date('d/m/Y', strtotime($filters['start']))) ?> – <?= esc(date('d/m/Y', strtotime($filters['end']))) ?></span><span><?= $number($data['total'], 0) ?> respons</span></div>
 
             <section class="prem-card pe-panel pe-skm-overview mb-6" aria-label="Analitik SKM per pelayanan">
-                <div class="pe-panel-heading"><div><span class="prem-eyebrow">SURVEI KEPUASAN MASYARAKAT</span><h2>SKM menurut jenis pelayanan</h2><p>Perbandingan IGD, Rawat Inap, dan Rawat Jalan sesuai periode serta filter aktif.</p></div><span class="pe-panel-label"><?= $number($data['skm']['count'], 0) ?> RESPONS SKM</span></div>
+                <div class="pe-panel-heading"><div><span class="prem-eyebrow">SURVEI KEPUASAN MASYARAKAT</span><h2>SKM menurut jenis pelayanan</h2><p>Perbandingan IGD, Rawat Inap, dan Rawat Jalan sesuai periode serta filter aktif.</p></div></div>
                 <div class="pe-skm-cards">
                     <?php foreach ($data['skm']['services'] as $code => $item): ?>
                     <article class="pe-skm-service"><h3><?= esc($services[$code]) ?></h3><strong><?= $number($item['average'], 2) ?><small> / 4</small></strong><p><?= $number($item['count'], 0) ?> respons <span>· <?= $number($item['scoredCount'], 0) ?> dinilai pada skala 4</span></p></article>
@@ -77,7 +74,7 @@ $chart = $data ? [
                 <p class="pe-method">Rerata dihitung dari rerata tiap respons SKM skala 1–4, dengan bobot yang sama per respons. Bulan tanpa jawaban tidak diberi nilai. Jumlah respons mencakup seluruh skala SKM; data tidak dicampur dengan PREM/PROM.</p>
             </section>
             <section class="prem-card pe-panel mb-6" aria-label="Distribusi penilaian SKM">
-                <div class="pe-panel-heading"><div><span class="prem-eyebrow">HASIL PENILAIAN SKM</span><h2>Distribusi penilaian SKM</h2><p>Penilaian per unsur dan komposisi kumulatif seluruh jawaban SKM sesuai filter aktif.</p></div><span class="pe-panel-label"><?= $number($data['skm']['answerCount'], 0) ?> JAWABAN</span></div>
+                <div class="pe-panel-heading"><div><span class="prem-eyebrow">HASIL PENILAIAN SKM</span><h2>Distribusi penilaian SKM</h2><p>Penilaian per unsur dan komposisi kumulatif seluruh jawaban SKM sesuai filter aktif.</p></div></div>
                 <div class="row g-5 pe-skm-distribution-grid">
                 <div class="col-12 col-lg-6"><div class="pe-skm-distribution-panel"><h3 class="pe-skm-distribution-title">Penilaian per unsur kuesioner</h3>
                 <?php if ($data['skm']['questionDistributions']): ?>
@@ -124,7 +121,7 @@ $chart = $data ? [
                 </section>
             <?php endif; ?>
             <section class="prem-card pe-panel mb-6" aria-label="Informasi poli SKM Rawat Jalan">
-                <div class="pe-panel-heading"><div><span class="prem-eyebrow">POLI RAWAT JALAN</span><h2>Sebaran responden menurut poli</h2><p><?= $number($data['skm']['outpatientCount'], 0) ?> pengisian SKM Rawat Jalan sesuai filter aktif.</p></div><span class="pe-panel-label"><?= count(array_filter($data['skm']['clinics'], static fn($item) => $item['name'] !== 'Belum tercatat')) ?> POLI TERCATAT</span></div>
+                <div class="pe-panel-heading"><div><span class="prem-eyebrow">POLI RAWAT JALAN</span><h2>Sebaran responden menurut poli</h2><p><?= $number($data['skm']['outpatientCount'], 0) ?> pengisian SKM Rawat Jalan sesuai filter aktif.</p></div></div>
                 <?php if ($data['skm']['clinics']): ?>
                 <div class="table-responsive pe-clinic-table" tabindex="0" role="region" aria-label="Tabel sebaran poli, dapat digulir"><table class="table pe-table"><thead><tr><th>Poli / layanan</th><th class="text-end">Respons</th><th class="text-end">Persentase</th><th class="pe-clinic-bar-column">Komposisi</th></tr></thead><tbody>
                     <?php foreach ($data['skm']['clinics'] as $clinic): $share = $clinic['count'] / $data['skm']['outpatientCount'] * 100; ?>
@@ -221,7 +218,7 @@ $chart = $data ? [
             </div>
 
             <div class="row g-6 pe-insight-row"><div class="col-12 col-lg-6"><section class="prem-card pe-panel pe-domain-panel">
-                <div class="pe-panel-heading"><div><span class="prem-eyebrow">TELUSURI LEBIH DALAM</span><h2>Penilaian per domain</h2><p>Rerata skor jawaban menurut instrumen dan domain, skala 1–5.</p></div><span class="pe-panel-label"><?= count($data['domains']) ?> DOMAIN INSTRUMEN</span></div>
+                <div class="pe-panel-heading"><div><span class="prem-eyebrow">TELUSURI LEBIH DALAM</span><h2>Penilaian per domain</h2><p>Rerata skor jawaban menurut instrumen dan domain, skala 1–5.</p></div></div>
                 <div class="table-responsive" tabindex="0" role="region" aria-label="Tabel penilaian domain, dapat digulir"><table class="table pe-table align-middle"><thead><tr><th>Domain / instrumen</th><th>Jenis</th><th class="text-center">PREM</th><th class="text-center">PROM PRE</th><th class="text-center">PROM POST</th><th class="text-end">Jumlah pengisian</th></tr></thead><tbody><?php foreach ($data['domains'] as $domain): ?><tr><td><strong><?= esc($domain['name']) ?></strong><small><?= esc($domain['instrument']) ?></small></td><td><span class="pe-type"><?= esc($domain['type']) ?></span></td><?php foreach (['PREM', 'T0', 'T1'] as $phase): ?><td class="text-center"><span class="<?= $domain['averages'][$phase] !== null ? 'pe-score-pill' : 'pe-no-value' ?>"><?= $number($domain['averages'][$phase], 2) ?></span></td><?php endforeach; ?><td class="text-end"><?= $number($domain['submissionCount'], 0) ?></td></tr><?php endforeach; ?></tbody></table></div>
                 <p class="pe-method">Jumlah pengisian menghitung setiap pengisian satu kali per domain, termasuk T0 dan T1 sebagai pengisian terpisah; bukan jumlah orang unik. Rerata domain PRE/POST mencakup seluruh jawaban pada filter ini, sehingga komposisi responden dapat berbeda. Perbandingan berpasangan tersedia pada kartu PROM di atas.</p>
             </section>

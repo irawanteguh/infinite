@@ -1,9 +1,9 @@
-<div class="card">
+<div class="dev-organization-page"><?php include APPPATH . 'Modules/Developer/Pageheader/organization.php'; ?><section class="card do-card">
     <div class="card-header border-0 pt-6">
-        <div class="card-title d-flex flex-column align-items-start gap-3">
+        <div class="card-title do-table-heading">
             <div>
-                <h2 class="fs-3 fw-bolder text-gray-900 mb-1">Master Organisasi Rumah Sakit</h2>
-                <div class="text-gray-600 fs-7">Kelola rumah sakit dan organisasi induknya dalam satu hirarki.</div>
+                <h2 class="fs-3 fw-bolder text-gray-900 mb-1">Daftar organisasi</h2>
+                <div class="text-gray-600 fs-7">Informasi organisasi, kontak, pimpinan, dan status aktif.</div>
             </div>
             <div class="d-flex align-items-center position-relative my-1">
                 <span class="svg-icon svg-icon-1 position-absolute ms-6">
@@ -12,7 +12,7 @@
                         <path d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z" fill="black"></path>
                     </svg>
                 </span>
-                <input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Search Data" id="searchtable">
+                <input type="search" aria-label="Cari organisasi" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Cari organisasi..." id="searchtable">
             </div>
         </div>
     </div>
@@ -20,8 +20,8 @@
     <div class="card-body pt-0 pb-5 border-bottom">
         <div class="row g-4">
             <div class="col-lg-6">
-                <div class="border border-primary border-dashed rounded p-4 h-100 bg-light-primary">
-                    <div class="text-primary fw-bolder fs-7 text-uppercase mb-3"><i class="bi bi-buildings me-2"></i>Hirarki Rumah Sakit Swasta</div>
+                <div class="do-hierarchy-card">
+                    <div class="text-primary fw-bolder fs-7 text-uppercase mb-3"><i class="bi bi-buildings me-2"></i>Hierarki rumah sakit swasta</div>
                     <div class="d-flex flex-wrap align-items-center gap-2">
                         <span class="badge badge-light-primary py-3 px-4">PT / Badan Penyelenggara</span>
                         <i class="bi bi-arrow-right text-primary"></i>
@@ -30,8 +30,8 @@
                 </div>
             </div>
             <div class="col-lg-6">
-                <div class="border border-success border-dashed rounded p-4 h-100 bg-light-success">
-                    <div class="text-success fw-bolder fs-7 text-uppercase mb-3"><i class="bi bi-diagram-3 me-2"></i>Hirarki Rumah Sakit Pemerintah Daerah</div>
+                <div class="do-hierarchy-card">
+                    <div class="text-success fw-bolder fs-7 text-uppercase mb-3"><i class="bi bi-diagram-3 me-2"></i>Hierarki rumah sakit pemerintah daerah</div>
                     <div class="d-flex flex-wrap align-items-center gap-2">
                         <span class="badge badge-light-primary py-3 px-4">Dinas Kesehatan</span>
                         <i class="bi bi-arrow-right text-success"></i>
@@ -45,17 +45,17 @@
     </div>
 
     <div class="card-body pt-5">
-        <div class="table-responsive">
+        <div class="table-responsive do-table-scroll" role="region" tabindex="0" aria-label="Daftar organisasi, dapat digulir">
             <table class="table align-middle table-row-dashed gy-2" id="masterorganization_table">
                 <thead>
                     <tr class="fw-bolder text-muted bg-light">
                         <th class="text-start rounded-start ps-4">#</th>
-                        <th>Organization / Hierarchy</th>
+                        <th>Organisasi / Hierarki</th>
                         <th>Website / Email</th>
-                        <th>Address</th>
-                        <th>Executive Director</th>
+                        <th>Alamat</th>
+                        <th>Pimpinan</th>
                         <th>Status</th>
-                        <th>Created By</th>
+                        <th>Dibuat oleh</th>
                         <th class="text-end rounded-end pe-4">Actions</th>
                     </tr>
                 </thead>
@@ -63,4 +63,4 @@
             </table>
         </div>
     </div>
-</div>
+</section></div>

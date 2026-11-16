@@ -84,6 +84,7 @@ class Auth extends BaseController{
                 'name'         => $datasession->name,
                 'email'        => $datasession->email,
                 'loggedin'     => true,
+                'idle_session_key' => bin2hex(random_bytes(16)),
                 'timeout'      => false
             ];
 

@@ -1,0 +1,46 @@
+/* Application typography scale. Keep the framework root size to preserve rem-based layout. */
+:root{
+    --app-font-body:14px;--app-font-caption:12px;--app-font-table:13px;
+    --app-font-control:14px;--app-font-button:13px;
+    --app-font-h1:28px;--app-font-h2:20px;--app-font-h3:18px;
+}
+body{font-size:var(--app-font-body);line-height:1.6}
+body :is(#kt_content,.prem-page,.modal,.swal2-popup){font-size:var(--app-font-body);line-height:1.6}
+body :is(#kt_content,.prem-page,.modal) h1{font-size:var(--app-font-h1)!important;line-height:1.35!important}
+body :is(#kt_content,.prem-page,.modal) h2{font-size:var(--app-font-h2)!important;line-height:1.4!important}
+body :is(#kt_content,.prem-page,.modal) h3{font-size:var(--app-font-h3)!important;line-height:1.45!important}
+body :is(#kt_content,.prem-page,.modal) :is(h4,h5,h6){font-size:16px!important;line-height:1.5!important}
+body :is(#kt_content,.prem-page,.modal) :is(p,dd,legend){font-size:var(--app-font-body)!important;line-height:1.7!important}
+body :is(#kt_content,.prem-page,.modal) :is(small,dt,.form-text,.text-muted,.text-body-secondary){font-size:var(--app-font-caption)!important;line-height:1.6!important}
+body :is(.form-label,label:not(.btn):not(.form-check)):not(.image-input){font-size:var(--app-font-control)!important;line-height:1.5}
+body :is(.form-control,.form-select,.select2-selection__rendered,.select2-results__option,.select2-search__field){font-size:var(--app-font-control)!important;line-height:1.6}
+body .btn:not(.btn-icon){font-size:var(--app-font-button)!important;line-height:1.5}
+body :is(.dropdown-item,.menu-sub .menu-link,.menu-title){font-size:var(--app-font-table)!important}
+body :is(.table th,.table td){font-size:var(--app-font-table)!important;line-height:1.6}
+body .table :is(p,span,strong,a:not(.btn),div){font-size:inherit!important}
+body .table :is(small,.text-muted){font-size:var(--app-font-caption)!important}
+body :is(.badge,.dataTables_info,.dataTables_length label,.page-link){font-size:var(--app-font-caption)!important}
+body :is(.prem-eyebrow,.os-eyebrow,.os-heading>span,.hu-heading>span,.od-heading>span,.welcome-kicker,.welcome-date-label,.backup-tag){font-size:var(--app-font-caption)!important}
+body :is(.pe-kpi-top,.pe-counts span,.pe-kpi-tag,.pe-panel-label,.pe-period,.pe-profile-list li>div:first-child,.pe-profile-list strong,.backup-status,.backup-note,.welcome-card-header,.welcome-banner-note,.welcome-date-note,.prem-header-label,.prem-guide,.prem-facts,.prem-form-footer>.text-muted){font-size:var(--app-font-caption)!important;line-height:1.6}
+body :is(.prem-choice-body,.prem-question legend,.prem-review-profile-field dd,.access-module strong){font-size:var(--app-font-body)!important}
+body :is(.fs-1){font-size:24px!important}
+body :is(.fs-2){font-size:20px!important}
+body :is(.fs-3,.fs-4){font-size:18px!important}
+body :is(.fs-5){font-size:16px!important}
+body :is(.fs-6){font-size:14px!important}
+body :is(.fs-7,.fs-8,.fs-9){font-size:12px!important}
+@media(max-width:767.98px){
+    :root{--app-font-h1:24px;--app-font-h2:20px;--app-font-h3:18px}
+    body :is(input.form-control,textarea.form-control,select.form-select,.select2-search__field){font-size:16px!important}
+}
+/* Compact application toolbar; the title may move into content on mobile. */
+body #kt_content .page-title h1,body #kt_toolbar .page-title h1{
+    font-size:16px!important;line-height:1.4!important;font-weight:600!important;letter-spacing:0
+}
+body #kt_toolbar :is(.btn:not(.btn-icon),.form-control,.form-select,.select2-selection__rendered,.breadcrumb,.breadcrumb-item,.breadcrumb a){
+    font-size:12px!important;line-height:1.5
+}
+body #kt_content .page-title :is(.breadcrumb,.breadcrumb-item,.breadcrumb a){font-size:12px!important;line-height:1.5}
+@media(max-width:767.98px){
+    body #kt_content .page-title h1,body #kt_toolbar .page-title h1{font-size:14px!important}
+}

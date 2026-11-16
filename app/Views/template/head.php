@@ -77,3 +77,11 @@
 <?php if (is_file($buttonThemeCss)): ?>
 <link href="<?= base_url('assets/css/button-theme.css?v=' . filemtime($buttonThemeCss)) ?>" rel="stylesheet" type="text/css" />
 <?php endif; ?>
+<?php $typographyCss = FCPATH . 'assets/css/typography.css'; ?>
+<?php if (is_file($typographyCss)): ?>
+<link href="<?= base_url('assets/css/typography.css?v=' . filemtime($typographyCss)) ?>" rel="stylesheet" type="text/css" />
+<?php endif; ?>
+<?php $compactLayoutCss = FCPATH . 'assets/css/compact-layout.css'; ?>
+<?php if (is_file($compactLayoutCss)): ?>
+<link href="<?= base_url('assets/css/compact-layout.css?v=' . filemtime($compactLayoutCss)) ?>" rel="stylesheet" type="text/css" />
+<?php endif; ?>

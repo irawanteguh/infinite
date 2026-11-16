@@ -28,9 +28,10 @@
 
     function setBusy(value, message) {
         busy = value;
-        $('#btnBackupDatabase, #btnBackupDatabaseICS, #btnRefreshBackups').prop('disabled', value);
+        $('#btnBackupDatabase, #btnRefreshBackups').prop('disabled', value);
         $('#backup_table button').prop('disabled', value);
         status.textContent = message;
+        status.hidden = !message;
     }
 
     async function loadList() {
@@ -45,8 +46,20 @@
             $('<td>').text(row.sizeFormatted).appendTo(tr);
             $('<td>').text(row.created).appendTo(tr);
             const actions = $('<td>').addClass('text-end pe-4');
-            $('<a>').addClass('btn btn-sm btn-light-primary me-2').attr({href: base + 'download/' + encodeURIComponent(row.filename), target: '_blank', rel: 'noopener'}).text('Unduh SQL').appendTo(actions);
-            $('<button>').attr('type', 'button').addClass('btn btn-sm btn-light-danger backup-delete').data('filename', row.filename).prop('disabled', busy).text('Hapus').appendTo(actions);
+            const group = $('<div>').addClass('btn-group').appendTo(actions);
+            $('<button>').attr({
+                type: 'button', 'data-bs-toggle': 'dropdown', 'aria-expanded': 'false'
+            }).addClass('btn btn-sm btn-light-primary dropdown-toggle').prop('disabled', busy).text('Actions').appendTo(group);
+            const menu = $('<div>').addClass('dropdown-menu dropdown-menu-end').appendTo(group);
+            const download = $('<a>').addClass('dropdown-item btn btn-sm text-primary').attr({
+                href: base + 'download/' + encodeURIComponent(row.filename), target: '_blank', rel: 'noopener'
+            }).appendTo(menu);
+            $('<i>').addClass('bi bi-download').attr('aria-hidden', 'true').appendTo(download);
+            download.append(document.createTextNode('Unduh SQL'));
+            const remove = $('<button>').attr('type', 'button').addClass('dropdown-item btn btn-sm text-danger backup-delete')
+                .data('filename', row.filename).prop('disabled', busy).appendTo(menu);
+            $('<i>').addClass('bi bi-trash').attr('aria-hidden', 'true').appendTo(remove);
+            remove.append(document.createTextNode('Hapus'));
             tr.append(actions).appendTo(body);
         });
         initDataTable('#backup_table', '#searchtable', 10);
@@ -56,19 +69,19 @@
     async function refresh() {
         if (busy) return;
         setBusy(true, 'Memuat daftar backup...');
-        try { const count = await loadList(); setBusy(false, count + ' file backup tersedia.'); }
+        try { await loadList(); setBusy(false, ''); }
         catch (error) { setBusy(false, error.message); }
     }
 
-    async function create(scope) {
+    async function create() {
         if (busy) return;
-        const label = scope === 'ics' ? 'ICS' : 'seluruh database';
-        const confirm = await Swal.fire({title: 'Buat dump ' + label + '?', text: scope === 'ics' ? 'Struktur dan data tabel referensi ICS akan disimpan sebagai file SQL.' : 'Seluruh database aktif, termasuk seluruh organisasi, akan disimpan sebagai file SQL.', icon: 'question', showCancelButton: true, confirmButtonText: 'Buat dump', cancelButtonText: 'Batal'});
+        const label = 'seluruh database';
+        const confirm = await Swal.fire({title: 'Buat dump ' + label + '?', text: 'Seluruh database aktif, termasuk seluruh organisasi, akan disimpan sebagai file SQL. Data dt01_bpjs_pending_klaim dan dt01_bpjs_ur_dt tidak disertakan.', icon: 'question', showCancelButton: true, confirmButtonText: 'Buat dump', cancelButtonText: 'Batal'});
         if (!confirm.isConfirmed || busy) return;
         setBusy(true, 'Membuat dump ' + label + '... Tunggu hingga proses selesai.');
         let result;
         try {
-            result = await request(scope === 'ics' ? 'backupics' : 'backup', 'POST');
+            result = await request('backup', 'POST');
 
         } catch (error) {
             setBusy(false, error.message);
@@ -77,13 +90,12 @@
         }
         let refreshNote = '';
         try { await loadList(); } catch (error) { refreshNote = ' Daftar belum diperbarui: ' + error.message; }
-        setBusy(false, 'Dump selesai: ' + result.filename + ' (' + result.tables + ' tabel/objek, ' + result.durationSeconds + ' detik).' + refreshNote);
+        setBusy(false, refreshNote.trim());
         const answer = await Swal.fire({icon: 'success', title: 'Dump database selesai', text: result.filename, showCancelButton: true, confirmButtonText: 'Unduh SQL', cancelButtonText: 'Tutup'});
         if (answer.isConfirmed) window.location.assign(base + 'download/' + encodeURIComponent(result.filename));
     }
 
-    $('#btnBackupDatabase').on('click', () => create('full'));
-    $('#btnBackupDatabaseICS').on('click', () => create('ics'));
+    $('#btnBackupDatabase').on('click', create);
     $('#btnRefreshBackups').on('click', refresh);
     $('#resultbackup').on('click', '.backup-delete', async function () {
         if (busy) return;
@@ -91,7 +103,7 @@
         const answer = await Swal.fire({title: 'Hapus file backup?', text: filename, icon: 'warning', showCancelButton: true, confirmButtonText: 'Hapus file', cancelButtonText: 'Batal'});
         if (!answer.isConfirmed || busy) return;
         setBusy(true, 'Menghapus file backup...');
-        try { await request('delete/' + encodeURIComponent(filename), 'POST'); const count = await loadList(); setBusy(false, 'File backup dihapus. ' + count + ' file tersedia.'); }
+        try { await request('delete/' + encodeURIComponent(filename), 'POST'); await loadList(); setBusy(false, ''); }
         catch (error) { setBusy(false, error.message); await Swal.fire({icon: 'error', title: 'File belum terhapus', text: error.message}); }
     });
     refresh();

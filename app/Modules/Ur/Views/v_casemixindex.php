@@ -15,7 +15,7 @@
         <div id="cm-quality" class="alert alert-warning d-flex align-items-center gap-3" hidden><i class="bi bi-info-circle fs-3"></i><span id="cm-quality-text"></span></div>
         <div class="ur-grid-equal">
             <section class="card card-flush ur-panel"><div class="ur-panel-head"><div><h2>Perubahan komposisi bulanan</h2><p>Jumlah episode SL I, II, III, serta severity lain yang tercatat.</p></div></div><div id="cm-severity-chart" class="ur-chart"></div><div id="cm-severity-mix" class="cm-mix"></div></section>
-            <section class="card card-flush ur-panel"><div class="ur-panel-head"><div><h2>Tujuh CMG dengan episode terbanyak</h2><p>Peringkat mengikuti filter layanan dan bulan yang dipilih.</p></div></div><div id="cm-cmg-chart" class="ur-chart"></div></section>
+            <section class="card card-flush ur-panel"><div class="ur-panel-head"><div><h2>Tujuh CMG dengan episode terbanyak</h2><p>Peringkat mengikuti filter layanan dan bulan yang dipilih.</p></div></div><div id="cm-cmg-chart" class="cm-cmg-list" role="list" aria-label="Tujuh CMG terbanyak, jumlah episode dan persentase dari seluruh episode terpilih"></div></section>
         </div>
         <section class="card card-flush ur-panel mb-5"><div class="ur-panel-head"><div><h2>Profil kelompok kasus</h2><p>Proporsi episode dan total INA-CBG per kelompok kasus.</p></div></div><div id="cm-casegroups" class="cm-casegroups"></div></section>
         <section class="card card-flush ur-panel">

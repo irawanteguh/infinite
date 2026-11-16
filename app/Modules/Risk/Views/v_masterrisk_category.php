@@ -1,10 +1,10 @@
 <?php $categoryError = session()->getFlashdata('masterrisk_category_error'); ?>
-<section class="card card-flush h-100 border shadow-sm" id="master-categories" style="border-top:3px solid #8b5cf6 !important">
+<section class="card card-flush h-100 border shadow-sm" id="master-categories" >
     <div class="card-header border-0 pt-6 align-items-center gap-3">
-        <div><h2 class="fs-5 mb-2"><i class="bi bi-grid text-info me-2" aria-hidden="true"></i>Kategori risiko</h2><span class="text-muted fs-7">Kelompokkan risiko dengan definisi yang konsisten.</span></div>
+        <div><h2 class="fs-5 mb-2">Kategori risiko</h2><p>Kelompokkan risiko dengan definisi yang konsisten.</p></div>
         <div class="d-flex flex-wrap align-items-center gap-3">
-        <div class="position-relative my-1 w-100 w-md-250px">
-            <i class="bi bi-search fs-3 position-absolute top-50 start-0 translate-middle-y ms-4 text-muted" aria-hidden="true"></i>
+        <div class="position-relative risk-master-search my-1 w-100 w-md-250px">
+            <svg class="risk-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 4.5 4.5"></path></svg>
             <label for="mr-category-search" class="visually-hidden">Cari kategori atau keterangan</label>
             <input id="mr-category-search" type="search" class="form-control form-control-solid ps-12" placeholder="Cari kategori atau keterangan…">
         </div>

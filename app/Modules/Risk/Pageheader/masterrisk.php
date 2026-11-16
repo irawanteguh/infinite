@@ -1,0 +1,1 @@
+<header class="app-page-heading"><div><h1>Master Risiko</h1><p>Kelola kode departemen, kategori, dan matriks penilaian risiko organisasi.</p></div></header>

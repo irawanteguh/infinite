@@ -17,8 +17,8 @@ for ($l = 1; $l <= 5; $l++) {
     }
 }
 ?>
-<section class="card card-flush border shadow-sm" id="master-matrix" style="border-top:3px solid #10b981 !important">
-    <div class="card-header border-0 pt-6 align-items-center gap-3"><div><h2 class="fs-5 mb-2"><i class="bi bi-table text-success me-2" aria-hidden="true"></i>Matriks analisis risiko 5 × 5</h2><span class="text-muted fs-7">Pemetaan tingkat kemungkinan dan dampak sesuai matriks referensi.</span></div><span class="badge badge-light-primary"><?= count($matrixCells) ?> kombinasi</span></div>
+<section class="card card-flush border shadow-sm" id="master-matrix" >
+    <div class="card-header border-0 pt-6 align-items-center gap-3"><div><h2 class="fs-5 mb-2">Matriks analisis risiko 5 × 5</h2><p>Pemetaan tingkat kemungkinan dan dampak sesuai matriks referensi.</p></div></div>
     <div class="card-body pt-5">
         <?php if (!$matrixReady || !$matrixComplete): ?>
             <div class="alert alert-warning">Master matriks belum lengkap. Diperlukan 25 kombinasi kemungkinan dan dampak.</div>

@@ -1,0 +1,53 @@
+.risk-master-page{width:100%;min-width:0;color:#234a54}
+.risk-master-page .card{border:1px solid #e1ebed!important;border-radius:16px;box-shadow:0 8px 28px #1c454b04!important;overflow:hidden}
+.risk-master-page .card-header{align-items:flex-start!important;flex-wrap:wrap}.risk-master-page .card-header>div{min-width:0}.risk-master-page .card-header h2{color:#234a54}.risk-master-page .card-header p{color:#81969b;margin:4px 0 0;font-size:12px;line-height:1.5}
+.risk-master-page .card-header>div:last-child:not(:first-child){width:100%}.risk-master-page .card-header .position-relative{width:100%!important;max-width:360px;margin:0!important}
+.risk-master-page .form-control,.risk-master-modal .form-control,.risk-master-modal .form-select,.risk-master-modal .select2-selection{background:#f8fcfb!important;border:1px solid #dce8e7!important;border-radius:9px!important;min-height:44px}
+.risk-master-page .form-control:focus,.risk-master-modal .form-control:focus,.risk-master-modal .form-select:focus{border-color:#087e82!important;box-shadow:0 0 0 3px #087e8214!important}
+.risk-master-page .table{margin-bottom:0}.risk-master-page #datamasterrisk_table{min-width:560px}.risk-master-page #datamasterriskcategory_table{min-width:520px}
+.risk-master-page :is(#datamasterrisk_table,#datamasterriskcategory_table) th{background:#eff7f5!important;color:#71918b!important;font-weight:600}
+.risk-master-page :is(#datamasterrisk_table,#datamasterriskcategory_table) td{border-color:#edf2f0;vertical-align:middle}.risk-master-page :is(#datamasterrisk_table,#datamasterriskcategory_table) tbody tr:hover{background:#fbfdfc}
+.risk-master-page .badge-light-primary{background:#eaf6f4!important;color:#087e82!important;font-weight:500}
+.risk-master-page #master-matrix .h-100px{height:76px!important}.risk-master-page #master-matrix caption{font-size:12px;color:#81969b;line-height:1.6;padding-top:12px}
+.risk-master-modal .modal-content{border:1px solid #e0ebe7;border-radius:16px;overflow:hidden}.risk-master-modal .modal-header{background:#f1f8f6}.risk-master-modal .modal-title,.risk-master-modal .modal-header h2{color:#234a54;font-size:18px!important}.risk-master-modal .modal-footer{background:#fbfdfc;border-top:1px solid #e3ece8}
+.risk-master-modal .select2-container{max-width:100%}.risk-master-page .dataTables_wrapper .row{row-gap:10px}
+@media(max-width:575px){.risk-master-page .card-header .position-relative{max-width:none}.risk-master-modal .modal-footer>.btn{flex:1}.risk-master-page #master-matrix .h-100px{height:64px!important}}
+/* Keep card title/description and search on one header row. */
+.risk-master-page :is(#master-codes,#master-categories)>.card-header{
+    display:flex;align-items:center!important;flex-wrap:nowrap;gap:12px!important
+}
+.risk-master-page :is(#master-codes,#master-categories)>.card-header>div:first-child{
+    flex:1 1 auto;min-width:0
+}
+.risk-master-page :is(#master-codes,#master-categories)>.card-header>div:last-child:not(:first-child){
+    flex:0 1 270px;width:270px;max-width:50%
+}
+.risk-master-page :is(#master-codes,#master-categories)>.card-header .position-relative{
+    width:100%!important;max-width:none
+}
+.risk-master-page :is(#mr-search,#mr-category-search){
+    min-height:42px;border-radius:7px!important;background:#f5f8fa!important;
+    border-color:transparent!important;color:#3c626d;padding-left:36px!important;padding-right:12px
+}
+.risk-master-page :is(#master-codes,#master-categories)>.card-header .position-relative>i{
+    top:50%!important;left:13px!important;transform:translateY(-50%)!important;margin:0!important;
+    font-size:13px!important;line-height:1;display:flex;align-items:center;color:#8aa0a5!important
+}
+
+@media(max-width:575.98px){
+    .risk-master-page :is(#master-codes,#master-categories)>.card-header{flex-wrap:wrap}
+    .risk-master-page :is(#master-codes,#master-categories)>.card-header>div:last-child:not(:first-child){flex:1 1 100%;width:100%;max-width:none}
+}
+/* One flex row avoids the icon font's baseline offset. */
+.risk-master-page :is(#master-codes,#master-categories) .risk-master-search{
+    display:flex;align-items:center;gap:10px;padding:0 13px;
+    background:#f5f8fa;border:1px solid transparent;border-radius:7px;min-height:42px
+}
+.risk-master-page .risk-master-search .risk-search-icon{
+    display:block;position:static;flex:0 0 14px;width:14px;height:14px;color:#8aa0a5;transform:translateY(-1px)
+}
+.risk-master-page .risk-master-search :is(#mr-search,#mr-category-search){
+    flex:1;min-width:0;min-height:40px;border:0!important;border-radius:0!important;
+    background:transparent!important;padding:8px 0!important;box-shadow:none!important;margin:0
+}
+.risk-master-page .risk-master-search:focus-within{border-color:#087e82;box-shadow:0 0 0 3px #087e8214}

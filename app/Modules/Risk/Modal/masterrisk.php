@@ -7,7 +7,7 @@ $codeInput = static function ($key) use ($codeError) {
     return esc(is_scalar($value) ? (string) $value : '');
 };
 ?>
-<div class="modal fade" id="modal_add_masterrisk" tabindex="-1" aria-labelledby="mr-modal-title" aria-hidden="true" data-reopen="<?= $codeError ? '1' : '0' ?>">
+<div class="modal fade risk-master-modal" id="modal_add_masterrisk" tabindex="-1" aria-labelledby="mr-modal-title" aria-hidden="true" data-reopen="<?= $codeError ? '1' : '0' ?>">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable mw-650px">
         <div class="modal-content d-flex flex-column overflow-hidden">
             <div class="modal-header pb-0 border-0">
@@ -46,7 +46,7 @@ $codeInput = static function ($key) use ($codeError) {
     </div>
 </div>
 
-<div class="modal fade" id="modal_add_riskcategory" tabindex="-1" aria-labelledby="category-modal-title" aria-hidden="true" data-reopen="<?= $categoryError ? '1' : '0' ?>">
+<div class="modal fade risk-master-modal" id="modal_add_riskcategory" tabindex="-1" aria-labelledby="category-modal-title" aria-hidden="true" data-reopen="<?= $categoryError ? '1' : '0' ?>">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable mw-650px">
         <div class="modal-content d-flex flex-column overflow-hidden">
             <div class="modal-header pb-0 border-0">

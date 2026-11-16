@@ -34,7 +34,9 @@
         charts[id].render();
     }
     function render() {
-        const month = $('#ur-month').val(), service = $('#ur-service').val();
+        const selectedMonth = $('#ur-month').val(), selectedService = $('#ur-service').val();
+        const month = selectedMonth === 'all' ? '' : selectedMonth;
+        const service = selectedService === 'all' ? '' : selectedService;
         const data = rows.filter(row => (!month || number(row.periode) === number(month)) && (!service || String(row.ptd) === service));
         $('#ur-content').prop('hidden', true);
         if (!data.length) { status('Belum ada data untuk filter ini. Ubah periode, bulan, atau jenis layanan.'); $('#ur-coverage').text('Tidak ada data pada cakupan terpilih'); return; }
@@ -90,6 +92,16 @@
             .fail(function(xhr,state){if(state!=='abort'){status(xhr.responseJSON?.responseDesc || 'Data gagal dimuat. Klik Perbarui untuk mencoba kembali.');$('#ur-coverage').text('Data belum tersedia');}})
             .always(function(){ Swal.close(); $('#ur-executive').attr('aria-busy','false');$('#ur-refresh').prop('disabled',false); });
     };
+    $(function () {
+        $('#selectperiode,#ur-month,#ur-service').each(function () {
+            const select = $(this);
+            if (select.data('select2')) {
+                select.data('select2').options.set('minimumResultsForSearch', 0);
+            } else {
+                select.select2({minimumResultsForSearch: 0, width: '100%'});
+            }
+        });
+    });
     $('#selectperiode').on('change',window.dataraweklaim);
     $('#ur-month,#ur-service').on('change',render);
     $('#ur-refresh').on('click',window.dataraweklaim);

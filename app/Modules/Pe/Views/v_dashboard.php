@@ -184,7 +184,21 @@ $chart = $data ? [
             <section class="prem-card pe-panel mb-6">
                 <div class="pe-panel-heading"><div><span class="prem-eyebrow">PERKEMBANGAN PENILAIAN</span><h2>Tren nilai bulanan</h2><p>Rerata skor per bulan untuk PREM, PROM PRE / T0, dan PROM POST / T1.</p></div><span class="pe-panel-label">SKALA 1–5</span></div>
                 <div id="pe-score-chart" class="pe-chart" role="img" aria-label="Grafik garis rerata skor PREM, PROM PRE, dan PROM POST per bulan"></div>
-                <details class="pe-chart-table"><summary>Lihat nilai bulanan</summary><div class="table-responsive"><table class="table"><caption class="visually-hidden">Rerata skor per bulan, skala 1–5</caption><thead><tr><th>Bulan</th><th>PREM</th><th>PROM PRE / T0</th><th>PROM POST / T1</th></tr></thead><tbody><?php foreach ($data['monthlyAverages'] as $month => $averages): ?><tr><td><?= esc($month) ?></td><?php foreach (['PREM', 'T0', 'T1'] as $phase): ?><td><?= $number($averages[$phase], 2) ?></td><?php endforeach; ?></tr><?php endforeach; ?></tbody></table></div></details>
+                <details class="pe-chart-table pe-monthly-responses">
+                    <summary>Lihat nilai bulanan</summary>
+                    <div class="table-responsive pe-monthly-scroll" tabindex="0" role="region" aria-label="Tabel rerata nilai bulanan">
+                        <table class="table align-middle gy-2 pe-monthly-table" id="pe-monthly-score-table">
+                            <caption class="visually-hidden">Rerata skor PREM dan PROM per bulan, skala 1–5, sesuai filter aktif</caption>
+                            <thead><tr><th scope="col">Bulan</th><th scope="col" class="text-end">PREM</th><th scope="col" class="text-end">PROM PRE <span>(T0)</span></th><th scope="col" class="text-end">PROM POST <span>(T1)</span></th></tr></thead>
+                            <tbody>
+                            <?php foreach ($data['monthlyAverages'] as $month => $averages): ?>
+                                <tr><th scope="row"><?= esc(($months[substr($month, 5, 2)] ?? substr($month, 5, 2)) . ' ' . substr($month, 0, 4)) ?></th><?php foreach (['PREM', 'T0', 'T1'] as $phase): ?><td class="text-end"><?= $number($averages[$phase], 2) ?></td><?php endforeach; ?></tr>
+                            <?php endforeach; ?>
+                            <?php if (!$data['monthlyAverages']): ?><tr><td colspan="4" class="text-center text-muted">Belum ada nilai pada periode ini.</td></tr><?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </details>
                 <p class="pe-method">Dihitung dari rerata tiap respons berdasarkan bulan pengisian dan filter aktif. Bulan tanpa jawaban tidak diberi nilai. Komposisi instrumen dan responden dapat berbeda tiap bulan; gunakan filter instrumen untuk melihat tren instrumen tertentu. Seri PROM mencakup seluruh respons, bukan hanya pasangan PRE–POST.</p>
             </section>
 
@@ -192,7 +206,21 @@ $chart = $data ? [
                 <section class="prem-card pe-panel">
                     <div class="pe-panel-heading"><div><span class="prem-eyebrow">PARTISIPASI PASIEN</span><h2>Tren respons bulanan</h2><p>Perkembangan jumlah pengisian menurut jenis kuesioner.</p></div><span class="pe-panel-label">RESPONS / BULAN</span></div>
                     <div id="pe-trend-chart" class="pe-chart" role="img" aria-label="Grafik tren jumlah respons PREM, PROM PRE, dan PROM POST per bulan"></div>
-                    <details class="pe-chart-table"><summary>Lihat data bulanan</summary><div class="table-responsive"><table class="table"><caption class="visually-hidden">Jumlah respons per bulan</caption><thead><tr><th>Bulan</th><th>PREM</th><th>PRE</th><th>POST</th></tr></thead><tbody><?php foreach ($data['monthly'] as $month => $counts): ?><tr><td><?= esc($month) ?></td><td><?= $counts['PREM'] ?></td><td><?= $counts['T0'] ?></td><td><?= $counts['T1'] ?></td></tr><?php endforeach; ?></tbody></table></div></details>
+                    <details class="pe-chart-table pe-monthly-responses">
+                        <summary>Lihat data bulanan</summary>
+                        <div class="table-responsive pe-monthly-scroll" tabindex="0" role="region" aria-label="Tabel jumlah respons bulanan">
+                            <table class="table align-middle gy-2 pe-monthly-table" id="pe-monthly-response-table">
+                                <caption class="visually-hidden">Jumlah respons PREM dan PROM per bulan sesuai filter aktif</caption>
+                                <thead><tr><th scope="col">Bulan</th><th scope="col" class="text-end">PREM</th><th scope="col" class="text-end">PROM PRE <span>(T0)</span></th><th scope="col" class="text-end">PROM POST <span>(T1)</span></th></tr></thead>
+                                <tbody>
+                                <?php foreach ($data['monthly'] as $month => $counts): ?>
+                                    <tr><th scope="row"><?= esc(($months[substr($month, 5, 2)] ?? substr($month, 5, 2)) . ' ' . substr($month, 0, 4)) ?></th><td class="text-end"><?= $number($counts['PREM'], 0) ?></td><td class="text-end"><?= $number($counts['T0'], 0) ?></td><td class="text-end"><?= $number($counts['T1'], 0) ?></td></tr>
+                                <?php endforeach; ?>
+                                <?php if (!$data['monthly']): ?><tr><td colspan="4" class="text-center text-muted">Belum ada respons pada periode ini.</td></tr><?php endif; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </details>
                 </section>
                 <section class="prem-card pe-panel pe-outcome">
                     <div class="pe-panel-heading"><div><span class="prem-eyebrow">HASIL PERAWATAN</span><h2>Perbandingan PROM</h2><p>Pasangan dengan instrumen, pelayanan, dan nomor rekam medis yang sama.</p></div></div>
@@ -219,13 +247,37 @@ $chart = $data ? [
 
             <div class="row g-6 pe-insight-row"><div class="col-12 col-lg-6"><section class="prem-card pe-panel pe-domain-panel">
                 <div class="pe-panel-heading"><div><span class="prem-eyebrow">TELUSURI LEBIH DALAM</span><h2>Penilaian per domain</h2><p>Rerata skor jawaban menurut instrumen dan domain, skala 1–5.</p></div></div>
-                <div class="table-responsive" tabindex="0" role="region" aria-label="Tabel penilaian domain, dapat digulir"><table class="table pe-table align-middle"><thead><tr><th>Domain / instrumen</th><th>Jenis</th><th class="text-center">PREM</th><th class="text-center">PROM PRE</th><th class="text-center">PROM POST</th><th class="text-end">Jumlah pengisian</th></tr></thead><tbody><?php foreach ($data['domains'] as $domain): ?><tr><td><strong><?= esc($domain['name']) ?></strong><small><?= esc($domain['instrument']) ?></small></td><td><span class="pe-type"><?= esc($domain['type']) ?></span></td><?php foreach (['PREM', 'T0', 'T1'] as $phase): ?><td class="text-center"><span class="<?= $domain['averages'][$phase] !== null ? 'pe-score-pill' : 'pe-no-value' ?>"><?= $number($domain['averages'][$phase], 2) ?></span></td><?php endforeach; ?><td class="text-end"><?= $number($domain['submissionCount'], 0) ?></td></tr><?php endforeach; ?></tbody></table></div>
+                <div class="table-responsive pe-insight-scroll" tabindex="0" role="region" aria-label="Tabel penilaian domain, dapat digulir">
+                    <table class="table pe-table pe-insight-table pe-domain-table align-middle gy-2" id="pe-domain-table">
+                        <caption class="visually-hidden">Rerata penilaian per domain dan instrumen pada skala 1–5</caption>
+                        <colgroup><col style="width:36%"><col style="width:10%"><col style="width:12%"><col style="width:14%"><col style="width:14%"><col style="width:14%"></colgroup>
+                        <thead><tr><th scope="col">Domain / instrumen</th><th scope="col">Jenis</th><th scope="col" class="text-end">PREM</th><th scope="col" class="text-end">PROM PRE<br><span>(T0)</span></th><th scope="col" class="text-end">PROM POST<br><span>(T1)</span></th><th scope="col" class="text-end">Jumlah<br>pengisian</th></tr></thead>
+                        <tbody>
+                        <?php foreach ($data['domains'] as $domain): ?>
+                            <tr><td class="pe-insight-copy"><strong><?= esc($domain['name']) ?></strong><small><?= esc($domain['instrument']) ?></small></td><td><span class="pe-type"><?= esc($domain['type']) ?></span></td><?php foreach (['PREM', 'T0', 'T1'] as $phase): ?><td class="text-end"><span class="<?= $domain['averages'][$phase] !== null ? 'pe-score-pill' : 'pe-no-value' ?>"><?= $number($domain['averages'][$phase], 2) ?></span></td><?php endforeach; ?><td class="text-end"><?= $number($domain['submissionCount'], 0) ?></td></tr>
+                        <?php endforeach; ?>
+                        <?php if (!$data['domains']): ?><tr><td colspan="6" class="text-center text-muted">Belum ada penilaian domain pada periode ini.</td></tr><?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
                 <p class="pe-method">Jumlah pengisian menghitung setiap pengisian satu kali per domain, termasuk T0 dan T1 sebagai pengisian terpisah; bukan jumlah orang unik. Rerata domain PRE/POST mencakup seluruh jawaban pada filter ini, sehingga komposisi responden dapat berbeda. Perbandingan berpasangan tersedia pada kartu PROM di atas.</p>
             </section>
 
             </div><div class="col-12 col-lg-6"><section class="prem-card pe-panel pe-priorities">
-                <div class="pe-panel-heading"><div><span class="prem-eyebrow">FOKUS PERBAIKAN</span><h2>Area pengalaman yang perlu ditinjau</h2><p>Lima pertanyaan PREM dengan rerata terendah pada periode terpilih.</p></div><i class="bi bi-lightbulb pe-panel-icon"></i></div>
-                <?php if ($data['priorities']): ?><div class="pe-priority-list"><?php foreach ($data['priorities'] as $index => $item): ?><article><span class="pe-priority-number"><?= $index + 1 ?></span><div class="pe-priority-copy"><h3><?= esc($item['question']) ?></h3><p><?= esc($item['domain']) ?> · <?= esc($item['instrument']) ?></p></div><div class="pe-priority-score"><strong><?= $number($item['average'], 2) ?><small> / 5</small></strong><span><?= $number($item['positive']) ?>% positif · <?= $item['count'] ?> jawaban</span></div></article><?php endforeach; ?></div><?php else: ?><div class="pe-panel-empty"><p>Belum ada jawaban PREM untuk menentukan area tinjauan.</p></div><?php endif; ?>
+                <div class="pe-panel-heading"><div><span class="prem-eyebrow">FOKUS PERBAIKAN</span><h2>Area pengalaman yang perlu ditinjau</h2><p>Lima pertanyaan PREM dengan rerata terendah pada periode terpilih.</p></div></div>
+                <div class="table-responsive pe-insight-scroll" tabindex="0" role="region" aria-label="Tabel area pengalaman yang perlu ditinjau">
+                    <table class="table pe-table pe-insight-table pe-priority-table align-middle gy-2" id="pe-priority-table">
+                        <caption class="visually-hidden">Lima pertanyaan PREM dengan rerata terendah; positif adalah jawaban skor 4–5</caption>
+                        <colgroup><col style="width:7%"><col style="width:51%"><col style="width:14%"><col style="width:14%"><col style="width:14%"></colgroup>
+                        <thead><tr><th scope="col">#</th><th scope="col">Pertanyaan / domain</th><th scope="col" class="text-end">Rerata<br><span>/ 5</span></th><th scope="col" class="text-end">Positif</th><th scope="col" class="text-end">Jawaban</th></tr></thead>
+                        <tbody>
+                        <?php foreach ($data['priorities'] as $index => $item): ?>
+                            <tr><td class="pe-insight-rank"><?= $index + 1 ?></td><td class="pe-insight-copy"><strong><?= esc($item['question']) ?></strong><small><?= esc($item['domain']) ?> · <?= esc($item['instrument']) ?></small></td><td class="text-end"><span class="pe-score-pill"><?= $number($item['average'], 2) ?></span></td><td class="text-end"><?= $number($item['positive']) ?>%</td><td class="text-end"><?= $number($item['count'], 0) ?></td></tr>
+                        <?php endforeach; ?>
+                        <?php if (!$data['priorities']): ?><tr><td colspan="5" class="text-center text-muted">Belum ada jawaban PREM untuk menentukan area tinjauan.</td></tr><?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
             </section>
             </div></div><div class="pe-data-note"><i class="bi bi-info-circle"></i><p>Rerata PREM dihitung dari rerata tiap respons. Persentase positif memakai jawaban berskor 4–5. Hasil bersifat deskriptif dan bukan kesimpulan klinis. Nama instrumen, domain, dan pertanyaan mengikuti master terbaru.</p></div>
             <?php endif; ?>

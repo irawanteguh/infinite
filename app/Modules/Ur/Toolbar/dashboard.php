@@ -1,7 +1,7 @@
 <div class="ur-toolbar" role="group" aria-label="Periode dan impor data UR">
     <div class="ur-toolbar-period">
         <label for="selectperiode"><i class="bi bi-calendar3" aria-hidden="true"></i><span>Tahun pulang</span></label>
-        <select data-control="select2" data-placeholder="Pilih tahun" class="form-select form-select-sm form-select-solid" data-hide-search="true" name="selectperiode" id="selectperiode">
+        <select data-control="select2" data-placeholder="Pilih tahun" class="form-select form-select-sm form-select-solid" data-minimum-results-for-search="0" name="selectperiode" id="selectperiode">
             <?= $periode ?>
         </select>
     </div>

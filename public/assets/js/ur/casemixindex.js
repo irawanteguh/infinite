@@ -3,7 +3,7 @@
     const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
     const nf = new Intl.NumberFormat('id-ID', { maximumFractionDigits: 0 });
     const cf = new Intl.NumberFormat('id-ID', { notation: 'compact', maximumFractionDigits: 2 });
-    const colors = ['#009ef7','#7239ea','#f1a208','#7e8299'];
+    const colors = ['#087e82','#75b5a0','#d3ad69','#94a7ac'];
     const num = value => Number(value) || 0;
     const sum = (rows, field) => rows.reduce((value, row) => value + num(row[field]), 0);
     const pct = (value, total) => total ? (value / total * 100).toLocaleString('id-ID', { maximumFractionDigits: 1 }) + '%' : '—';
@@ -20,12 +20,12 @@
         if (typeof ApexCharts === 'undefined') { $('#'+id).html('<p class="ur-empty">Grafik tidak tersedia; gunakan tabel detail di bawah.</p>'); return; }
         charts[id] = new ApexCharts(document.getElementById(id), {
             chart:{type:'bar',height:300,stacked:!horizontal,fontFamily:'inherit',toolbar:{show:false},animations:{enabled:false}},
-            series:series,colors:horizontal?['#7239ea']:colors,
+            series:series,colors:horizontal?['#087e82']:colors,
             plotOptions:{bar:{horizontal:horizontal,columnWidth:'46%',borderRadius:4,barHeight:'52%'}},
             dataLabels:{enabled:false},stroke:{width:0},grid:{borderColor:'#edf2f4',strokeDashArray:3},
             xaxis:{categories:categories,axisTicks:{show:false},axisBorder:{show:false},labels:{formatter:value=>horizontal?cf.format(num(value)):value}},
-            yaxis:{labels:{maxWidth:horizontal?280:100,style:{fontSize:'10px'},formatter:value=>horizontal?value:cf.format(num(value))}},
-            legend:{position:'top',horizontalAlign:'left',fontSize:'11px'},
+            yaxis:{labels:{maxWidth:horizontal?280:100,style:{fontSize:'12px'},formatter:value=>horizontal?value:cf.format(num(value))}},
+            legend:{position:'top',horizontalAlign:'left',fontSize:'12px'},
             tooltip:{shared:!horizontal,intersect:false,y:{formatter:value=>nf.format(value)+' episode'}},
             noData:{text:'Tidak ada episode rawat inap'}
         });
@@ -45,19 +45,23 @@
         if (!tableData) return;
         const term = String($('#cm-search').val() || '').toLowerCase();
         const {cg,cmg,sl,activeMonths,total} = tableData;
-        const selected=$('#cm-month').val();
+        const selectedValue=$('#cm-month').val(); const selected=selectedValue==='all'?'':selectedValue;
         const columns=selected?[num(selected)]:Array.from({length:12},(_,i)=>i+1);
         [['cg',cg],['sl',sl],['cmg',cmg]].forEach(([type,groups])=>{
+            const table=$('#cm-body-'+type).closest('table');
+            if ($.fn.DataTable.isDataTable(table[0])) table.DataTable().destroy();
             const denominator=type==='sl'?groups.reduce((value,g)=>value+g.total,0):total;
             const visible=groups.filter(group=>(group.code+' '+group.name+' '+group.note).toLowerCase().includes(term));
             $('#cm-head-'+type).html('<tr><th>Kelompok / kode</th><th>Total episode</th><th>Proporsi</th><th>Total INA-CBG</th>'+columns.map(m=>'<th>'+months[m-1]+'</th>').join('')+'</tr>');
             $('#cm-body-'+type).html(visible.length?visible.map(group=>'<tr><td><span class="badge '+(group.known?'badge-light-primary':'badge-light-warning')+' me-2">'+esc(group.code)+'</span>'+esc(group.name)+(group.note?'<small>'+esc(group.note)+'</small>':'')+'</td><td><strong>'+nf.format(group.total)+'</strong></td><td>'+pct(group.total,denominator)+'</td><td>'+money(group.tariff)+'</td>'+columns.map(m=>{const count=sum(group.rows.filter(row=>num(row.month)===m),'episodes');return '<td class="'+(count?'cm-heat':'')+'">'+(activeMonths.has(m)?nf.format(count):'—')+'</td>';}).join('')+'</tr>').join(''):'<tr><td colspan="'+(columns.length+4)+'" class="text-center py-8">Tidak ada kelompok yang sesuai pencarian.</td></tr>');
             $('#cm-foot-'+type).html('<tr><td>Total baris ditampilkan</td><td>'+nf.format(visible.reduce((t,g)=>t+g.total,0))+'</td><td>'+pct(visible.reduce((t,g)=>t+g.total,0),denominator)+'</td><td>'+money(visible.reduce((t,g)=>t+g.tariff,0))+'</td>'+columns.map(m=>'<td>'+(activeMonths.has(m)?nf.format(visible.reduce((t,g)=>t+sum(g.rows.filter(row=>num(row.month)===m),'episodes'),0)):'—')+'</td>').join('')+'</tr>');
+            initDataTable(table, null, 10, {paging:false, searching:false, info:false, lengthChange:false});
         });
     }
     function render() {
         destroyCharts(); tableData=null;
-        const month=$('#cm-month').val(), service=$('#cm-service').val();
+        const selectedMonth=$('#cm-month').val(), selectedService=$('#cm-service').val();
+        const month=selectedMonth==='all'?'':selectedMonth, service=selectedService==='all'?'':selectedService;
         const rows=payload.rows.filter(row=>(!month || num(row.month)===num(month)) && (!service || String(row.ptd)===service));
         $('#cm-content').prop('hidden',true); $('#cm-quality').prop('hidden',true);
         if (!rows.length) { message('Belum ada data untuk filter ini. Pilih tahun, bulan, atau layanan lain.'); $('#cm-coverage').text('Tidak ada data pada cakupan terpilih'); return; }
@@ -121,6 +125,13 @@
             .fail(function(xhr,state){if(token===generation && state!=='abort'){message(xhr.responseJSON?.responseDesc || 'Data gagal dimuat. Klik Perbarui untuk mencoba kembali.');$('#cm-coverage').text('Data belum tersedia');}})
             .always(function(){if(token===generation){Swal.close();$('#cm-refresh').prop('disabled',false);}});
     };
+    $(function () {
+        $('#selectperiode,#cm-month,#cm-service').each(function () {
+            const select=$(this);
+            if(select.data('select2'))select.data('select2').options.set('minimumResultsForSearch',0);
+            else select.select2({minimumResultsForSearch:0,width:'100%'});
+        });
+    });
     $('#selectperiode').on('change',window.load);
     $('#cm-month,#cm-service').on('change',render);
     $('#cm-search').on('input',tables);

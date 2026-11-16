@@ -72,3 +72,8 @@
     }
 
 ?>
+
+<?php $buttonThemeCss = FCPATH . 'assets/css/button-theme.css'; ?>
+<?php if (is_file($buttonThemeCss)): ?>
+<link href="<?= base_url('assets/css/button-theme.css?v=' . filemtime($buttonThemeCss)) ?>" rel="stylesheet" type="text/css" />
+<?php endif; ?>

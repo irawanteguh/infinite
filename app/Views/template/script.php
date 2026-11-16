@@ -29,7 +29,7 @@
         $jsFiles = glob($jspathroot . '*.js');
         foreach ($jsFiles as $jsFile) {
             $jsFilename = basename($jsFile);
-            echo '<script type="text/javascript" src="' . base_url('assets/js/root/' . $jsFilename) . '"></script>' . PHP_EOL;
+            echo '<script type="text/javascript" src="' . base_url('assets/js/root/' . $jsFilename . '?v=' . filemtime($jsFile)) . '"></script>' . PHP_EOL;
         }
     }
 

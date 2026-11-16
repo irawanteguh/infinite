@@ -1,0 +1,23 @@
+/* Shared teal button states, loaded after page and framework styles. */
+:root{--infinite-teal:#087e82;--infinite-teal-hover:#066b6e;--infinite-teal-soft:#eaf6f4;--infinite-teal-soft-hover:#dcefe9}
+body .btn:is(.btn-primary,.prem-btn-primary,.hu-add-btn,.od-add-btn,.os-btn-primary,.access-confirm){
+    background-color:var(--infinite-teal)!important;border-color:var(--infinite-teal)!important;color:#fff!important
+}
+body .btn:is(.btn-light-primary,.backup-btn-light,.os-btn-secondary){
+    background-color:var(--infinite-teal-soft)!important;border-color:#d8ece6!important;color:var(--infinite-teal)!important
+}
+body .btn:is(.btn-primary,.prem-btn-primary,.hu-add-btn,.od-add-btn,.os-btn-primary,.access-confirm):not(:disabled):not(.disabled):is(:hover,:focus,:active,.active,.show){
+    background-color:var(--infinite-teal-hover)!important;border-color:var(--infinite-teal-hover)!important;color:#fff!important
+}
+body .btn:is(.btn-light-primary,.backup-btn-light,.os-btn-secondary):not(:disabled):not(.disabled):is(:hover,:focus,:active,.active,.show){
+    background-color:var(--infinite-teal-soft-hover)!important;border-color:#bddfd5!important;color:var(--infinite-teal-hover)!important
+}
+body .btn:is(.btn-active-primary,.btn-active-light-primary):not(:disabled):not(.disabled):is(:hover,:focus,:active,.active,.show){
+    background-color:var(--infinite-teal-soft-hover)!important;border-color:#bddfd5!important;color:var(--infinite-teal-hover)!important
+}
+body .btn.btn-active-color-primary:not(:disabled):not(.disabled):is(:hover,:focus,:active,.active,.show){color:var(--infinite-teal-hover)!important}
+body .btn:is(.btn-primary,.btn-light-primary,.prem-btn-primary,.hu-add-btn,.od-add-btn,.os-btn-primary,.os-btn-secondary,.backup-btn-light,.access-confirm,.btn-active-primary,.btn-active-light-primary,.btn-active-color-primary) :is(i,.svg-icon,.text-primary){color:inherit!important}
+body .btn:is(.btn-primary,.btn-light-primary,.prem-btn-primary,.hu-add-btn,.od-add-btn,.os-btn-primary,.os-btn-secondary,.backup-btn-light,.access-confirm):focus-visible{
+    outline:2px solid var(--infinite-teal)!important;outline-offset:3px;box-shadow:0 0 0 3px #087e821a!important
+}
+body .btn:is(.btn-primary,.btn-light-primary,.prem-btn-primary,.hu-add-btn,.od-add-btn,.os-btn-primary,.os-btn-secondary,.backup-btn-light,.access-confirm):is(:disabled,.disabled){opacity:.55}

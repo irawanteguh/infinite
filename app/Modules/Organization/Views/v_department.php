@@ -1,5 +1,5 @@
-<div class="card">
-    <div class="card-header border-0 pt-6">
+<div class="org-department-page"><header class="od-heading"><span>STRUKTUR ORGANISASI</span><h2>Departemen</h2><p>Kelola departemen, kepala departemen, dan informasi anggota organisasi Anda.</p></header><section class="card od-card">
+    <div class="card-header border-0 pt-6"><div class="od-table-title"><h3>Daftar departemen</h3><p>Temukan dan kelola unit kerja organisasi.</p></div>
         <div class="card-title">
             <div class="d-flex align-items-center position-relative my-1">
                 <span class="svg-icon svg-icon-1 position-absolute ms-6">
@@ -8,27 +8,27 @@
                         <path d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z" fill="black"></path>
                     </svg>
                 </span>
-                <input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Search Data" id="searchtable">
+                <input type="search" aria-label="Cari departemen" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Cari departemen..." id="searchtable">
             </div>
         </div>
     </div>
 
     <div class="card-body pt-0">
-        <div class="table-responsive">
+        <div class="table-responsive od-table-scroll" role="region" aria-label="Daftar departemen organisasi" tabindex="0">
             <table class="table align-middle table-row-dashed gy-2" id="datamasterdepartment_table">
                 <thead>
                     <tr class="fw-bolder text-muted bg-light">
                         <th class="text-start ps-4 rounded-start">#</th>
-                        <th>Department</th>
-                        <th>Head Department</th>
-                        <th>Member Department</th>
-                        <th>Active</th>
-                        <th>Last Updated By</th>
-                        <th class="text-end pe-4 rounded-end">Actions</th>
+                        <th>Departemen</th>
+                        <th>Kepala departemen</th>
+                        <th>Anggota departemen</th>
+                        <th>Status</th>
+                        <th>Pembaruan terakhir</th>
+                        <th class="text-end pe-4 rounded-end">Tindakan</th>
                     </tr>
                 </thead>
                 <tbody class="fw-bold text-gray-600" id="resultdatamasterdepartment"></tbody>
             </table>
         </div>
     </div>
-</div>
+</section></div>

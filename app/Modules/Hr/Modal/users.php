@@ -1,8 +1,8 @@
-<div class="modal fade" id="modal_add_user" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+<div class="modal fade hu-user-modal" id="modal_add_user" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header pb-0">
-                <h1 class="mb-3">Add User</h1>
+                <h1 class="mb-3">Tambah pengguna</h1>
                 <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
                     <span class="svg-icon svg-icon-1">
                         <i class="bi bi-x-lg"></i>
@@ -12,7 +12,7 @@
             <form action="<?php echo base_url();?>index.php/hr/users/adduser" id="formadduser" enctype="multipart/form-data" method="post">
                 <div class="modal-body">
                     <div class="text-start mb-5">
-                        <div class="text-muted fw-bold fs-5">Please add the employee data.</div>
+                        <div class="text-muted fw-bold fs-5">Lengkapi profil dan penempatan departemen pengguna.</div>
                     </div>
                     <div class="row">
                         <div class="col-md-12 row">
@@ -53,8 +53,8 @@
                                     <input type="text" class="form-control form-control-solid" id="modal_add_user_nikrs" name="modal_add_user_nikrs">
                                 </div>          
                                 <div class="col-md-4 mb-5">
-                                    <label class="required form-label fw-bold">Department</label>
-                                    <select class="form-select form-select-solid" data-control="select2" data-dropdown-parent="#modal_add_user" id="modal_add_user_department" name="modal_add_user_department" data-placeholder="Pilih department" required>
+                                    <label class="required form-label fw-bold">Departemen</label>
+                                    <select class="form-select form-select-solid" data-control="select2" data-dropdown-parent="#modal_add_user" id="modal_add_user_department" name="modal_add_user_department" data-placeholder="Pilih departemen" required>
                                         <?php echo $datamasterdepartment;?>
                                     </select>
                                 </div>                        
@@ -66,7 +66,7 @@
                                 </div>                             
                                 <div class="col-md-6 mb-5">
                                     <label class="d-flex align-items-center fs-5 fw-bold mb-2">
-                                        <span>Email Address</span>
+                                        <span>Alamat email</span>
                                         <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Silakan alamat email anda yang aktif"></i>
                                     </label>
                                     <input type="text" class="form-control form-control-solid" placeholder="Silakan Masukan Alamat Email Anda" id="modal_add_user_email" name="modal_add_user_email">
@@ -76,18 +76,18 @@
                     </div>
                 </div> 
                 <div class="modal-footer p-1">	
-                    <input class="btn btn-light-primary" id="btnproses" type="submit" value="SUBMIT" name="simpan" >			
+                    <input class="btn btn-light-primary" id="btnproses" type="submit" value="Simpan pengguna" name="simpan" >			
                 </div>  
             </form>  
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="modal_edit_user" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+<div class="modal fade hu-user-modal" id="modal_edit_user" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header pb-0">
-                <h1 class="mb-3">Edit User</h1>
+                <h1 class="mb-3">Ubah pengguna</h1>
                 <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
                     <span class="svg-icon svg-icon-1">
                         <i class="bi bi-x-lg"></i>
@@ -98,7 +98,7 @@
                 <input type="hidden" id="modal_edit_user_userid" name="modal_edit_user_userid">
                 <div class="modal-body">
                     <div class="text-start mb-5">
-                        <div class="text-muted fw-bold fs-5">Please edit the employee data.</div>
+                        <div class="text-muted fw-bold fs-5">Perbarui profil dan penempatan departemen pengguna.</div>
                     </div>
                     <div class="row">
                         <div class="col-md-12 row">
@@ -137,8 +137,8 @@
                                     <input type="text" class="form-control form-control-solid" id="modal_edit_user_nikrs" name="modal_edit_user_nikrs">
                                 </div>
                                 <div class="col-md-4 mb-5">
-                                    <label class="required form-label fw-bold">Department</label>
-                                    <select class="form-select form-select-solid" data-control="select2" data-dropdown-parent="#modal_edit_user" id="modal_edit_user_department" name="modal_edit_user_department" data-placeholder="Pilih department" required>
+                                    <label class="required form-label fw-bold">Departemen</label>
+                                    <select class="form-select form-select-solid" data-control="select2" data-dropdown-parent="#modal_edit_user" id="modal_edit_user_department" name="modal_edit_user_department" data-placeholder="Pilih departemen" required>
                                         <?php echo $datamasterdepartment;?>
                                     </select>
                                 </div>                                    
@@ -150,7 +150,7 @@
                                 </div>                             
                                 <div class="col-md-6 mb-5">
                                     <label class="d-flex align-items-center fs-5 fw-bold mb-2">
-                                        <span>Email Address</span>
+                                        <span>Alamat email</span>
                                         <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Silakan alamat email anda yang aktif"></i>
                                     </label>
                                     <input type="text" class="form-control form-control-solid" placeholder="Silakan Masukan Alamat Email Anda" id="modal_edit_user_email" name="modal_edit_user_email">
@@ -160,7 +160,7 @@
                     </div>
                 </div> 
                 <div class="modal-footer p-1">	
-                    <input class="btn btn-light-primary" id="btnproses" type="submit" value="SUBMIT" name="simpan" >			
+                    <input class="btn btn-light-primary" id="btnproses" type="submit" value="Simpan pengguna" name="simpan" >			
                 </div>  
             </form>  
         </div>

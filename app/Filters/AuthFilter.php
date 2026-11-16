@@ -31,7 +31,7 @@ class AuthFilter implements FilterInterface{
         if ($request->isAJAX() || strpos($request->getHeaderLine('Accept'),'application/json') !== false) {
             return service('response')->setStatusCode(403)->setJSON(['responseCode'=>'01','responseDesc'=>'Akses modul belum diberikan. Hubungi pengelola akses organisasi.']);
         }
-        return service('response')->setStatusCode(403)->setBody(view('errors/html/module_denied'));
+        return redirect()->to(site_url('additional/welcomepage'));
 
     }
 

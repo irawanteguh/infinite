@@ -1,1 +1,1 @@
-<a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal_add_department"><i class="bi bi-building-add"></i> Add Department</a>
+<a href="#" class="btn btn-sm od-add-btn" data-bs-toggle="modal" data-bs-target="#modal_add_department"><i class="bi bi-building-add"></i> Tambah departemen</a>

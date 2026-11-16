@@ -1,150 +1,68 @@
 <?php
-
 namespace Modules\Klaim\Models;
 
 use CodeIgniter\Model;
+use Modules\Klaim\Services\PendingAnalytics;
 
-class PendingModel extends Model{
+class PendingModel extends Model
+{
     protected $DBGroup = null;
 
-    function periode(){
-        $query = "
-                    with recursive periode as (
-                        select 2014 as periode
-                        union all
-                        select periode + 1
-                        from periode
-                        where periode < year(curdate())
-                    )
-                    select periode
-                    from periode
-                    order by periode desc
+    public function periode(){return array_map(static fn($year)=>(object)['periode'=>$year],range((int)date('Y'),2014));}
 
-                ";
-
-        $recordset = $this->db->query($query);
-        return $recordset->getResult();
+    protected function scoped(string $provider,array $filters)
+    {
+        $year=(int)$filters['year'];
+        $builder=$this->db->table('dt01_bpjs_pending_klaim a')->where('a.KODEPPK',$provider)
+            ->where('a.TGLPULANG >=',$year.'-01-01')->where('a.TGLPULANG <',($year+1).'-01-01');
+        if($filters['month']!==''){
+            $start=sprintf('%04d-%02d-01',$year,(int)$filters['month']);
+            $builder->where('a.TGLPULANG >=',$start)->where('a.TGLPULANG <',(new \DateTimeImmutable($start))->modify('+1 month')->format('Y-m-d'));
+        }
+        if($filters['service']!=='')$builder->where('a.JNSPEL',$filters['service']);
+        if($filters['status']!=='')$builder->where('UPPER(TRIM(a.STATUS))',$filters['status']);
+        return $builder;
     }
 
-    function dataraweklaimdetail($koders,$periode){
-        $query = "
-                    SELECT
-                        a.NOSEP AS sep,
-                        a.NOKARTU AS nokartu,
-                        a.NIK AS nik,
-                        a.NMPESERTA AS nama_pasien,
-                        a.JNSPEL AS jnspel,
-                        a.KDINACBG AS kdinacbg,
-                        a.CMG AS cmg,
-                        a.CG AS cg,
-                        a.CT AS ct,
-                        a.SL AS sl,
-                        a.PENGAJUAN AS pengajuan,
-                        a.ALGORITMA_TYPE AS algoritma_type,
-                        a.ALGORITMA AS algoritma,
-                        a.KETERANGAN_VERIFIKASI AS keterangan_verifikasi,
-                        a.STATUS AS status,
-                        DATE_FORMAT(a.TGLSEP, '%d.%m.%Y') AS admission_date,
-                        DATE_FORMAT(a.TGLPULANG, '%d.%m.%Y') AS discharge_date,
-                        DATE_FORMAT(a.TGLVERIF, '%d.%m.%Y') AS verification_date
-                    FROM dt01_bpjs_pending_klaim a
-                    WHERE a.KODEPPK = '".$koders."'
-                    AND YEAR(a.TGLPULANG) = ".$periode."
-                    ORDER BY a.TGLPULANG DESC
-                ";
+    private function legacyFilters($year): array{return ['year'=>(int)$year,'month'=>'','service'=>'','status'=>''];}
+    public function dataraweklaim($provider,$year){return $this->aggregate((string)$provider,$this->legacyFilters($year));}
 
-        $recordset = $this->db->query($query);
-        return $recordset->getResult();
+    public function aggregate(string $provider,array $filters): array
+    {
+        return $this->scoped($provider,$filters)->select("MONTH(a.TGLPULANG) AS periode, UPPER(TRIM(a.STATUS)) AS status, a.JNSPEL AS jnspel, COUNT(*) AS jumlah_kasus, COUNT(a.PENGAJUAN) AS valued_count, SUM(a.PENGAJUAN) AS pengajuan, MIN(a.TGLPULANG) AS first_date, MAX(a.TGLPULANG) AS last_date",false)
+            ->groupBy('MONTH(a.TGLPULANG),UPPER(TRIM(a.STATUS)),a.JNSPEL',false)->orderBy('periode')->get()->getResultArray();
     }
 
-    function dataraweklaim($kodeppk,$periode){
-        $query = "
-                    SELECT LPAD(MONTH(a.tglpulang), 2, '0') AS periode, a.status, a.jnspel, COUNT(*) AS jumlah_kasus, sum(pengajuan) pengajuan
-                    FROM dt01_bpjs_pending_klaim a
-                    WHERE  a.kodeppk = '".$kodeppk."'
-                    AND    year(a.tglpulang) = ".$periode."
-                    GROUP BY MONTH(a.tglpulang), a.jnspel, status
-                    ORDER BY MONTH(a.tglpulang), a.jnspel;
-                ";
-
-        $recordset = $this->db->query($query);
-        return $recordset->getResult();
+    public function dataalgoritmatype($provider,$year){return $this->types((string)$provider,$this->legacyFilters($year));}
+    public function types(string $provider,array $filters): array
+    {
+        return $this->scoped($provider,$filters)->select("UPPER(TRIM(TRAILING '.' FROM TRIM(a.ALGORITMA_TYPE))) AS algoritma_type, COUNT(*) AS jumlah_kasus",false)
+            ->groupBy('algoritma_type')->orderBy('jumlah_kasus','DESC')->get()->getResultArray();
     }
 
-    function dataalgoritmatype($kodeppk,$periode){
-        $query = "
-                    SELECT
-                        UPPER(TRIM(TRAILING '.' FROM TRIM(a.algoritma_type))) AS algoritma_type,
-                        COUNT(*) AS jumlah_kasus
-                    FROM dt01_bpjs_pending_klaim a
-                    WHERE TRIM(a.algoritma_type) <> ''
-                    GROUP BY UPPER(TRIM(TRAILING '.' FROM TRIM(a.algoritma_type)))
-                    ORDER BY jumlah_kasus desc;
-                ";
-
-        $recordset = $this->db->query($query);
-        return $recordset->getResult();
+    public function dataalgoritmabreakdown($provider,$year){return $this->algorithms((string)$provider,$this->legacyFilters($year));}
+    public function algorithms(string $provider,array $filters): array
+    {
+        return PendingAnalytics::algorithms($this->scoped($provider,$filters)->select('a.ALGORITMA AS algoritma')->get()->getResultArray());
     }
 
-    function dataalgoritmabreakdown($kodeppk,$periode){
-        $query = "
-                    
-                    WITH RECURSIVE pecah AS (
-                        SELECT
-                            a.algoritma AS teks
-                        FROM dt01_bpjs_pending_klaim a
-                        WHERE a.algoritma IS NOT NULL
-                        AND TRIM(a.algoritma) <> ''
-                        AND a.kodeppk = '".$kodeppk."'
-                        AND YEAR(a.tglpulang) = ".$periode."
+    public function summary(string $provider,array $filters): array
+    {
+        $rows=$this->aggregate($provider,$filters);
+        $first=array_column($rows,'first_date');$last=array_column($rows,'last_date');
+        return PendingAnalytics::build($rows)+['types'=>$this->types($provider,$filters),'algorithms'=>$this->algorithms($provider,$filters),
+            'firstDate'=>$first?min($first):null,'lastDate'=>$last?max($last):null,'generatedAt'=>date('d/m/Y H:i')];
+    }
 
-                        UNION ALL
-
-                        SELECT
-                            SUBSTRING(teks, LOCATE('|', teks) + 1)
-                        FROM pecah
-                        WHERE LOCATE('|', teks) > 0
-                    ),
-                    items AS (
-                        SELECT
-                            TRIM(SUBSTRING_INDEX(teks, '|', 1)) AS item_awal
-                        FROM pecah
-                    ),
-                    normalisasi_awal AS (
-                        SELECT
-                            TRIM(
-                                CASE
-                                    WHEN item_awal LIKE '# ALGORITMA ->%'
-                                        THEN SUBSTRING(item_awal, LENGTH('# ALGORITMA ->') + 1)
-                                    WHEN item_awal LIKE 'ALGORITMA ->%'
-                                        THEN SUBSTRING(item_awal, LENGTH('ALGORITMA ->') + 1)
-                                    WHEN item_awal LIKE 'OTOVER ->%'
-                                        THEN SUBSTRING(item_awal, LENGTH('OTOVER ->') + 1)
-                                    ELSE item_awal
-                                END
-                            ) AS algoritma
-                        FROM items
-                    ),
-                    normalisasi AS (
-                        SELECT
-                            UPPER(
-                                TRIM(
-                                    TRAILING '.' FROM TRIM(algoritma)
-                                )
-                            ) AS algoritma
-                        FROM normalisasi_awal
-                    )
-                    SELECT
-                        algoritma,
-                        COUNT(*) AS jumlah
-                    FROM normalisasi
-                    WHERE algoritma <> ''
-                    GROUP BY algoritma
-                    ORDER BY jumlah DESC, algoritma ASC;
-
-                ";
-
-        $recordset = $this->db->query($query);
-        return $recordset->getResult();
+    public function details(string $provider,array $filters,int $start,int $length,string $search): array
+    {
+        $total=$this->scoped($provider,$filters)->countAllResults();
+        $builder=$this->scoped($provider,$filters);
+        if($search!=='')$builder->groupStart()->like('a.NOSEP',$search)->orLike('a.NMPESERTA',$search)->orLike('a.KDINACBG',$search)
+            ->orLike('a.ALGORITMA_TYPE',$search)->orLike('a.ALGORITMA',$search)->orLike('a.KETERANGAN_VERIFIKASI',$search)->groupEnd();
+        $filtered=(clone $builder)->countAllResults();
+        $rows=$builder->select("a.NOSEP AS sep,a.NMPESERTA AS nama_pasien,a.JNSPEL AS jnspel,a.KDINACBG AS kdinacbg,a.SL AS sl,a.PENGAJUAN AS pengajuan,a.ALGORITMA_TYPE AS algoritma_type,a.ALGORITMA AS algoritma,a.KETERANGAN_VERIFIKASI AS keterangan_verifikasi,UPPER(TRIM(a.STATUS)) AS status,DATE_FORMAT(a.TGLSEP,'%d/%m/%Y') AS admission_date,DATE_FORMAT(a.TGLPULANG,'%d/%m/%Y') AS discharge_date,DATE_FORMAT(a.TGLVERIF,'%d/%m/%Y') AS verification_date",false)
+            ->orderBy('a.TGLPULANG','DESC')->orderBy('a.NOSEP')->limit($length,$start)->get()->getResultArray();
+        return ['recordsTotal'=>$total,'recordsFiltered'=>$filtered,'data'=>$rows];
     }
 }

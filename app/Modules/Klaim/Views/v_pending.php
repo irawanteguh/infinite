@@ -1,233 +1,48 @@
-<div class="col-xl-12">
-    <div class="row">
-
-        <!-- Jumlah Pending -->
-        <div class="col-xl-3 col-lg-6 col-md-6 mb-5">
-            <div class="card border border-warning bg-light-warning shadow-sm h-100">
-                <div class="card-body p-4">
-                    <div class="d-flex align-items-center mb-3">
-                        <i class="fas fa-hourglass-half fs-2x text-warning me-3"></i>
-                        <div>
-                            <div class="fw-bold fs-5 text-warning">
-                                Jumlah Pending
-                            </div>
-                            <div class="text-muted fs-7">
-                                Total kasus pending klaim
-                            </div>
-                        </div>
-                    </div>
-                    <div class="fw-bolder fs-2 text-warning">
-                        <span id="jmlpending">0</span>
-                        <span class="fs-7 text-muted">kasus</span>
-                    </div>
-                </div>
-            </div>
+<main id="pending-dashboard" class="prem-page pe-dashboard pending-page" data-endpoint="<?= esc(site_url('klaim/pending'),'attr') ?>">
+    <div class="pe-page-heading"><div><span class="prem-eyebrow">MONITORING KLAIM BPJS</span><h1>Pending &amp; tidak layak</h1><p>Pahami jumlah klaim, nilai pengajuan, dan perubahan antarbulan pada data BAHV.</p></div><div class="pe-heading-actions"><button type="button" class="btn btn-light" id="pending-refresh"><i class="bi bi-arrow-clockwise" aria-hidden="true"></i> Perbarui</button></div></div>
+    <section class="prem-card pending-filter" aria-labelledby="pending-filter-title"><div class="pending-filter-heading"><span class="prem-eyebrow">CAKUPAN DATA</span><h2 id="pending-filter-title"><i class="bi bi-funnel me-2" aria-hidden="true"></i>Filter klaim</h2><p>Tahun mengikuti toolbar. Gunakan semua bulan untuk melihat tren tahunan.</p></div><div class="pending-filter-fields">
+        <div><label for="pending-month" class="form-label">Bulan pulang</label><select id="pending-month" class="form-select form-select-solid"><option value="">Semua bulan</option><?php foreach(['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'] as $i=>$month): ?><option value="<?= $i+1 ?>"><?= $month ?></option><?php endforeach; ?></select></div>
+        <div><label for="pending-service" class="form-label">Pelayanan</label><select id="pending-service" class="form-select form-select-solid"><option value="">Semua pelayanan</option><option value="1">Rawat inap</option><option value="2">Rawat jalan</option></select></div>
+        <div><label for="pending-status" class="form-label">Status klaim</label><select id="pending-status" class="form-select form-select-solid"><option value="">Semua status tercatat</option><option value="PENDING">Pending</option><option value="TIDAK LAYAK">Tidak layak</option></select></div>
+        <button type="button" id="pending-reset" class="btn pending-soft-button"><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i> Reset filter</button>
+    </div><div id="pending-scope" class="pending-scope"><i class="bi bi-calendar-range" aria-hidden="true"></i><span>Memuat cakupan data…</span></div></section>
+    <div id="pending-message" class="alert d-none mt-6" role="status" aria-live="polite"></div>
+    <div id="pending-loading" class="pending-loading mt-6" role="status" aria-live="polite">Memuat ringkasan klaim…</div>
+    <div id="pending-content" hidden>
+        <div class="pending-section-heading"><h2>Ringkasan klaim</h2><span>Sesuai filter terpilih</span></div>
+        <section id="pending-kpis" class="pe-kpis" aria-label="Ringkasan klaim"></section>
+        <div id="pending-value-note" class="pending-value-note" role="note"></div>
+        <section class="prem-card pe-panel pending-progress" aria-labelledby="pending-progress-title"><div class="pe-panel-heading"><div><span class="prem-eyebrow">PERUBAHAN ANTARBULAN</span><h2 id="pending-progress-title">Apa yang berubah pada bulan terakhir?</h2><p>Membandingkan bulan pulang terakhir yang memiliki data dengan bulan sebelumnya.</p></div><span class="pe-panel-label" id="pending-progress-period"></span></div><div id="pending-progress" class="pending-insights"></div><p class="pending-method-inline">Perubahan jumlah bukan jumlah klaim yang berhasil diselesaikan. Kelengkapan impor dan perbedaan volume pelayanan dapat memengaruhi hasil.</p></section>
+        <div class="pending-grid">
+            <section class="prem-card pe-panel"><div class="pe-panel-heading"><div><span class="prem-eyebrow">VOLUME KLAIM</span><h2>Tren jumlah klaim bulanan</h2><p>Pending dan tidak layak menurut bulan pulang, bukan pasien unik.</p></div></div><div id="pending-count-chart" class="pending-chart" role="img" aria-label="Grafik garis jumlah klaim per bulan"></div></section>
+            <section class="prem-card pe-panel"><div class="pe-panel-heading"><div><span class="prem-eyebrow">NILAI PENGAJUAN</span><h2>Tren nilai pengajuan bulanan</h2><p>Hanya menjumlahkan nilai yang terisi, bukan nilai pembayaran.</p></div></div><div id="pending-value-chart" class="pending-chart" role="img" aria-label="Grafik garis nilai pengajuan per bulan"></div></section>
         </div>
-
-        <!-- Jumlah Tidak Layak -->
-        <div class="col-xl-3 col-lg-6 col-md-6 mb-5">
-            <div class="card border border-danger bg-light-danger shadow-sm h-100">
-                <div class="card-body p-4">
-                    <div class="d-flex align-items-center mb-3">
-                        <i class="fas fa-ban fs-2x text-danger me-3"></i>
-                        <div>
-                            <div class="fw-bold fs-5 text-danger">
-                                Jumlah Tidak Layak
-                            </div>
-                            <div class="text-muted fs-7">
-                                Total kasus tidak layak klaim
-                            </div>
-                        </div>
-                    </div>
-                    <div class="fw-bolder fs-2 text-danger">
-                        <span id="jmltidaklayak">0</span>
-                        <span class="fs-7 text-muted">kasus</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Nilai Uang Pending -->
-        <div class="col-xl-3 col-lg-6 col-md-6 mb-5">
-            <div class="card border border-warning bg-light-warning shadow-sm h-100">
-                <div class="card-body p-4">
-                    <div class="d-flex align-items-center mb-3">
-                        <i class="fas fa-file-invoice-dollar fs-2x text-warning me-3"></i>
-                        <div>
-                            <div class="fw-bold fs-5 text-warning">
-                                Nilai Uang Pending
-                            </div>
-                            <div class="text-muted fs-7">
-                                Total pengajuan pending klaim
-                            </div>
-                        </div>
-                    </div>
-                    <div class="fw-bolder fs-2 text-warning">
-                        Rp <span id="nilaipending">0</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Nilai Uang Tidak Layak -->
-        <div class="col-xl-3 col-lg-6 col-md-6 mb-5">
-            <div class="card border border-danger bg-light-danger shadow-sm h-100">
-                <div class="card-body p-4">
-                    <div class="d-flex align-items-center mb-3">
-                        <i class="fas fa-money-bill-wave fs-2x text-danger me-3"></i>
-                        <div>
-                            <div class="fw-bold fs-5 text-danger">
-                                Nilai Uang Tidak Layak
-                            </div>
-                            <div class="text-muted fs-7">
-                                Total pengajuan tidak layak klaim
-                            </div>
-                        </div>
-                    </div>
-                    <div class="fw-bolder fs-2 text-danger">
-                        Rp <span id="nilaitidaklayak">0</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<div class="col-xl-12 mb-5">
-    <div class="row">
-        <div class="col-xl-6 mb-5">
-            <div class="card card-flush">
-                <div class="card-header pt-5">
-                    <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bolder fs-3 mb-1">BPJS Claim Case Analytics</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">Analisis tren pending klaim dan klaim tidak layak rumah sakit</span>
-                    </h3>
-                    <div class="card-toolbar m-0">
-                        <ul class="nav nav-tabs nav-line-tabs nav-stretch fs-6 border-0 fw-bolder" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link justify-content-center text-active-gray-800 active" data-bs-toggle="tab" role="tab" href="#pending">Pending</a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link justify-content-center text-active-gray-800" data-bs-toggle="tab" role="tab" href="#tidaklayak">Tidak Layak</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card-body py-3">
-                    <div class="tab-content">
-                        <div id="pending" class="card-body p-0 tab-pane fade show active" role="tabpanel">
-                            <div class="card-rounded-bottom" id="trenpending"></div>
-                        </div>
-                        <div id="tidaklayak" class="card-body p-0 tab-pane fade " role="tabpanel">
-                            <div class="card-rounded-bottom" id="trentidaklayak"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-6 mb-5">
-            <div class="card card-flush">
-                <div class="card-header pt-5">
-                    <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bolder fs-3 mb-1">BPJS Claim Value Analytics</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">Analisis tren nilai rupiah pending klaim dan klaim tidak layak rumah sakit</span>
-                    </h3>
-                    <div class="card-toolbar m-0">
-                        <ul class="nav nav-tabs nav-line-tabs nav-stretch fs-6 border-0 fw-bolder" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link justify-content-center text-active-gray-800 active" data-bs-toggle="tab" role="tab" href="#pendingnilai">Pending</a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link justify-content-center text-active-gray-800" data-bs-toggle="tab" role="tab" href="#tidaklayaknilai">Tidak Layak</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card-body py-3">
-                    <div class="tab-content">
-                        <div id="pendingnilai" class="card-body p-0 tab-pane fade show active" role="tabpanel">
-                            <div class="card-rounded-bottom" id="trenpendingnilai"></div>
-                        </div>
-                        <div id="tidaklayaknilai" class="card-body p-0 tab-pane fade " role="tabpanel">
-                            <div class="card-rounded-bottom" id="trentidaklayaknilai"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <section class="prem-card pe-panel pending-monthly-panel"><div class="pe-panel-heading"><div><span class="prem-eyebrow">ANGKA DI BALIK TREN</span><h2>Perbandingan tiap bulan</h2><p>Perubahan dihitung terhadap bulan kalender sebelumnya yang juga memiliki data.</p></div></div><div class="table-responsive" tabindex="0" role="region" aria-label="Ringkasan bulanan klaim, dapat digulir"><table class="table pe-table align-middle pending-monthly" id="pending-monthly-table"><thead><tr><th>Bulan pulang</th><th>Pending</th><th>Tidak layak</th><th>Total tercatat</th><th>Perubahan jumlah</th><th>Nilai terisi</th><th>Kelengkapan nilai</th></tr></thead><tbody id="pending-monthly"></tbody></table></div></section>
+        <div class="row g-6 mb-6 pending-analysis-row">
+            <div class="col-12 col-xl-4"><section class="prem-card pe-panel h-100"><div class="pe-panel-heading"><div><span class="prem-eyebrow">CAKUPAN PELAYANAN</span><h2>Komposisi klaim tercatat</h2><p>Proporsi rawat inap dan rawat jalan pada data yang dipilih.</p></div></div><div id="pending-service-chart" class="pending-chart" role="img" aria-label="Donut chart komposisi klaim menurut pelayanan"></div><div id="pending-service-legend" class="pending-service-legend"></div></section></div>
+            <div class="col-12 col-xl-4"><section class="prem-card pe-panel h-100"><div class="pe-panel-heading"><div><span class="prem-eyebrow">JENIS VERIFIKASI</span><h2>Tipe algoritma terbanyak</h2><p>Satu tipe tercatat per klaim; label mengikuti sumber BAHV.</p></div></div><div id="pending-type-chart" class="pending-contributors" role="list" aria-label="Distribusi klaim menurut tipe algoritma"></div></section></div>
+            <div class="col-12 col-xl-4"><section class="prem-card pe-panel pending-reasons h-100"><div class="pe-panel-heading"><div><span class="prem-eyebrow">AREA UNTUK DITELUSURI</span><h2>Algoritma verifikasi yang sering muncul</h2><p>Delapan kemunculan tertinggi. Satu klaim dapat memuat lebih dari satu algoritma.</p></div></div><div id="pending-algorithm-chart" class="pending-contributors" role="list" aria-label="Distribusi kemunculan algoritma verifikasi"></div></section></div>
         </div>
     </div>
-</div>
-
-<div class="col-xl-12 mb-5">
-    <div class="row">
-        <div class="col-xl-6 mb-5">
-            <div class="card card-flush">
-                <div class="card-header pt-5">
-                    <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bolder fs-3 mb-1">Algorithm Analysis</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">VAnalisis frekuensi algoritma verifikasi berdasarkan jumlah temuan pending klaim pada periode terpilih.</span>
-                    </h3>
-                </div>
-                <div class="card-body py-3">
-                    <div id="trenalgoritma" style="width: 100%; height: 350px;"></div>
+    <div class="hr-users-page mt-6">
+        <section class="card hu-card pending-details" aria-labelledby="pending-detail-title">
+            <div class="card-header border-0 pt-6">
+                <div class="hu-table-title"><h3 id="pending-detail-title">Rincian klaim</h3><p>Telusuri klaim sesuai filter berdasarkan SEP, pasien, kode INA-CBG, atau catatan verifikasi.</p></div>
+                <div class="card-title"><div class="d-flex align-items-center position-relative my-1">
+                    <span class="svg-icon svg-icon-1 position-absolute ms-6" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2" rx="1" transform="rotate(45 17.0365 15.1223)" fill="black"/><path d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z" fill="black"/></svg></span>
+                    <input id="searchtable" type="search" maxlength="200" aria-label="Cari rincian klaim" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Cari rincian klaim…">
+                </div></div>
+            </div>
+            <div class="card-body pt-0">
+                <div id="pending-detail-message" class="alert alert-warning d-none" role="status"></div>
+                <div class="hu-table-scroll pending-detail-frame" role="region" aria-label="Rincian klaim sesuai filter">
+                    <table class="table align-middle table-row-dashed gy-2" id="dataraweklaim_table">
+                        <thead><tr class="fw-bolder text-muted bg-light"><th class="text-start ps-4 rounded-start">No.</th><th>SEP / pasien</th><th>Pelayanan</th><th>Tanggal pelayanan</th><th>Verifikasi</th><th>INA-CBG / severity</th><th>Status</th><th class="text-end">Pengajuan</th><th>Tipe algoritma</th><th class="pe-4 rounded-end">Algoritma &amp; catatan</th></tr></thead>
+                        <tbody class="fw-bold text-gray-600" id="resultdataraweklaim"></tbody>
+                    </table>
                 </div>
             </div>
-        </div>
-        <div class="col-xl-6 mb-5">
-            <div class="card card-flush">
-                <div class="card-header pt-5">
-                    <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bolder fs-3 mb-1">Algorithm Breakdown Analysis</span>
-                        <span class="text-muted mt-1 fw-bold fs-7">Visualisasi frekuensi kemunculan algoritma verifikasi berdasarkan jumlah temuan pending klaim pada periode terpilih.</span>
-                    </h3>
-                </div>
-                <div class="card-body py-3">
-                    <div id="trenalgoritmabreakdown" style="width: 100%; height: 350px;"></div>
-                </div>
-            </div>
-        </div>
+        </section>
     </div>
-</div>
-
-<div class="card">
-    <div class="card-header border-0 pt-6">
-        <div class="card-title">
-            <div class="d-flex align-items-center position-relative my-1">
-                <span class="svg-icon svg-icon-1 position-absolute ms-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2" rx="1" transform="rotate(45 17.0365 15.1223)" fill="black"></rect>
-                        <path d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z" fill="black"></path>
-                    </svg>
-                </span>
-                <input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Search Data" id="searchtable">
-            </div>
-        </div>
-    </div>
-    <div class="card-body pt-0">
-        <div class="table-responsive">
-            <table class="table align-middle table-row-dashed gy-2" id="dataraweklaim_table">
-                <thead>
-                    <tr class="fw-bolder text-muted bg-light">
-                        <th class="text-start rounded-start ps-4">#</th>
-                        <th>SEP Number</th>
-                        <th>Patient Name</th>
-                        <th>Admission Date</th>
-                        <th>Discharge Date</th>
-                        <th>Verification Date</th>
-                        <th>Inpatient / Outpatient</th>
-                        <th>INA-CBG Code</th>
-                        <th>Severity Level</th>
-                        <th>Algorithm Type</th>
-                        <th>Verification Algorithm</th>
-                        <th>Verification Notes</th>
-                        <th class="text-end">Claim Amount</th>
-                        <th>Claim Status</th>
-                        <th class="text-end rounded-end pe-4">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="fw-bold text-gray-600" id="resultdataraweklaim"></tbody>
-            </table>
-        </div>
-    </div>
-</div>
+    <section class="prem-card pe-panel pending-guide mt-6"><div class="pe-panel-heading"><div><span class="prem-eyebrow">PANDUAN MEMBACA DATA</span><h2><i class="bi bi-info-circle me-2" aria-hidden="true"></i>Dasar pembacaan</h2></div></div><div class="pending-guide-grid"><div><h3>Periode dan status</h3><p>Tahun/bulan memakai tanggal pulang. Status mengikuti data BAHV tersimpan. Status selain Pending dan Tidak Layak tetap dipertahankan, tidak digabungkan otomatis.</p></div><div><h3>Nilai yang belum terisi</h3><p>Nilai kosong bukan nol. Total rupiah hanya mencakup pengajuan yang terisi; bandingkan kelengkapannya sebelum menafsirkan perubahan nilai.</p></div><div><h3>Perubahan, bukan penyelesaian</h3><p>Tidak tersedia riwayat perubahan status atau pembayaran. Turunnya jumlah antarbulan belum membuktikan perbaikan penyelesaian klaim.</p></div><div><h3>Cakupan impor</h3><p>Angka hanya mewakili klaim yang tercatat pada kode PPK organisasi. Bulan tanpa data tidak dianggap nol. Persentase terhadap seluruh klaim rumah sakit tidak dihitung karena denominator belum tersedia.</p></div></div></section>
+</main>

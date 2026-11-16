@@ -1,0 +1,24 @@
+<main id="hr-access" class="prem-page pe-dashboard access-page" data-endpoint="<?= esc(site_url('hr/access'),'attr') ?>" data-csrf-name="<?= esc(csrf_token(),'attr') ?>" data-csrf-hash="<?= esc(csrf_hash(),'attr') ?>">
+    <div class="pe-page-heading"><div><span class="prem-eyebrow">USER &amp; MODULE ACCESS</span><h1>Akses pengguna</h1><p>Atur modul yang dapat digunakan setiap pengguna dalam organisasi Anda.</p></div><div class="pe-heading-actions"><button type="button" id="access-reload" class="btn btn-light"><i class="bi bi-arrow-clockwise" aria-hidden="true"></i> Muat ulang</button></div></div>
+    <div id="access-message" class="alert d-none" role="status" aria-live="polite"></div>
+    <section class="pe-kpis access-kpis" aria-label="Ringkasan hak akses">
+        <article class="prem-card pe-kpi"><div class="pe-kpi-top"><span>Pengguna organisasi</span><i class="bi bi-people" aria-hidden="true"></i></div><strong id="access-user-count">—</strong><p>Akun yang masih aktif pada master pengguna</p></article>
+        <article class="prem-card pe-kpi"><div class="pe-kpi-top"><span>Modul tersedia</span><i class="bi bi-grid" aria-hidden="true"></i></div><strong id="access-module-count">—</strong><p>Mengikuti master modul aktif</p></article>
+        <article class="prem-card pe-kpi pe-kpi-highlight"><div class="pe-kpi-top"><span>Modul dipilih</span><i class="bi bi-shield-check" aria-hidden="true"></i></div><strong id="access-selected-count">—</strong><p id="access-change-count">Pilih pengguna untuk mulai mengatur akses</p></article>
+    </section>
+    <div class="access-layout">
+        <aside class="prem-card pe-panel access-user-panel">
+            <span class="prem-eyebrow">PILIH PENGGUNA</span><h2 class="access-title">Akun dan cakupan akses</h2>
+            <label for="access-user" class="form-label">Pengguna</label><select id="access-user" class="form-select form-select-solid" data-control="select2" data-placeholder="Cari nama atau username"><option value="">Pilih pengguna</option></select>
+            <div id="access-user-info" class="d-none mt-7"><div class="access-person"><span id="access-initial" aria-hidden="true"></span><div><h3 id="access-person-name"></h3><p id="access-person-username"></p></div></div><p id="access-department" class="mt-4"></p><div id="access-person-badges" class="d-flex flex-wrap gap-2"></div><div class="access-updated"><span>Perubahan terakhir</span><p id="access-updated">Belum pernah diatur</p></div></div>
+            <div class="access-note"><i class="bi bi-house-door" aria-hidden="true"></i><div><strong>Welcome selalu tersedia</strong><p>Tanpa izin tambahan, pengguna hanya dapat membuka halaman welcome. Akses modul berlaku untuk halaman dan seluruh aksi di dalam modul tersebut.</p></div></div>
+        </aside>
+        <section class="prem-card pe-panel access-editor" aria-labelledby="access-editor-title">
+            <div class="pe-panel-heading"><div><span class="prem-eyebrow">IZIN PER MODUL</span><h2 id="access-editor-title">Pilih modul yang diizinkan</h2><p>Perubahan diterapkan setelah Anda meninjau dan menyimpannya.</p></div><span class="pe-panel-label" id="access-editor-status">BELUM ADA PENGGUNA</span></div>
+            <div class="access-tools"><div><label for="access-search" class="form-label">Cari modul</label><input type="search" id="access-search" class="form-control form-control-solid" placeholder="Nama modul atau kategori" disabled></div><div><label for="access-filter" class="form-label">Tampilkan</label><select id="access-filter" class="form-select form-select-solid" disabled><option value="all">Semua modul</option><option value="allowed">Diizinkan</option><option value="denied">Belum diizinkan</option></select></div></div>
+            <div class="access-bulk"><span id="access-visible-count">—</span><div class="d-flex flex-wrap gap-3"><button type="button" id="access-check-visible" class="access-link" disabled>Pilih yang tampil</button><button type="button" id="access-clear-visible" class="access-link" disabled>Lepas yang tampil</button></div></div>
+            <div id="access-modules" aria-live="polite"><div class="access-empty"><i class="bi bi-person-lock" aria-hidden="true"></i><h3>Pilih pengguna terlebih dahulu</h3><p>Daftar modul dan akses tersimpan akan ditampilkan di sini.</p></div></div>
+            <div class="access-savebar"><div><strong id="access-save-label">Belum ada perubahan</strong><p>Welcome dan akses pengelola tidak diubah melalui daftar modul.</p></div><div class="d-flex gap-3"><button type="button" id="access-reset" class="btn btn-light" disabled>Batalkan</button><button type="button" id="access-save" class="btn prem-btn-primary" disabled><i class="bi bi-check2-circle" aria-hidden="true"></i> Tinjau &amp; simpan</button></div></div>
+        </section>
+    </div>
+</main>

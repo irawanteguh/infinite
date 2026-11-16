@@ -59,6 +59,13 @@
         }
     }
 
+    if (in_array($segment1, ['organization', 'hr'], true)) {
+        $organizationHeaderCss = FCPATH . 'assets/css/headorganization.css';
+        if (is_file($organizationHeaderCss)) {
+            echo '<link href="' . base_url('assets/css/headorganization.css?v=' . filemtime($organizationHeaderCss)) . '" rel="stylesheet" type="text/css" />' . PHP_EOL;
+        }
+    }
+
     $tableHeaderCss = FCPATH . 'assets/css/table-header.css';
     if (is_file($tableHeaderCss)) {
         echo '<link href="' . base_url('assets/css/table-header.css?v=' . filemtime($tableHeaderCss)) . '" rel="stylesheet" type="text/css" />' . PHP_EOL;

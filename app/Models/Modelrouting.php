@@ -9,7 +9,16 @@ class Modelrouting extends Model{
     protected $DBGroup = null;
 
 
-    public function menu(): array{
+    public function menu(): array
+    {
+        $menus = $this->allMenus();
+        $session = session();
+        if (!$session->get('loggedin')) return [];
+        $state = (new \Modules\Hr\Models\AccessModel())->state((string)$session->get('groupid'),(string)$session->get('orgid'),(string)$session->get('userid'));
+        return \App\Libraries\ModuleAccess::navigation($menus,$state);
+    }
+
+    public function allMenus(): array{
         $query = "
             select a.modules_id, a.modules_name, a.modules_header_id, a.package, a.def_controller, a.parent, a.icon, a.urut
             from dt01_gen_modules_ms a

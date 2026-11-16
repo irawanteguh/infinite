@@ -49,7 +49,7 @@
             $('<button>').attr('type', 'button').addClass('btn btn-sm btn-light-danger backup-delete').data('filename', row.filename).prop('disabled', busy).text('Hapus').appendTo(actions);
             tr.append(actions).appendTo(body);
         });
-        initDataTable('#backup_table', '#searchtable', 10, {language: {emptyTable: 'Belum ada file backup SQL.', search: 'Cari:', info: 'Menampilkan _START_–_END_ dari _TOTAL_ file', infoEmpty: 'Belum ada file backup', zeroRecords: 'File tidak ditemukan', lengthMenu: 'Tampilkan _MENU_ file'}});
+        initDataTable('#backup_table', '#searchtable', 10);
         return Array.isArray(rows) ? rows.length : 0;
     }
 

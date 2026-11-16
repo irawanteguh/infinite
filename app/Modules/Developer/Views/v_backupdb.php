@@ -21,7 +21,7 @@
     <section class="prem-card backup-files" aria-labelledby="backup-files-title">
         <div class="backup-files-heading"><div><span class="prem-eyebrow">ARSIP SQL</span><h2 id="backup-files-title">File backup</h2><p>Unduh atau hapus file backup yang sudah tersimpan.</p></div><div class="backup-search"><i class="bi bi-search" aria-hidden="true"></i><input id="searchtable" type="search" class="form-control" placeholder="Cari file backup..." aria-label="Cari file backup"></div></div>
         <div id="backup-status" class="backup-status" role="status" aria-live="polite">Memuat daftar backup...</div>
-        <div class="table-responsive backup-table-scroll" tabindex="0" role="region" aria-label="Daftar file backup, dapat digulir"><table class="table align-middle gy-2" id="backup_table">
+        <div class="table-responsive backup-table-container" tabindex="0" role="region" aria-label="Daftar file backup, dapat digulir"><table class="table align-middle gy-2" id="backup_table">
             <thead><tr><th class="ps-4">#</th><th>File SQL</th><th>Jenis backup</th><th>Ukuran</th><th>Dibuat</th><th class="text-end pe-4">Tindakan</th></tr></thead>
             <tbody id="resultbackup"></tbody>
         </table></div>

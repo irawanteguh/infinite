@@ -114,7 +114,22 @@ $chart = $data ? [
                     <?php foreach ($data['skm']['groups'] as $skmGroup): ?>
                         <div class="col-12 col-lg-4"><article class="pe-skm-table-card">
                         <h3 class="pe-skm-table-title"><?= esc($skmGroup['name']) ?> <span class="pe-skm-table-summary">· <?= $skmGroup['count'] ?> respons · rerata <?= $number($skmGroup['average'], 2) ?> / <?= $skmGroup['scale'] ?></span></h3>
-                        <div class="table-responsive"><table class="table pe-table"><thead><tr><th>Unsur pelayanan</th><th class="text-center">Rerata / <?= $skmGroup['scale'] ?></th><th class="text-end">Jawaban</th></tr></thead><tbody><?php foreach ($skmGroup['questions'] as $item): ?><tr><td><?= esc($item['question']) ?></td><td class="text-center"><?= $number((float) $item['average'], 2) ?></td><td class="text-end"><?= $number($item['answer_count'], 0) ?></td></tr><?php endforeach; ?></tbody></table></div>
+                        <?php if ($skmGroup['questions']): ?>
+                        <div class="pe-distribution">
+                            <?php foreach ($skmGroup['questions'] as $item):
+                                $average = $item['average'] === null ? null : (float) $item['average'];
+                                $achievementColor = $average === null ? 'bg-secondary' : ($average <= 2 ? 'pe-skm-achievement-low' : ($average <= 3 ? 'pe-skm-achievement-mid' : 'pe-skm-achievement-high'));
+                                $width = $average === null || $skmGroup['scale'] <= 0 ? 0 : max(0, min(100, $average / $skmGroup['scale'] * 100));
+                            ?>
+                            <div class="pe-dist-row">
+                                <span><?= esc($item['question']) ?></span>
+                                <div class="pe-dist-track" role="img" aria-label="<?= esc($item['question'] . ': ' . $number($average, 2) . ' dari ' . $skmGroup['scale'], 'attr') ?>"><span class="<?= esc($achievementColor, 'attr') ?>" style="width:<?= $width ?>%"></span></div>
+                                <strong><?= $number($average, 2) ?><small><?= $number($item['answer_count'], 0) ?></small></strong>
+                            </div>
+                            <?php endforeach; ?>
+                        </div>
+                        <?php else: ?><div class="pe-panel-empty"><p>Belum ada jawaban pada filter ini.</p></div><?php endif; ?>
+                        <div class="d-flex align-items-center gap-3 rounded border pe-skm-info p-4 m-4" role="note"><i class="bi bi-info-circle flex-shrink-0" aria-hidden="true"></i><p class="pe-method mb-0">Rerata tiap unsur pada skala 1–<?= $skmGroup['scale'] ?>. Nilai lebih rendah menunjukkan unsur yang perlu ditinjau. Warna: teal muda ≤2, kuning >2–3, teal pekat >3–4.</p></div>
                         </article></div>
                     <?php endforeach; ?>
                     </div>

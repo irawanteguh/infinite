@@ -13,3 +13,13 @@ body .select2-container .select2-results__option--highlighted[aria-selected]:not
 body .select2-container .select2-results__option--highlighted[aria-selected="true"]:not([aria-disabled="true"]){background-color:#087e82!important;color:#fff!important}
 body .select2-container .select2-selection--multiple .select2-selection__choice{background-color:#e5f2ef!important;border-color:#bddcd6!important;color:#087e82!important}
 body .select2-container .select2-selection__choice__remove:hover{color:#066b6e!important;background-color:#dcefe9!important}
+
+/* Native Select2 controls stay accessible without contributing page width. */
+body select.select2-hidden-accessible,
+body #kt_content select.select2-hidden-accessible,
+body #kt_toolbar select.select2-hidden-accessible{
+    position:absolute!important;width:1px!important;min-width:0!important;max-width:1px!important;
+    height:1px!important;min-height:0!important;padding:0!important;border:0!important;
+    margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;
+    clip-path:inset(50%)!important;white-space:nowrap!important
+}

@@ -11,7 +11,7 @@
 
 .pe-skm-tables{margin-top:8px}.pe-skm-tables>div{min-width:0}.pe-skm-table-card{height:100%;border:1px solid #e2ece9;border-radius:10px;overflow:hidden}.pe-skm-table-title{font-size:13px;font-weight:600;line-height:1.6;color:var(--prem-ink);padding:18px 16px;margin:0;background:#f5faf8;border-bottom:1px solid #e2ece9}.pe-skm-table-summary{display:block;font-size:10px;font-weight:400;color:#81989f;margin-top:5px}.pe-skm-tables .pe-table{margin-bottom:0;table-layout:fixed;width:100%}.pe-skm-tables .pe-table th:first-child{width:58%;white-space:normal}.pe-skm-tables .pe-table th,.pe-skm-tables .pe-table td{padding:12px 10px;font-size:10px;overflow-wrap:anywhere}.pe-skm-tables .pe-table thead th{font-size:9px;white-space:normal}.pe-skm-tables .pe-table td:first-child{line-height:1.8}
 
-.pe-clinic-table{max-height:360px;overflow:auto}.pe-clinic-table thead{position:sticky;top:0;z-index:1}.pe-clinic-bar-column{width:23%}.pe-demographics{margin-top:8px}.pe-demographic-card{height:100%;padding:20px;border:1px solid #e2ece9;border-radius:10px}.pe-demographic-card h3{font-size:12px;font-weight:600;color:var(--prem-ink);line-height:1.7;margin:0 0 5px}.pe-demographic-card>p{font-size:10px;color:#8a9fa5;margin:0 0 18px}.pe-profile-list{list-style:none;margin:0;padding:0;max-height:280px;overflow:auto}.pe-profile-list li{margin-bottom:15px}.pe-profile-list li:last-child{margin-bottom:0}.pe-profile-list li>div:first-child{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;font-size:10px;line-height:1.7;color:#60808a;margin-bottom:7px}.pe-profile-list strong{font-size:10px;white-space:nowrap;font-weight:600;color:var(--prem-accent)}.pe-profile-list small{font-weight:400;color:#8a9fa5;font-size:9px}.pe-profile-track{height:6px;background:#edf4f1;border-radius:6px;overflow:hidden}.pe-profile-track>span{display:block;height:100%;background:#66aaa0;border-radius:6px}.pe-demographic-empty{padding:20px 0}@media(max-width:575px){.pe-clinic-bar-column{display:none}.pe-clinic-table .pe-table td,.pe-clinic-table .pe-table th{padding:12px 8px;font-size:10px}.pe-demographic-card{padding:18px}}
+.pe-clinic-table{max-height:none;overflow-x:auto}.pe-clinic-table thead{position:sticky;top:0;z-index:1}.pe-clinic-bar-column{width:23%}.pe-demographics{margin-top:8px}.pe-demographic-card{height:100%;padding:20px;border:1px solid #e2ece9;border-radius:10px}.pe-demographic-card h3{font-size:12px;font-weight:600;color:var(--prem-ink);line-height:1.7;margin:0 0 5px}.pe-demographic-card>p{font-size:10px;color:#8a9fa5;margin:0 0 18px}.pe-profile-list{list-style:none;margin:0;padding:0;max-height:280px;overflow:auto}.pe-profile-list li{margin-bottom:15px}.pe-profile-list li:last-child{margin-bottom:0}.pe-profile-list li>div:first-child{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;font-size:10px;line-height:1.7;color:#60808a;margin-bottom:7px}.pe-profile-list strong{font-size:10px;white-space:nowrap;font-weight:600;color:var(--prem-accent)}.pe-profile-list small{font-weight:400;color:#8a9fa5;font-size:9px}.pe-profile-track{height:6px;background:#edf4f1;border-radius:6px;overflow:hidden}.pe-profile-track>span{display:block;height:100%;background:#66aaa0;border-radius:6px}.pe-demographic-empty{padding:20px 0}@media(max-width:575px){.pe-clinic-bar-column{display:none}.pe-clinic-table .pe-table td,.pe-clinic-table .pe-table th{padding:12px 8px;font-size:10px}.pe-demographic-card{padding:18px}}
 .pe-insight-row>div{min-width:0}.pe-insight-row .pe-panel{height:100%;margin-bottom:0}.pe-insight-row .pe-panel-heading{flex-wrap:wrap}.pe-insight-row .pe-priority-list>article{flex-wrap:wrap}.pe-insight-row .pe-priority-copy{min-width:0;flex-basis:60%}.pe-insight-row .pe-priority-score{margin-left:47px;text-align:left}.pe-insight-row .pe-table th,.pe-insight-row .pe-table td{padding:12px 10px}.pe-insight-row .pe-score-pill{padding:6px 8px}
 
 .pe-report-title{font-size:12px;font-weight:600;color:var(--prem-accent);align-self:center;margin-right:8px}.pe-skm-report-form .form-select{font-size:11px;min-height:40px}.pe-skm-report-form .select2-container{min-width:0}@media(max-width:575px){.pe-report-title{width:100%}}
@@ -85,3 +85,43 @@ body #kt_content .pe-dashboard .pe-insight-table .pe-insight-copy>small{display:
 .pe-dashboard .pe-insight-table .pe-score-pill{min-width:48px;padding:4px 7px;text-align:center;line-height:1.4}
 .pe-dashboard .pe-insight-table .pe-type{padding:3px 6px;line-height:1.4}
 .pe-dashboard .pe-insight-rank{color:#81969b!important}
+/* Keep dashboard overflow local to tables rather than the page. */
+.pe-dashboard{width:100%;min-width:0;overflow-x:clip}
+.pe-dashboard .prem-container{width:100%;max-width:1360px;min-width:0;box-sizing:border-box}
+.pe-dashboard :is(.pe-main-grid,.pe-secondary-grid,.pe-skm-charts,.pe-skm-cards)>*{min-width:0;max-width:100%}
+.pe-dashboard :is(.pe-panel-heading,.pe-page-heading,.pe-period){flex-wrap:wrap}
+.pe-dashboard :is(.pe-panel-heading,.pe-page-heading)>div{min-width:0}
+.pe-dashboard .pe-heading-actions{flex-wrap:wrap;max-width:100%}
+.pe-dashboard .table-responsive{min-width:0;max-width:100%;overflow-x:auto}
+.pe-dashboard :is(.pe-chart,.pe-filter-card,.pe-panel){max-width:100%;min-width:0}
+.pe-dashboard .pe-panel-heading p{overflow-wrap:anywhere}
+@media(max-width:991px){.pe-dashboard .pe-filter{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:575px){.pe-dashboard .pe-filter{grid-template-columns:minmax(0,1fr)}.pe-dashboard .pe-filter>div{grid-column:auto}.pe-dashboard .pe-heading-actions .btn{white-space:normal}}
+
+/* Closed Metronic drawers must not extend the dashboard viewport. */
+body:has(.pe-dashboard) .drawer:not(.drawer-on){visibility:hidden}
+body:has(.pe-dashboard) .drawer.drawer-on{visibility:visible}
+html:has(.pe-dashboard){overflow-x:clip}
+body:has(.pe-dashboard){min-width:0;max-width:100%;overflow-x:clip}
+
+body #kt_content .pe-dashboard select.select2-hidden-accessible{width:1px!important;min-width:0!important;max-width:1px!important;height:1px!important;padding:0!important;border:0!important;overflow:hidden!important;clip-path:inset(50%)!important}
+
+/* The shared application container supplies the same gutter as the profile header. */
+body #kt_content_container .pe-dashboard > .prem-container{width:100%;max-width:none;padding-inline:0;margin-inline:0}
+
+/* Bordered SKM columns with space between each card. */
+.pe-dashboard .pe-skm-tables{display:grid;grid-template-columns:minmax(0,1fr);gap:20px;margin:8px 0 0;--bs-gutter-x:0;--bs-gutter-y:0}
+.pe-dashboard .pe-skm-tables > .col-12.col-lg-4{width:auto;max-width:100%;min-width:0;margin:0;padding:0;border:1px solid #9acbc6;border-radius:10px;overflow:hidden;background:#fff}
+.pe-dashboard .pe-skm-tables .pe-skm-table-card{border:0;border-radius:0}
+@media(min-width:992px){.pe-dashboard .pe-skm-tables{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+.pe-dashboard .pe-skm-table-card > .pe-distribution{padding:18px 16px}
+
+body #kt_content .pe-dashboard .pe-skm-table-card .pe-dist-row{grid-template-columns:minmax(0,1fr) 82px;gap:8px 12px}
+body #kt_content .pe-dashboard .pe-skm-table-card .pe-dist-row>span{grid-column:1 / -1;min-width:0;white-space:normal;overflow-wrap:anywhere;line-height:1.7}
+body #kt_content .pe-dashboard .pe-skm-table-card .pe-dist-row>.pe-dist-track{grid-column:1;grid-row:2}
+body #kt_content .pe-dashboard .pe-skm-table-card .pe-dist-row>strong{grid-column:2;grid-row:2}
+
+.pe-dashboard .pe-skm-achievement-low{background:#abd5cf}
+.pe-dashboard .pe-skm-achievement-mid{background:#d5bc82}
+.pe-dashboard .pe-skm-achievement-high{background:#087e82}

@@ -125,6 +125,10 @@
 # session.driver = 'CodeIgniter\Session\Handlers\FileHandler'
 # session.cookieName = 'ci_session'
 # session.expiration = 7200
+
+# Idle warning after 10 minutes without activity; logout 10 seconds later.
+session.idleTimeoutMinutes = 10
+session.idleWarningSeconds = 10
 # session.savePath = null
 # session.matchIP = false
 # session.timeToUpdate = 300

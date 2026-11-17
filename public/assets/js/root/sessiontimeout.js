@@ -2,8 +2,12 @@
     'use strict';
     const element = document.getElementById('session-idle-modal');
     if (!element || !window.bootstrap || !bootstrap.Modal) return;
-    const idleMs = 60000;
-    const graceMs = 10000;
+    const bounded = (value, fallback, maximum) => {
+        const number = Number(value);
+        return Number.isInteger(number) && number >= 1 && number <= maximum ? number : fallback;
+    };
+    const idleMs = bounded(element.dataset.idleMinutes, 10, 1440) * 60000;
+    const graceMs = bounded(element.dataset.warningSeconds, 10, 300) * 1000;
     const key = 'infinite.idle.' + element.dataset.sessionKey;
     const logoutKey = key + '.logout';
     const modal = new bootstrap.Modal(element, {backdrop: 'static', keyboard: false});
@@ -54,7 +58,7 @@
             countdown.textContent = String(Math.ceil(remaining / 1000));
             if (!warning) {
                 warning = true;
-                document.getElementById('session-idle-announcement').textContent = 'Sesi tidak aktif. Logout otomatis dalam 10 detik.';
+                document.getElementById('session-idle-announcement').textContent = 'Sesi tidak aktif. Logout otomatis dalam ' + Math.ceil(remaining / 1000) + ' detik.';
                 modal.show();
             }
         } else hideWarning();

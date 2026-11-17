@@ -1,42 +1,31 @@
-<div class="card">
-    <div class="card-header border-0 pt-6">
-        <div class="card-title">
-            <div class="d-flex align-items-center position-relative my-1">
-                <span class="svg-icon svg-icon-1 position-absolute ms-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2" rx="1" transform="rotate(45 17.0365 15.1223)" fill="black"></rect>
-                        <path d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z" fill="black"></path>
-                    </svg>
-                </span>
-                <input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Search Data" id="searchtable">
-            </div>
+<div class="prem-page ur-dashboard ek-page">
+    <section class="ur-hero app-page-heading">
+        <div><h1>Data E-Klaim</h1><p>Telusuri data pasien, layanan, dan tarif klaim berdasarkan periode pulang.</p></div>
+    </section>
+    <section class="prem-card ur-filterbar app-filter-card" aria-labelledby="ek-filter-title">
+        <div class="ur-filter-heading app-filter-heading"><span class="prem-eyebrow">CAKUPAN DATA</span><h2 id="ek-filter-title"><i class="bi bi-funnel me-2" aria-hidden="true"></i>Filter E-Klaim</h2><p>Pilih periode pulang dan jenis layanan untuk menyesuaikan ringkasan dan daftar klaim.</p></div>
+        <div class="ur-filters app-filter-fields">
+            <div class="ur-filter"><label for="selectperiode">Periode pulang</label><select data-control="select2" data-placeholder="Pilih periode" data-hide-search="true" class="form-select form-select-sm form-select-solid" name="selectperiode" id="selectperiode"><?php echo $periode; ?></select></div>
+            <div class="ur-filter"><label for="ek-service">Jenis layanan</label><select id="ek-service" name="service" class="form-select form-select-sm form-select-solid" data-control="select2" data-hide-search="true"><option value="">Semua layanan</option><option value="1">Rawat inap</option><option value="2">Rawat jalan</option></select></div>
+            <button type="button" id="ek-refresh" class="btn btn-light-primary"><i class="bi bi-arrow-clockwise" aria-hidden="true"></i>Muat ulang</button>
+            <span class="ur-filter-note"><i class="bi bi-info-circle me-2" aria-hidden="true"></i>Ringkasan dan tabel mengikuti periode serta layanan terpilih.<br>Data berdasarkan tanggal pulang pasien.</span>
         </div>
-    </div>
-
-    <div class="card-body pt-0">
-        <div class="table-responsive">
-            <table class="table align-middle table-row-dashed gy-2" id="dataraweklaim_table">
-                <thead>
-                    <tr class="fw-bolder text-muted bg-light">
-                        <th class="text-start rounded-start ps-4">#</th>
-                        <th>SEP Number</th>
-                        <th>Card Number</th>
-                        <th>Patient Name</th>
-                        <th>DPJP</th>
-                        <th>Diagnosis</th>
-                        <th>Procedure</th>
-                        <th>Admission Date</th>
-                        <th>Discharge Date</th>
-                        <th>LOS</th>
-                        <th>Inpatient / Outpatient</th>
-                        <th class="text-end">Hospital Cost</th>
-                        <th class="text-end">INA-CBG</th>
-                        <th class="text-end">iDRG</th>
-                        <th class="text-end rounded-end pe-4">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="fw-bold text-gray-600" id="resultdataraweklaim"></tbody>
+        <div class="ur-scope app-filter-scope"><i class="bi bi-calendar-range" aria-hidden="true"></i><span>Periode tersedia mengikuti data TXT E-Klaim yang telah diunggah.</span></div>
+    </section>
+    <section class="ek-summary" aria-label="Ringkasan periode terpilih">
+        <?php foreach ([['count','Jumlah episode','bi-files','Episode pada periode terpilih'],['hospital','Total tarif RS','bi-hospital','Akumulasi biaya rumah sakit'],['cbg','Total INA-CBG','bi-cash-stack','Akumulasi tarif INA-CBG'],['idrg','Total iDRG','bi-calculator','Akumulasi tarif iDRG']] as $metric): ?>
+        <div class="card ek-metric"><div class="ek-metric-label"><?= $metric[1] ?><i class="bi <?= $metric[2] ?>" aria-hidden="true"></i></div><strong id="ek-<?= $metric[0] ?>">—</strong><small><?= $metric[3] ?></small></div>
+        <?php endforeach; ?>
+    </section>
+    <section class="card ek-panel" aria-labelledby="ek-table-title">
+        <div class="ek-table-heading"><div><h2 id="ek-table-title">Daftar E-Klaim</h2><p>Ringkasan pasien dan tarif. Buka detail untuk melihat rincian episode.</p></div><div class="ek-search"><i class="bi bi-search" aria-hidden="true"></i><label for="searchtable" class="visually-hidden">Cari data e-klaim</label><input type="search" class="form-control form-control-solid" placeholder="Cari pasien, SEP, atau diagnosis…" id="searchtable"></div></div>
+        <div id="ek-status" class="ek-status" role="status" aria-live="polite"></div>
+        <div class="ek-table-container">
+            <table class="table align-middle table-row-dashed gy-2" id="dataraweklaim_table" data-datatable="manual">
+                <thead><tr><th scope="col">No.</th><th scope="col">Pasien</th><th scope="col">Nomor RM</th><th scope="col">No. SEP</th><th scope="col">Tgl masuk</th><th scope="col">Tgl pulang</th><th scope="col">DPJP</th><th scope="col">Layanan</th><th scope="col" class="text-end">Tarif RS</th><th scope="col" class="text-end">INA-CBG</th><th scope="col" class="text-end">iDRG</th><th scope="col" class="text-end">Detail</th></tr></thead>
+                <tbody id="resultdataraweklaim"></tbody>
             </table>
         </div>
-    </div>
+        <div class="ek-table-info" role="note"><i class="bi bi-info-circle" aria-hidden="true"></i><div>Klik Detail untuk melihat nomor kartu, lama perawatan, diagnosis, dan prosedur. Pencarian mencakup rincian yang tersembunyi.</div></div>
+    </section>
 </div>

@@ -79,7 +79,7 @@
     function initDetails(){
         if(table){table.ajax.reload(null,true);return;}
         table=initDataTable('#dataraweklaim_table',null,10,{serverSide:true,processing:true,ordering:false,searchDelay:350,
-            dom:'r<"table-responsive pending-detail-scroll"t><"pending-table-footer"<"pending-table-summary"li>p>',
+            dom:'r<"table-responsive pending-detail-scroll"t><"app-table-footer"<"app-table-meta"li>p>',
             pagingType:'simple_numbers',lengthMenu:[10,25,50,100],
             ajax:function(data,callback){
             if(detailRequest)detailRequest.abort();byId('pending-detail-message').classList.add('d-none');

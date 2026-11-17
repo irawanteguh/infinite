@@ -2,7 +2,7 @@
 
 <div id="ur-executive" class="ur-dashboard">
 <?php include APPPATH . 'Modules/Ur/Pageheader/auditkoding.php'; ?>
-<div class="ur-filterbar"><label for="audit-care">Jenis layanan</label><select id="audit-care" class="form-select w-auto"><option value="">Semua layanan</option><option value="1">Rawat inap</option><option value="2">Rawat jalan</option></select><span class="ur-filter-note">Berdasarkan tahun dan tanggal pulang</span></div>
+<section class="ur-filterbar app-filter-card" aria-label="Filter data"><div class="app-filter-heading"><h2><i class="bi bi-funnel me-2" aria-hidden="true"></i>Filter data</h2><p>Sesuaikan cakupan data yang ditampilkan.</p></div><div class="app-filter-fields"><div class="ur-filter"><label for="audit-care">Jenis layanan</label><select id="audit-care" class="form-select w-auto"><option value="">Semua layanan</option><option value="1">Rawat inap</option><option value="2">Rawat jalan</option></select></div><span class="ur-filter-note">Berdasarkan tahun dan tanggal pulang</span></div></section>
 <div id="audit-status" role="status"></div><section id="audit-kpis" class="ur-kpis"></section>
 
 

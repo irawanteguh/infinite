@@ -2,6 +2,7 @@
 (function () {
     'use strict';
     const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+    const fullMonths = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
     const nf = new Intl.NumberFormat('id-ID', { maximumFractionDigits: 0 });
     const compact = new Intl.NumberFormat('id-ID', { notation: 'compact', maximumFractionDigits: 2 });
     const money = value => 'Rp ' + compact.format(value);
@@ -30,6 +31,37 @@
             yaxis:{labels:{formatter:value=>compact.format(value),style:{colors:'#7b8a9e',fontSize:'10px'}}},legend:{position:'top',horizontalAlign:'left',fontSize:'11px',markers:{radius:3}},
             tooltip:{shared:true,intersect:false,y:{formatter:value=>currency?'Rp '+nf.format(value):nf.format(value)+' episode'}},
             noData:{text:'Tidak ada data'},markers:{size:currency?3:0},responsive:[{breakpoint:600,options:{chart:{height:260},legend:{fontSize:'10px'}}}]
+        });
+        charts[id].render();
+    }
+    function crrChart(data) {
+        const id = 'ur-crr-chart', el = document.getElementById(id);
+        if (charts[id]) { charts[id].destroy(); delete charts[id]; }
+        const selected = $('#ur-month').val();
+        const periods = selected === 'all' ? fullMonths.map((name, i) => i + 1) : [number(selected)];
+        const format = value => value == null || !Number.isFinite(value) ? '—' : value.toLocaleString('id-ID', {maximumFractionDigits:1}) + '%';
+        const selectedService = $('#ur-service').val();
+        const services = [{code:'2',name:'Rawat jalan',color:'#93aab3'},{code:'1',name:'Rawat inap',color:'#087e82'}].filter(service => selectedService === 'all' || service.code === selectedService);
+        const ratio = subset => {
+            const totalRS = sum(subset, 'tarif_rs');
+            return totalRS > 0 ? sum(subset, 'total_tarif') / totalRS * 100 : null;
+        };
+        const series = services.map(service => ({name:service.name,data:periods.map(month => ratio(data.filter(row => String(row.ptd) === service.code && number(row.periode) === month)))}));
+        const values = series.flatMap(item => item.data);
+        $('#ur-crr-summary').text(services.map(service => service.name + ': ' + format(ratio(data.filter(row => String(row.ptd) === service.code)))).join(' · '));
+        el.setAttribute('aria-label', 'CRR bulanan per layanan. ' + series.map(item => item.name + '. ' + periods.map((month, i) => fullMonths[month - 1] + ': ' + format(item.data[i])).join('; ')).join('. '));
+        if (typeof ApexCharts === 'undefined') { el.innerHTML = '<p class="ur-empty">Grafik tidak tersedia. Rasio cakupan dapat dibaca pada tabel bulanan.</p>'; return; }
+        charts[id] = new ApexCharts(el, {
+            chart:{type:'line',height:300,fontFamily:'inherit',toolbar:{show:false},animations:{enabled:false}},
+            series:series,colors:services.map(service=>service.color),
+            stroke:{width:3,curve:'straight'},markers:{size:4,hover:{size:6}},dataLabels:{enabled:false},
+            grid:{borderColor:'#edf2f4',strokeDashArray:3,padding:{left:8,right:18}},
+            xaxis:{categories:periods.map(month=>fullMonths[month-1]),axisBorder:{show:false},axisTicks:{show:false},labels:{rotate:-35,hideOverlappingLabels:true,style:{colors:'#7b8a9e',fontSize:'11px'}}},
+            yaxis:{min:0,max:Math.max(110, ...values.filter(value=>value!==null).map(value=>Math.ceil(value/10)*10+10)),labels:{formatter:format,style:{colors:'#7b8a9e',fontSize:'11px'}}},
+            annotations:{yaxis:[{y:100,borderColor:'#94a7ac',strokeDashArray:5,label:{text:'Acuan 100%',style:{background:'#edf6f3',color:'#58716a',fontSize:'11px'}}}]},
+            tooltip:{shared:true,intersect:false,y:{formatter:format}},legend:{show:true,position:'top',horizontalAlign:'left',fontSize:'12px'},
+            noData:{text:'Belum ada rasio yang dapat dihitung'},
+            responsive:[{breakpoint:600,options:{chart:{height:280},xaxis:{labels:{rotate:-45}}}}]
         });
         charts[id].render();
     }
@@ -63,6 +95,7 @@
             fields.forEach(field=>item[field]=sum(subset,field));
             item.ri=sum(subset.filter(row=>String(row.ptd)==='1'),'jumlah_kasus'); item.rj=sum(subset.filter(row=>String(row.ptd)==='2'),'jumlah_kasus'); return item;
         });
+        crrChart(data);
         const labels=monthly.map(row=>months[row.month-1]);
         chart('ur-finance-chart',[{name:'Tarif RS',data:monthly.map(r=>r.tarif_rs)},{name:'Total INA-CBG',data:monthly.map(r=>r.total_tarif)},{name:'IDRG',data:monthly.map(r=>r.idrg_total_tarif)}],labels,true);
         chart('ur-visit-chart',[{name:'Rawat inap',data:monthly.map(r=>r.ri)},{name:'Rawat jalan',data:monthly.map(r=>r.rj)}],labels,false);
@@ -70,7 +103,8 @@
         $('#ur-severity').html(ri ? ['I','II','III'].map((sl,i)=>meter('Severity '+sl,sum(inpatient.filter(row=>String(row.sl)===sl),'jumlah_kasus'),ri,['#087e82','#75bdb5','#c0d8e3'][i])).join('') : '<p class="ur-empty">Tidak ada episode rawat inap pada filter ini.</p>');
         const alos=totals.los_cases?(totals.total_los/totals.los_cases).toLocaleString('id-ID',{maximumFractionDigits:1}):'—';
         $('#ur-clinical').html([['ALOS rawat inap',alos==='—'?alos:alos+' hari'],['LOS < 2 hari',nf.format(totals.short_stay)],['SL III · LOS < 4',nf.format(totals.short_sl3)]].map(item=>'<div class="ur-mini"><strong>'+item[1]+'</strong>'+item[0]+'</div>').join(''));
-        $('#ur-monthly').html(monthly.map(r=>{const diff=r.total_tarif-r.tarif_rs;return '<tr><td>'+months[r.month-1]+' '+$('#selectperiode').val()+'</td><td>'+nf.format(r.jumlah_kasus)+'</td><td>'+money(r.tarif_rs)+'</td><td>'+money(r.total_tarif)+'</td><td class="'+(diff<0?'ur-negative':'ur-positive')+'">'+money(diff)+'</td><td>'+percent(r.total_tarif,r.tarif_rs)+'</td></tr>';}).join(''));
+        $('#ur-monthly').html(monthly.map(r=>{const diff=r.total_tarif-r.tarif_rs;return '<tr><td>'+fullMonths[r.month-1]+'</td><td>'+nf.format(r.jumlah_kasus)+'</td><td>'+money(r.tarif_rs)+'</td><td>'+money(r.total_tarif)+'</td><td class="'+(diff<0?'ur-negative':'ur-positive')+'">'+money(diff)+'</td><td>'+percent(r.total_tarif,r.tarif_rs)+'</td></tr>';}).join(''));
+        initDataTable('#ur-monthly-table', null, 12, {paging:false, searching:false, info:false, lengthChange:false, dom:'t'});
         const costs=Object.keys(components).map(key=>({name:components[key],value:sum(data,key)})).filter(c=>c.value>0).sort((a,b)=>b.value-a.value);
         const costTotal=costs.reduce((total,c)=>total+c.value,0);
         $('#ur-components').html(costs.length?costs.slice(0,6).map(c=>'<div class="ur-meter-row"><div class="ur-meter-label"><span>'+c.name+'</span><strong>'+money(c.value)+'</strong></div><div class="ur-meter"><span style="width:'+(c.value/costTotal*100)+'%"></span></div><div class="text-muted mt-1" style="font-size:10px">'+percent(c.value,costTotal)+' dari jumlah komponen tercatat</div></div>').join(''):'<p class="ur-empty">Komponen tarif belum tersedia.</p>');

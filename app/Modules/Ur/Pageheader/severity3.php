@@ -1,1 +1,1 @@
-<section class="ur-hero app-page-heading"><div><h1>Severity III, fokus pada lama rawat.</h1><p>Review episode rawat inap dengan severity III dan LOS kurang dari 4 hari.</p><div class="ur-coverage" id="s3-coverage">Memuat cakupan data…</div></div></section>
+<section class="ur-hero app-page-heading"><div><h1>Severity III</h1><p>Telaah episode rawat inap severity III dengan lama rawat kurang dari 4 hari.</p></div></section>

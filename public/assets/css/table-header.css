@@ -30,3 +30,20 @@ body table.table>tbody:last-child,body table.table>tbody:last-child>tr:last-chil
 body table.table>tfoot:last-child,body table.table>tfoot:last-child>tr:last-child,body table.table>tfoot:last-child>tr:last-child>:is(th,td){
     border-bottom:0!important
 }
+/* Shared DataTables footer: page size + record count left, pagination right. */
+body .dataTables_wrapper .app-datatable-scroll{max-width:100%;overflow-x:auto}
+body .dataTables_wrapper .app-table-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px 20px;padding:14px 0 0;margin:0;min-width:0}
+body .dataTables_wrapper .app-table-meta{display:flex;align-items:center;flex-wrap:wrap;gap:12px;min-width:0}
+body .dataTables_wrapper .app-table-footer :is(.dataTables_length,.dataTables_info,.dataTables_paginate){float:none!important;margin:0!important;padding:0!important;text-align:left!important}
+body .dataTables_wrapper .app-table-footer .dataTables_length label{display:flex;align-items:center;margin:0;gap:0}
+body .dataTables_wrapper .app-table-footer .dataTables_length select{display:inline-block;width:74px;min-width:74px;height:40px;margin:0!important;border:0;border-radius:6px;background-color:#f5f8fa;color:#42636d}
+body .dataTables_wrapper .app-table-footer .dataTables_info{color:#42636d;white-space:normal;font-size:12px;line-height:1.6}
+body .dataTables_wrapper .app-table-footer .pagination{display:flex;align-items:center;justify-content:flex-end;gap:3px;flex-wrap:wrap;margin:0!important}
+body .dataTables_wrapper .app-table-footer .page-link{min-width:32px;min-height:32px;border-radius:6px;color:#42636d;box-shadow:none}
+body .dataTables_wrapper .app-table-footer .page-item.active .page-link{background:#087e82!important;border-color:#087e82!important;color:#fff!important}
+body .dataTables_wrapper .app-table-footer .page-item:not(.active):not(.disabled) .page-link:hover{background:#e5f2ef;color:#25675d}
+body .dataTables_wrapper .app-table-footer .page-item.disabled .page-link{color:#a0adb0}
+body .dataTables_wrapper .app-table-footer select:focus-visible,body .dataTables_wrapper .app-table-footer .page-link:focus-visible{outline:2px solid #087e82;outline-offset:2px}
+@media(max-width:767px){body .dataTables_wrapper .app-table-footer{align-items:flex-start}body .dataTables_wrapper .app-table-meta{width:100%}body .dataTables_wrapper .app-table-footer .pagination{justify-content:flex-start}}
+/* Standard table headings stay bold across module styles. */
+body table.table thead :is(th,td){font-weight:700!important}

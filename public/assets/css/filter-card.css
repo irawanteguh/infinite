@@ -1,0 +1,24 @@
+/* Shared filter card. Keep field IDs, names, options and event handlers in each module. */
+body #kt_content .app-filter-card{--filter-accent:#087e82;display:block;padding:0!important;margin:0 0 20px!important;border:1px solid #dce8e4;border-top:3px solid var(--filter-accent);border-radius:14px;background:#f6faf9;box-shadow:0 4px 18px #1c454b04;overflow:hidden;min-width:0}
+body #kt_content .app-filter-card .app-filter-heading{display:block;padding:18px 20px 0!important;margin:0!important}
+body #kt_content .app-filter-card .app-filter-heading>.prem-eyebrow{display:none}
+body #kt_content .app-filter-card .app-filter-heading h2{font-size:18px!important;line-height:1.4!important;font-weight:600;color:#234a54;margin:0!important}
+body #kt_content .app-filter-card .app-filter-heading h2 i{color:var(--filter-accent)}
+body #kt_content .app-filter-card .app-filter-heading p{font-size:12px!important;line-height:1.6!important;color:#789095;margin:6px 0 0!important}
+body #kt_content .app-filter-card .app-filter-fields{display:flex;flex-wrap:wrap;align-items:flex-end;gap:16px!important;padding:18px 20px!important;margin:0!important;border:0;border-radius:0;background:transparent;box-shadow:none}
+body #kt_content .app-filter-card .app-filter-fields>div:not(.pe-filter-actions){flex:0 1 220px;width:auto;min-width:0;grid-column:auto}
+body #kt_content .app-filter-card .app-filter-fields label{display:block;color:#648088;font-size:13px!important;font-weight:500;margin:0 0 7px!important;line-height:1.5}
+body #kt_content .app-filter-card .app-filter-fields :is(.form-select,.form-control){width:100%!important;min-height:42px;height:42px;border:1px solid #dce9e5;background-color:#fff!important;color:#234a54;border-radius:8px;padding-block:8px}
+body #kt_content .app-filter-card .select2-container{width:100%!important;max-width:100%;min-width:0}
+body #kt_content .app-filter-card .select2-container .select2-selection{min-height:42px;border:1px solid #dce9e5!important;background:#fff!important;border-radius:8px}
+body #kt_content .app-filter-card .app-filter-fields :is(.form-control,.form-select):focus{border-color:var(--filter-accent);box-shadow:0 0 0 3px #087e8214}
+body #kt_content .app-filter-card .app-filter-fields .btn{min-height:42px;white-space:nowrap;border-radius:8px}
+body #kt_content .app-filter-card .app-filter-fields :is(.btn-light-primary,.pending-soft-button,.prem-btn-primary){background:#e5f2ef!important;border:1px solid #bddcd6!important;color:#087e82!important}
+body #kt_content .app-filter-card .app-filter-fields .btn i{color:inherit}
+body #kt_content .app-filter-card .pe-filter-actions{display:flex;align-items:center;gap:10px;min-height:42px;grid-column:auto}
+body #kt_content .app-filter-card .ur-filter-note{flex:1 1 240px;margin:0 0 0 auto;align-self:center;color:#789095;font-size:12px;line-height:1.7}
+body #kt_content .app-filter-card .app-filter-scope{display:flex;align-items:center;gap:10px;padding:12px 20px!important;margin:0!important;border-top:1px solid #dce9e5;background:#edf6f3;color:#789095;font-size:12px;line-height:1.6}
+body #kt_content .app-filter-card .app-filter-scope :is(i,svg){color:var(--filter-accent)}
+body #kt_content .app-filter-card .app-filter-fields>.badge{align-self:center;white-space:normal;line-height:1.6;background:#e5f2ef!important;color:#426f65!important}
+@media(max-width:767px){body #kt_content .app-filter-card .app-filter-fields>div:not(.pe-filter-actions){flex:1 1 200px}body #kt_content .app-filter-card .ur-filter-note{flex-basis:100%;margin:0}}
+@media(max-width:575px){body #kt_content .app-filter-card .app-filter-heading{padding:16px 16px 0!important}body #kt_content .app-filter-card .app-filter-fields{padding:16px!important;gap:12px!important}body #kt_content .app-filter-card .app-filter-fields>div:not(.pe-filter-actions){flex-basis:100%}body #kt_content .app-filter-card .app-filter-scope{padding:10px 16px!important}body #kt_content .app-filter-card .app-filter-fields>.btn,body #kt_content .app-filter-card .pe-filter-actions{width:100%}}

@@ -20,3 +20,16 @@
 .ur-filter .select2-container--bootstrap5 .select2-selection{min-height:43px;background:#fff;border:1px solid #dce9e5;border-radius:8px}
 .ur-filter .select2-selection__rendered{color:var(--prem-ink);line-height:1.6}
 .ur-filter .select2-container--focus .select2-selection{border-color:#087e82!important;box-shadow:0 0 0 3px #087e8214}
+.ur-dashboard .ur-monthly-table-wrap{max-height:none}
+
+.ur-crr-panel{margin-bottom:24px}.ur-dashboard .ur-crr-note{font-size:12px!important;color:#81979d;line-height:1.7;margin:12px 0 0}.ur-crr-panel #ur-crr-summary{display:inline-block;white-space:normal}
+
+/* Compact spacing for the dashboard reading guide. */
+body #ur-executive .ur-method-grid{gap:10px 24px}
+body #ur-executive .ur-method-grid h3{margin:0 0 4px!important;line-height:1.3!important}
+body #ur-executive .ur-method-grid p{margin:0!important;line-height:1.5!important}
+body #ur-executive .ur-method-period{margin-top:12px;padding-top:10px;line-height:1.5}
+/* Monthly dashboard headings match the UR tariff tables. */
+body #ur-monthly-table thead th{background:#eff7f5!important;color:#62858b;font-weight:700!important;padding:12px;white-space:nowrap;vertical-align:middle}
+
+.ur-dashboard .ur-crr-note{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;border:1px solid #dceae5;border-radius:12px;background:#f6faf9;color:#789095;line-height:1.7;margin-top:16px}.ur-crr-note>i{flex-shrink:0;color:#087e82;font-size:18px;line-height:1.5}.ur-crr-note>div{min-width:0}@media(max-width:575px){.ur-dashboard .ur-crr-note{padding:12px 14px}}

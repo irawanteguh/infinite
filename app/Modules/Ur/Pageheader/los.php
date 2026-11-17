@@ -1,4 +1,1 @@
-<section class="ur-hero app-page-heading">
-        <div><h1>Analisis rawat inap dengan lama rawat singkat</h1><p>Review episode rawat inap dengan LOS kurang dari 2 hari.</p><div class="ur-coverage" id="los-coverage">Memuat cakupan data…</div></div>
-        
-    </section>
+<section class="ur-hero app-page-heading"><div><h1>Lama Rawat Singkat</h1><p>Telaah episode rawat inap dengan LOS kurang dari 2 hari, dari tren bulanan hingga rekap per dokter.</p></div></section>

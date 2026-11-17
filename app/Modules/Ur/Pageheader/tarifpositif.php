@@ -1,1 +1,1 @@
-<section class="ur-hero app-page-heading"><div><h1>Kenali pola selisih tarif positif.</h1><p>Ringkasan episode dengan total INA-CBG di atas tarif RS, dari tren bulanan hingga rekap per DPJP.</p><div id="tp-coverage" class="ur-coverage">Memuat cakupan data…</div></div></section>
+<section class="ur-hero app-page-heading"><div><h1>Tarif Positif</h1><p>Pantau episode dengan INA-CBG di atas tarif RS, kontribusi bulanan, dan rekap per DPJP.</p></div></section>

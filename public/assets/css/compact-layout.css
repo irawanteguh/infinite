@@ -8,7 +8,7 @@ body #kt_content .card>.card-body{padding:18px!important}
 body #kt_content .card>.card-footer{padding:12px 18px!important}
 body #kt_content :is(.hu-card,.od-card,.it-card)>.card-body{padding-top:0!important}
 body #kt_content .os-container>.card-body{padding:0!important;gap:16px}
-body #kt_content :is(.os-panel,.prem-card:not(.prem-welcome):not(.pe-master-workspace),.welcome-info-card){padding:18px!important}
+body #kt_content :is(.os-panel,.prem-card:not(.prem-welcome):not(.pe-master-workspace):not(.app-filter-card),.welcome-info-card){padding:18px!important}
 body #kt_content :is(.pe-master-heading,.pe-page-heading,.backup-heading,.do-heading,.it-heading,.ur-hero,.prem-heading){margin-bottom:18px!important;gap:16px}
 body #kt_content :is(.hu-heading,.od-heading,.os-heading){padding-bottom:18px!important}
 body #kt_content :is(.pe-master-heading,.pe-page-heading,.backup-heading,.do-heading,.it-heading,.hu-heading,.od-heading,.os-heading) :is(h1,h2){margin-block:8px!important}
@@ -38,7 +38,7 @@ body .modal .row{--bs-gutter-y:16px}
     :root{--app-page-gutter:14px}
     body #kt_content .card>.card-header{padding:14px!important}
     body #kt_content .card>.card-body{padding:14px!important}
-    body #kt_content :is(.os-panel,.prem-card:not(.prem-welcome):not(.pe-master-workspace),.welcome-info-card){padding:14px!important}
+    body #kt_content :is(.os-panel,.prem-card:not(.prem-welcome):not(.pe-master-workspace):not(.app-filter-card),.welcome-info-card){padding:14px!important}
     body #kt_content :is(.prem-welcome-copy,.prem-welcome-aside,.welcome-banner){padding:18px!important}
     body #kt_content :is(.backup-options,.os-settings-grid,.pe-master-stats,.pe-kpis,.pe-main-grid,.pe-bottom-grid,.access-layout,.access-kpis,.welcome-overview){gap:12px!important}
     body .modal .modal-header,body .modal .modal-body{padding:16px!important}
@@ -133,3 +133,4 @@ body #kt_toolbar .module-toolbar-actions .btn i{color:inherit}
 #session-idle-modal .modal-header{background:#f1f8f6}
 #session-idle-modal .modal-title{font-size:18px!important;color:#234a54}
 #session-idle-countdown{color:#087e82;font-variant-numeric:tabular-nums}
+#session-idle-modal .session-idle-dialog{max-width:560px;margin-inline:auto;width:calc(100% - 32px)}

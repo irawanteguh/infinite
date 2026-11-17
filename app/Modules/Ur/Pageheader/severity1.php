@@ -1,1 +1,1 @@
-<section class="ur-hero app-page-heading"><div><h1>Severity I, fokus pada lama rawat.</h1><p>Review episode rawat inap dengan severity I dan LOS lebih dari 7 hari.</p><div class="ur-coverage" id="s1-coverage">Memuat cakupan data…</div></div></section>
+<section class="ur-hero app-page-heading"><div><h1>Severity I</h1><p>Telaah episode rawat inap severity I dengan lama rawat lebih dari 7 hari.</p></div></section>

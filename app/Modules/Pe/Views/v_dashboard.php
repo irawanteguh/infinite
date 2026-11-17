@@ -28,9 +28,9 @@ $chart = $data ? [
     <div class="prem-container prem-main">
         <?php include APPPATH . 'Modules/Pe/Pageheader/dashboard.php'; ?>
 
-        <section class="prem-card pe-filter-card" aria-label="Filter dan laporan">
-        <div class="pe-filter-heading"><i class="bi bi-sliders"></i><h2>Filter dashboard</h2><span>Tentukan periode dan cakupan data</span></div>
-        <form method="get" action="<?= esc(site_url('pe/dashboard'), 'attr') ?>" class="pe-filter">
+        <section class="prem-card pe-filter-card app-filter-card" aria-label="Filter dan laporan">
+        <div class="app-filter-heading"><h2><i class="bi bi-funnel me-2" aria-hidden="true"></i>Filter dashboard</h2><p>Tentukan periode dan cakupan data.</p></div>
+        <form method="get" action="<?= esc(site_url('pe/dashboard'), 'attr') ?>" class="pe-filter app-filter-fields">
             <div><label class="form-label" for="pe-start">Tanggal mulai</label><input class="form-control form-control-solid" id="pe-start" type="date" name="start" value="<?= esc($filters['start'], 'attr') ?>" required></div>
             <div><label class="form-label" for="pe-end">Tanggal akhir</label><input class="form-control form-control-solid" id="pe-end" type="date" name="end" value="<?= esc($filters['end'], 'attr') ?>" required></div>
             <div><label class="form-label" for="pe-service">Jenis pelayanan</label><select id="pe-service" name="service" class="form-select form-select-solid" data-control="select2"><option value="">Semua pelayanan</option><?php foreach (['RJ', 'RI', 'IGD'] as $service): ?><option value="<?= $service ?>"<?= $filters['service'] === $service ? ' selected' : '' ?>><?= $services[$service] ?></option><?php endforeach; ?></select></div>

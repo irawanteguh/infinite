@@ -39,7 +39,7 @@ class Malnutrisi extends BaseController
             return response()->setStatusCode(403)->setJSON(['responseCode' => '01', 'responseDesc' => 'Rumah sakit pada sesi belum dipilih.', 'responseResult' => []]);
         }
         try {
-            return response()->setJSON(['responseCode' => '00', 'responseHead' => 'success', 'responseDesc' => 'Data berhasil dimuat.', 'responseResult' => $this->md->summary($koders, (int) $year)]);
+            return response()->setJSON(['responseCode' => '00', 'responseHead' => 'success', 'responseDesc' => 'Data berhasil dimuat.', 'responseResult' => $this->md->summary($koders, (int) $year), 'responseDetails' => $this->md->rawdata($koders, (int) $year)]);
         } catch (\Throwable $e) {
             log_message('error', 'UR malnutrition summary query failed.');
             return response()->setStatusCode(500)->setJSON(['responseCode' => '01', 'responseDesc' => 'Data malnutrisi gagal dimuat. Silakan coba kembali.', 'responseResult' => []]);

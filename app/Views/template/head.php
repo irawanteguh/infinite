@@ -85,3 +85,15 @@
 <?php if (is_file($compactLayoutCss)): ?>
 <link href="<?= base_url('assets/css/compact-layout.css?v=' . filemtime($compactLayoutCss)) ?>" rel="stylesheet" type="text/css" />
 <?php endif; ?>
+<?php $filterCardCss = FCPATH . 'assets/css/filter-card.css'; ?>
+<?php if (is_file($filterCardCss)): ?>
+<link href="<?= base_url('assets/css/filter-card.css?v=' . filemtime($filterCardCss)) ?>" rel="stylesheet" type="text/css" />
+<?php endif; ?>
+<?php $tableCardCss = FCPATH . 'assets/css/table-card.css'; ?>
+<?php if (is_file($tableCardCss)): ?>
+<link href="<?= base_url('assets/css/table-card.css?v=' . filemtime($tableCardCss)) ?>" rel="stylesheet" type="text/css" />
+<?php endif; ?>
+<?php $selectThemeCss = FCPATH . 'assets/css/select-theme.css'; ?>
+<?php if (is_file($selectThemeCss)): ?>
+<link href="<?= base_url('assets/css/select-theme.css?v=' . filemtime($selectThemeCss)) ?>" rel="stylesheet" type="text/css" />
+<?php endif; ?>

@@ -1,0 +1,15 @@
+/* Shared teal select states for native controls and Select2 dropdowns. */
+body select.form-select{accent-color:#087e82}
+body select.form-select:not(:disabled):focus,body .dataTables_length select:not(:disabled):focus{border-color:#087e82!important;outline-color:#087e82;box-shadow:0 0 0 3px #087e821a!important}
+body select option:checked{background-color:#087e82;color:#fff}
+body .select2-container .select2-selection__rendered{color:#42636d}
+body .select2-container:is(.select2-container--focus,.select2-container--open) .select2-selection,
+body #kt_content .select2-container:is(.select2-container--focus,.select2-container--open) .select2-selection{border-color:#087e82!important;outline-color:#087e82;box-shadow:0 0 0 3px #087e821a!important}
+body .select2-container .select2-dropdown{border-color:#bddcd6!important}
+body .select2-container .select2-search__field:focus{border-color:#087e82!important;outline-color:#087e82;box-shadow:0 0 0 3px #087e821a!important}
+body .select2-container .select2-results__option[aria-selected="true"]:not([aria-disabled="true"]),
+body .select2-container .select2-results__option--selected:not([aria-disabled="true"]){background-color:#e5f2ef!important;color:#087e82!important}
+body .select2-container .select2-results__option--highlighted[aria-selected]:not([aria-disabled="true"]),
+body .select2-container .select2-results__option--highlighted[aria-selected="true"]:not([aria-disabled="true"]){background-color:#087e82!important;color:#fff!important}
+body .select2-container .select2-selection--multiple .select2-selection__choice{background-color:#e5f2ef!important;border-color:#bddcd6!important;color:#087e82!important}
+body .select2-container .select2-selection__choice__remove:hover{color:#066b6e!important;background-color:#dcefe9!important}

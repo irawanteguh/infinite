@@ -38,7 +38,8 @@ class Logger extends BaseConfig
      *
      * @var int|list<int>
      */
-    public $threshold = (ENVIRONMENT === 'production') ? 4 : 9;
+    // Record problems only in every environment: warning through emergency.
+    public $threshold = 5;
 
     /**
      * --------------------------------------------------------------------------
@@ -87,10 +88,7 @@ class Logger extends BaseConfig
                 'critical',
                 'alert',
                 'emergency',
-                'debug',
                 'error',
-                'info',
-                'notice',
                 'warning',
             ],
 

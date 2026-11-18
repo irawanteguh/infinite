@@ -1,1 +1,0 @@
-mkdir -p app/Modules/Qi/{Config,Controllers,Models,Views,Services,Toolbar,Modal,Breadcrumb,Progress,Team}

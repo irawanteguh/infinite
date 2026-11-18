@@ -43,17 +43,16 @@ class PneumoniaModel extends Model{
                         a.idrg_total_tarif,
                         a.sl,
                         DATE_FORMAT(a.admission_date, '%d.%m.%Y') AS admission_date,
-                        DATE_FORMAT(a.discharge_date, '%d.%m.%Y') AS discharge_date
+                        DATE_FORMAT(a.discharge_date, '%d.%m.%Y') AS discharge_date, MONTH(a.discharge_date) AS month
                     FROM dt01_bpjs_ur_dt a
                     WHERE a.ptd = '1'
                     AND a.diaglist REGEXP '(^|;)[[:space:]]*(J1[2-8]|J22)([.]|;|$)'
-                    and   a.kode_rs='".$koders."'
-                    and   year(a.discharge_date) = ".$periode."
+                    AND a.kode_rs = ? AND a.discharge_date >= ? AND a.discharge_date < ?
                     ORDER BY a.admission_date ASC;
                 ";
 
-        $recordset = $this->db->query($query);
+        $recordset = $this->db->query($query, [$koders, sprintf('%04d-01-01', $periode), sprintf('%04d-01-01', $periode + 1)]);
         return $recordset->getResult();
     }
     
-}
+public function summary($koders, $year) { return $this->rawdata($koders, $year); }}

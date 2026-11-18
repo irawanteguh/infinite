@@ -28,19 +28,31 @@ class DmModel extends Model{
 
     function rawdata($koders,$periode){
         $query = "
-                    select a.ptd, los, mrn, nama_pasien, sep, nokartu, dpjp, diaglist, proclist, tarif_rs, total_tarif, idrg_total_tarif,
-                        DATE_FORMAT(admission_date, '%d.%m.%Y') AS admission_date,
-                        DATE_FORMAT(discharge_date, '%d.%m.%Y') AS discharge_date
-                    from dt01_bpjs_ur_dt a
-                    where a.ptd='1'
-                    and   a.diaglist REGEXP '(^|;)[[:space:]]*E1[0-4]([.]|;|$)'
-                    and   a.kode_rs='".$koders."'
-                    and   year(a.discharge_date) = ".$periode."
-                    order by admission_date asc
+                    SELECT
+                        a.ptd,
+                        a.los,
+                        a.mrn,
+                        a.nama_pasien,
+                        a.sep,
+                        a.nokartu,
+                        a.dpjp,
+                        a.diaglist,
+                        a.proclist,
+                        a.tarif_rs,
+                        a.total_tarif,
+                        a.idrg_total_tarif,
+                        a.sl,
+                        DATE_FORMAT(a.admission_date, '%d.%m.%Y') AS admission_date,
+                        DATE_FORMAT(a.discharge_date, '%d.%m.%Y') AS discharge_date, MONTH(a.discharge_date) AS month
+                    FROM dt01_bpjs_ur_dt a
+                    WHERE a.ptd = '1'
+                    AND a.diaglist LIKE '%E11.9%' AND (a.proclist LIKE '%96.71%' OR a.proclist LIKE '%96.72%')
+                    AND a.kode_rs = ? AND a.discharge_date >= ? AND a.discharge_date < ?
+                    ORDER BY a.admission_date ASC;
                 ";
 
-        $recordset = $this->db->query($query);
+        $recordset = $this->db->query($query, [$koders, sprintf('%04d-01-01', $periode), sprintf('%04d-01-01', $periode + 1)]);
         return $recordset->getResult();
     }
     
-}
+public function summary($koders, $year) { return $this->rawdata($koders, $year); }}

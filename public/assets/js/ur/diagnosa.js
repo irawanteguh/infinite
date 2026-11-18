@@ -1,241 +1,58 @@
-load();
-
-$('#selectperiode').on('change', function () {
-    load();
-});
-
-function load(){
-    rawdata();
-};
-
-function rawdata(){
-    let selectperiode = $("select[name='selectperiode']").val();
-    $.ajax({
-        url      : url + "ur/diagnosa/rawdata",
-        data     : {selectperiode:selectperiode},
-        type     : "POST",
-        dataType : "JSON",
-        beforeSend: function () {
-            Swal.fire({
-                title            : 'Processing',
-                html             : 'Please wait while the system displays the requested data.',
-                allowOutsideClick: false,
-                allowEscapeKey   : false,
-                showConfirmButton: false,
-                didOpen          : () => Swal.showLoading()
-            });
-
-            $("#resultrawdatainpatient").empty();
-            $("#resultrawdataoutpatient").empty();
-        },
-        success: function (response) {
-
-            if (!response || response.responseCode !== "00") {
-                Swal.fire({
-                    icon             : 'warning',
-                    title            : 'No Records Found',
-                    text             : 'No records are available for the selected period.',
-                    showConfirmButton: false,
-                    timer            : 2000
-                });
-                return;
-            }
-
-            const result       = Array.isArray(response.responseResult) ? response.responseResult : [];
-            
-            let tableResult = "";
-
-            for (var i in result) {
-
-                let btnaction = "";
-                tableResult += "<tr>";
-                tableResult += "<td class='text-start ps-4'>"+(parseInt(i) + 1)+"</td>";
-                tableResult += "<td>" + (result[i].sep || "") + "</td>";
-                tableResult += "<td>" + (result[i].nokartu || "") + "</td>";
-                tableResult += "<td>" + (result[i].mrn || "") + "</td>";
-                tableResult += "<td>" + (result[i].nama_pasien || "") + "</td>";
-                tableResult += "<td>" + (result[i].dpjp || "") + "</td>";
-                tableResult += "<td>" + formatDiaglistFKTP(result[i].diaglist) + "</td>";
-                tableResult += "<td>" + (result[i].proclist || "").split(";").join("<br>") + "</td>";
-                tableResult += "<td>" + (result[i].admission_date || "") + "</td>";
-                tableResult += "<td>" + (result[i].discharge_date || "") + "</td>";
-                tableResult += "<td>" + (result[i].los || "") + "</td>";
-                tableResult += "<td class='text-end'>" + todesimal(result[i].tarif_rs) + "</td>";
-                tableResult += "<td class='text-end'>" + todesimal(result[i].total_tarif) + "</td>";
-                tableResult += "<td class='text-end'>" + todesimal(result[i].idrg_total_tarif) + "</td>";
-                tableResult += "<td class='text-end'>" + todesimal((parseFloat(result[i].total_tarif) || 0) - (parseFloat(result[i].tarif_rs) || 0)) + "</td>";
-                tableResult += "<td class='text-end'>";
-                tableResult += "<div class='btn-group'>";
-                tableResult += "<button type='button' class='btn btn-light-primary dropdown-toggle btn-sm' data-bs-toggle='dropdown'>Actions</button>";
-                tableResult += "<div class='dropdown-menu'>" + btnaction + "</div>";
-                tableResult += "</div>";
-                tableResult += "</td>";
-                tableResult += "</tr>";
-            }
-
-            $("#resultdataraweklaim").html(tableResult);
-
-            initDataTable("#dataraweklaim_table","#searchtable",10);
-        },
-        complete: function () {
-            Swal.close();
-        },
-        error: function () {
-            Swal.fire({
-                icon             : "error",
-                title            : "Request Failed",
-                text             : "An error occurred while processing your request.",
-                confirmButtonText: "OK"
-            });
-        }
-    });
-};
-
-function dataseveritylevel(){
-    let selectperiode = $("select[name='selectperiode']").val();
-    $.ajax({
-        url      : url + "ur/casemixindex/dataseveritylevel",
-        data     : {selectperiode:selectperiode},
-        type     : "POST",
-        dataType : "JSON",
-        beforeSend: function () {
-            Swal.fire({
-                title            : 'Processing',
-                html             : 'Please wait while the system displays the requested data.',
-                allowOutsideClick: false,
-                allowEscapeKey   : false,
-                showConfirmButton: false,
-                didOpen          : () => Swal.showLoading()
-            });
-
-            $("#resultdataseveritylevel").empty();
-        },
-        success: function (response) {
-
-            if (!response || response.responseCode !== "00") {
-                Swal.fire({
-                    icon             : 'warning',
-                    title            : 'No Records Found',
-                    text             : 'No records are available for the selected period.',
-                    showConfirmButton: false,
-                    timer            : 2000
-                });
-                return;
-            }
-
-            const result = Array.isArray(response.responseResult) ? response.responseResult : [];
-
-            let tableResult = "";
-
-            for (var i in result) {
-                tableResult += "<tr>";
-                tableResult += "<td class='text-start ps-4'>"+(parseInt(i) + 1)+"</td>";
-                tableResult += "<td>"+(result[i].sl==="0"?"Rawat Jalan":result[i].sl==="I"?"Severity I":result[i].sl==="II"?"Severity II":result[i].sl==="III"?"Severity III":result[i].sl||"")+"</td>";
-                tableResult += "<td class='text-end'>"+(todesimal(result[i].jan))+"</td>";
-                tableResult += "<td class='text-end'>"+(todesimal(result[i].feb))+"</td>";
-                tableResult += "<td class='text-end'>"+(todesimal(result[i].mar))+"</td>";
-                tableResult += "<td class='text-end'>"+(todesimal(result[i].apr))+"</td>";
-                tableResult += "<td class='text-end'>"+(todesimal(result[i].mei))+"</td>";
-                tableResult += "<td class='text-end'>"+(todesimal(result[i].jun))+"</td>";
-                tableResult += "<td class='text-end'>"+(todesimal(result[i].jul))+"</td>";
-                tableResult += "<td class='text-end'>"+(todesimal(result[i].agu))+"</td>";
-                tableResult += "<td class='text-end'>"+(todesimal(result[i].sep))+"</td>";
-                tableResult += "<td class='text-end'>"+(todesimal(result[i].okt))+"</td>";
-                tableResult += "<td class='text-end'>"+(todesimal(result[i].nov))+"</td>";
-                tableResult += "<td class='text-end pe-4'>"+(todesimal(result[i].des))+"</td>";
-                tableResult += "</tr>";
-            }
-
-            $("#resultdataseveritylevel").html(tableResult);
-
-            initDataTable("#dataseveritylevel_table","#searchtable",50);
-        },
-        complete: function () {
-            Swal.close();
-        },
-        error: function () {
-            Swal.fire({
-                icon             : "error",
-                title            : "Request Failed",
-                text             : "An error occurred while processing your request.",
-                confirmButtonText: "OK"
-            });
-        }
-    });
-};
-
-function datacmg(){
-    let selectperiode = $("select[name='selectperiode']").val();
-    $.ajax({
-        url      : url + "ur/casemixindex/datacmg",
-        data     : {selectperiode:selectperiode},
-        type     : "POST",
-        dataType : "JSON",
-        beforeSend: function () {
-            Swal.fire({
-                title            : 'Processing',
-                html             : 'Please wait while the system displays the requested data.',
-                allowOutsideClick: false,
-                allowEscapeKey   : false,
-                showConfirmButton: false,
-                didOpen          : () => Swal.showLoading()
-            });
-
-            $("#resultdatacmg").empty();
-        },
-        success: function (response) {
-
-            if (!response || response.responseCode !== "00") {
-                Swal.fire({
-                    icon             : 'warning',
-                    title            : 'No Records Found',
-                    text             : 'No records are available for the selected period.',
-                    showConfirmButton: false,
-                    timer            : 2000
-                });
-                return;
-            }
-
-            const result = Array.isArray(response.responseResult) ? response.responseResult : [];
-
-            let tableResult = "";
-
-            for (var i in result) {
-
-                tableResult += "<tr>";
-                tableResult += "<td class='text-start ps-4'>"+(parseInt(i) + 1)+"</td>";
-                tableResult += "<td>"+(result[i].group_code || "")+"</td>";
-                tableResult += "<td>"+(result[i].group_name || "")+"</td>";
-                tableResult += "<td>"+(result[i].description || "")+"</td>";
-                tableResult += "<td class='text-end'>"+(todesimal(result[i].jan))+"</td>";
-                tableResult += "<td class='text-end'>"+(todesimal(result[i].feb))+"</td>";
-                tableResult += "<td class='text-end'>"+(todesimal(result[i].mar))+"</td>";
-                tableResult += "<td class='text-end'>"+(todesimal(result[i].apr))+"</td>";
-                tableResult += "<td class='text-end'>"+(todesimal(result[i].mei))+"</td>";
-                tableResult += "<td class='text-end'>"+(todesimal(result[i].jun))+"</td>";
-                tableResult += "<td class='text-end'>"+(todesimal(result[i].jul))+"</td>";
-                tableResult += "<td class='text-end'>"+(todesimal(result[i].agu))+"</td>";
-                tableResult += "<td class='text-end'>"+(todesimal(result[i].sep))+"</td>";
-                tableResult += "<td class='text-end'>"+(todesimal(result[i].okt))+"</td>";
-                tableResult += "<td class='text-end'>"+(todesimal(result[i].nov))+"</td>";
-                tableResult += "<td class='text-end pe-4'>"+(todesimal(result[i].des))+"</td>";
-                tableResult += "</tr>";
-            }
-
-            $("#resultdatacmg").html(tableResult);
-
-            initDataTable("#datacmg_table","#searchtable",50);
-        },
-        complete: function () {
-            Swal.close();
-        },
-        error: function () {
-            Swal.fire({
-                icon             : "error",
-                title            : "Request Failed",
-                text             : "An error occurred while processing your request.",
-                confirmButtonText: "OK"
-            });
-        }
-    });
-};
+(function(){
+'use strict';
+const nf=new Intl.NumberFormat('id-ID'), months=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+const num=v=>Number(v)||0, sum=(r,k)=>r.reduce((n,x)=>n+num(x[k]),0), money=v=>'Rp '+nf.format(v);
+const esc=v=>String(v??'—').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let rows=[], charts=[],request, generation=0;
+function link(){const a=document.getElementById('diagnosa-detail-link'),u=new URL(a.href);u.searchParams.set('year',$('#selectperiode').val());const m=$('#diagnosa-month').val();if(m)u.searchParams.set('month',m);else u.searchParams.delete('month');a.href=u.href;}
+function render(){
+charts.forEach(c=>c.destroy());charts=[];
+const m=$('#diagnosa-month').val(),data=rows.filter(r=>!m||num(r.month)===num(m));
+$('#diagnosa-content').prop('hidden',!data.length);$('#diagnosa-status').text(data.length?'':'Tidak ada kasus pada filter ini.').prop('hidden',!!data.length);
+$('#diagnosa-coverage').text(nf.format(data.length)+' episode pelayanan');
+if(!data.length)return;
+const rs=sum(data,'tarif_rs'),ina=sum(data,'total_tarif');
+const compactMoney = value => 'Rp ' + new Intl.NumberFormat('id-ID', {
+    notation:'compact', maximumFractionDigits:2
+}).format(value);
+const metrics = [
+    ['Episode diagnosa', nf.format(data.length), 'Episode pelayanan pada periode terpilih', 'bi-clipboard2-pulse'],
+    ['Rata-rata LOS', (sum(data,'los') / data.length).toLocaleString('id-ID', {maximumFractionDigits:1}) + ' hari', 'Rata-rata lama rawat episode diagnosa', 'bi-clock-history'],
+    ['Total tarif RS', compactMoney(rs), 'Akumulasi tarif rumah sakit', 'bi-hospital'],
+    ['Total INA-CBG', compactMoney(ina), 'Akumulasi TOTAL_TARIF', 'bi-receipt'],
+    ['Total IDRG', compactMoney(sum(data,'idrg_total_tarif')), 'Nilai IDRG dari data impor', 'bi-file-earmark-medical'],
+    ['Selisih INA-CBG − RS', compactMoney(ina-rs), 'Total INA-CBG dikurangi tarif RS', 'bi-arrow-left-right']
+];
+$('#diagnosa-kpis').html(metrics.map(([label,value,description,icon],i) =>
+    '<article class="card card-flush ur-kpi ur-kpi-tone-' + i + '">' +
+    '<i class="bi ' + icon + ' ur-kpi-icon" aria-hidden="true"></i>' +
+    '<div class="ur-kpi-label">' + label + '</div>' +
+    '<div class="ur-kpi-value ' + (i === 5 && ina < rs ? 'ur-negative' : '') + '">' + value + '</div>' +
+    '<small>' + description + '</small></article>'
+).join(''));
+if(typeof ApexCharts!=='undefined'){
+const active=[...new Set(data.map(r=>num(r.month)))].sort((a,b)=>a-b);
+const options=[
+['diagnosa-trend',{chart:{type:'bar',height:285,toolbar:{show:false},animations:{enabled:false}},series:[{name:'Episode',data:active.map(m=>data.filter(r=>num(r.month)===m).length)}],xaxis:{categories:active.map(m=>months[m-1])},plotOptions:{bar:{columnWidth:'48%',borderRadius:4}},dataLabels:{enabled:false}}],
+['diagnosa-severity',{chart:{type:'donut',height:285,animations:{enabled:false}},series:['I','II','III','Lainnya'].map(s=>data.filter(r=>s==='Lainnya'?!['I','II','III'].includes(r.sl):r.sl===s).length),labels:['SL I','SL II','SL III','Lainnya'],legend:{position:'bottom'}}]];
+options.forEach(([id,opt])=>{const c=new ApexCharts(document.getElementById(id),{...opt,colors:['#087e82','#93b6c3','#64748b','#d3ad69']});charts.push(c);c.render();});
+}
+const groups=new Map();data.forEach(r=>{const name=r.dpjp||'Belum terisi';if(!groups.has(name))groups.set(name,[]);groups.get(name).push(r);});
+if($.fn.DataTable.isDataTable('#diagnosa-table'))$('#diagnosa-table').DataTable().destroy();
+const term=String($('#diagnosa-search').val()||'').toLowerCase();
+$('#diagnosa-doctors').html([...groups].filter(([name,items])=>{
+    if(!name.toLowerCase().includes(term))return false;
+    const selected=$('.diagnosa-gap-option[aria-pressed="true"]').attr('data-gap');
+    const gap=sum(items,'total_tarif')-sum(items,'tarif_rs');
+    return !selected||(selected==='positive'&&gap>0)||(selected==='negative'&&gap<0);
+}).sort((a,b)=>b[1].length-a[1].length).map(([name,r])=>{const gap=sum(r,'total_tarif')-sum(r,'tarif_rs');return '<tr><td>'+esc(name)+'</td><td>'+nf.format(r.length)+'</td><td>'+(sum(r,'los')/r.length).toLocaleString('id-ID',{maximumFractionDigits:1})+' hari</td><td>'+money(sum(r,'tarif_rs'))+'</td><td>'+money(sum(r,'total_tarif'))+'</td><td class="'+(gap<0?'ur-negative':'ur-positive')+'">'+money(gap)+'</td></tr>';}).join(''));
+initDataTable('#diagnosa-table',null,10,{searching:false,order:[]});
+}
+window.load=function(){const token=++generation;if(request)request.abort();$('#diagnosa-content').prop('hidden',true);$('#diagnosa-status').text('Memuat ringkasan diagnosa…').prop('hidden',false);$('#diagnosa-refresh').prop('disabled',true);
+request=$.ajax({url:url+'ur/diagnosa/summary',type:'POST',dataType:'json',data:{selectperiode:$('#selectperiode').val()}}).done(r=>{if(token!==generation)return;if(r.responseCode!=='00'){$('#diagnosa-status').text(r.responseDesc||'Data gagal dimuat.');return;}rows=Array.isArray(r.responseResult)?r.responseResult:[];render();}).fail((xhr,state)=>{if(token===generation&&state!=='abort')$('#diagnosa-status').text('Data gagal dimuat. Klik Perbarui untuk mencoba kembali.');}).always(()=>{if(token===generation)$('#diagnosa-refresh').prop('disabled',false);});};
+$('#selectperiode').on('change',()=>{link();window.load();});$('#diagnosa-month').on('change',()=>{link();render();});$('#diagnosa-search').on('input',render);$('.diagnosa-gap-option').on('click',function(){
+    $('.diagnosa-gap-option').attr('aria-pressed','false');
+    $(this).attr('aria-pressed','true');
+    render();
+});$('#diagnosa-refresh').on('click',window.load);$('#diagnosa-print').on('click',()=>window.print());link();window.load();
+})();

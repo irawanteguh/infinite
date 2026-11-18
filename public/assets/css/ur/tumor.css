@@ -1,0 +1,116 @@
+@import url("dashboard.css");
+.tumor-page{--prem-accent:#087e82;--prem-ink:#15373e;--prem-soft:#eaf6f4;width:100%;min-width:0;padding-bottom:20px}
+.tumor-page [hidden]{display:none!important}.tumor-page .ur-hero{background:transparent}
+.tumor-page .card{border:1px solid #e1ebed;border-radius:16px;background:#fff;box-shadow:0 8px 28px #1c454b04;min-width:0}
+.tumor-page .ur-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:20px}
+.tumor-page .ur-kpi{position:relative;padding:20px;min-width:0}.tumor-page .ur-kpi-tone-0,.tumor-page .ur-kpi-tone-1{background:#f0f8f5}
+.tumor-page .ur-kpi-label{font-size:13px;color:#6e8b90;padding-right:28px;margin-bottom:10px}
+.tumor-page .ur-kpi-value{font-size:28px;font-weight:600;line-height:1.4;letter-spacing:-.4px;color:#15373e;overflow-wrap:anywhere;font-variant-numeric:tabular-nums;margin-bottom:8px}
+.tumor-page .ur-kpi small{display:block;color:#81969b;line-height:1.6}.tumor-page .ur-kpi-icon{position:absolute;right:20px;top:20px;color:#087e82;font-size:20px}
+.tumor-page .ur-panel{padding:24px;margin-bottom:20px}.tumor-page .ur-grid-equal{gap:20px;margin-bottom:20px}.tumor-page .ur-grid-equal>.ur-panel{margin-bottom:0}
+.tumor-page .ur-panel-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px 20px;margin-bottom:20px}
+.tumor-page .ur-panel-head h2{color:#234a54;font-weight:600;margin:0}.tumor-page .ur-panel-head p{color:#81969b;line-height:1.6;margin:5px 0 0}
+.tumor-page .ur-table th{background:#eff7f5!important;color:#62858b;white-space:nowrap;padding:12px}.tumor-page .ur-table td{color:#42636d;padding:10px 12px}
+.tumor-page .mal-monthly-wrap{max-height:none}.vent-table{min-width:1200px}.vent-table :is(td,th):first-child{min-width:220px;max-width:300px;white-space:normal;overflow-wrap:anywhere}
+.tumor-page .ur-table tfoot td{font-weight:600;background:#f0f8f5;color:#234a54}
+.tumor-method{display:flex;align-items:flex-start;gap:12px;padding:16px 20px;border:1px solid #dceae5;border-radius:12px;background:#f6faf9;color:#789095;line-height:1.7}.tumor-method>i{color:#087e82;margin-top:3px}.tumor-method strong{color:#42636d}
+@media(max-width:991px){.tumor-page .ur-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:575px){.tumor-page .ur-kpis{grid-template-columns:1fr;gap:12px}.tumor-page .ur-panel,.tumor-page .ur-kpi{padding:16px}.tumor-page .ur-kpi-value{font-size:25px}.tumor-method{padding:14px 16px}}
+@media print{.tumor-page .ur-filterbar,.tumor-page .app-table-search,.tumor-page .app-table-footer{display:none!important}.tumor-page .ur-table-wrap{max-height:none;overflow:visible}.vent-table{min-width:0}.tumor-page .ur-panel{break-inside:avoid}}
+
+
+.vent-table{min-width:1200px}
+.vent-table :is(td,th):first-child{min-width:220px;white-space:normal}
+#vent-cases-table{min-width:1300px}
+#vent-cases-table :is(th,td){vertical-align:top}
+#vent-cases-table td:nth-child(8){min-width:240px;max-width:320px;white-space:normal}
+#vent-cases-table .table-danger>td{background:#fff0f1;color:#a83d50}
+#vent-cases-table .table-warning>td{background:#fff8e5;color:#91651a}
+.tumor-page .ur-method{padding:16px 20px;border:1px solid #dceae5;border-radius:12px;background:#f6faf9;color:#789095;line-height:1.7}
+body #kt_content .app-filter-card .app-filter-fields>.ur-filter.vent-review-filter{flex:1 1 560px!important;width:560px!important;min-width:360px;max-width:720px}
+@media(max-width:575px){body #kt_content .app-filter-card .app-filter-fields>.ur-filter.vent-review-filter{flex-basis:100%!important;width:100%!important;min-width:0;max-width:100%}}
+/* Let every row on the selected page determine the case card height. */
+body #kt_content .vent-detail-page .ur-table-wrap,
+body #kt_content .vent-detail-page .app-datatable-scroll{
+    height:auto!important;
+    max-height:none!important;
+    overflow-x:auto;
+}
+/* Ventilator review states follow the muted UR palette. */
+body #kt_content .vent-detail-page #vent-cases-table tr.table-danger{
+    --bs-table-bg:#fbf0f1;
+    --bs-table-accent-bg:#fbf0f1;
+    --bs-table-hover-bg:#f6e5e8;
+}
+body #kt_content .vent-detail-page #vent-cases-table tr.table-warning{
+    --bs-table-bg:#fbf6eb;
+    --bs-table-accent-bg:#fbf6eb;
+    --bs-table-hover-bg:#f5eedc;
+}
+body #kt_content .vent-detail-page #vent-cases-table tr.table-danger>td{background-color:#fbf0f1!important;color:#8d5660}
+body #kt_content .vent-detail-page #vent-cases-table tr.table-warning>td{background-color:#fbf6eb!important;color:#846d43}
+body #kt_content .vent-detail-page #vent-cases-table tr.table-danger:hover>td{background-color:#f6e5e8!important}
+body #kt_content .vent-detail-page #vent-cases-table tr.table-warning:hover>td{background-color:#f5eedc!important}
+body #kt_content .vent-detail-page .mal-detail .alert-danger{background:#fbf0f1;border:1px solid #ead2d7;color:#8d5660}
+body #kt_content .vent-detail-page .mal-detail .alert-warning{background:#fbf6eb;border:1px solid #e9ddbd;color:#846d43}
+body #kt_content .vent-detail-page #vent-cases-table tr.table-danger .vent-case-detail{
+    background:#f3dfe3!important;border:1px solid #e3bdc6!important;color:#8d5660!important;
+}
+body #kt_content .vent-detail-page #vent-cases-table tr.table-danger .vent-case-detail:hover,
+body #kt_content .vent-detail-page #vent-cases-table tr.table-danger .vent-case-detail[aria-expanded="true"]{
+    background:#ead0d6!important;border-color:#d8a9b5!important;
+}
+body #kt_content .vent-detail-page #vent-cases-table tr.table-warning .vent-case-detail{
+    background:#f2e8cd!important;border:1px solid #e0cfa2!important;color:#846d43!important;
+}
+body #kt_content .vent-detail-page #vent-cases-table tr.table-warning .vent-case-detail:hover,
+body #kt_content .vent-detail-page #vent-cases-table tr.table-warning .vent-case-detail[aria-expanded="true"]{
+    background:#eaddb8!important;border-color:#d3bc85!important;
+}
+body #kt_content .vent-detail-page #vent-cases-table .vent-case-detail i{color:inherit!important}
+body #kt_content .vent-detail-page #vent-cases-table .vent-case-detail:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+body #kt_content .tumor-detail-page .ur-table-wrap,
+body #kt_content .tumor-detail-page .app-datatable-scroll{
+    height:auto!important;
+    max-height:none!important;
+}
+body #kt_content .tumor-detail-page :is(.tumor-los-badge,.mal-los-badge){
+    background:#eaf6f4!important;
+    color:#087e82!important;
+    border:1px solid #c9e3dc;
+    font-weight:600;
+}
+body #kt_content .app-filter-card .app-filter-fields>.tumor-gap-options{
+    display:inline-flex;flex:0 1 auto;width:auto;flex-wrap:wrap;gap:4px;
+    padding:4px;border:1px solid #dce9e5;border-radius:10px;background:#edf6f3;
+}
+body #kt_content .tumor-gap-options .tumor-gap-option{
+    background:transparent;border:0;color:#42636d;min-height:38px;border-radius:7px;
+    padding:8px 16px;font-weight:500;box-shadow:none;
+}
+body #kt_content .tumor-gap-options .tumor-gap-option[aria-pressed="true"]{
+    background:#087e82;color:#fff;
+}
+body #kt_content .tumor-gap-options .tumor-gap-option[aria-pressed="false"]:hover{
+    background:#dceee8;color:#234a54;
+}
+body #kt_content .tumor-gap-options .tumor-gap-option:focus-visible{
+    outline:2px solid #087e82;outline-offset:2px;
+}
+@media(max-width:575px){
+    body #kt_content .tumor-gap-options .tumor-gap-option{flex:1 1 auto;width:auto}
+}
+body #kt_content .app-filter-card .app-filter-fields>.tumor-gap-options{
+    flex:0 1 540px!important;width:540px!important;max-width:100%;min-width:0;
+    flex-wrap:nowrap;
+}
+body #kt_content .tumor-gap-options .tumor-gap-option{
+    flex:1 1 0;white-space:nowrap;min-width:0;
+}
+@media(max-width:575px){
+    body #kt_content .app-filter-card .app-filter-fields>.tumor-gap-options{flex-basis:100%!important;width:100%!important}
+    body #kt_content .tumor-gap-options .tumor-gap-option{padding:8px 9px;font-size:12px}
+}
+body #kt_content .tumor-gap-options .tumor-gap-option[data-gap="negative"]:focus-visible{
+    outline-color:#bf6973;
+}

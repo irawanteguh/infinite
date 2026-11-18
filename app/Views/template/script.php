@@ -59,6 +59,15 @@
         if ($segment1 === 'ur' && $segment2 === 'ventilator' && $segment3 === 'detail') {
             $jsPage = 'ventilatordetail';
         }
+        if ($segment1 === 'ur' && $segment2 === 'pneumonia' && $segment3 === 'detail') {
+            $jsPage = 'pneumoniadetail';
+        }
+        if ($segment1 === 'ur' && $segment2 === 'dm' && $segment3 === 'detail') {
+            $jsPage = 'dmdetail';
+        }
+        if ($segment1 === 'ur' && in_array($segment2, ['tumor','diagnosa','icu','biaya'], true) && $segment3 === 'detail') {
+            $jsPage = $segment2 . 'detail';
+        }
         $jspath = FCPATH . 'assets/js/' . $segment1 . '/' . $jsPage . '.js';
         if (file_exists($jspath)) {
             echo '<script type="text/javascript" src="' . base_url('assets/js/' . $segment1 . '/' . $jsPage . '.js?v=' . time()) . '"></script>' . PHP_EOL;

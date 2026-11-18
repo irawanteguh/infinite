@@ -1,0 +1,702 @@
+[
+  {
+    "name": "Kejang Deman ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "R56.0"
+  },
+  {
+    "name": "Tetanus",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "A35"
+  },
+  {
+    "name": "HIV/AIDS tanpa komplikasi",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B24"
+  },
+  {
+    "name": "Tension headace ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "G44.2"
+  },
+  {
+    "name": "Migren ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "G43.9"
+  },
+  {
+    "name": "Bell's Palsy ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "G51.0"
+  },
+  {
+    "name": "Vertigo (Benign paroxysmal positional Vertigo) ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "H81.1"
+  },
+  {
+    "name": "Ganggungan samotoform ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "F45.9"
+  },
+  {
+    "name": "Insomnia ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "F51.0"
+  },
+  {
+    "name": "Benda asing di konjungtiva ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "T15.9"
+  },
+  {
+    "name": "Konjungtivitis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "H10.9"
+  },
+  {
+    "name": "Perdarahan subkonjungtiva ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "H11.3"
+  },
+  {
+    "name": "Mata kering ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "H04.9"
+  },
+  {
+    "name": "Blefaritis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "H01.0"
+  },
+  {
+    "name": "Hordeolum ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "H00.0"
+  },
+  {
+    "name": "Trikiasis",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "H02.0"
+  },
+  {
+    "name": "Episkleritis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "H15.1"
+  },
+  {
+    "name": "Hipermetropia ringan ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "H52.0"
+  },
+  {
+    "name": "Miopia ringan ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "H52.1"
+  },
+  {
+    "name": "Astigmatism ringan ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "H52.2"
+  },
+  {
+    "name": "Presbiopia ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "H52.4"
+  },
+  {
+    "name": "Buta senja ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "H53.6"
+  },
+  {
+    "name": "Otitis eksterna ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "H60.9"
+  },
+  {
+    "name": "Otitis Media Akut ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "H66.9"
+  },
+  {
+    "name": "Serumen prop ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "H61.2"
+  },
+  {
+    "name": "Mabuk perjalanan ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "T75.3"
+  },
+  {
+    "name": "Furunkel pada hidung ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "J34.0"
+  },
+  {
+    "name": "Rhinitis akut ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "J30.4"
+  },
+  {
+    "name": "Rhinitis vasomotor ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "J30.0"
+  },
+  {
+    "name": "Rhinitis bukan vasomotor ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "J30.3"
+  },
+  {
+    "name": "Epistaksis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "R04.0"
+  },
+  {
+    "name": "Influenza ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "J10.8"
+  },
+  {
+    "name": "Pertusis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "A37.0"
+  },
+  {
+    "name": "Faringitis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "J02.9"
+  },
+  {
+    "name": "Tonsilitis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "J03.9"
+  },
+  {
+    "name": "Laringitis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "J04.0"
+  },
+  {
+    "name": "Asma bronchiale ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "J45.9"
+  },
+  {
+    "name": "Bronchitis akut ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "J40;J20"
+  },
+  {
+    "name": "Pneumonia, bronkopneumonia ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "J18.0;J18.9"
+  },
+  {
+    "name": "Tuberkolosis paru tanpa komplikasi ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "A16.7;A15.7;A16.2;A15.2;A16.0;A15.0;A16.1;A15.1"
+  },
+  {
+    "name": "Hipertensi esensial ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "I10"
+  },
+  {
+    "name": "Kandidisiasis mulut ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B37.0"
+  },
+  {
+    "name": "Ulcus mulut (aptosa, herpes) ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "K12.3;K12.2;K12.1;K12.0"
+  },
+  {
+    "name": "Parotitis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "K11.2"
+  },
+  {
+    "name": "Infeksi pada ambulukus ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "L03.9"
+  },
+  {
+    "name": "Gastritis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "K29.7"
+  },
+  {
+    "name": "Gastroenteritis (termasuk kolera, giardiasis)",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "A09.9"
+  },
+  {
+    "name": "Refluks gastroesofogus ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "K21.9"
+  },
+  {
+    "name": "Demam tifoid ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "A01.0"
+  },
+  {
+    "name": "Intoleransi makanan ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "K90.4"
+  },
+  {
+    "name": "Alergi makanan ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "Z91.0"
+  },
+  {
+    "name": "Keracunan makanan ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "A05.9"
+  },
+  {
+    "name": "Penyakit cacing tambang ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B76.9"
+  },
+  {
+    "name": "Strongiloidiasis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B78.9"
+  },
+  {
+    "name": "Askariasis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B77.9"
+  },
+  {
+    "name": "Skistosomiasis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B65.9"
+  },
+  {
+    "name": "Taeniasis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B68.9"
+  },
+  {
+    "name": "Hepatitis A ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B15.9"
+  },
+  {
+    "name": "Disentri basiler, disentri amuba ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "A03.0"
+  },
+  {
+    "name": "Hemoroid grade 1/2 ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "I84.2"
+  },
+  {
+    "name": "Infeksi saluran kemih ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "N39.0"
+  },
+  {
+    "name": "Gonore ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "A54.9"
+  },
+  {
+    "name": "Pielonefritis tanpa komplikasi ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "N11.1"
+  },
+  {
+    "name": "Fimosis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "N47"
+  },
+  {
+    "name": "Parafimosis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "N47"
+  },
+  {
+    "name": "Sindroma duh (discharge) genital (Gonore dan non gonore) ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "N89.8"
+  },
+  {
+    "name": "Infeksi saluran kemih bagian bawah ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "N39.0"
+  },
+  {
+    "name": "Vulvitis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "N76.3"
+  },
+  {
+    "name": "Vaginitis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "N76.0"
+  },
+  {
+    "name": "Vaginosis bakterialis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "N76.0"
+  },
+  {
+    "name": "Salphingitis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "N70.9"
+  },
+  {
+    "name": "Absorsi spontan komplit ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "O03.9"
+  },
+  {
+    "name": "Anemia defisiensi besi pada kehamilan",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "O99.0"
+  },
+  {
+    "name": "Ruptur perineum tingkat 1/2 ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "O70.0;O70.1"
+  },
+  {
+    "name": "Abses folikel rambut/kelj sebasea ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "L73.9"
+  },
+  {
+    "name": "Mastitis",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "N61"
+  },
+  {
+    "name": "Cracked nipple ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "O92.1"
+  },
+  {
+    "name": "Inverted nipple ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "N64.0"
+  },
+  {
+    "name": "DM tipe 1 ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "E10.9"
+  },
+  {
+    "name": "DM tipe 2 ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "E11.9"
+  },
+  {
+    "name": "Hipoglikemi ringan ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "E16.2"
+  },
+  {
+    "name": "Malnutrisi energi protein ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "E44.1"
+  },
+  {
+    "name": "Defisiensi vitamin ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "E56.9"
+  },
+  {
+    "name": "Defisiensi mineral ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "E83.9"
+  },
+  {
+    "name": "Dislipidemia ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "E78.5"
+  },
+  {
+    "name": "Hiperurisemia ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "E79.0"
+  },
+  {
+    "name": "Obesitas ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "E66.9"
+  },
+  {
+    "name": "Anemia defisiensi besi ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "D50.9"
+  },
+  {
+    "name": "Limphadenitis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "L04.0"
+  },
+  {
+    "name": "Demam dengue, DHF ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "A90;A91"
+  },
+  {
+    "name": "Malaria ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B54"
+  },
+  {
+    "name": "Leptospirosis (tanpa komplikasi)",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "A27.9"
+  },
+  {
+    "name": "Reaksi anafilaktik ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "T78.9"
+  },
+  {
+    "name": "Ulkus pada tungkai ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "L97"
+  },
+  {
+    "name": "Lipoma ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "D17.9"
+  },
+  {
+    "name": "Veruka vulgaris ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B07"
+  },
+  {
+    "name": "Moluskum kontagiosum ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B08.1"
+  },
+  {
+    "name": "Herpes zoster tanpa komplikasi ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B02.9"
+  },
+  {
+    "name": "Morbili tanpa komplikasi",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B05.9"
+  },
+  {
+    "name": "Varicella tanpa komplikasi",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B01.9"
+  },
+  {
+    "name": "Herpes simpleks tanpa komplikasi ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B00.9"
+  },
+  {
+    "name": "Impetigo ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "L01.0"
+  },
+  {
+    "name": "Impetigo ulceratif (ektima) ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "L01.0"
+  },
+  {
+    "name": "Folikulitis superfisialis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "L73.9"
+  },
+  {
+    "name": "Furunkel, karbunkel ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "L02.9"
+  },
+  {
+    "name": "Eritasma ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "L08.1"
+  },
+  {
+    "name": "Erisipelas ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "A46"
+  },
+  {
+    "name": "Skrofulderma ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "A18.4"
+  },
+  {
+    "name": "Lepra ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "A30.9"
+  },
+  {
+    "name": "Sifilis stadium 1 dan 2 ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "A51.0;A51.4"
+  },
+  {
+    "name": "Tinea kapitis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B35.0"
+  },
+  {
+    "name": "Tinea barbe ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B35.0"
+  },
+  {
+    "name": "Tinea facialis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B35.8"
+  },
+  {
+    "name": "Tinea corporis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B35.4"
+  },
+  {
+    "name": "Tinea manus ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B35.2"
+  },
+  {
+    "name": "Tinea unguium ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B35.1"
+  },
+  {
+    "name": "Tinea cruris ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B35.6"
+  },
+  {
+    "name": "Tinea pedis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B35.3"
+  },
+  {
+    "name": "Pitiriasis versicolor ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B36.0"
+  },
+  {
+    "name": "Candidiasis mucocutan ringan ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B37.2"
+  },
+  {
+    "name": "Cutaneus larvamigran ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B76.9"
+  },
+  {
+    "name": "Filariasis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B74.9"
+  },
+  {
+    "name": "Pedikulosis kapitis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B85.0"
+  },
+  {
+    "name": "Pedikulosis pubis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B85.3"
+  },
+  {
+    "name": "Scabies ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "B86"
+  },
+  {
+    "name": "Reaksi gigitan serangga ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "T63.4"
+  },
+  {
+    "name": "Dermatitis kontak iritan ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "L25.9"
+  },
+  {
+    "name": "Dermatitis atopik (kecuali recalcitrant) ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "L20.9"
+  },
+  {
+    "name": "Dermatitis numularis ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "L30.0"
+  },
+  {
+    "name": "Napkin eksema ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "L22"
+  },
+  {
+    "name": "Dermatitis seboroik ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "L21"
+  },
+  {
+    "name": "Pitiriasis rosea ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "L42"
+  },
+  {
+    "name": "Acne vulgaris ringan ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "L70.0"
+  },
+  {
+    "name": "Hidradenitis supuratif ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "L73.2"
+  },
+  {
+    "name": "Dermatitis perioral ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "L71.0"
+  },
+  {
+    "name": "Miliaria ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "L74.3"
+  },
+  {
+    "name": "Urtikaria akut ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "L50.9"
+  },
+  {
+    "name": "Eksantemapous drug eruption, fixed drug eruption",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "L27.1"
+  },
+  {
+    "name": "Vulnus laseraum, puctum ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "T14"
+  },
+  {
+    "name": "Luka bakar derajat 1 dan 2 ",
+    "note": "Termasuk kedalam 144 Diagnosa yang dapat ditangani di PPK 1, Mohon pastikan Indikasi Rawat Inap dalam Dokumentasi Medis Pasien",
+    "diagnoses": "T30.1;T30.2"
+  }
+]

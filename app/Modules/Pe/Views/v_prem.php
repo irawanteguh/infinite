@@ -51,7 +51,7 @@ $sections = array_values($sections);
                         <h1>Pelayanan yang lebih baik,<br><span>dimulai dari pengalaman Anda.</span></h1>
                         <p class="prem-lead">Ceritakan pengalaman Anda selama menerima pelayanan di rumah sakit. Penilaian Anda membantu kami memahami hal yang sudah baik dan yang perlu diperbaiki.</p>
                     <?php endif; ?>
-                    <div class="prem-facts"><span><i class="bi bi-list-check"></i> <?= count($questions) ?> pertanyaan</span><span><i class="bi bi-person-check"></i> Siapkan nomor rekam medis pasien</span></div>
+                    <div class="prem-facts"><span><i class="bi bi-list-check"></i> <?= count($questions) ?> pertanyaan</span><span><i class="bi bi-person-check"></i> Nomor rekam medis opsional</span></div>
                     <button type="button" id="prem-start" class="btn prem-btn-primary">Mulai mengisi <i class="bi bi-arrow-right ms-2"></i></button>
                     <?php if ($isProm): ?><a href="<?= $publicUrl ?>" class="btn btn-light ms-2">Ganti pilihan</a><?php endif; ?>
                 </div>

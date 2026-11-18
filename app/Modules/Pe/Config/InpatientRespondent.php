@@ -64,8 +64,8 @@ class InpatientRespondent
             if (!is_string($value) && !is_int($value)) throw new \InvalidArgumentException('Format data responden tidak valid.');
             $data[$field] = trim((string) $value);
         }
-        if ($data['respondent_name'] === '' || mb_strlen($data['respondent_name']) > 200 || preg_match('/[\x00-\x1F\x7F]/u', $data['respondent_name'])) {
-            throw new \InvalidArgumentException('Nama responden wajib diisi, maksimal 200 karakter.');
+        if (mb_strlen($data['respondent_name']) > 200 || preg_match('/[\x00-\x1F\x7F]/u', $data['respondent_name'])) {
+            throw new \InvalidArgumentException('Jika diisi, nama responden maksimal 200 karakter.');
         }
         if (!preg_match('/\A[0-9]{1,3}\z/', $data['respondent_age']) || (int) $data['respondent_age'] > 120) {
             throw new \InvalidArgumentException('Usia wajib diisi dengan angka 0 sampai 120 tahun.');

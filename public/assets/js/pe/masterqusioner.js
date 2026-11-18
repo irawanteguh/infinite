@@ -3,6 +3,11 @@
     const root = document.getElementById('pe-master');
     if (!root) return;
     const $ = (id) => document.getElementById(id);
+    let statusFilter = '';
+    function setStatusFilter(value) {
+        statusFilter = value;
+        $('pe-status-filter').querySelectorAll('[data-status]').forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.status === value)));
+    }
     const instrumentFilter = $('pe-instrument-filter');
     let instruments = [];
     let questions = [];
@@ -19,7 +24,7 @@
     }
 
     function renderDomains() {
-        $('pe-domain-list').innerHTML = domains.map((row) => '<tr><td>' + escape(row.name) + '</td><td><span class="badge ' + (row.active === '1' ? 'badge-light-success' : 'badge-light-secondary') + '">' + (row.active === '1' ? 'Aktif' : 'Nonaktif') + '</span></td><td class="text-end"><button type="button" class="btn btn-sm btn-light-primary pe-edit-domain" data-id="' + escape(row.domain_id) + '">Edit</button></td></tr>').join('') || '<tr><td colspan="3" class="text-center text-muted">Belum ada domain.</td></tr>';
+        $('pe-domain-list').innerHTML = domains.map((row) => '<tr><td>' + escape(row.name) + '</td><td><span class="badge ' + (row.active === '1' ? 'pe-status-active' : 'pe-status-inactive') + '">' + (row.active === '1' ? 'Aktif' : 'Nonaktif') + '</span></td><td class="text-end"><button type="button" class="btn btn-sm btn-light-primary pe-edit-domain" data-id="' + escape(row.domain_id) + '">Edit</button></td></tr>').join('') || '<tr><td colspan="3" class="text-center text-muted">Belum ada domain.</td></tr>';
     }
 
     function openDomain(row) {
@@ -84,7 +89,7 @@
             $('pe-respondent').textContent = selected.respondent;
             $('pe-measurement').textContent = selected.measurement;
             $('pe-instrument-status').textContent = selected.active === '1' ? 'Aktif' : 'Nonaktif';
-            $('pe-instrument-status').className = 'badge ' + (selected.active === '1' ? 'badge-light-success' : 'badge-light-secondary');
+            $('pe-instrument-status').className = 'badge ' + (selected.active === '1' ? 'pe-status-active' : 'pe-status-inactive');
             let note = '';
             if (selected.code === 'PROM_SC') note = 'Catatan sumber: judul nomor 5 “Menggigil” berbeda dengan pernyataan tentang BAB/BAK/buang angin. Tinjau sebelum digunakan.';
             if (selected.code === 'PREM_RS') note = 'Catatan sumber: skor 3 tertulis “Netral” pada tabel PDF dan “Ragu-ragu” pada pilihan pertanyaan. Pratinjau mengikuti pilihan pertanyaan.';
@@ -92,10 +97,10 @@
             $('pe-source-note').classList.toggle('d-none', !note);
         }
         const search = $('pe-search').value.trim().toLocaleLowerCase('id');
-        const status = $('pe-status-filter').value;
+        const status = statusFilter;
         const all = instrumentQuestions();
         const rows = all.filter((row) => (!status || row.active === status) && (row.domain + ' ' + row.question).toLocaleLowerCase('id').includes(search));
-        $('pe-questions').innerHTML = rows.length ? rows.map((row) => '<tr><td class="ps-4">' + escape(row.sort_order) + '</td><td>' + escape(row.domain) + '</td><td style="white-space:pre-line">' + escape(row.question) + '</td><td><span class="badge ' + (row.active === '1' ? 'badge-light-success' : 'badge-light-secondary') + '">' + (row.active === '1' ? 'Aktif' : 'Nonaktif') + '</span></td><td class="text-end"><div class="btn-group"><button type="button" class="btn btn-light-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Actions</button><div class="dropdown-menu dropdown-menu-end"><button type="button" class="dropdown-item btn btn-sm text-primary pe-edit-question" data-id="' + escape(row.question_id) + '"><i class="bi bi-pencil text-primary me-4"></i>Edit</button></div></div></td></tr>').join('') : '<tr><td colspan="5" class="text-center text-muted">' + (!selected ? 'Belum ada instrumen. Tambahkan instrumen untuk memulai.' : all.length ? 'Tidak ada pertanyaan yang sesuai filter.' : 'Belum ada pertanyaan. Klik Tambah pertanyaan untuk memulai.') + '</td></tr>';
+        $('pe-questions').innerHTML = rows.length ? rows.map((row) => '<tr><td class="ps-4">' + escape(row.sort_order) + '</td><td>' + escape(row.domain) + '</td><td style="white-space:pre-line">' + escape(row.question) + '</td><td><span class="badge ' + (row.active === '1' ? 'pe-status-active' : 'pe-status-inactive') + '">' + (row.active === '1' ? 'Aktif' : 'Nonaktif') + '</span></td><td class="text-end"><div class="btn-group"><button type="button" class="btn btn-light-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Actions</button><div class="dropdown-menu dropdown-menu-end"><button type="button" class="dropdown-item btn btn-sm text-primary pe-edit-question" data-id="' + escape(row.question_id) + '"><i class="bi bi-pencil text-primary me-4"></i>Edit</button></div></div></td></tr>').join('') : '<tr><td colspan="5" class="text-center text-muted">' + (!selected ? 'Belum ada instrumen. Tambahkan instrumen untuk memulai.' : all.length ? 'Tidak ada pertanyaan yang sesuai filter.' : 'Belum ada pertanyaan. Klik Tambah pertanyaan untuk memulai.') + '</td></tr>';
     }
 
     function openQuestion(row) {
@@ -175,9 +180,14 @@
             jQuery(element).select2(options);
         }
     });
-    jQuery(instrumentFilter).on('change', () => { $('pe-search').value = ''; $('pe-status-filter').value = ''; syncSelect($('pe-status-filter')); render(); });
+    jQuery(instrumentFilter).on('change', () => { $('pe-search').value = ''; setStatusFilter(''); render(); });
     $('pe-search').addEventListener('input', render);
-    jQuery($('pe-status-filter')).on('change', render);
+    $('pe-status-filter').addEventListener('click', (event) => {
+        const button = event.target.closest('[data-status]');
+        if (!button) return;
+        setStatusFilter(button.dataset.status);
+        render();
+    });
     $('pe-add-question').addEventListener('click', () => openQuestion());
     $('pe-add-instrument').addEventListener('click', () => openInstrument());
     $('pe-edit-instrument').addEventListener('click', () => openInstrument(current()));

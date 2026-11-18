@@ -4,6 +4,9 @@
         const control = jQuery(select);
         if (!control.data('select2')) control.select2({width: '100%', minimumResultsForSearch: 0});
     });
+    document.querySelectorAll('#pe-monthly-score-table, #pe-monthly-response-table').forEach((table) => {
+        if (typeof initDataTable === 'function') initDataTable(table, null, 12, {searching: false, paging: false, info: false, lengthChange: false, ordering: false, dom: 't'});
+    });
     const questionSelect = document.getElementById('pe-distribution-question');
     if (questionSelect) {
         const syncQuestion = () => document.querySelectorAll('[data-distribution-index]').forEach(panel => panel.classList.toggle('d-none', panel.dataset.distributionIndex !== questionSelect.value));
@@ -42,7 +45,7 @@
             ...skmOptions, chart: {...skmOptions.chart, type: 'line'},
             series: data.skm.series, stroke: {width: 3, curve: 'straight'}, markers: {size: 4},
             legend: {position: 'top', horizontalAlign: 'left', fontSize: '12px'},
-            xaxis: {categories: data.skm.months.map(month => new Date(Number(month.slice(0, 4)), Number(month.slice(5, 7)) - 1, 1).toLocaleDateString('id-ID', {month: 'short', year: 'numeric'})), labels: {rotate: -35, hideOverlappingLabels: true}},
+            xaxis: {categories: data.skm.months.map(month => new Date(Number(month.slice(0, 4)), Number(month.slice(5, 7)) - 1, 1).toLocaleDateString('id-ID', {month: 'long'})), labels: {rotate: -35, hideOverlappingLabels: true}},
             yaxis: {min: 1, max: 4, tickAmount: 3, labels: {formatter: value => value.toFixed(0)}},
             tooltip: {shared: true, intersect: false, y: {formatter: value => value == null ? 'Belum ada jawaban' : value.toLocaleString('id-ID', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' / 4'}},
         }).render();
@@ -76,7 +79,7 @@
         responsive: [{breakpoint: 576, options: {chart: {height: 265}, legend: {fontSize: '12px', itemMargin: {horizontal: 6, vertical: 6}}}}],
     }).render();
     new ApexCharts(document.getElementById('pe-service-chart'), {
-        chart: {type: 'donut', height: 220, fontFamily: 'Poppins, sans-serif', animations: {enabled: false}},
+        chart: {type: 'donut', height: 300, fontFamily: 'Poppins, sans-serif', animations: {enabled: false}},
         series: data.services, labels: data.serviceLabels, colors: ['#087e82', '#75bdb5', '#c0d8e3', '#d6dde0'],
         stroke: {width: 4, colors: ['#fff']}, dataLabels: {enabled: false}, legend: {show: false},
         plotOptions: {pie: {donut: {size: '77%', labels: {show: true, name: {fontSize: '12px', color: '#8aa0a6'},
@@ -84,6 +87,6 @@
             total: {show: true, showAlways: true, label: 'Total respons', fontSize: '12px', color: '#8aa0a6', formatter: (chart) => chart.globals.seriesTotals.reduce((sum, value) => sum + value, 0).toString()},
         }}}},
         tooltip: {y: {formatter: (value) => value + ' respons'}},
-        responsive: [{breakpoint: 576, options: {chart: {height: 185}, plotOptions: {pie: {donut: {labels: {value: {fontSize: '24px'}}}}}}}],
+        responsive: [{breakpoint: 576, options: {chart: {height: 260}, plotOptions: {pie: {donut: {labels: {value: {fontSize: '24px'}}}}}}}],
     }).render();
 })();

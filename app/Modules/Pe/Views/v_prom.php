@@ -17,7 +17,7 @@ $publicUrl = site_url('pe/prom') . '?' . http_build_query($tenant);
                     <span class="prem-eyebrow">PENGALAMAN PELAYANAN PASIEN</span>
                     <h1>Pelayanan yang lebih baik,<br><span>dimulai dari pengalaman Anda.</span></h1>
                     <p class="prem-lead">Ceritakan pengalaman Anda selama menerima pelayanan di rumah sakit. Penilaian Anda membantu kami memahami hal yang sudah baik dan yang perlu diperbaiki.</p>
-                    <div class="prem-facts"><span><i class="bi bi-list-check"></i> <?= count($instruments) ?> pilihan kuesioner</span><span><i class="bi bi-person-check"></i> Siapkan nomor rekam medis pasien</span></div>
+                    <div class="prem-facts"><span><i class="bi bi-list-check"></i> <?= count($instruments) ?> pilihan kuesioner</span><span><i class="bi bi-person-check"></i> Nomor rekam medis opsional</span></div>
                     <a href="<?= esc($publicUrl . '&select=1', 'attr') ?>" class="btn prem-btn-primary">Mulai mengisi <i class="bi bi-arrow-right ms-2"></i></a>
                 </div>
                 <aside class="prem-welcome-aside">

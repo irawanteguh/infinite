@@ -1,7 +1,7 @@
 <?php $definitions = \Modules\Pe\Config\InpatientRespondent::OPTIONS; ?>
 <div class="mb-7">
-    <label for="prem-respondent-name" class="form-label required">Nama Responden</label>
-    <input id="prem-respondent-name" name="respondent_name" type="text" class="form-control form-control-solid" maxlength="200" autocomplete="name" value="<?= esc($context['respondent_name'] ?? '', 'attr') ?>" placeholder="Masukkan nama responden" required>
+    <label for="prem-respondent-name" class="form-label">Nama Responden (optional)</label>
+    <input id="prem-respondent-name" name="respondent_name" type="text" class="form-control form-control-solid" maxlength="200" autocomplete="name" value="<?= esc($context['respondent_name'] ?? '', 'attr') ?>" placeholder="Masukkan nama responden">
 </div>
 <?php foreach ($definitions as $field => $definition): ?>
     <?php if ($field === 'ward_class' && \Modules\Pe\Config\GeneralQuestionnaires::service($instrument['code'] ?? '') === 'IGD') continue; ?>

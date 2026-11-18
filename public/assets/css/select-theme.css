@@ -23,3 +23,10 @@ body #kt_toolbar select.select2-hidden-accessible{
     margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;
     clip-path:inset(50%)!important;white-space:nowrap!important
 }
+
+/* Shared date picker: full Indonesian month names with teal states. */
+body .app-date-input{cursor:pointer;border-radius:9px}
+body .app-date-input:focus{border-color:#087e82!important;box-shadow:0 0 0 3px #087e821a!important}
+.app-date-calendar{border:1px solid #d6e8e3;border-radius:12px;box-shadow:0 12px 32px #15373e1a}
+.app-date-calendar .flatpickr-day:is(.selected,.startRange,.endRange){background:#087e82;border-color:#087e82}
+.app-date-calendar .flatpickr-day.today{border-color:#087e82}

@@ -72,12 +72,13 @@ class PremModel extends Model
         if (!is_string($serviceType) || !in_array($serviceType, ['RJ', 'RI', 'IGD'], true)) {
             throw new \InvalidArgumentException('Pilih jenis pelayanan Rawat Jalan, Rawat Inap, atau IGD.');
         }
+        if ($medicalRecordNumber === null) $medicalRecordNumber = '';
         if (!is_string($medicalRecordNumber)) {
             throw new \InvalidArgumentException('Masukkan nomor rekam medis pasien.');
         }
         $medicalRecordNumber = trim($medicalRecordNumber);
-        if (!preg_match('/\A[A-Za-z0-9][A-Za-z0-9.\/-]{0,49}\z/', $medicalRecordNumber)) {
-            throw new \InvalidArgumentException('Nomor rekam medis wajib diisi, maksimal 50 karakter berupa huruf, angka, titik, garis miring, atau tanda hubung.');
+        if ($medicalRecordNumber !== '' && !preg_match('/\A[A-Za-z0-9][A-Za-z0-9.\/-]{0,49}\z/', $medicalRecordNumber)) {
+            throw new \InvalidArgumentException('Jika diisi, nomor rekam medis maksimal 50 karakter berupa huruf, angka, titik, garis miring, atau tanda hubung.');
         }
         return ['service_type' => $serviceType, 'medical_record_number' => $medicalRecordNumber];
     }

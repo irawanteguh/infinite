@@ -1,9 +1,9 @@
 <?php
 $number = static fn($value, $decimals = 1) => $value === null ? '—' : number_format($value, $decimals, ',', '.');
 $services = ['RJ' => 'Rawat Jalan', 'RI' => 'Rawat Inap', 'IGD' => 'IGD', 'OTHER' => 'Belum tercatat'];
-$months = ['01'=>'Jan','02'=>'Feb','03'=>'Mar','04'=>'Apr','05'=>'Mei','06'=>'Jun','07'=>'Jul','08'=>'Agu','09'=>'Sep','10'=>'Okt','11'=>'Nov','12'=>'Des'];
+$months = ['01'=>'Januari','02'=>'Februari','03'=>'Maret','04'=>'April','05'=>'Mei','06'=>'Juni','07'=>'Juli','08'=>'Agustus','09'=>'September','10'=>'Oktober','11'=>'November','12'=>'Desember'];
 $chart = $data ? [
-    'labels' => array_map(static fn($month) => $months[substr($month, 5, 2)] . ' ' . substr($month, 0, 4), array_keys($data['monthly'])),
+    'labels' => array_map(static fn($month) => $months[substr($month, 5, 2)], array_keys($data['monthly'])),
     'series' => [
         ['name' => 'PREM', 'data' => array_column($data['monthly'], 'PREM')],
         ['name' => 'PROM PRE / T0', 'data' => array_column($data['monthly'], 'T0')],
@@ -31,8 +31,8 @@ $chart = $data ? [
         <section class="prem-card pe-filter-card app-filter-card" aria-label="Filter dan laporan">
         <div class="app-filter-heading"><h2><i class="bi bi-funnel me-2" aria-hidden="true"></i>Filter dashboard</h2><p>Tentukan periode dan cakupan data.</p></div>
         <form method="get" action="<?= esc(site_url('pe/dashboard'), 'attr') ?>" class="pe-filter app-filter-fields">
-            <div><label class="form-label" for="pe-start">Tanggal mulai</label><input class="form-control form-control-solid" id="pe-start" type="date" name="start" value="<?= esc($filters['start'], 'attr') ?>" required></div>
-            <div><label class="form-label" for="pe-end">Tanggal akhir</label><input class="form-control form-control-solid" id="pe-end" type="date" name="end" value="<?= esc($filters['end'], 'attr') ?>" required></div>
+            <div><label class="form-label" for="pe-start">Tanggal mulai</label><div class="pe-date-control"><i class="bi bi-calendar3" aria-hidden="true"></i><input class="form-control form-control-solid" id="pe-start" type="date" name="start" value="<?= esc($filters['start'], 'attr') ?>" required></div></div>
+            <div><label class="form-label" for="pe-end">Tanggal akhir</label><div class="pe-date-control"><i class="bi bi-calendar3" aria-hidden="true"></i><input class="form-control form-control-solid" id="pe-end" type="date" name="end" value="<?= esc($filters['end'], 'attr') ?>" required></div></div>
             <div><label class="form-label" for="pe-service">Jenis pelayanan</label><select id="pe-service" name="service" class="form-select form-select-solid" data-control="select2"><option value="">Semua pelayanan</option><?php foreach (['RJ', 'RI', 'IGD'] as $service): ?><option value="<?= $service ?>"<?= $filters['service'] === $service ? ' selected' : '' ?>><?= $services[$service] ?></option><?php endforeach; ?></select></div>
             <div><label class="form-label" for="pe-instrument">Instrumen</label><select id="pe-instrument" name="instrument" class="form-select form-select-solid" data-control="select2"><option value="">Semua instrumen</option><?php foreach ($instruments as $instrument): ?><option value="<?= esc($instrument['instrument_id'], 'attr') ?>"<?= $filters['instrument'] === $instrument['instrument_id'] ? ' selected' : '' ?>><?= esc($instrument['name']) ?></option><?php endforeach; ?></select></div>
             <div class="pe-filter-actions"><button type="submit" class="btn prem-btn-primary"><i class="bi bi-funnel"></i> Terapkan</button><a href="<?= site_url('pe/dashboard') ?>" class="pe-reset" aria-label="Reset filter" title="Reset filter"><i class="bi bi-arrow-counterclockwise"></i></a></div>
@@ -58,7 +58,6 @@ $chart = $data ? [
         <?php if ($error !== ''): ?>
             <div class="alert alert-danger mt-6" role="alert"><?= esc($error) ?></div>
         <?php elseif ($data): ?>
-            <div class="pe-period"><span><i class="bi bi-calendar3"></i> <?= esc(date('d/m/Y', strtotime($filters['start']))) ?> – <?= esc(date('d/m/Y', strtotime($filters['end']))) ?></span><span><?= $number($data['total'], 0) ?> respons</span></div>
 
             <section class="prem-card pe-panel pe-skm-overview mb-6" aria-label="Analitik SKM per pelayanan">
                 <div class="pe-panel-heading"><div><span class="prem-eyebrow">SURVEI KEPUASAN MASYARAKAT</span><h2>SKM menurut jenis pelayanan</h2><p>Perbandingan IGD, Rawat Inap, dan Rawat Jalan sesuai periode serta filter aktif.</p></div></div>
@@ -76,7 +75,7 @@ $chart = $data ? [
             <section class="prem-card pe-panel mb-6" aria-label="Distribusi penilaian SKM">
                 <div class="pe-panel-heading"><div><span class="prem-eyebrow">HASIL PENILAIAN SKM</span><h2>Distribusi penilaian SKM</h2><p>Penilaian per unsur dan komposisi kumulatif seluruh jawaban SKM sesuai filter aktif.</p></div></div>
                 <div class="row g-5 pe-skm-distribution-grid">
-                <div class="col-12 col-lg-6"><div class="pe-skm-distribution-panel"><h3 class="pe-skm-distribution-title">Penilaian per unsur kuesioner</h3>
+                <div class="col-12 col-lg-6 d-flex flex-column"><div class="pe-skm-distribution-panel"><div class="pe-panel-heading"><div><h3>Penilaian per unsur kuesioner</h3><p>Distribusi pilihan jawaban untuk unsur kuesioner yang dipilih.</p></div></div>
                 <?php if ($data['skm']['questionDistributions']): ?>
                 <div class="pe-distribution-select"><label for="pe-distribution-question" class="form-label">Unsur kuesioner</label><select id="pe-distribution-question" class="form-select form-select-solid" data-control="select2"><?php foreach ($data['skm']['questionDistributions'] as $index => $item): ?><option value="<?= $index ?>"><?= esc($item['question']) ?></option><?php endforeach; ?></select></div>
                 <?php foreach ($data['skm']['questionDistributions'] as $index => $item): ?>
@@ -89,12 +88,11 @@ $chart = $data ? [
                     </div>
                 </div>
                 <?php endforeach; ?>
-                <p class="pe-method">Label mengikuti pilihan jawaban master untuk setiap unsur. Pertanyaan dan pilihan yang sama digabungkan antar layanan sesuai filter aktif. Persentase dihitung dari jawaban unsur terpilih.</p>
+
                 <?php else: ?><div class="pe-panel-empty"><p>Belum ada jawaban SKM pada filter ini.</p></div><?php endif; ?>
-                </div></div>
-                <div class="col-12 col-lg-6"><div class="pe-skm-distribution-panel">
-                    <h3 class="pe-skm-distribution-title">Penilaian kumulatif berdasarkan skor</h3>
-                    <p class="pe-method">Gabungan seluruh unsur kuesioner, sesuai filter aktif.</p>
+                </div><div class="pe-skm-info d-flex align-items-center gap-3 rounded border p-4 mt-4" role="note"><i class="bi bi-info-circle flex-shrink-0" aria-hidden="true"></i><p class="pe-method m-0">Label mengikuti pilihan jawaban master untuk setiap unsur. Pertanyaan dan pilihan yang sama digabungkan antar layanan sesuai filter aktif. Persentase dihitung dari jawaban unsur terpilih.</p></div></div>
+                <div class="col-12 col-lg-6 d-flex flex-column"><div class="pe-skm-distribution-panel">
+                    <div class="pe-panel-heading"><div><h3>Penilaian kumulatif berdasarkan skor</h3><p>Gabungan seluruh unsur kuesioner, sesuai filter aktif.</p></div></div>
                     <div class="pe-skm-cumulative-total"><strong><?= $number($data['skm']['answerCount'], 0) ?></strong><span>total jawaban SKM</span></div>
                     <?php if ($data['skm']['answerCount']): ?>
                     <div class="pe-distribution">
@@ -102,9 +100,9 @@ $chart = $data ? [
                         <div class="pe-dist-row"><span>Skor <?= $score ?></span><div class="pe-dist-track" aria-hidden="true"><span class="pe-score-<?= $score + 1 ?>" style="width:<?= $percent ?>%"></span></div><strong><?= $number($percent) ?>%<small><?= $number($count, 0) ?></small></strong></div>
                         <?php endforeach; ?>
                     </div>
-                    <p class="pe-method">Dihitung dari seluruh jawaban skala 1–4, bukan jumlah responden. Makna pilihan jawaban mengikuti masing-masing unsur; skor lebih tinggi menunjukkan penilaian lebih baik.</p>
+
                     <?php else: ?><div class="pe-panel-empty"><p>Belum ada jawaban SKM pada filter ini.</p></div><?php endif; ?>
-                </div></div>
+                </div><div class="pe-skm-info d-flex align-items-center gap-3 rounded border p-4 mt-4" role="note"><i class="bi bi-info-circle flex-shrink-0" aria-hidden="true"></i><p class="pe-method m-0">Dihitung dari seluruh jawaban skala 1–4, bukan jumlah responden. Makna pilihan jawaban mengikuti masing-masing unsur; skor lebih tinggi menunjukkan penilaian lebih baik.</p></div></div>
                 </div>
             </section>
             <?php if (!empty($data['skm']['count'])): ?>
@@ -159,19 +157,19 @@ $chart = $data ? [
                     </article></div>
                     <?php endforeach; ?>
                 </div>
-                <p class="pe-method">Dihitung per pengisian SKM, bukan orang unik, dan tidak dihitung ulang dari PREM lanjutan. Data kosong ditampilkan sebagai “Belum tercatat”. Kelas layanan hanya ditampilkan untuk Rawat Inap; IGD dan Rawat Jalan tidak termasuk dalam perhitungan kelas.</p>
+                <div class="pe-skm-info d-flex align-items-center gap-3 rounded border mt-4" role="note"><i class="bi bi-info-circle flex-shrink-0" aria-hidden="true"></i><p class="pe-method m-0">Dihitung per pengisian SKM, bukan orang unik, dan tidak dihitung ulang dari PREM lanjutan. Data kosong ditampilkan sebagai “Belum tercatat”. Kelas layanan hanya ditampilkan untuk Rawat Inap; IGD dan Rawat Jalan tidak termasuk dalam perhitungan kelas.</p></div>
             </section>
             <div class="row g-6 mb-6 pe-feedback-row">
                 <div class="col-12 col-lg-6"><section class="prem-card pe-panel h-100" aria-label="Word cloud saran dan masukan">
                     <div class="pe-panel-heading"><div><span class="prem-eyebrow">ANALISIS SARAN DAN MASUKAN</span><h2>Word cloud</h2><p>Kata yang paling banyak muncul pada masukan SKM dan PREM sesuai filter aktif.</p></div></div>
                     <?php if ($data['feedback']['words']): $maxWord = max(array_column($data['feedback']['words'], 'count')); ?>
-                    <div class="pe-word-cloud" role="list" aria-label="Kata dan jumlah masukan yang memuatnya">
+                    <div class="pe-word-cloud" role="list" aria-label="Kata yang paling sering muncul pada masukan">
                         <?php foreach ($data['feedback']['words'] as $index => $word): ?>
-                        <span role="listitem" class="pe-cloud-word pe-cloud-color-<?= $index % 4 ?>" style="font-size:<?= 13 + round(25 * sqrt($word['count'] / $maxWord)) ?>px" title="<?= esc($word['word'], 'attr') ?>: <?= $word['count'] ?> masukan"><?= esc($word['word']) ?><small><?= $word['count'] ?></small></span>
+                        <span role="listitem" class="pe-cloud-word <?= ($word['sentiment'] ?? 'neutral') === 'negative' ? 'pe-cloud-negative' : 'pe-cloud-color-' . ($index % 4) ?>" style="font-size:<?= 13 + round(25 * sqrt($word['count'] / $maxWord)) ?>px" title="<?= esc($word['word'], 'attr') ?>"><?= esc($word['word']) ?></span>
                         <?php endforeach; ?>
                     </div>
                     <?php else: ?><div class="pe-panel-empty"><p>Belum ada saran tertulis pada filter ini.</p></div><?php endif; ?>
-                    <p class="pe-method">Maksimal 50 kata. Ukuran kata menunjukkan jumlah masukan yang memuatnya; pengulangan kata dalam satu masukan dihitung sekali. Kata umum dan penanda dummy diabaikan.</p>
+                    <div class="pe-skm-info d-flex align-items-center gap-3 rounded border mt-4" role="note"><i class="bi bi-info-circle flex-shrink-0" aria-hidden="true"></i><p class="pe-method m-0">Maksimal 50 kata. Ukuran kata menunjukkan jumlah masukan yang memuatnya; pengulangan kata dalam satu masukan dihitung sekali. Kata umum dan penanda dummy diabaikan.</p></div>
                 </section></div>
                 <div class="col-12 col-lg-6"><section class="prem-card pe-panel h-100" aria-label="Estimasi sentimen saran dan masukan">
                     <div class="pe-panel-heading"><div><span class="prem-eyebrow">ESTIMASI SENTIMEN OTOMATIS</span><h2>Sentimen saran dan masukan</h2><p><?= $number($data['feedback']['total'], 0) ?> masukan tertulis · SKM <?= $number($data['feedback']['sources']['SKM'], 0) ?> · PREM <?= $number($data['feedback']['sources']['PREM'], 0) ?></p></div></div>
@@ -182,10 +180,10 @@ $chart = $data ? [
                         <?php endforeach; ?>
                     </div>
                     <?php else: ?><div class="pe-panel-empty"><p>Belum ada saran tertulis untuk dianalisis.</p></div><?php endif; ?>
-                    <p class="pe-method">Estimasi berbasis kata positif/negatif dan negasi sederhana Bahasa Indonesia. Netral/campuran mencakup kata yang belum dikenali atau skor berimbang. Hasil perlu ditinjau petugas, terutama untuk saran, konteks, dan sarkasme. Satu masukan dihitung sebagai satu analisis, bukan satu pasien unik.</p>
+                    <div class="pe-skm-info d-flex align-items-center gap-3 rounded border mt-4" role="note"><i class="bi bi-info-circle flex-shrink-0" aria-hidden="true"></i><p class="pe-method m-0">Estimasi berbasis kata positif/negatif dan negasi sederhana Bahasa Indonesia. Netral/campuran mencakup kata yang belum dikenali atau skor berimbang. Hasil perlu ditinjau petugas, terutama untuk saran, konteks, dan sarkasme. Satu masukan dihitung sebagai satu analisis, bukan satu pasien unik.</p></div>
                 </section></div>
             </div>
-            <p class="pe-method mb-5">Ringkasan PREM/PROM berikut memakai skala 1–5. Transaksi SKM ditampilkan terpisah di atas dan tidak dicampurkan ke perhitungan PREM/PROM.</p>
+            <div class="pe-skm-info d-flex align-items-center gap-3 rounded border mb-5" role="note"><i class="bi bi-info-circle flex-shrink-0" aria-hidden="true"></i><p class="pe-method m-0">Ringkasan PREM/PROM berikut memakai skala 1–5. Transaksi SKM ditampilkan terpisah di atas dan tidak dicampurkan ke perhitungan PREM/PROM.</p></div>
             <?php if (!$data['total']): ?>
                 <section class="prem-card pe-empty"><span class="prem-hero-icon"><i class="bi bi-bar-chart"></i></span><h2>Belum ada respons PREM/PROM pada periode ini</h2><p>Ubah periode atau filter pelayanan dan instrumen untuk melihat data yang tersedia.</p><a href="<?= site_url('pe/dashboard') ?>" class="btn prem-btn-primary">Reset filter</a></section>
             <?php else: ?>
@@ -202,19 +200,19 @@ $chart = $data ? [
                 <details class="pe-chart-table pe-monthly-responses">
                     <summary>Lihat nilai bulanan</summary>
                     <div class="table-responsive pe-monthly-scroll" tabindex="0" role="region" aria-label="Tabel rerata nilai bulanan">
-                        <table class="table align-middle gy-2 pe-monthly-table" id="pe-monthly-score-table">
+                        <table class="table align-middle gy-2 pe-monthly-table" id="pe-monthly-score-table" data-datatable="manual">
                             <caption class="visually-hidden">Rerata skor PREM dan PROM per bulan, skala 1–5, sesuai filter aktif</caption>
                             <thead><tr><th scope="col">Bulan</th><th scope="col" class="text-end">PREM</th><th scope="col" class="text-end">PROM PRE <span>(T0)</span></th><th scope="col" class="text-end">PROM POST <span>(T1)</span></th></tr></thead>
                             <tbody>
                             <?php foreach ($data['monthlyAverages'] as $month => $averages): ?>
-                                <tr><th scope="row"><?= esc(($months[substr($month, 5, 2)] ?? substr($month, 5, 2)) . ' ' . substr($month, 0, 4)) ?></th><?php foreach (['PREM', 'T0', 'T1'] as $phase): ?><td class="text-end"><?= $number($averages[$phase], 2) ?></td><?php endforeach; ?></tr>
+                                <tr><th scope="row"><?= esc(($months[substr($month, 5, 2)] ?? substr($month, 5, 2))) ?></th><?php foreach (['PREM', 'T0', 'T1'] as $phase): ?><td class="text-end"><?= $number($averages[$phase], 2) ?></td><?php endforeach; ?></tr>
                             <?php endforeach; ?>
                             <?php if (!$data['monthlyAverages']): ?><tr><td colspan="4" class="text-center text-muted">Belum ada nilai pada periode ini.</td></tr><?php endif; ?>
                             </tbody>
                         </table>
                     </div>
                 </details>
-                <p class="pe-method">Dihitung dari rerata tiap respons berdasarkan bulan pengisian dan filter aktif. Bulan tanpa jawaban tidak diberi nilai. Komposisi instrumen dan responden dapat berbeda tiap bulan; gunakan filter instrumen untuk melihat tren instrumen tertentu. Seri PROM mencakup seluruh respons, bukan hanya pasangan PRE–POST.</p>
+                <div class="pe-skm-info d-flex align-items-center gap-3 rounded border mt-4" role="note"><i class="bi bi-info-circle flex-shrink-0" aria-hidden="true"></i><p class="pe-method m-0">Dihitung dari rerata tiap respons berdasarkan bulan pengisian dan filter aktif. Bulan tanpa jawaban tidak diberi nilai. Komposisi instrumen dan responden dapat berbeda tiap bulan; gunakan filter instrumen untuk melihat tren instrumen tertentu. Seri PROM mencakup seluruh respons, bukan hanya pasangan PRE–POST.</p></div>
             </section>
 
             <div class="pe-main-grid">
@@ -224,12 +222,12 @@ $chart = $data ? [
                     <details class="pe-chart-table pe-monthly-responses">
                         <summary>Lihat data bulanan</summary>
                         <div class="table-responsive pe-monthly-scroll" tabindex="0" role="region" aria-label="Tabel jumlah respons bulanan">
-                            <table class="table align-middle gy-2 pe-monthly-table" id="pe-monthly-response-table">
+                            <table class="table align-middle gy-2 pe-monthly-table" id="pe-monthly-response-table" data-datatable="manual">
                                 <caption class="visually-hidden">Jumlah respons PREM dan PROM per bulan sesuai filter aktif</caption>
                                 <thead><tr><th scope="col">Bulan</th><th scope="col" class="text-end">PREM</th><th scope="col" class="text-end">PROM PRE <span>(T0)</span></th><th scope="col" class="text-end">PROM POST <span>(T1)</span></th></tr></thead>
                                 <tbody>
                                 <?php foreach ($data['monthly'] as $month => $counts): ?>
-                                    <tr><th scope="row"><?= esc(($months[substr($month, 5, 2)] ?? substr($month, 5, 2)) . ' ' . substr($month, 0, 4)) ?></th><td class="text-end"><?= $number($counts['PREM'], 0) ?></td><td class="text-end"><?= $number($counts['T0'], 0) ?></td><td class="text-end"><?= $number($counts['T1'], 0) ?></td></tr>
+                                    <tr><th scope="row"><?= esc(($months[substr($month, 5, 2)] ?? substr($month, 5, 2))) ?></th><td class="text-end"><?= $number($counts['PREM'], 0) ?></td><td class="text-end"><?= $number($counts['T0'], 0) ?></td><td class="text-end"><?= $number($counts['T1'], 0) ?></td></tr>
                                 <?php endforeach; ?>
                                 <?php if (!$data['monthly']): ?><tr><td colspan="4" class="text-center text-muted">Belum ada respons pada periode ini.</td></tr><?php endif; ?>
                                 </tbody>
@@ -243,7 +241,7 @@ $chart = $data ? [
                         <div class="pe-pair-score"><div><span>PRE / T0</span><strong><?= $number($data['preAverage'], 2) ?></strong><small>Sebelum perawatan</small></div><i class="bi bi-arrow-right"></i><div><span>POST / T1</span><strong><?= $number($data['postAverage'], 2) ?></strong><small>Sesudah perawatan</small></div></div>
                         <div class="pe-improvement"><span class="pe-outcome-icon"><i class="bi bi-graph-up-arrow"></i></span><div><strong><?= $number($data['improvedPercent']) ?>% pasangan meningkat</strong><p><?= $data['improved'] ?> dari <?= $data['pairs'] ?> pasangan memiliki skor POST lebih tinggi.</p></div></div>
                     <?php else: ?><div class="pe-panel-empty"><i class="bi bi-link-45deg"></i><p>Belum ada pasangan PRE dan POST yang dapat dibandingkan pada filter ini.</p></div><?php endif; ?>
-                    <p class="pe-method">Satu pasangan per rekam medis, instrumen, dan pelayanan: PRE terakhir dengan POST pertama setelahnya, keduanya dalam periode terpilih. Skala 1–5; nilai lebih tinggi menunjukkan kondisi yang lebih baik.</p>
+                    <div class="pe-skm-info d-flex align-items-center gap-3 rounded border mt-4" role="note"><i class="bi bi-info-circle flex-shrink-0" aria-hidden="true"></i><p class="pe-method m-0">Satu pasangan per rekam medis, instrumen, dan pelayanan: PRE terakhir dengan POST pertama setelahnya, keduanya dalam periode terpilih. Skala 1–5; nilai lebih tinggi menunjukkan kondisi yang lebih baik.</p></div>
                 </section>
             </div>
 
@@ -275,7 +273,7 @@ $chart = $data ? [
                         </tbody>
                     </table>
                 </div>
-                <p class="pe-method">Jumlah pengisian menghitung setiap pengisian satu kali per domain, termasuk T0 dan T1 sebagai pengisian terpisah; bukan jumlah orang unik. Rerata domain PRE/POST mencakup seluruh jawaban pada filter ini, sehingga komposisi responden dapat berbeda. Perbandingan berpasangan tersedia pada kartu PROM di atas.</p>
+                <div class="pe-skm-info d-flex align-items-center gap-3 rounded border mt-4" role="note"><i class="bi bi-info-circle flex-shrink-0" aria-hidden="true"></i><p class="pe-method m-0">Jumlah pengisian menghitung setiap pengisian satu kali per domain, termasuk T0 dan T1 sebagai pengisian terpisah; bukan jumlah orang unik. Rerata domain PRE/POST mencakup seluruh jawaban pada filter ini, sehingga komposisi responden dapat berbeda. Perbandingan berpasangan tersedia pada kartu PROM di atas.</p></div>
             </section>
 
             </div><div class="col-12 col-lg-6"><section class="prem-card pe-panel pe-priorities">
@@ -293,8 +291,9 @@ $chart = $data ? [
                         </tbody>
                     </table>
                 </div>
+                <div class="pe-skm-info d-flex align-items-center gap-3 rounded border mt-4" role="note"><i class="bi bi-info-circle flex-shrink-0" aria-hidden="true"></i><p class="pe-method m-0">Daftar ini menampilkan hingga lima pertanyaan PREM dengan rerata terendah sesuai filter aktif, pada skala 1–5. Positif adalah persentase jawaban bernilai 4–5. Jumlah jawaban bukan jumlah pasien unik. Gunakan hasil ini untuk menentukan area yang perlu ditinjau bersama masukan pasien dan unit terkait.</p></div>
             </section>
-            </div></div><div class="pe-data-note"><i class="bi bi-info-circle"></i><p>Rerata PREM dihitung dari rerata tiap respons. Persentase positif memakai jawaban berskor 4–5. Hasil bersifat deskriptif dan bukan kesimpulan klinis. Nama instrumen, domain, dan pertanyaan mengikuti master terbaru.</p></div>
+            </div></div><div class="pe-skm-info d-flex align-items-center gap-3 rounded border mt-4" role="note"><i class="bi bi-info-circle flex-shrink-0" aria-hidden="true"></i><p class="pe-method m-0">Rerata PREM dihitung dari rerata tiap respons. Persentase positif memakai jawaban berskor 4–5. Hasil bersifat deskriptif dan bukan kesimpulan klinis. Nama instrumen, domain, dan pertanyaan mengikuti master terbaru.</p></div>
             <?php endif; ?>
             <script type="application/json" id="pe-chart-data"><?= json_encode($chart, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE) ?></script>
         <?php endif; ?>

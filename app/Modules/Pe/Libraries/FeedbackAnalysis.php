@@ -37,7 +37,7 @@ class FeedbackAnalysis
         }
         arsort($words);
         $cloud = [];
-        foreach (array_slice($words, 0, 50, true) as $word => $count) $cloud[] = ['word' => $word, 'count' => $count];
+        foreach (array_slice($words, 0, 50, true) as $word => $count) $cloud[] = ['word' => $word, 'count' => $count, 'sentiment' => isset($negative[$word]) ? 'negative' : (isset($positive[$word]) ? 'positive' : 'neutral')];
         return ['total' => $total, 'sentiments' => $sentiments, 'words' => $cloud];
     }
 }

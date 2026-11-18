@@ -49,7 +49,7 @@ class LosModel extends Model
                          a.dpjp, a.diaglist, a.proclist, a.tarif_rs,
                          a.total_tarif, a.idrg_total_tarif,
                          DATE_FORMAT(a.admission_date, '%d.%m.%Y') AS admission_date,
-                         DATE_FORMAT(a.discharge_date, '%d.%m.%Y') AS discharge_date
+                         DATE_FORMAT(a.discharge_date, '%d.%m.%Y') AS discharge_date, MONTH(a.discharge_date) AS month
                   FROM dt01_bpjs_ur_dt a
                   WHERE a.los < 2 AND a.ptd = 1 AND a.kode_rs = ?
                     AND a.discharge_date >= ? AND a.discharge_date < ?

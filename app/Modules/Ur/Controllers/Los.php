@@ -17,45 +17,66 @@ class Los extends BaseController
 
     public function index()
     {
+        return $this->renderPage('v_los');
+    }
+
+    public function detail()
+    {
+        return $this->renderPage('v_losdetail');
+    }
+
+    private function renderPage(string $view)
+    {
+        $requestedYear = request()->getGet('year');
+        $selectedYear = $this->validYear($requestedYear) ? (int) $requestedYear : (int) date('Y');
+        $requestedMonth = request()->getGet('month');
+        $selectedMonth = is_string($requestedMonth) && preg_match('/^(?:[1-9]|1[0-2])$/', $requestedMonth)
+            ? (int) $requestedMonth : 0;
         $periode = '';
         foreach ($this->md->periode() as $row) {
             $year = (int) $row->periode;
-            $periode .= '<option value="' . $year . '">' . $year . '</option>';
+            $selected = $year === $selectedYear ? ' selected' : '';
+            $periode .= '<option value="' . $year . '"' . $selected . '>' . $year . '</option>';
         }
         return view('template/dashboard-light-aside', [
-            'contents' => view('Modules\Ur\Views\v_los', ['periode' => $periode]),
+            'contents' => view('Modules\\Ur\\Views\\' . $view, [
+                'periode' => $periode,
+                'selectedMonth' => $selectedMonth,
+            ]),
         ]);
     }
 
-    private function dataResponse($method)
+    public function summary()
+    {
+        return $this->dataResponse('summary');
+    }
+
+    public function cases()
+    {
+        return $this->dataResponse('rawdata');
+    }
+
+    private function validYear($year): bool
+    {
+        return is_scalar($year) && preg_match('/^\d{4}$/', (string) $year)
+            && (int) $year >= 2014 && (int) $year <= (int) date('Y');
+    }
+
+    private function dataResponse(string $method)
     {
         $year = request()->getPost('selectperiode');
-        if (!is_scalar($year) || !preg_match('/^\d{4}$/', (string) $year)
-            || (int) $year < 2014 || (int) $year > (int) date('Y')) {
-            return response()->setStatusCode(422)->setJSON([
-                'responseCode' => '01', 'responseDesc' => 'Periode tahun tidak valid.', 'responseResult' => [],
-            ]);
+        if (!$this->validYear($year)) {
+            return response()->setStatusCode(422)->setJSON(['responseCode' => '01', 'responseDesc' => 'Periode tahun tidak valid.', 'responseResult' => []]);
         }
         $koders = $this->session->get('koders');
         if (!$koders) {
-            return response()->setStatusCode(403)->setJSON([
-                'responseCode' => '01', 'responseDesc' => 'Rumah sakit pada sesi belum dipilih.', 'responseResult' => [],
-            ]);
+            return response()->setStatusCode(403)->setJSON(['responseCode' => '01', 'responseDesc' => 'Rumah sakit pada sesi belum dipilih.', 'responseResult' => []]);
         }
         try {
-            $result = $this->md->$method($koders, (int) $year);
-            return response()->setJSON([
-                'responseCode' => '00', 'responseHead' => 'success',
-                'responseDesc' => 'Data berhasil dimuat.', 'responseResult' => $result,
-            ]);
+            return response()->setJSON(['responseCode' => '00', 'responseHead' => 'success', 'responseDesc' => 'Data berhasil dimuat.', 'responseResult' => $this->md->$method($koders, (int) $year)]);
         } catch (\Throwable $e) {
-            log_message('error', 'UR short stay query failed.');
-            return response()->setStatusCode(500)->setJSON([
-                'responseCode' => '01', 'responseDesc' => 'Data LOS gagal dimuat. Silakan coba kembali.', 'responseResult' => [],
-            ]);
+            log_message('error', 'UR LOS data query failed.');
+            return response()->setStatusCode(500)->setJSON(['responseCode' => '01', 'responseDesc' => 'Data los gagal dimuat. Silakan coba kembali.', 'responseResult' => []]);
         }
     }
-
-    public function summary() { return $this->dataResponse('summary'); }
-    public function rawdata() { return $this->dataResponse('rawdata'); }
 }

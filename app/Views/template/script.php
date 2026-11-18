@@ -38,6 +38,27 @@
             $segment2 = 'analystslsimulation';
         }
         $jsPage = ($segment1 === 'pe' && in_array($segment2, ['prom', 'skm', 'premgeneral'], true)) ? 'prem' : $segment2;
+        if ($segment1 === 'ur' && $segment2 === 'malnutrisi' && $segment3 === 'detail') {
+            $jsPage = 'malnutrisidetail';
+        }
+        if ($segment1 === 'ur' && in_array($segment2, ['tarifpositif', 'tarifnegatif'], true) && $segment3 === 'detail') {
+            $jsPage = 'tarifdetail';
+        }
+        if ($segment1 === 'ur' && $segment2 === 'severity1' && $segment3 === 'detail') {
+            $jsPage = 'severity1detail';
+        }
+        if ($segment1 === 'ur' && $segment2 === 'severity1' && $segment3 === 'detail') {
+            $jsPage = 'severity1detail';
+        }
+        if ($segment1 === 'ur' && $segment2 === 'severity3' && $segment3 === 'detail') {
+            $jsPage = 'severity3detail';
+        }
+        if ($segment1 === 'ur' && $segment2 === 'los' && $segment3 === 'detail') {
+            $jsPage = 'losdetail';
+        }
+        if ($segment1 === 'ur' && $segment2 === 'ventilator' && $segment3 === 'detail') {
+            $jsPage = 'ventilatordetail';
+        }
         $jspath = FCPATH . 'assets/js/' . $segment1 . '/' . $jsPage . '.js';
         if (file_exists($jspath)) {
             echo '<script type="text/javascript" src="' . base_url('assets/js/' . $segment1 . '/' . $jsPage . '.js?v=' . time()) . '"></script>' . PHP_EOL;

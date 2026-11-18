@@ -1,0 +1,20 @@
+<?php
+$tariffSegments = service('uri')->getSegments();
+$tariffPath = 'ur/' . $tariffSegments[1];
+$isDetail = ($tariffSegments[2] ?? '') === 'detail';
+?>
+<nav aria-label="Breadcrumb">
+    <ol class="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
+        <?php if ($isDetail): ?>
+            <li class="breadcrumb-item text-muted"><a id="tarif-scope-link" href="<?= esc(site_url($tariffPath)) ?>" class="text-muted text-hover-primary">Ringkasan</a></li>
+        <?php else: ?>
+            <li class="breadcrumb-item text-dark" aria-current="page">Ringkasan</li>
+        <?php endif; ?>
+        <li class="breadcrumb-item" aria-hidden="true"><span class="bullet bg-gray-200 w-5px h-2px"></span></li>
+        <?php if ($isDetail): ?>
+            <li class="breadcrumb-item text-dark" aria-current="page">Daftar kasus</li>
+        <?php else: ?>
+            <li class="breadcrumb-item text-muted"><a id="tarif-scope-link" href="<?= esc(site_url($tariffPath . '/detail')) ?>" class="text-muted text-hover-primary">Daftar kasus</a></li>
+        <?php endif; ?>
+    </ol>
+</nav>

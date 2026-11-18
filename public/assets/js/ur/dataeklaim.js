@@ -6,7 +6,7 @@
     const numeric = value => Number.isFinite(Number(value)) ? Number(value) : 0;
     const money = value => 'Rp ' + nf.format(numeric(value));
     const text = value => esc(value || '—');
-    const codes = value => value ? esc(value).split(';').join('<br>') : '—';
+    const codes = value => value ? esc(value).split(';').join(', ') : '—';
     let request = null, generation = 0, tableApi = null, refreshSummary = true;
     const status = (message, error = false) => $('#ek-status').text(message).toggleClass('is-error', error);
 

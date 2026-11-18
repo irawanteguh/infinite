@@ -1,1 +1,1 @@
-<section class="ur-hero app-page-heading"><div><h1>Analisis diagnosis dan prosedur ventilasi</h1><p>Telaah episode dengan diagnosis gagal napas/ketergantungan respirator dan prosedur ventilasi mekanik.</p><div class="ur-coverage" id="vent-coverage">Memuat cakupan data…</div></div></section>
+<section class="ur-hero app-page-heading"><div><h1>Kasus Ventilator</h1><p>Telaah kode prosedur, jam ventilator, dan diagnosis pada episode rawat inap.</p></div></section>

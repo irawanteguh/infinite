@@ -68,8 +68,23 @@
         ready=false;rows=[];$('#tp-content,#tp-dpjp').prop('hidden',true);$('#tp-status').prop('hidden',true);$('#tp-coverage').text('Memuat cakupan data…');
         fetchData('summary',{},function(result){rows=Array.isArray(result)?result:[];ready=true;if(renderSummary())renderDpjp();});
     };
-    $('#selectperiode').on('change',window.load);
-    $('#tp-month,#tp-service').on('change',function(){if(ready&&renderSummary())renderDpjp();});
+    const scopeLink = document.getElementById('tarif-scope-link');
+    function updateScopeLink() {
+        const target = new URL(scopeLink.href);
+        target.searchParams.set('year', $('#selectperiode').val());
+        [['month', '#tp-month'], ['service', '#tp-service']].forEach(([key, selector]) => {
+            const value = $(selector).val();
+            if (value) target.searchParams.set(key, value);
+            else target.searchParams.delete(key);
+        });
+        scopeLink.href = target.href;
+    }
+    $('#selectperiode').on('change', () => { updateScopeLink(); window.load(); });
+    $('#tp-month,#tp-service').on('change',function(){
+        updateScopeLink();
+        if(ready&&renderSummary())renderDpjp();
+    });
+    updateScopeLink();
     $('#tp-dpjp-search-1,#tp-dpjp-search-2').on('input',renderDpjp);
     $('#tp-refresh').on('click',window.load);$('#tp-print').on('click',()=>window.print());
     window.load();

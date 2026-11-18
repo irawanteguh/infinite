@@ -26,11 +26,14 @@
 .mal-page table .mal-detail-row>td{padding:0 0 12px!important;white-space:normal!important;width:auto!important}
 .mal-detail{background:#f6faf9;border:1px solid #dceae5;border-radius:10px;padding:16px 20px;white-space:normal}
 .mal-detail-heading{font-weight:600;color:#234a54;margin-bottom:14px;overflow-wrap:anywhere}.mal-detail-heading i{color:#087e82;margin-right:6px}
-.mal-detail-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px 24px;margin:0}
+.mal-detail-grid,.mal-detail-codes{display:grid;gap:14px 24px;margin:0}
+.mal-detail-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.mal-detail-codes{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:14px;padding-top:12px;border-top:1px solid #dceae5}
 .mal-detail-field{min-width:0}.mal-detail-field dt{color:#81969b;font-weight:400;margin-bottom:4px}.mal-detail-field dd{color:#42636d;margin:0;overflow-wrap:anywhere;line-height:1.6}
-.mal-detail-field:nth-last-child(-n+2){grid-column:span 2;border-top:1px solid #dceae5;padding-top:12px}
+
 .mal-page .mal-row-open>td{background:#f0f8f5}
-@media(max-width:991px){.mal-detail-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.mal-detail-field:nth-last-child(-n+2){grid-column:1/-1}}
+@media(max-width:991px){.mal-detail-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:575px){.mal-detail-grid,.mal-detail-codes{grid-template-columns:minmax(0,1fr)}}
 .mal-page .ur-eyebrow{display:none}
 
 .mal-page .mal-cases-table :is(td:nth-child(2),td:nth-child(3),td:nth-child(6),td:nth-child(7)){white-space:nowrap}

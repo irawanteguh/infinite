@@ -43,10 +43,34 @@ class CasemixindexModel extends Model
         ])->getResult();
     }
 
+    private function monthlyCmi($koders, $periode)
+    {
+        $query = "SELECT claims.month, claims.ptd,
+                         SUM(claims.episodes * cw.fn_nilai_cw) / SUM(claims.episodes) AS cmi
+                  FROM (
+                      SELECT MONTH(a.discharge_date) AS month, a.ptd, a.inacbg, COUNT(*) AS episodes
+                      FROM dt01_bpjs_ur_dt a
+                      WHERE a.kode_rs = ?
+                        AND a.discharge_date >= ? AND a.discharge_date < ?
+                        AND a.ptd IN (1, 2)
+                      GROUP BY MONTH(a.discharge_date), a.ptd, a.inacbg
+                  ) claims
+                  JOIN (
+                      SELECT 1 AS ptd, fs_kd_inacbg, fn_nilai_cw FROM dt01_inacbg_cw_ranap_ms
+                      UNION ALL
+                      SELECT 2 AS ptd, fs_kd_inacbg, fn_nilai_cw FROM dt01_inacbg_cw_rajal_ms
+                  ) cw ON cw.ptd = claims.ptd AND cw.fs_kd_inacbg = claims.inacbg
+                  GROUP BY claims.month, claims.ptd";
+        return $this->db->query($query, [
+            $koders, sprintf('%04d-01-01', $periode), sprintf('%04d-01-01', $periode + 1)
+        ])->getResult();
+    }
+
     public function summary($koders, $periode)
     {
         return [
             'rows' => $this->aggregate($koders, $periode),
+            'monthlyCmi' => $this->monthlyCmi($koders, $periode),
             'casegroups' => $this->db->query('SELECT id_cg, name_case_group, notes FROM dt01_inacbg_casegroup_ms ORDER BY CAST(id_cg AS UNSIGNED)')->getResult(),
             'cmgs' => $this->db->query('SELECT group_code, group_name, description FROM dt01_inacbg_cmg_ms ORDER BY group_code')->getResult(),
         ];

@@ -32,7 +32,7 @@
         const starts=data.map(row=>row.first_discharge).filter(Boolean).sort(),ends=data.map(row=>row.last_discharge).filter(Boolean).sort();
         $('#tn-coverage').text(date(starts[0])+' — '+date(ends[ends.length-1])+' / '+(service==='1'?'Rawat inap':service==='2'?'Rawat jalan':'Semua layanan'));
         const kpis=[['Episode negatif',nf.format(count),pct(count,all)+' dari '+nf.format(all)+' episode','bi-people'],['Total selisih negatif',money(gap),'INA-CBG − tarif RS episode negatif','bi-graph-down-arrow'],['Tarif RS',money(rs),'Hanya episode berselisih negatif','bi-hospital'],['Total INA-CBG',money(ina),'TOTAL_TARIF episode negatif','bi-receipt'],['Selisih rata-rata',count?money(gap/count):'—','Per episode negatif','bi-bar-chart'],['Rasio cakupan',pct(ina,rs),'INA-CBG ÷ tarif RS episode negatif','bi-speedometer2']];
-        $('#tn-kpis').html(kpis.map((k,i)=>'<article class="card card-flush ur-kpi ur-kpi-tone-'+i+'"><i class="bi '+k[3]+' ur-kpi-icon"></i><div class="ur-kpi-label">'+k[0]+'</div><div class="ur-kpi-value">'+k[1]+'</div><small>'+k[2]+'</small></article>').join(''));
+        $('#tn-kpis').html(kpis.map((k,i)=>'<article class="card card-flush ur-kpi ur-kpi-tone-'+i+'"><i class="bi '+k[3]+' ur-kpi-icon"></i><div class="ur-kpi-label">'+k[0]+'</div><div class="ur-kpi-value'+((i===1||i===4)?' ur-negative':'')+'">'+k[1]+'</div><small>'+k[2]+'</small></article>').join(''));
         const monthly=[...new Set(data.map(row=>num(row.month)))].sort((a,b)=>a-b).map(m=>{const subset=data.filter(row=>num(row.month)===m);return {month:m,rows:subset,count:sum(subset,'negative_episodes'),all:sum(subset,'all_episodes'),rs:sum(subset,'tarif_rs'),ina:sum(subset,'total_tarif'),gap:sum(subset,'negative_gap')};});
         $('#tn-monthly').html(monthly.map(r=>'<tr><td>'+months[r.month-1]+'</td><td>'+nf.format(r.all)+'</td><td>'+nf.format(r.count)+'</td><td>'+pct(r.count,r.all)+'</td><td>'+money(r.rs)+'</td><td>'+money(r.ina)+'</td><td class="ur-negative fw-bold">'+money(r.gap)+'</td></tr>').join(''));
         initDataTable('#tn-monthly-table', null, 12, {paging:false, searching:false, info:false, lengthChange:false, dom:'t'});
@@ -68,8 +68,23 @@
         ready=false;rows=[];$('#tn-content,#tn-dpjp').prop('hidden',true);$('#tn-status').prop('hidden',true);$('#tn-coverage').text('Memuat cakupan data…');
         fetchData('summary',{},function(result){rows=Array.isArray(result)?result:[];ready=true;if(renderSummary())renderDpjp();});
     };
-    $('#selectperiode').on('change',window.load);
-    $('#tn-month,#tn-service').on('change',function(){if(ready&&renderSummary())renderDpjp();});
+    const scopeLink = document.getElementById('tarif-scope-link');
+    function updateScopeLink() {
+        const target = new URL(scopeLink.href);
+        target.searchParams.set('year', $('#selectperiode').val());
+        [['month', '#tn-month'], ['service', '#tn-service']].forEach(([key, selector]) => {
+            const value = $(selector).val();
+            if (value) target.searchParams.set(key, value);
+            else target.searchParams.delete(key);
+        });
+        scopeLink.href = target.href;
+    }
+    $('#selectperiode').on('change', () => { updateScopeLink(); window.load(); });
+    $('#tn-month,#tn-service').on('change',function(){
+        updateScopeLink();
+        if(ready&&renderSummary())renderDpjp();
+    });
+    updateScopeLink();
     $('#tn-dpjp-search-1,#tn-dpjp-search-2').on('input',renderDpjp);
     $('#tn-refresh').on('click',window.load);$('#tn-print').on('click',()=>window.print());
     window.load();

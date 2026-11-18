@@ -34,7 +34,7 @@
         const total=aggregate(data),starts=data.map(r=>r.first_discharge).filter(Boolean).sort(),ends=data.map(r=>r.last_discharge).filter(Boolean).sort();
         $('#s1-coverage').text(date(starts[0])+' — '+date(ends[ends.length-1])+' / Rawat inap severity I');
         const kpis=[['Episode LOS > 7 hari',nf.format(total.episodes),pct(total.episodes,total.all_episodes)+' dari '+nf.format(total.all_episodes)+' SL I','bi-people'],['Rata-rata LOS',avg(total.total_los,total.episodes),'Episode SL I dengan LOS > 7','bi-clock-history'],['LOS maksimum',total.episodes?nf.format(total.max_los)+' hari':'—','Episode terpilih pada data impor','bi-hourglass-split'],['Hari di atas 7',nf.format(total.days_above_7),'Jumlah (LOS − 7) episode terpilih','bi-calendar-week'],['Total tarif RS',money(total.tarif_rs),'Hanya SL I dengan LOS > 7','bi-hospital'],['Selisih INA-CBG − RS',money(total.total_tarif-total.tarif_rs),'Total INA-CBG '+money(total.total_tarif),'bi-arrow-left-right']];
-        $('#s1-kpis').html(kpis.map((k,i)=>'<article class="card card-flush ur-kpi ur-kpi-tone-'+i+'"><i class="bi '+k[3]+' ur-kpi-icon"></i><div class="ur-kpi-label">'+k[0]+'</div><div class="ur-kpi-value">'+k[1]+'</div><small>'+k[2]+'</small></article>').join(''));
+        $('#s1-kpis').html(kpis.map((k,i)=>'<article class="card card-flush ur-kpi ur-kpi-tone-'+i+'"><i class="bi '+k[3]+' ur-kpi-icon"></i><div class="ur-kpi-label">'+k[0]+'</div><div class="ur-kpi-value'+(i===5&&total.total_tarif-total.tarif_rs<0?' ur-negative':'')+'">'+k[1]+'</div><small>'+k[2]+'</small></article>').join(''));
         const monthly=[...new Set(data.map(r=>num(r.month)))].sort((a,b)=>a-b).map(month=>({month,...aggregate(data.filter(r=>num(r.month)===month))}));
         $('#s1-monthly').html(monthly.map(r=>{const gap=r.total_tarif-r.tarif_rs;return '<tr><td>'+months[r.month-1]+'</td><td>'+nf.format(r.all_episodes)+'</td><td>'+nf.format(r.episodes)+'</td><td>'+pct(r.episodes,r.all_episodes)+'</td><td>'+avg(r.total_los,r.episodes)+'</td><td>'+money(r.tarif_rs)+'</td><td>'+money(r.total_tarif)+'</td><td class="'+(gap<0?'ur-negative':'ur-positive')+'">'+money(gap)+'</td></tr>';}).join(''));
         initDataTable('#s1-monthly-table', null, 12, {paging:false, searching:false, info:false, lengthChange:false, dom:'t'});
@@ -49,5 +49,15 @@
             .fail(function(xhr,state){if(token===generation&&state!=='abort'){$('#s1-status').text(xhr.responseJSON?.responseDesc||'Data gagal dimuat. Klik Perbarui untuk mencoba kembali.').prop('hidden',false);$('#s1-coverage').text('Data belum tersedia');}})
             .always(function(){if(token===generation){$('#s1-refresh').prop('disabled',false);}});
     };
-    $('#selectperiode').on('change',window.load);$('#s1-month').on('change',render);$('#s1-search').on('input',renderDpjp);$('#s1-refresh').on('click',window.load);$('#s1-print').on('click',()=>window.print());window.load();
+    $('#selectperiode').on('change',window.load);$('#s1-month').on('change',render);$('#s1-search').on('input',renderDpjp);$('#s1-refresh').on('click',window.load);$('#s1-print').on('click',()=>window.print());    function updateCaseLink() {
+        const link = document.getElementById('s1-detail-link');
+        const target = new URL(link.href);
+        target.searchParams.set('year', $('#selectperiode').val());
+        const month = $('#s1-month').val();
+        if (month) target.searchParams.set('month', month);
+        else target.searchParams.delete('month');
+        link.href = target.href;
+    }
+    $('#selectperiode,#s1-month').on('change', updateCaseLink);
+    updateCaseLink();window.load();
 })();

@@ -49,5 +49,16 @@
             .fail(function(xhr,state){if(token===generation&&state!=='abort'){$('#s3-status').text(xhr.responseJSON?.responseDesc||'Data gagal dimuat. Klik Perbarui untuk mencoba kembali.').prop('hidden',false);$('#s3-coverage').text('Data belum tersedia');}})
             .always(function(){if(token===generation){$('#s3-refresh').prop('disabled',false);}});
     };
-    $('#selectperiode').on('change',window.load);$('#s3-month').on('change',render);$('#s3-search').on('input',renderDpjp);$('#s3-refresh').on('click',window.load);$('#s3-print').on('click',()=>window.print());window.load();
+    $('#selectperiode').on('change',window.load);$('#s3-month').on('change',render);$('#s3-search').on('input',renderDpjp);$('#s3-refresh').on('click',window.load);$('#s3-print').on('click',()=>window.print());function updateCaseLink() {
+        const link = document.getElementById('s3-detail-link');
+        const target = new URL(link.href);
+        target.searchParams.set('year', $('#selectperiode').val());
+        const month = $('#s3-month').val();
+        if (month) target.searchParams.set('month', month);
+        else target.searchParams.delete('month');
+        link.href = target.href;
+    }
+    $('#selectperiode,#s3-month').on('change', updateCaseLink);
+    updateCaseLink();
+    window.load();
 })();

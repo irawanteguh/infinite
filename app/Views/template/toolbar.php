@@ -12,6 +12,9 @@
     <?php
         $breadcrumbPage = ($segment1 === 'ur' && $segment2 === 'analystsl' && ($segments[2] ?? '') === 'simulation')
             ? 'analystslsimulation' : $segment2;
+        if ($segment1 === 'ur' && in_array($segment2, ['tarifpositif', 'tarifnegatif'], true)) {
+            $breadcrumbPage = 'tarif';
+        }
         $directory = APPPATH . 'Modules/' . ucfirst($segment1) . '/Breadcrumb/' . $breadcrumbPage . '.php';
         if (file_exists($directory)) {
             include $directory;

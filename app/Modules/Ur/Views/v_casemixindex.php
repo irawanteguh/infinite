@@ -13,6 +13,13 @@
     <div id="cm-content" hidden>
         <section id="cm-kpis" class="ur-kpis" aria-label="Ringkasan casemix"></section>
         <div id="cm-quality" class="cm-info-note" role="note" hidden><i class="bi bi-info-circle" aria-hidden="true"></i><span id="cm-quality-text"></span></div>
+        <section class="card card-flush ur-panel mb-5" aria-labelledby="cm-cmi-title">
+            <div class="ur-panel-head"><div>
+                <h2 id="cm-cmi-title">Casemix Index bulanan</h2>
+                <p>Total bobot INA-CBG dibagi jumlah episode yang kodenya cocok dengan tabel bobot.</p>
+            </div></div>
+            <div id="cm-cmi-chart" class="ur-chart"></div>
+        </section>
         <div class="ur-grid-equal">
             <section class="card card-flush ur-panel"><div class="ur-panel-head"><div><h2>Perubahan komposisi bulanan</h2><p>Jumlah episode SL I, II, III, serta severity lain yang tercatat.</p></div></div><div id="cm-severity-chart" class="ur-chart"></div><div id="cm-severity-mix" class="cm-mix"></div></section>
             <section class="card card-flush ur-panel"><div class="ur-panel-head"><div><h2>Tujuh CMG dengan episode terbanyak</h2><p>Peringkat mengikuti filter layanan dan bulan yang dipilih.</p></div></div><div id="cm-cmg-chart" class="cm-cmg-list" role="list" aria-label="Tujuh CMG terbanyak, jumlah episode dan persentase dari seluruh episode terpilih"></div></section>

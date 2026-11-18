@@ -58,7 +58,7 @@
             grid:{borderColor:'#edf2f4',strokeDashArray:3,padding:{left:8,right:18}},
             xaxis:{categories:periods.map(month=>fullMonths[month-1]),axisBorder:{show:false},axisTicks:{show:false},labels:{rotate:-35,hideOverlappingLabels:true,style:{colors:'#7b8a9e',fontSize:'11px'}}},
             yaxis:{min:0,max:Math.max(110, ...values.filter(value=>value!==null).map(value=>Math.ceil(value/10)*10+10)),labels:{formatter:format,style:{colors:'#7b8a9e',fontSize:'11px'}}},
-            annotations:{yaxis:[{y:100,borderColor:'#94a7ac',strokeDashArray:5,label:{text:'Acuan 100%',style:{background:'#edf6f3',color:'#58716a',fontSize:'11px'}}}]},
+            annotations:{yaxis:[{y:100,borderColor:'#f1aeb5',strokeDashArray:5,label:{text:'Acuan 100%',style:{background:'#fcebed',color:'#b65c67',fontSize:'11px'}}}]},
             tooltip:{shared:true,intersect:false,y:{formatter:format}},legend:{show:true,position:'top',horizontalAlign:'left',fontSize:'12px'},
             noData:{text:'Belum ada rasio yang dapat dihitung'},
             responsive:[{breakpoint:600,options:{chart:{height:280},xaxis:{labels:{rotate:-45}}}}]

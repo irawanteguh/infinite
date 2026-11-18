@@ -31,6 +31,40 @@
         });
         charts[id].render();
     }
+    function drawCmi(month, service) {
+        const id = 'cm-cmi-chart';
+        const element = document.getElementById(id);
+        const period = month ? [num(month)] : months.map((_, index) => index + 1);
+        const values = new Map(payload.monthlyCmi.map(row => [row.ptd + ':' + row.month, Number(row.cmi)]));
+        const series = [['1', 'Rawat inap'], ['2', 'Rawat jalan']]
+            .filter(([key]) => !service || service === key)
+            .map(([key, name]) => ({
+                name,
+                color: key === '1' ? '#087e82' : '#3569a8',
+                data: period.map(m => values.get(key + ':' + m) ?? null)
+            }));
+        element.textContent = '';
+        if (!series.some(item => item.data.some(value => value !== null))) {
+            element.innerHTML = '<p class="ur-empty">Belum ada episode yang cocok dengan tabel bobot INA-CBG pada filter ini.</p>';
+            return;
+        }
+        if (typeof ApexCharts === 'undefined') {
+            element.innerHTML = '<p class="ur-empty">Grafik Casemix Index tidak tersedia.</p>';
+            return;
+        }
+        const format = new Intl.NumberFormat('id-ID', {minimumFractionDigits:2, maximumFractionDigits:2});
+        charts[id] = new ApexCharts(element, {
+            chart:{type:'line',height:300,fontFamily:'inherit',toolbar:{show:false},animations:{enabled:false}},
+            series,
+            stroke:{width:3,curve:'straight'},
+            markers:{size:4},
+            xaxis:{categories:period.map(m=>months[m-1]),title:{text:'Bulan pulang'}},
+            yaxis:{title:{text:'CMI'},labels:{formatter:value=>format.format(value)}},
+            legend:{position:'top',horizontalAlign:'left',showForSingleSeries:true},
+            tooltip:{shared:true,intersect:false,y:{formatter:value=>value == null ? '—' : format.format(value)}}
+        });
+        charts[id].render();
+    }
     function groupRows(rows, field, masters, masterKey, nameKey, noteKey) {
         const groups = new Map();
         masters.forEach(master => groups.set(code(master[masterKey]), {code:code(master[masterKey]),name:master[nameKey],note:master[noteKey] || '',known:true,rows:[]}));
@@ -98,11 +132,12 @@
             $('#cm-quality-text').text(details.join('; ')+'. Kode belum terdaftar/terisi pada master, tetapi seluruh episode tetap dihitung.');
             $('#cm-quality').prop('hidden',false);
         }
+        drawCmi(month, service);
         const activeMonths=new Set(rows.map(row=>num(row.month)));
         const riMonths=[...new Set(ri.map(row=>num(row.month)))].sort((a,b)=>a-b);
         const slSets=[['I','SL I'],['II','SL II'],['III','SL III'],['other','Lainnya']];
         draw('cm-severity-chart',slSets.map(([key,name])=>({name:name,data:riMonths.map(m=>sum(ri.filter(row=>num(row.month)===m && (key==='other'?!['I','II','III'].includes(String(row.sl)):String(row.sl)===key)),'episodes'))})),riMonths.map(m=>months[m-1]),false);
-        $('#cm-severity-mix').html(slSets.map(([key,name],i)=>{const n=sum(ri.filter(row=>key==='other'?!['I','II','III'].includes(String(row.sl)):String(row.sl)===key),'episodes');return '<span class="badge '+['badge-light-primary','badge-light-info','badge-light-warning','badge-light'][i]+'">'+name+': '+nf.format(n)+' · '+pct(n,inpatient)+'</span>';}).join(''));
+        $('#cm-severity-mix').html(slSets.map(([key,name],i)=>{const n=sum(ri.filter(row=>key==='other'?!['I','II','III'].includes(String(row.sl)):String(row.sl)===key),'episodes');return '<span class="badge badge-light-primary">'+name+': '+nf.format(n)+' · '+pct(n,inpatient)+'</span>';}).join(''));
         const top=cmg.filter(g=>g.total>0).slice(0,7);
         const cmgColors=['#087e82','#75bdb5','#c0d8e3'];
         $('#cm-cmg-chart').html(top.length ? top.map((group,index)=>
@@ -114,7 +149,7 @@
     window.load=function () {
         const token=++generation;
         if(request)request.abort();
-        destroyCharts();tableData=null;payload={rows:[],casegroups:[],cmgs:[]};
+        destroyCharts();tableData=null;payload={rows:[],casegroups:[],cmgs:[],monthlyCmi:[]};
         $('#cm-content').prop('hidden',true);$('#cm-status').prop('hidden',true);$('#cm-refresh').prop('disabled',true);
         $('#cm-coverage').text('Memuat cakupan data…');
         Swal.fire({title:'Memuat data casemix',text:'Mohon tunggu, ringkasan sedang disiapkan.',allowOutsideClick:false,allowEscapeKey:false,showConfirmButton:false,didOpen:()=>Swal.showLoading()});
@@ -123,7 +158,7 @@
                 if(token!==generation)return;
                 if(response.responseCode!=='00'){message(response.responseDesc || 'Data gagal dimuat.');return;}
                 const result=response.responseResult || {};
-                payload={rows:Array.isArray(result.rows)?result.rows:[],casegroups:Array.isArray(result.casegroups)?result.casegroups:[],cmgs:Array.isArray(result.cmgs)?result.cmgs:[]};render();
+                payload={rows:Array.isArray(result.rows)?result.rows:[],casegroups:Array.isArray(result.casegroups)?result.casegroups:[],cmgs:Array.isArray(result.cmgs)?result.cmgs:[],monthlyCmi:Array.isArray(result.monthlyCmi)?result.monthlyCmi:[]};render();
             })
             .fail(function(xhr,state){if(token===generation && state!=='abort'){message(xhr.responseJSON?.responseDesc || 'Data gagal dimuat. Klik Perbarui untuk mencoba kembali.');$('#cm-coverage').text('Data belum tersedia');}})
             .always(function(){if(token===generation){Swal.close();$('#cm-refresh').prop('disabled',false);}});

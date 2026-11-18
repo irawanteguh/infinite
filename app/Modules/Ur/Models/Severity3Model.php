@@ -35,7 +35,7 @@ class Severity3Model extends Model
         $query = "
                     select a.ptd, los, mrn, nama_pasien, sep, nokartu, dpjp, diaglist, proclist, tarif_rs, total_tarif, idrg_total_tarif,
                            DATE_FORMAT(admission_date, '%d.%m.%Y') AS admission_date,
-                           DATE_FORMAT(discharge_date, '%d.%m.%Y') AS discharge_date
+                           DATE_FORMAT(discharge_date, '%d.%m.%Y') AS discharge_date, MONTH(a.discharge_date) AS month
                     from dt01_bpjs_ur_dt a
                     where a.los < 4
                     and   a.sl='III'

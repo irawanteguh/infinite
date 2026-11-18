@@ -17,13 +17,41 @@ class Tarifnegatif extends BaseController
 
     public function index()
     {
+        return $this->renderPage('v_tarifnegatif');
+    }
+
+    public function detail()
+    {
+        return $this->renderPage('v_tarifdetail');
+    }
+
+    private function validYear($year): bool
+    {
+        return is_scalar($year) && preg_match('/^\d{4}$/', (string) $year)
+            && (int) $year >= 2014 && (int) $year <= (int) date('Y');
+    }
+
+    private function renderPage(string $view)
+    {
+        $year = request()->getGet('year');
+        $selectedYear = $this->validYear($year) ? (int) $year : (int) date('Y');
+        $month = request()->getGet('month');
+        $selectedMonth = is_string($month) && preg_match('/^(?:[1-9]|1[0-2])$/', $month) ? (int) $month : 0;
+        $service = request()->getGet('service');
+        $selectedService = in_array($service, ['1', '2'], true) ? $service : '';
         $periode = '';
         foreach ($this->md->periode() as $row) {
             $year = (int) $row->periode;
-            $periode .= '<option value="' . $year . '">' . $year . '</option>';
+            $selected = $year === $selectedYear ? ' selected' : '';
+            $periode .= '<option value="' . $year . '"' . $selected . '>' . $year . '</option>';
         }
         return view('template/dashboard-light-aside', [
-            'contents' => view('Modules\Ur\Views\v_tarifnegatif', ['periode' => $periode])
+            'contents' => view('Modules\\Ur\\Views\\' . $view, [
+                'periode' => $periode,
+                'selectedMonth' => $selectedMonth,
+                'selectedService' => $selectedService,
+                'tariffType' => 'negatif',
+            ]),
         ]);
     }
 
@@ -31,8 +59,7 @@ class Tarifnegatif extends BaseController
     {
         $post = request()->getPost();
         $year = $post['selectperiode'] ?? '';
-        if (!is_scalar($year) || !preg_match('/^\d{4}$/', (string) $year)
-            || (int) $year < 2014 || (int) $year > (int) date('Y')) {
+        if (!$this->validYear($year)) {
             return $this->errorResponse(422, 'Periode tahun tidak valid.');
         }
         $koders = $this->session->get('koders');
@@ -52,7 +79,7 @@ class Tarifnegatif extends BaseController
                     || !is_string($search) || strlen($search) > 200
                     || !is_string($sort) || !in_array($sort, ['gap', 'date', 'tariff'], true)
                     || !is_scalar($offset) || !ctype_digit((string) $offset) || (float) $offset > 10000000
-                    || !is_scalar($limit) || !in_array((string) $limit, ['25', '50', '100'], true)) {
+                    || !is_scalar($limit) || !in_array((string) $limit, ['10', '25', '50', '100'], true)) {
                     return $this->errorResponse(422, 'Filter atau halaman tidak valid.');
                 }
                 $result = $this->md->cases($koders, (int) $year, (int) $month, $service, trim($search), (int) $offset, (int) $limit, $sort);

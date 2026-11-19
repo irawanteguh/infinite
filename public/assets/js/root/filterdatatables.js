@@ -36,7 +36,7 @@ function prepareTableCard(element, searchSelector, options) {
     }
     let header = Array.from(card.querySelectorAll('.card-header, .ek-table-heading, .pe-panel-heading, .ur-panel-head, .pe-master-table-heading, .app-table-heading')).find(node => node.closest('.card, .prem-card') === card);
     if (!header) {
-        header = document.createElement('div');
+        header = document.createElement('div'); header.classList.add('card-header');
         card.prepend(header);
     }
     header.classList.add('app-table-heading');

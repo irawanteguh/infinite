@@ -1,4 +1,16 @@
-﻿
+function eklaimAlert(options) {
+    return Swal.fire({
+        ...options,
+        buttonsStyling: false,
+        customClass: {
+            ...options.customClass,
+            popup: "eklaim-alert",
+            confirmButton: "btn btn-primary",
+            cancelButton: "btn btn-light"
+        }
+    });
+}
+
 $("#modal_upload_txt_eklaim").on("show.bs.modal", function() {
 
     $("#filetxteklaim").val("");
@@ -34,7 +46,7 @@ $("#filetxteklaim").on("change", function() {
     const extension = file.name.split(".").pop().toLowerCase();
 
     if (!["txt", "xlsx", "xls"].includes(extension)) {
-        Swal.fire({
+        eklaimAlert({
             icon             : "warning",
             title            : "Invalid File Format",
             html             : `Please select a supported file format: <strong>TXT</strong>, <strong>Excel Workbook (.xlsx)</strong>, or <strong>Excel 97–2003 Workbook (.xls)</strong>.`,
@@ -46,7 +58,7 @@ $("#filetxteklaim").on("change", function() {
         return;
     }
 
-    Swal.fire({
+    eklaimAlert({
         title            : "Reading File",
         text             : "Please wait while the E-Klaim data is being processed...",
         allowOutsideClick: false,
@@ -69,7 +81,7 @@ $("#filetxteklaim").on("change", function() {
                 });
 
                 if (lines.length < 2) {
-                    Swal.fire({
+                    eklaimAlert({
                         icon             : "warning",
                         title            : "No Data Found",
                         text             : "The TXT file does not contain any E-Klaim data.",
@@ -89,7 +101,7 @@ $("#filetxteklaim").on("change", function() {
                 const invalidRows = [];
 
                 if (indexSEP === -1) {
-                    Swal.fire({
+                    eklaimAlert({
                         icon             : "error",
                         title            : "Required Column Not Found",
                         text             : "The SEP column was not found in the E-Klaim TXT file.",
@@ -131,7 +143,7 @@ $("#filetxteklaim").on("change", function() {
             } catch (error) {
                 console.error("ERROR READING E-KLAIM TXT:", error);
 
-                Swal.fire({
+                eklaimAlert({
                     icon             : "error",
                     title            : "File Read Error",
                     text             : "An error occurred while reading the E-Klaim TXT file.",
@@ -146,7 +158,7 @@ $("#filetxteklaim").on("change", function() {
         };
 
         reader.onerror = function() {
-            Swal.fire({
+            eklaimAlert({
                 icon             : "error",
                 title            : "File Read Error",
                 text             : "The TXT file could not be read.",
@@ -168,7 +180,7 @@ $("#filetxteklaim").on("change", function() {
     readerExcel.onload = function(e) {
         try {
             if (typeof XLSX === "undefined") {
-                Swal.fire({
+                eklaimAlert({
                     icon             : "error",
                     title            : "Excel Library Not Found",
                     text             : "The SheetJS XLSX library has not been loaded on this page.",
@@ -187,7 +199,7 @@ $("#filetxteklaim").on("change", function() {
             });
 
             if (!workbook.SheetNames || workbook.SheetNames.length === 0) {
-                Swal.fire({
+                eklaimAlert({
                     icon             : "warning",
                     title            : "No Worksheet Found",
                     text             : "The Excel file does not contain any worksheet.",
@@ -206,7 +218,7 @@ $("#filetxteklaim").on("change", function() {
             });
 
             if (!rows || rows.length < 2) {
-                Swal.fire({
+                eklaimAlert({
                     icon             : "warning",
                     title            : "No Data Found",
                     text             : "The Excel file does not contain any E-Klaim data.",
@@ -226,7 +238,7 @@ $("#filetxteklaim").on("change", function() {
             const invalidRows = [];
 
             if (indexSEP === -1) {
-                Swal.fire({
+                eklaimAlert({
                     icon             : "error",
                     title            : "Required Column Not Found",
                     text             : "The SEP column was not found in the E-Klaim Excel file.",
@@ -280,7 +292,7 @@ $("#filetxteklaim").on("change", function() {
         } catch (error) {
             console.error("ERROR READING E-KLAIM EXCEL:", error);
 
-            Swal.fire({
+            eklaimAlert({
                 icon             : "error",
                 title            : "File Read Error",
                 text             : "The Excel file could not be read.",
@@ -296,7 +308,7 @@ $("#filetxteklaim").on("change", function() {
 
 
     readerExcel.onerror = function() {
-        Swal.fire({
+        eklaimAlert({
             icon             : "error",
             title            : "File Read Error",
             text             : "The Excel file could not be read.",
@@ -316,7 +328,7 @@ $("#btnImportTxtEklaim").on("click", function() {
     const data = Array.isArray(window.dataTxtEklaim) ? window.dataTxtEklaim : [];
 
     if (data.length === 0) {
-        Swal.fire({
+        eklaimAlert({
             icon : "warning",
             title: "No Data Available",
             text : "Please select and preview a TXT E-Klaim file before proceeding."
@@ -324,14 +336,14 @@ $("#btnImportTxtEklaim").on("click", function() {
         return;
     }
 
-    Swal.fire({
+    eklaimAlert({
         title             : "Import Data E-Klaim",
         html              : "Are you sure you want to import <strong>" + data.length.toLocaleString("id-ID") + "</strong> records?",
         icon              : "question",
         showCancelButton  : true,
         confirmButtonText : "Yes, Import",
         cancelButtonText  : "Cancel",
-        confirmButtonColor: "#0d6efd",
+        confirmButtonColor: "#087e82",
         cancelButtonColor : "#6c757d"
     }).then(function(result) {
         if (result.isConfirmed) prosesImportTxtEklaim(data);
@@ -375,7 +387,7 @@ function prosesDataEklaim(headers, data, invalidRows) {
         });
 
     if (missingHeaders.length > 0) {
-        Swal.fire({
+        eklaimAlert({
             icon             : "error",
             title            : "Missing Required Columns",
             html             : `The following required columns were not found in the uploaded file:<br><br><strong>${missingHeaders.join(", ")}</strong>`,
@@ -411,7 +423,7 @@ function prosesDataEklaim(headers, data, invalidRows) {
     invalidRows = invalidRows.concat(filteredRows);
 
     if (data.length === 0) {
-        Swal.fire({
+        eklaimAlert({
             icon             : "warning",
             title            : "No Valid Data",
             text             : "No valid E-Klaim data was found to process.",
@@ -494,7 +506,7 @@ function prosesDataEklaim(headers, data, invalidRows) {
 
     if (invalidRows.length > 0) {
         setTimeout(function() {
-            Swal.fire({
+            eklaimAlert({
                 icon             : "warning",
                 title            : "Data Imported with Warnings",
                 html             : `Valid records: <strong>${data.length.toLocaleString("id-ID")}</strong><br>Skipped records: <strong>${invalidRows.length.toLocaleString("id-ID")}</strong>`,
@@ -585,7 +597,7 @@ function prosesImportTxtEklaim(data) {
     let totalFailed  = 0;
 
     if (total === 0) {
-        Swal.fire({
+        eklaimAlert({
             icon             : "warning",
             title            : "No Data Available",
             text             : "There is no E-Klaim data available to import.",
@@ -597,7 +609,7 @@ function prosesImportTxtEklaim(data) {
     }
 
     if (headers.length === 0) {
-        Swal.fire({
+        eklaimAlert({
             icon             : "error",
             title            : "Headers Not Found",
             text             : "The E-Klaim file does not contain any headers.",
@@ -612,7 +624,7 @@ function prosesImportTxtEklaim(data) {
     $("#importSpeedTxtEklaim").text("0");
     $("#importEtaTxtEklaim").text("Calculating...");
 
-    Swal.fire({
+    eklaimAlert({
         title: "Importing E-Klaim Data",
         html: `
             <div class="text-center">
@@ -667,7 +679,7 @@ function prosesImportTxtEklaim(data) {
             data    : {headers: JSON.stringify(headers),data: JSON.stringify(batch)},
             success : function(res) {
                 if (!res || res.responseCode !== "00") {
-                    Swal.fire({
+                    eklaimAlert({
                         icon: "error",
                         title: "Import Failed",
                         text: res?.responMsg || "Failed to import E-Klaim data.",
@@ -718,7 +730,7 @@ function prosesImportTxtEklaim(data) {
                     const successResult = totalSuccess;
                     const failedResult  = totalFailed;
 
-                    Swal.fire({
+                    eklaimAlert({
                         icon: failedResult > 0 ? "warning" : "success",
                         title: failedResult > 0 ? "Import Completed with Warnings" : "Import Successfully Completed",
                         html: `
@@ -747,7 +759,7 @@ function prosesImportTxtEklaim(data) {
                             </div>
                         `,
                         confirmButtonText : "Done",
-                        confirmButtonColor: "#009EF7",
+                        confirmButtonColor: "#087e82",
                         allowOutsideClick : false,
                         allowEscapeKey    : false,
                         width             : 450,
@@ -784,7 +796,7 @@ function prosesImportTxtEklaim(data) {
                 }, 200);
             },
             error: function(xhr, status, error) {
-                Swal.fire({
+                eklaimAlert({
                     icon             : "error",
                     title            : "Request Failed",
                     text             : "An error occurred while processing your request.",

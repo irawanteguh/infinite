@@ -10,6 +10,10 @@ class App extends BaseConfig
     {
         parent::__construct();
 
+        if ($this->baseURL !== '') {
+            return;
+        }
+
         $protocol = (
             ! empty($_SERVER['HTTPS']) &&
             $_SERVER['HTTPS'] !== 'off'

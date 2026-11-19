@@ -1,4 +1,4 @@
-<main id="hr-access" class="prem-page pe-dashboard access-page" data-endpoint="<?= esc(site_url('hr/access'),'attr') ?>" data-csrf-name="<?= esc(csrf_token(),'attr') ?>" data-csrf-hash="<?= esc(csrf_hash(),'attr') ?>">
+<main id="hr-access" class="prem-page pe-dashboard access-page" data-endpoint="<?= esc(parse_url(site_url('hr/access'), PHP_URL_PATH), 'attr') ?>" data-csrf-name="<?= esc(csrf_token(),'attr') ?>" data-csrf-hash="<?= esc(csrf_hash(),'attr') ?>">
     <?php include APPPATH . 'Modules/Hr/Pageheader/access.php'; ?>
     <div id="access-message" class="alert d-none" role="status" aria-live="polite"></div>
     <section class="pe-kpis access-kpis" aria-label="Ringkasan hak akses">

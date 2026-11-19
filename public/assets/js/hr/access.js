@@ -2,6 +2,8 @@
     'use strict';
     const root = document.getElementById('hr-access');
     if (!root) return;
+    const endpoint = new URL(root.dataset.endpoint, window.location.href);
+    const endpointPath = endpoint.pathname.replace(/\/$/, '');
     const byId = id => document.getElementById(id);
     const userSelect = byId('access-user');
     const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -22,7 +24,7 @@
     async function request(action, payload) {
         const options = {credentials:'same-origin',headers:{'X-Requested-With':'XMLHttpRequest','Accept':'application/json'}};
         if (payload) { payload.set(root.dataset.csrfName,csrf); options.method='POST'; options.body=payload; }
-        const response = await fetch(root.dataset.endpoint+'/'+action,options);
+        const response = await fetch(window.location.origin + endpointPath + '/' + action,options);
         if (response.redirected || !(response.headers.get('content-type')||'').includes('application/json')) throw new Error('Sesi berakhir atau respons tidak valid. Muat ulang halaman.');
         const result = await response.json();
         if (result.csrfHash) csrf=result.csrfHash;

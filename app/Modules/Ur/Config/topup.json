@@ -1,0 +1,392 @@
+[
+  {
+    "cbg": "I-4-10-I,I-4-10-II,I-4-10-III",
+    "care": "1",
+    "primary": "I21.0,I21.1,I21.2,I21.3,I21.4,I21.9, I23.3",
+    "procedure": "",
+    "procedure2": "",
+    "description": "Streptokinase",
+    "status_field": "IN_SD",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Streptokinase"
+  },
+  {
+    "cbg": "D-4-13-I,D-4-13-II,D-4-13-III",
+    "care": "1",
+    "primary": "D56.1",
+    "procedure": "",
+    "procedure2": "",
+    "description": "Deferiprone",
+    "status_field": "IN_SD",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Deferiprone"
+  },
+  {
+    "cbg": "D-4-13-I,D-4-13-II,D-4-13-III",
+    "care": "1",
+    "primary": "D56.1",
+    "procedure": "",
+    "procedure2": "",
+    "description": "Deferoksamin",
+    "status_field": "IN_SD",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Deferoksamin"
+  },
+  {
+    "cbg": "D-4-13-I,D-4-13-II,D-4-13-III",
+    "care": "1",
+    "primary": "D56.1",
+    "procedure": "",
+    "procedure2": "",
+    "description": "Deferasirox",
+    "status_field": "IN_SD",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Deferasirox"
+  },
+  {
+    "cbg": "A-4-10-I,A-4-10-II,A-4-10-III",
+    "care": "1",
+    "primary": "A02.1,A20.7,A22.7,A39.1,A39.2,A39.3,A39.4,A39.8,A39.9,A40.0,A40.1,A40.2,A40.3,A40.8,A40.9,A41.0,A41.1,A41.2,A41.3,A41.4,A41.5,A41.8,A41.9,A42.7,B37.7, R57.1",
+    "procedure": "",
+    "procedure2": "",
+    "description": "Human Albumin for Septicaemia",
+    "status_field": "IN_SD",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Human Albumin for Septicaemia"
+  },
+  {
+    "cbg": "D-4-11-I",
+    "care": "1",
+    "primary": "D66,D67",
+    "procedure": "",
+    "procedure2": "",
+    "description": "Anti Hemofilia Factor",
+    "status_field": "IN_SD",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Anti Hemofilia Factor"
+  },
+  {
+    "cbg": "Q-5-44-0",
+    "care": "2",
+    "primary": "D56.1",
+    "procedure": "",
+    "procedure2": "",
+    "description": "Deferiprone",
+    "status_field": "IN_SD",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Deferiprone"
+  },
+  {
+    "cbg": "Q-5-44-0",
+    "care": "2",
+    "primary": "D56.1",
+    "procedure": "",
+    "procedure2": "",
+    "description": "Deferoksamin",
+    "status_field": "IN_SD",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Deferoksamin"
+  },
+  {
+    "cbg": "Q-5-44-0",
+    "care": "2",
+    "primary": "D56.1",
+    "procedure": "",
+    "procedure2": "",
+    "description": "Deferasirox",
+    "status_field": "IN_SD",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Deferasirox"
+  },
+  {
+    "cbg": "Q-5-44-0",
+    "care": "2",
+    "primary": "D66,D67",
+    "procedure": "",
+    "procedure2": "",
+    "description": "Anti Hemofilia",
+    "status_field": "IN_SD",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Anti Hemofilia Factor"
+  },
+  {
+    "cbg": "S-4-16-I,S-4-16-II,S-4-16-III",
+    "care": "1",
+    "primary": "T20.3,T20.7,T21.3,T21.7,T22.3,T22.7,T23.3,T23.7,T24.3,T24.7,T25.3,T25.7,T29.3,T29.7,T31.4,T31.5,T31.6,T31.7,T31.8,T31.9,T32.4,T32.5,T32.6,T32.7,T32.8,T32.9",
+    "procedure": "",
+    "procedure2": "",
+    "description": "Human Albumin for Burn",
+    "status_field": "IN_SD",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Human Albumin for Burn"
+  },
+  {
+    "cbg": "L-1-20-I",
+    "care": "1",
+    "primary": "T31.5,",
+    "procedure": "85.82,85.83,85.84,85.85,86.60,86.61,86.62,86.63,86.65,86.66,86.67,86.69,86.70,86.71,86.72,86.73,86.74,86.75,86.91,86.93",
+    "procedure2": "",
+    "description": "Human Albumin for Burn",
+    "status_field": "IN_SD",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Human Albumin for Burn"
+  },
+  {
+    "cbg": "G-1-10-I,G-1-10-II,G-1-10-III",
+    "care": "1",
+    "primary": "",
+    "procedure": "02.93",
+    "procedure2": "",
+    "description": "Subdural Grid Electrode",
+    "status_field": "IN_SR",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Subdural Grid Electrode"
+  },
+  {
+    "cbg": "I-1-03-I,I-1-03-II I-1-03-III",
+    "care": "1",
+    "primary": "",
+    "procedure": "35.81",
+    "procedure2": "",
+    "description": "Cote Graft",
+    "status_field": "IN_SR",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Contegra\\nPersyaratan yang perlu diverifikasi\\nPenjaminan top up hanya dilakukan di RS Khusus Jantung Kelas A Milik Pemerintah."
+  },
+  {
+    "cbg": "M-1-60-I,M-1-60-II M-1-60-III",
+    "care": "1",
+    "primary": "",
+    "procedure": "76.5",
+    "procedure2": "",
+    "description": "Temporomandibul ar Joint (TMJ) Prosthesis",
+    "status_field": "IN_SR",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Temporomandibular Joint (TMJ) Prothesis"
+  },
+  {
+    "cbg": "I-1-20-I,I-1-20-II,I-1-20-III",
+    "care": "1",
+    "primary": "",
+    "procedure": "39.71,39.73",
+    "procedure2": "",
+    "description": "Prostesis Evar/Tevar",
+    "status_field": "IN_SR",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Prostesis Evar/Tevar\\nPersyaratan yang perlu diverifikasi\\n1. Tarif layanan yang mendapatkan top up hanya berlaku untuk:\\n   - RS Kelas A Umum;\\n   - RS Khusus Jantung Kelas A. \\n2. Tarif layanan berlakuhanya untuk 1 kali penjaminan untuk setiap jenis proseduryang menggunakan prosthesis Evar/Tevar; \\n3. Layanan dilakukanoleh dokter sesuai dengan kewenangan klinis dan kompetensinya.  "
+  },
+  {
+    "cbg": "M-1-04-I,M-1-04-II,M-1-04-III",
+    "care": "1",
+    "primary": "",
+    "procedure": "81.51,81.52,81.53,81.54,81.55",
+    "procedure2": "",
+    "description": "Hip Replacement/Kne e Replacement",
+    "status_field": "IN_SP",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Hip Implant/Knee Implant\\nPersyaratan yang perlu diverifikasi\\n1. Penjaminan tidak dapat dilakukan di RS kelas D;\\n2. Layanan dilakukan oleh operator sesuai dengan kewenangan klinis dan kompetensinya;\\n3. Adanya ketersediaan alat untuk pelaksanaan operasi Hip/Knee Implant."
+  },
+  {
+    "cbg": "I-1-40-I,I-1-40-II I-1-40-III",
+    "care": "1",
+    "primary": "",
+    "procedure": "36.06,36.07",
+    "procedure2": "",
+    "description": "Percutaneous Coronary Intervention (PCI)",
+    "status_field": "IN_SP",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Percutaneous Coronary Intervention (PCI)"
+  },
+  {
+    "cbg": "H-1-30-I,H-1-30-II,H-1-30-III",
+    "care": "1",
+    "primary": "",
+    "procedure": "11.60,11.61,11.62,11.63,11.64,11.69",
+    "procedure2": "",
+    "description": "Keratoplasty",
+    "status_field": "IN_SP",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Keratoplasty"
+  },
+  {
+    "cbg": "B-1-10-I,B-1-10-II,B-1-10-III",
+    "care": "1",
+    "primary": "",
+    "procedure": "52.51,52.52,52.53,52.59,52.6",
+    "procedure2": "",
+    "description": "Pancreatectomy",
+    "status_field": "IN_SP",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Pancreatectomy"
+  },
+  {
+    "cbg": "I-1-06-I,I-1-06-II,I-1-06-III",
+    "care": "1",
+    "primary": "",
+    "procedure": "35.50,35.51,35.52,35.53,35.55",
+    "procedure2": "",
+    "description": "Repair of Septal Defect of Heart with Prosthesis",
+    "status_field": "IN_SP",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Repair of Septal Defect of Heart with Prosthesis"
+  },
+  {
+    "cbg": "C-4-12-I",
+    "care": "1",
+    "primary": "",
+    "procedure": "92.21,92.22,92.23,92.24,92.25,92.26,92.27,92.28,92.29,92.30,92.31,92.32,92.33,92.39",
+    "procedure2": "",
+    "description": "Stereotactic Surgery & Radiotheraphy",
+    "status_field": "IN_SP",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Stereotactic Surgery & Radiotheraphy"
+  },
+  {
+    "cbg": "J-1-30-I,J-1-30-II,J-1-30-III",
+    "care": "1",
+    "primary": "",
+    "procedure": "34.02,34.03",
+    "procedure2": "",
+    "description": "Torakotomi",
+    "status_field": "IN_SP",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Torakotomi"
+  },
+  {
+    "cbg": "J-1-10-I,J-1-10-II,J-1-10-III",
+    "care": "1",
+    "primary": "",
+    "procedure": "32.41,32.49",
+    "procedure2": "",
+    "description": "Lobektomi/Bilobek tomi",
+    "status_field": "IN_SP",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Lobektomi/Bilobekto\\nmi/Pneumonektomi"
+  },
+  {
+    "cbg": "H-1-30-I,H-1-30-II,H-1-30-III",
+    "care": "1",
+    "primary": "",
+    "procedure": "14.71,14.72,14.73,14.74",
+    "procedure2": "",
+    "description": "Vitrectomy",
+    "status_field": "IN_SP",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Vitrectomy"
+  },
+  {
+    "cbg": "J-3-15-0",
+    "care": "2",
+    "primary": "",
+    "procedure": "33.41,31.42,31.44",
+    "procedure2": "",
+    "description": "Microlaringoscopy",
+    "status_field": "IN_SP",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Microlaringoscopy"
+  },
+  {
+    "cbg": "B-3-11-0",
+    "care": "2",
+    "primary": "",
+    "procedure": "51.10,51.11,51.14,51.15,52.13",
+    "procedure2": "",
+    "description": "Cholangiograph",
+    "status_field": "IN_SP",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Cholangiograph"
+  },
+  {
+    "cbg": "G-1-12-I,G-1-12-II,G-1-12-III",
+    "care": "1",
+    "primary": "",
+    "procedure": "39.75",
+    "procedure2": "",
+    "description": "Coil",
+    "status_field": "IN_SP",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Coils\\nPersyaratan yang perlu diverifikasi\\n1. Penjaminan tidak dapat dilakukan di RS kelas D;\\n2. Kriteria pendukung: \\n    a. Hasil CT Scan Kepala minimal 64 Slice yang dilakukan pada saat pasien datang ke RS; \\n    b. Pasien dirawat diruang ICU neurologi/ICUatau HCU neurologi/ HCU setelah tindakan Coiling; \\n    c. Layanan dilakukan oleh operator sesuai dengan kewenangan klinis dan kompetensi. \\n"
+  },
+  {
+    "cbg": "G-1-12-I,G-1-12-II,G-1-12-III",
+    "care": "1",
+    "primary": "",
+    "procedure": "39.74",
+    "procedure2": "",
+    "description": "Trombektomi",
+    "status_field": "IN_SP",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Trombektomi \\nPersyaratan yang perlu diverifikasi\\n1. Penjaminan tidak dapat dilakukan di RS kelas D;\\n2. Kriteria pendukung:\\n    a. Hasil CT Scan Kepala minimal 64 Slice yang dilakukan pada saat pasien datang ke RS;\\n    b. Pasien dirawat diruang ICU neurologi/ICU atau HCU neurologi/ HCU setelah tindakan Trombektomi; \\n    c. Layanan dilakukan oleh operator sesuai dengan kewenangan klinis dan kompetensi. "
+  },
+  {
+    "cbg": "E-4-10-I,E-4-10-II,E-4-10-III",
+    "care": "1",
+    "primary": "E43,E44.0,E44.1",
+    "procedure": "43.11",
+    "procedure2": "",
+    "description": "Percutaneous Endoscopy Gastrostomy",
+    "status_field": "IN_SP",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Percutaneous Endoscopy Gastrostomy\\nPersyaratan yang perlu diverifikasi\\nPenjaminan tidak dapat dilakukan di RS kelas C dan D;\\nTarif top up untuk Percutaneous Endoscopy  Gastrostomy hanya untuk rawat inap;\\nStandar kriteria sarana prasarana dan kewenangan klinis RS yang berkompetensi melakukan Percutaneous Endoscopy Gastrostomy; \\nTindakan  Percutaneous Endoscopy  Gastrostomy hanya untuk indikasi terapetik."
+  },
+  {
+    "cbg": "U-3-16-0",
+    "care": "2",
+    "primary": "K01.0,K01.1",
+    "procedure": "23.19",
+    "procedure2": "",
+    "description": "Odontektomi",
+    "status_field": "IN_SP",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Odontektomi\\nPersyaratan yang perlu diverifikasi\\n1. Tarif top up Odontektomi hanya berlaku di rawat jalan;\\n2. Tindakan odontektomi  dilakukan oleh dokter gigi sesuai dengan kewenangan klinis dan kompetensinya;\\n3. Pencabutan gigi yang dilakukan odontektomi disebabkan oleh kelainan patologis, bukan semata mata karena posisi anatomi;\\n4. Dalam hal ketiadaan  Sp.BM/Sp.BMMF/dokter gigi spesialis sesuai kewenangan klinisnya di faskes maka tindakan elektif di rujuk ke faskes terdekat yang memiliki  Sp.BM/Sp.BMMF/dokter gigi spesialis sesuai kewenangan klinisnya."
+  },
+  {
+    "cbg": "C-3-10-0",
+    "care": "2",
+    "primary": "Z51.0",
+    "procedure": "92.20,92.27",
+    "procedure2": "",
+    "description": "Brakiterapi",
+    "status_field": "IN_SP",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Brakhiterapi\\nPersyaratan yang perlu diverifikasi\\nPenjaminan tidak dapat dilakukan di RS kelas D;\\nPelayanan Radioterapi dapat diberikan sesuai dengan PNPK atau PPK yang berlaku di fasyankes dan/atau keputusan Tumor Board sesuai dengan ketentuan perundangan yang berlaku"
+  },
+  {
+    "cbg": "Z-3-17-0",
+    "care": "2",
+    "primary": "",
+    "procedure": "92.05,92.15",
+    "procedure2": "",
+    "description": "Nuclear Medicine",
+    "status_field": "IN_SI",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Nuclear Medicine"
+  },
+  {
+    "cbg": "Z-3-16-0",
+    "care": "2",
+    "primary": "",
+    "procedure": "88.92,88.93,88.97",
+    "procedure2": "",
+    "description": "Magnetic Resonance Imaging (MRI)",
+    "status_field": "IN_SI",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Magnetic Resonance Imaging (MRI)"
+  },
+  {
+    "cbg": "H-3-13-0",
+    "care": "2",
+    "primary": "",
+    "procedure": "95.12",
+    "procedure2": "",
+    "description": "Diagnostic and Imaging Procedures of Eye",
+    "status_field": "IN_SI",
+    "recommendation": "Evaluasi potensi pembayaran tambahan untuk Diagnostic and Imaging Procedures of Eye"
+  },
+  {
+    "cbg": "D-3-10-0",
+    "care": "2",
+    "primary": "D56.1",
+    "procedure": "99.03,99.04",
+    "procedure2": "",
+    "description": "Kantong Darah Untuk Thalasemia",
+    "status_field": "C2",
+    "recommendation": "Tinjau kelengkapan pengajuan tarif non-INA-CBG untuk Kantong Darah Untuk Thalasemia Maksimal 4 Kantong Darah @360 Ribu"
+  },
+  {
+    "cbg": "N-3-15-0",
+    "care": "2",
+    "primary": "",
+    "procedure": "39.95",
+    "procedure2": "99.03,99.04",
+    "description": "Kantong Darah Hemodialisis",
+    "status_field": "C2",
+    "recommendation": "\\nAlat dan bahan medis habis pakai pada tindakan hemodialisis digunakan secara single use;\\nJika digunakan secara re-use maka tarif yang dibayarkan adalah 85% dari tarif yang berlaku\\nTinjau kelengkapan pengajuan tarif non-INA-CBG untuk Kantong Darah Hemodialisis Maksimal 4 Kantong Darah @360 Ribu"
+  },
+  {
+    "cbg": "D-3-10-0",
+    "care": "2",
+    "primary": "C91,C92,C93,C94C95",
+    "procedure": "99.03,99.04",
+    "procedure2": "",
+    "description": "Kantong Darah Untuk Leukimia",
+    "status_field": "C2",
+    "recommendation": "Tinjau kelengkapan pengajuan tarif non-INA-CBG untuk Kantong Darah Untuk Leukimia Maksimal 4 Kantong Darah @360 Ribu"
+  },
+  {
+    "cbg": "G-4-14-I,G-4-14-II,G-4-14-III",
+    "care": "1",
+    "primary": "i63.",
+    "procedure": "99.10",
+    "procedure2": "",
+    "description": "Alteplase",
+    "status_field": "C2",
+    "recommendation": "Tinjau kelengkapan pengajuan tarif non-INA-CBG untuk Alteplase , Apabila memang ada tata laksana obat Alteplase sesuai dengan PMK 3 Tahun 2023"
+  }
+]

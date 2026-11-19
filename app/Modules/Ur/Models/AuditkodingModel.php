@@ -4,8 +4,9 @@ namespace Modules\Ur\Models;
 
 use CodeIgniter\Model;
 
-class AuditkodingModel extends Model{
+class AuditkodingModel extends CaseRuleModel{
     protected $DBGroup = null;
+    protected $ruleSet = 'auditkoding';
 
     public function sequencingDetails($koders, $year, $care)
     {

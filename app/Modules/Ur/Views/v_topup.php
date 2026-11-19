@@ -1,42 +1,24 @@
-<div class="card">
-    <div class="card-header border-0 pt-6">
-        <div class="card-title">
-            <div class="d-flex align-items-center position-relative my-1">
-                <span class="svg-icon svg-icon-1 position-absolute ms-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2" rx="1" transform="rotate(45 17.0365 15.1223)" fill="black"></rect>
-                        <path d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z" fill="black"></path>
-                    </svg>
-                </span>
-                <input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Search Data" id="searchtable">
-            </div>
+<link rel="stylesheet" href="<?= base_url('assets/css/ur/dashboard.css?v=' . filemtime(FCPATH . 'assets/css/ur/dashboard.css')) ?>">
+<div id="ur-executive" class="prem-page pe-dashboard ur-dashboard topup-page">
+    <section class="ur-hero app-page-heading"><div><h1>Potensi Top Up</h1><p>Kandidat mengikuti diagnosis utama, prosedur, INA-CBG dan jenis layanan pada master Special Group CasCom. Status entri berasal dari special group atau data tambahan. Kelayakan pembayaran perlu ditelaah.</p></div></section>
+    <section class="ur-filterbar app-filter-card" aria-label="Filter data"><div class="app-filter-heading"><h2><i class="bi bi-funnel me-2" aria-hidden="true"></i>Filter topup</h2><p>Pilih bulan pulang untuk menyesuaikan ringkasan dan daftar kasus.</p></div><div class="app-filter-fields"><div class="ur-filter"><label for="topup-month">Bulan pulang</label><select id="topup-month" data-control="select2" data-hide-search="true" class="form-select form-select-sm form-select-solid"><option value="">Semua bulan</option><?php foreach (['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'] as $i => $month): ?><option value="<?= $i + 1 ?>"<?= $selectedMonth === $i + 1 ? ' selected' : '' ?>><?= $month ?></option><?php endforeach; ?></select></div><span class="badge badge-light-primary">Cakupan · Potensi Top Up</span><span class="ur-filter-note">Berdasarkan tanggal pulang</span></div><div class="app-filter-scope"><i class="bi bi-calendar-range" aria-hidden="true"></i><span id="topup-coverage">Memuat cakupan data…</span></div></section>
+    <div id="topup-status" class="ur-status" role="status" aria-live="polite" hidden></div>
+    <div id="topup-content" hidden>
+        <section id="topup-kpis" class="ur-kpis" aria-label="Ringkasan topup"></section>
+        <section class="card card-flush ur-panel">
+<div class="ur-panel-head"><div><h2>Nilai Top Up dan estimasi potensi bulanan</h2><p>Nilai tercatat memakai TARIF_SP, TARIF_SR, TARIF_SI, dan TARIF_SD pada episode kandidat. Estimasi belum dientri menggunakan rata-rata tarif pembanding dengan aturan, INA-CBG, dan layanan yang sama.</p></div></div>
+<div id="topup-value-chart" class="ur-chart"></div><p id="topup-value-note" class="text-muted mb-0" role="status"></p>
+</section><div class="ur-grid-equal"><section class="card card-flush ur-panel"><div class="ur-panel-head"><div><h2>Episode topup per bulan</h2></div></div><div id="topup-trend" class="ur-chart"></div></section><section class="card card-flush ur-panel"><div class="ur-panel-head"><div><h2>Komposisi severity</h2></div></div><div id="topup-severity" class="ur-chart"></div></section></div>
+<section class="ur-filterbar app-filter-card" aria-labelledby="topup-doctor-filter-title">
+    <div class="app-filter-heading"><h2 id="topup-doctor-filter-title"><i class="bi bi-funnel me-2" aria-hidden="true"></i>Filter topup per dokter</h2></div>
+    <div class="app-filter-fields">
+        <div class="topup-gap-options" role="group" aria-label="Selisih tarif">
+            <button type="button" class="btn topup-gap-option" data-gap="" aria-pressed="true">Semua</button>
+            <button type="button" class="btn topup-gap-option" data-gap="positive" aria-pressed="false">Selisih positif</button>
+            <button type="button" class="btn topup-gap-option" data-gap="negative" aria-pressed="false">Selisih negatif</button>
         </div>
     </div>
-    <div class="card-body pt-0">
-        <div class="table-responsive">
-            <table class="table align-middle table-row-dashed gy-2" id="dataraweklaim_table">
-                <thead>
-                    <tr class="fw-bolder text-muted bg-light">
-                        <th class="text-start rounded-start ps-4">#</th>
-                        <th>Identity</th>
-                        <th>Patient Name</th>
-                        <th>AGE</th>
-                        <th>DPJP</th>
-                        <th>Diagnosis</th>
-                        <th>Procedure</th>
-                        <th>Admission Date</th>
-                        <th>Discharge Date</th>
-                        <th>LOS</th>
-                        <th>SL</th>
-                        <th class="text-end">Hospital Cost</th>
-                        <th class="text-end">INA-CBG</th>
-                        <th class="text-end">Difference</th>
-                        <th>Recomendations</th>
-                        <th class="text-end rounded-end pe-4">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="fw-bold text-gray-600" id="resultdataraweklaim"></tbody>
-            </table>
-        </div>
-    </div>
-</div>
+    <div class="app-filter-scope"><i class="bi bi-info-circle" aria-hidden="true"></i><span>Berdasarkan total INA-CBG dikurangi total tarif RS per dokter pada bulan terpilih.</span></div>
+</section>
+<section class="card card-flush ur-panel app-table-card"><div class="ur-panel-head app-table-heading"><div><h2 class="app-table-title">Potensi Top Up per dokter</h2><p class="app-table-description">Episode, lama rawat dan tarif berdasarkan DPJP.</p></div><div class="app-table-search"><input id="topup-search" type="search" class="form-control form-control-solid" placeholder="Cari DPJP…" aria-label="Cari DPJP"></div></div><div class="ur-table-wrap"><table id="topup-table" data-datatable="manual" class="table table-row-dashed ur-table"><thead><tr><th>DPJP</th><th>Episode</th><th>Rata-rata LOS</th><th>Tarif RS</th><th>INA-CBG</th><th>Selisih</th></tr></thead><tbody id="topup-doctors"></tbody></table></div></section>
+<div class="topup-method" role="note"><i class="bi bi-info-circle" aria-hidden="true"></i><div><strong>Dasar pembacaan.</strong> Kandidat mengikuti diagnosis utama, prosedur, INA-CBG dan jenis layanan pada master Special Group CasCom. Status entri berasal dari special group atau data tambahan. Kelayakan pembayaran perlu ditelaah.</div></div></div></div>

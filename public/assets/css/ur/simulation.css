@@ -78,3 +78,32 @@
 @media (max-width: 991px) { .ur-simulation #sim-kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 600px) { .ur-simulation #sim-kpis { grid-template-columns: 1fr; gap: 14px; } .ur-simulation #sim-kpis .sim-summary-card { min-height: 0; padding: 22px; } .ur-simulation #sim-kpis .ur-kpi-value { font-size: 28px; } }
 @media (max-width: 767px) { .sim-net-heading { flex-direction: column; align-items: flex-start; } .sim-net-parts { grid-template-columns: 1fr; } .sim-net { padding: 18px; } }
+
+/* Align simulation with the shared UR cards and controls. */
+.ur-simulation{--prem-accent:#087e82;--prem-ink:#15373e;--prem-soft:#eaf6f4;min-width:0;padding-bottom:20px}
+.ur-simulation .ur-hero{background:transparent}
+.ur-simulation .card{border:1px solid #e1ebed;border-radius:16px;background:#fff;box-shadow:0 8px 28px #1c454b04;min-width:0}
+.ur-simulation .ur-panel{padding:24px;margin-bottom:20px}
+.ur-simulation .ur-panel-head{margin-bottom:20px}
+.ur-simulation .ur-panel-head h2{color:#234a54;margin:0;font-weight:600}
+.ur-simulation .ur-panel p{color:#789095;line-height:1.7}
+.ur-simulation .ur-panel-head p{margin:5px 0 0}
+.ur-simulation .ur-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:20px}
+
+.ur-simulation .ur-kpi{padding:20px}
+.ur-simulation .ur-kpi-value{color:#15373e;font-size:28px;font-weight:600;line-height:1.4;overflow-wrap:anywhere}
+.ur-simulation .ur-kpi-label{color:#6e8b90;font-size:13px}
+.ur-simulation .sim-summary-card{border-top:1px solid #e1ebed}
+.ur-simulation .sim-summary-icon{background:#e5f2ef;color:#087e82}
+.ur-simulation .sim-summary-tag{background:#edf6f3;color:#648088}
+.ur-simulation .sim-summary-note{color:#81969b}
+.ur-simulation .sim-filter-hint span{color:#087e82}
+.ur-simulation .sim-severity-0{--sim-color:#087e82;--sim-soft:#eaf6f4}
+.ur-simulation .sim-severity-1{--sim-color:#a48e59;--sim-soft:#fbf6eb}
+.ur-simulation .sim-severity-2{--sim-color:#7395a6;--sim-soft:#f0f5f8}
+.ur-simulation .sim-net{background:#f6faf9;border:1px solid #dceae5;border-radius:12px}
+.ur-simulation .sim-net-value{color:#087e82}
+.sim-method{display:flex;align-items:flex-start;gap:12px;padding:16px 20px;margin-bottom:20px;border:1px solid #dceae5;border-radius:12px;background:#f6faf9;color:#789095;line-height:1.7}
+.sim-method>i{color:#087e82;margin-top:3px}
+@media(max-width:991px){.ur-simulation .ur-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:575px){.ur-simulation .ur-kpis{grid-template-columns:1fr}.ur-simulation .ur-panel,.ur-simulation .ur-kpi,.sim-method{padding:16px}}

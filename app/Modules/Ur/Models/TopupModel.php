@@ -4,8 +4,9 @@ namespace Modules\Ur\Models;
 
 use CodeIgniter\Model;
 
-class TopupModel extends Model{
+class TopupModel extends CaseRuleModel{
     protected $DBGroup = null;
+    protected $ruleSet = 'topup';
 
     function periode(){
         $query = "

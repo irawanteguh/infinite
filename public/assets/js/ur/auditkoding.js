@@ -1,36 +1,58 @@
-(function(){'use strict';
-$(document).on('click','#audit-sequencing-details',function(event){
-event.preventDefault();
-const modal=bootstrap.Modal.getOrCreateInstance(document.getElementById('audit-case-modal'));
-$('#audit-case-body').text('Memuat detail kasus…');modal.show();
-$.ajax({url:url+'ur/auditkoding/sequencingDetails',type:'POST',dataType:'json',data:{selectperiode:$('#selectperiode').val(),care:$('#audit-care').val()||''}}).done(function(result){
-const cases=Array.isArray(result.responseResult)?result.responseResult:[];
-$('#audit-case-body').html(cases.length?'<p>'+nf.format(cases.length)+' episode. Validasi urutan diagnosis berdasarkan alasan perawatan dan resume medis.</p><div class="table-responsive"><table class="table table-row-dashed"><thead><tr><th>SEP / MRN</th><th>Pasien</th><th>DPJP</th><th>Layanan</th><th>Tanggal pulang</th><th>Diagnosis</th><th>Prosedur</th><th>LOS</th></tr></thead><tbody>'+cases.map(r=>'<tr><td>'+esc(r.sep)+'<br>'+esc(r.mrn)+'</td><td>'+esc(r.nama_pasien)+'</td><td>'+esc(r.dpjp)+'</td><td>'+(String(r.ptd)==='1'?'Rawat inap':'Rawat jalan')+'</td><td>'+esc(r.discharge_date)+'</td><td>'+esc(r.diaglist).replace(/;/g,', ')+'</td><td>'+esc(r.proclist).replace(/;/g,', ')+'</td><td>'+esc(r.los)+'</td></tr>').join('')+'</tbody></table></div>':'Tidak ada kasus pada filter terpilih.');
-}).fail(function(xhr){$('#audit-case-body').text(xhr.responseJSON?.responseDesc||'Detail kasus gagal dimuat. Tutup dan klik kembali untuk mencoba.');});
-});
-function renderComparison(){
-const c=comparison.coverage||{},care=$('#audit-care').val(),patterns=(comparison.patterns||[]).filter(r=>!care||String(r.care)===care);
-$('#audit-comparison').html('<p><strong>Cakupan pencocokan seluruh layanan:</strong> '+nf.format(Number(c.matched_episodes)||0)+' dari '+nf.format(Number(c.pending_episodes)||0)+' SEP riwayat verifikasi ditemukan pada data UR. Pencocokan menggunakan nomor SEP dan kode rumah sakit; periode mengikuti tanggal pulang pada riwayat verifikasi.</p>'+(!(Number(c.matched_episodes))?'<div class="alert alert-warning"><strong>Data belum dapat dibandingkan pada tingkat episode.</strong> Periksa kesesuaian kode rumah sakit, format SEP, dan kelengkapan impor kedua sumber. Lengkapi data UR untuk periode riwayat pending sebelum menyimpulkan pola penyebab atau pengulangan kasus.</div>':'')+patterns.map(r=>'<article class="border rounded p-5 mb-4"><h3>'+esc(r.category||'Telaah verifikasi')+'</h3><p><strong>Episode cocok:</strong> '+nf.format(Number(r.episodes)||0)+'</p><p><strong>Diagnosis UR:</strong> '+esc(r.diagnoses||'Belum tercatat')+'</p><p><strong>Prosedur UR:</strong> '+esc(r.procedures||'Belum tercatat')+'</p><p><strong>Catatan algoritma verifikasi:</strong> '+esc(r.rule_text||'Belum tercatat')+'</p><p><strong>Pencegahan pengulangan:</strong> Jadikan catatan verifikasi ini sebagai daftar periksa untuk episode dengan konteks klinis serupa. Sebelum pengajuan, cocokkan diagnosis akhir dengan resume medis, validasi indikasi dan bukti tindakan, serta lengkapi dokumen yang diminta verifikator. Ajukan klarifikasi klinis bila bukti belum memadai.</p><p class="mb-0"><strong>Evaluasi perbaikan:</strong> Dokumentasikan penyebab yang telah dikonfirmasi dan hasil tindak lanjut. Kesamaan kode belum membuktikan kesamaan masalah medis atau kesalahan koding.</p></article>').join('')+(Number(c.matched_episodes)&&!patterns.length?'<p>Tidak ada pasangan episode untuk jenis layanan terpilih.</p>':''));
-}
-function renderPendingRules(){
-const care=$('#audit-care').val(),items=pendingRules.filter(r=>!care||String(r.care)===care);
-$('#audit-pending-rules').html(items.length?items.map(r=>'<article class="border rounded p-5 mb-4"><span class="badge badge-light-warning mb-3">'+esc(r.category||'Algoritma verifikasi')+'</span><h3>Aturan yang perlu diperiksa</h3><p style="white-space:pre-wrap">'+esc(r.rule_text).replace(/\|/g,'<br>')+'</p><p><strong>Riwayat:</strong> '+nf.format(Number(r.episodes)||0)+' episode pada '+nf.format(Number(r.records)||0)+' catatan verifikasi.</p><p><strong>Rekomendasi:</strong> Gunakan setiap butir algoritma di atas sebagai daftar periksa terhadap resume medis, diagnosis akhir, dan laporan tindakan. Konfirmasikan ketentuan dengan pedoman yang berlaku dan penjelasan verifikator sebelum koreksi kode.</p><p class="mb-0"><strong>Tindak lanjut:</strong> Catat bukti pendukung untuk setiap butir, ajukan klarifikasi jika dokumentasi belum jelas, lalu tandai hasilnya sebagai sesuai, perlu klarifikasi, atau perlu koreksi.</p></article>').join(''):'<p>Tidak ada algoritma verifikasi yang tercatat pada cakupan terpilih.</p>');
-}
-function renderAnalysis(data,total){
-const plans=[
-['missing_diagnosis','Lengkapi diagnosis sebelum evaluasi kode','Diagnosis kosong menghambat penilaian ketepatan kode.','Bandingkan diagnosis pada resume medis dengan data impor. Jika diagnosis ada di sumber, perbaiki pemetaan atau impor; jika belum terdokumentasi, minta klarifikasi kepada dokter melalui alur resmi.','Resume medis, diagnosis akhir, dan berkas impor.','Diagnosis terdokumentasi dan kode tercatat sesuai sumber.'],
-['sequencing','Validasi alasan penetapan diagnosis utama','I10 tercatat sebagai diagnosis utama bersama I67.8 atau I69.3; kombinasi ini memerlukan penelaahan alasan perawatan.','Baca alasan masuk, kondisi yang ditangani, dan kesimpulan akhir dokter. Konfirmasikan urutan diagnosis berdasarkan dokumentasi; jangan mengganti diagnosis utama hanya berdasarkan pasangan kode.','Resume medis, catatan perkembangan, hasil pemeriksaan, dan alasan masuk.','Urutan diagnosis dikonfirmasi atau dikoreksi dengan dasar dokumentasi.'],
-['ventilation_review','Cocokkan prosedur ventilasi dengan indikasi klinis','Kode ventilasi tercatat tanpa J96.x atau Z99.1. Kondisi lain dapat menjadi indikasi ventilasi.','Periksa indikasi ventilasi, catatan tindakan, dan durasi pemakaian. Cocokkan kode 96.70/96.71/96.72 dengan dokumentasi; ajukan klarifikasi bila diagnosis atau durasi belum jelas.','Catatan ventilator, laporan tindakan, resume medis, dan waktu mulai/selesai.','Indikasi dan durasi tervalidasi; diagnosis/prosedur dikodekan sesuai dokumentasi.'],
-['symptom_primary','Tinjau spesifisitas diagnosis akhir','Diagnosis utama menggunakan kelompok gejala R00–R99; penggunaannya dapat sesuai bila diagnosis definitif belum ditegakkan.','Periksa apakah diagnosis definitif sudah tercantum pada evaluasi akhir. Jika belum jelas, ajukan klarifikasi; pertahankan kode gejala bila sesuai kesimpulan klinis.','Diagnosis akhir, hasil penunjang, dan resume medis.','Kode gejala dipertahankan atau disesuaikan berdasarkan diagnosis akhir.'],
-['missing_procedure','Verifikasi kebutuhan pencatatan prosedur','Kolom prosedur kosong dapat sesuai pada episode tanpa tindakan yang perlu dikodekan.','Cocokkan dengan laporan tindakan. Lengkapi kode hanya untuk prosedur yang dilakukan dan terdokumentasi.','Laporan tindakan, catatan pelayanan, dan data impor.','Prosedur terverifikasi atau episode dinyatakan tidak memerlukan kode prosedur.']
+(function(){
+'use strict';
+const nf=new Intl.NumberFormat('id-ID'), months=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+const num=v=>Number(v)||0, sum=(r,k)=>r.reduce((n,x)=>n+num(x[k]),0), money=v=>'Rp '+nf.format(v);
+const esc=v=>String(v??'—').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let rows=[], charts=[],request, generation=0;
+function link(){const a=document.getElementById('auditkoding-detail-link'),u=new URL(a.href);u.searchParams.set('year',$('#selectperiode').val());const m=$('#auditkoding-month').val();if(m)u.searchParams.set('month',m);else u.searchParams.delete('month');a.href=u.href;}
+function render(){
+charts.forEach(c=>c.destroy());charts=[];
+const m=$('#auditkoding-month').val(),data=rows.filter(r=>!m||num(r.month)===num(m));
+$('#auditkoding-content').prop('hidden',!data.length);$('#auditkoding-status').text(data.length?'':'Tidak ada kasus pada filter ini.').prop('hidden',!!data.length);
+$('#auditkoding-coverage').text(nf.format(data.length)+' episode terpilih');
+if(!data.length)return;
+const rs=sum(data,'tarif_rs'),ina=sum(data,'total_tarif');
+const compactMoney = value => 'Rp ' + new Intl.NumberFormat('id-ID', {
+    notation:'compact', maximumFractionDigits:2
+}).format(value);
+const metrics = [
+    ['Episode auditkoding', nf.format(data.length), 'Episode rawat inap pada periode terpilih', 'bi-clipboard2-check'],
+    ['Rata-rata LOS', (sum(data,'los') / data.length).toLocaleString('id-ID', {maximumFractionDigits:1}) + ' hari', 'Rata-rata lama rawat episode auditkoding', 'bi-clock-history'],
+    ['Total tarif RS', compactMoney(rs), 'Akumulasi tarif rumah sakit', 'bi-hospital'],
+    ['Total INA-CBG', compactMoney(ina), 'Akumulasi TOTAL_TARIF', 'bi-receipt'],
+    ['Total IDRG', compactMoney(sum(data,'idrg_total_tarif')), 'Nilai IDRG dari data impor', 'bi-file-earmark-medical'],
+    ['Selisih INA-CBG − RS', compactMoney(ina-rs), 'Total INA-CBG dikurangi tarif RS', 'bi-arrow-left-right']
 ];
-if(!total){$('#audit-analysis').html('<p>Analisis belum tersedia karena tidak ada episode pada periode terpilih.</p>');return;}
-const active=plans.filter(p=>sum(data,p[0])>0);
-$('#audit-analysis').html('<p>Dari <strong>'+nf.format(total)+' episode</strong>, terdapat <strong>'+active.length+' kategori indikator</strong> yang perlu ditelaah. Mulai dari kelengkapan diagnosis, kemudian urutan diagnosis dan kesesuaian prosedur. Jumlah berikut adalah kandidat pemeriksaan, bukan jumlah kesalahan yang telah dikonfirmasi.</p>'+active.map((p,i)=>'<article class="border rounded p-5 mb-4"><span class="badge badge-light-primary mb-3">Urutan pemeriksaan '+(i+1)+'</span><h3>'+p[1]+'</h3><p><strong>Hasil data:</strong> '+nf.format(sum(data,p[0]))+' episode ('+pct(sum(data,p[0]),total)+'). '+p[2]+'</p><p><strong>Tindakan yang disarankan:</strong> '+p[3]+'</p><p><strong>Dokumen yang diperiksa:</strong> '+p[4]+'</p><p class="mb-0"><strong>Hasil yang diharapkan:</strong> '+p[5]+'</p></article>').join('')+(!active.length?'<p>Tidak ditemukan kandidat pada indikator yang diperiksa. Audit sampel tetap diperlukan untuk menilai ketepatan kode di luar indikator ini.</p>':'')+'<div class="alert alert-info">Catat hasil setiap pemeriksaan sebagai: sesuai, perlu klarifikasi, perlu koreksi, atau kendala data impor. Ukur jumlah koreksi terkonfirmasi setelah pemeriksaan rekam medis; jangan menggunakan jumlah indikator sebagai tingkat kesalahan koding.</div>');
+$('#auditkoding-kpis').html(metrics.map(([label,value,description,icon],i) =>
+    '<article class="card card-flush ur-kpi ur-kpi-tone-' + i + '">' +
+    '<i class="bi ' + icon + ' ur-kpi-icon" aria-hidden="true"></i>' +
+    '<div class="ur-kpi-label">' + label + '</div>' +
+    '<div class="ur-kpi-value ' + (i === 5 && ina < rs ? 'ur-negative' : '') + '">' + value + '</div>' +
+    '<small>' + description + '</small></article>'
+).join(''));
+if(typeof ApexCharts!=='undefined'){
+const active=[...new Set(data.map(r=>num(r.month)))].sort((a,b)=>a-b);
+const options=[
+['auditkoding-trend',{chart:{type:'bar',height:285,toolbar:{show:false},animations:{enabled:false}},series:[{name:'Episode',data:active.map(m=>data.filter(r=>num(r.month)===m).length)}],xaxis:{categories:active.map(m=>months[m-1])},plotOptions:{bar:{columnWidth:'48%',borderRadius:4}},dataLabels:{enabled:false}}],
+['auditkoding-severity',{chart:{type:'donut',height:285,animations:{enabled:false}},series:['I','II','III','Lainnya'].map(s=>data.filter(r=>s==='Lainnya'?!['I','II','III'].includes(r.sl):r.sl===s).length),labels:['SL I','SL II','SL III','Lainnya'],legend:{position:'bottom'}}]];
+options.forEach(([id,opt])=>{const c=new ApexCharts(document.getElementById(id),{...opt,colors:['#087e82','#93b6c3','#64748b','#d3ad69']});charts.push(c);c.render();});
 }
-let comparison={},pendingRules=[],rows=[],request=null;const nf=new Intl.NumberFormat('id-ID'),keys=['all_episodes','missing_diagnosis','missing_procedure','symptom_primary','sequencing','ventilation_review','negative_cases'];
-const sum=(r,k)=>r.reduce((n,x)=>n+(Number(x[k])||0),0),esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),pct=(n,d)=>d?(100*n/d).toLocaleString('id-ID',{maximumFractionDigits:1})+'%':'—';
-const rules=[['missing_diagnosis','Diagnosis belum tercatat','Periksa kelengkapan diagnosis pada data impor dan rekam medis.'],['symptom_primary','Diagnosis utama berupa gejala (R00–R99)','Tinjau hasil evaluasi klinis dan spesifisitas diagnosis akhir.'],['sequencing','Hipertensi utama dengan diagnosis serebrovaskular terkait','Validasi urutan diagnosis I10 dengan I67.8 atau I69.3 berdasarkan alasan perawatan.'],['ventilation_review','Ventilasi tanpa diagnosis gagal napas atau ketergantungan respirator','Periksa indikasi ventilasi dan dokumentasi diagnosis terkait.'],['missing_procedure','Prosedur belum tercatat','Pastikan apakah episode memang tidak memerlukan prosedur.']];
-function render(){const care=$('#audit-care').val(),data=rows.filter(r=>!care||String(r.ptd)===care),total=sum(data,'all_episodes');$('#audit-status').text(total?'':'Tidak ada data pada periode terpilih.');$('#audit-kpis').html([['Episode ditelaah',total],['Diagnosis belum tercatat',sum(data,'missing_diagnosis')],['Diagnosis utama gejala',sum(data,'symptom_primary')],['Telaah urutan diagnosis',sum(data,'sequencing')],['Telaah kode ventilasi',sum(data,'ventilation_review')],['Tarif INA-CBG di bawah tarif RS',sum(data,'negative_cases')]].map((k,i)=>'<article class="card ur-kpi ur-kpi-tone-'+i+'"><div class="ur-kpi-label">'+k[0]+'</div><div class="ur-kpi-value">'+nf.format(k[1])+'</div></article>').join(''));$('#audit-rules').html(rules.map(k=>'<tr><td>'+k[1]+'</td><td>'+nf.format(sum(data,k[0]))+'</td><td>'+pct(sum(data,k[0]),total)+'</td><td>'+k[2]+'</td></tr>').join(''));const cells=r=>['all_episodes','missing_diagnosis','symptom_primary','sequencing','ventilation_review'].map(k=>'<td>'+nf.format(sum(r,k))+'</td>').join('');$('#audit-monthly').html([...new Set(data.map(r=>Number(r.month)))].sort((a,b)=>a-b).map(m=>'<tr><td>'+new Date(2026,m-1,1).toLocaleString('id-ID',{month:'long'})+'</td>'+cells(data.filter(r=>Number(r.month)===m))+'</tr>').join(''));renderAnalysis(data,total);renderPendingRules();renderComparison();}
-window.load=function(){if(request)request.abort();$('#audit-refresh').prop('disabled',true);Swal.fire({title:'Memuat ringkasan audit koding',allowOutsideClick:false,showConfirmButton:false,didOpen:()=>Swal.showLoading()});request=$.ajax({url:url+'ur/auditkoding/summary',type:'POST',dataType:'json',data:{selectperiode:$('#selectperiode').val()}}).done(r=>{comparison=r.comparison||{};pendingRules=Array.isArray(r.pendingRules)?r.pendingRules:[];rows=r.responseCode==='00'&&Array.isArray(r.responseResult)?r.responseResult:[];render();if(r.responseCode!=='00')$('#audit-status').text(r.responseDesc||'Data gagal dimuat.');}).fail((x,s)=>{if(s!=='abort'){pendingRules=[];rows=[];render();$('#audit-status').text('Data gagal dimuat. Silakan perbarui kembali.');}}).always(()=>{Swal.close();$('#audit-refresh').prop('disabled',false);});};$('#selectperiode,#audit-refresh').on('change click',function(e){if(e.type==='change'||this.id==='audit-refresh')window.load();});$('#audit-care').on('change',render);window.load();
+const groups=new Map();data.forEach(r=>{const name=r.dpjp||'Belum terisi';if(!groups.has(name))groups.set(name,[]);groups.get(name).push(r);});
+if($.fn.DataTable.isDataTable('#auditkoding-table'))$('#auditkoding-table').DataTable().destroy();
+const term=String($('#auditkoding-search').val()||'').toLowerCase();
+$('#auditkoding-doctors').html([...groups].filter(([name,items])=>{
+    if(!name.toLowerCase().includes(term))return false;
+    const selected=$('.auditkoding-gap-option[aria-pressed="true"]').attr('data-gap');
+    const gap=sum(items,'total_tarif')-sum(items,'tarif_rs');
+    return !selected||(selected==='positive'&&gap>0)||(selected==='negative'&&gap<0);
+}).sort((a,b)=>b[1].length-a[1].length).map(([name,r])=>{const gap=sum(r,'total_tarif')-sum(r,'tarif_rs');return '<tr><td>'+esc(name)+'</td><td>'+nf.format(r.length)+'</td><td>'+(sum(r,'los')/r.length).toLocaleString('id-ID',{maximumFractionDigits:1})+' hari</td><td>'+money(sum(r,'tarif_rs'))+'</td><td>'+money(sum(r,'total_tarif'))+'</td><td class="'+(gap<0?'ur-negative':'ur-positive')+'">'+money(gap)+'</td></tr>';}).join(''));
+initDataTable('#auditkoding-table',null,10,{searching:false,order:[]});
+}
+window.load=function(){const token=++generation;if(request)request.abort();$('#auditkoding-content').prop('hidden',true);$('#auditkoding-status').text('Memuat ringkasan auditkoding…').prop('hidden',false);$('#auditkoding-refresh').prop('disabled',true);
+request=$.ajax({url:url+'ur/auditkoding/summary',type:'POST',dataType:'json',data:{selectperiode:$('#selectperiode').val()}}).done(r=>{if(token!==generation)return;if(r.responseCode!=='00'){$('#auditkoding-status').text(r.responseDesc||'Data gagal dimuat.');return;}rows=Array.isArray(r.responseResult)?r.responseResult:[];render();}).fail((xhr,state)=>{if(token===generation&&state!=='abort')$('#auditkoding-status').text('Data gagal dimuat. Klik Perbarui untuk mencoba kembali.');}).always(()=>{if(token===generation)$('#auditkoding-refresh').prop('disabled',false);});};
+$('#selectperiode').on('change',()=>{link();window.load();});$('#auditkoding-month').on('change',()=>{link();render();});$('#auditkoding-search').on('input',render);$('.auditkoding-gap-option').on('click',function(){
+    $('.auditkoding-gap-option').attr('aria-pressed','false');
+    $(this).attr('aria-pressed','true');
+    render();
+});$('#auditkoding-refresh').on('click',window.load);$('#auditkoding-print').on('click',()=>window.print());link();window.load();
 })();

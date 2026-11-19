@@ -1,0 +1,2907 @@
+[
+  {
+    "primary": "J40",
+    "procedure": " ",
+    "secondary": " ",
+    "description": "Tinjau kesesuaian kode J40 dengan usia pasien. Aturan ini mengarahkan pemeriksaan pada kelompok usia lebih dari 15 tahun.",
+    "recommendation": " "
+  },
+  {
+    "primary": "J20",
+    "procedure": " ",
+    "secondary": " ",
+    "description": "Tinjau penggunaan kode J20 pada pasien berusia kurang dari 15 tahun dan periksa apakah dokumentasi mendukung kode yang lebih spesifik.",
+    "recommendation": " "
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I60.0",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I60.0 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I61.0",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I61.0 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I61.1",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I61.1 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I61.2",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I61.2 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I61.3",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I61.3 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I61.4",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I61.4 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I61.5",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I61.5 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I61.6",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I61.6 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I61.8",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I61.8 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I61.9",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I61.9 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I62.0",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I62.0 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I62.1",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I62.1 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I62.9",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I62.9 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I63.0",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I63.0 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I63.1",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I63.1 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I63.2",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I63.2 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I63.3",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I63.3 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I63.4",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I63.4 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I63.5",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I63.5 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I63.6",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I63.6 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I63.8",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I63.8 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I63.9",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I63.9 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I64",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I64 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I65.0",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I65.0 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I65.1",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I65.1 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I65.2",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I65.2 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I65.3",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I65.3 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I65.8",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I65.8 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I65.9",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I65.9 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I66.0",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I66.0 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I66.1",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I66.1 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I66.2",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I66.2 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I66.3",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I66.3 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I66.4",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I66.4 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I66.8",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I66.8 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I66.9",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I66.9 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I67.0",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I67.0 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I67.1",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I67.1 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I67.2",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I67.2 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I67.3",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I67.3 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I67.4",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I67.4 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I67.5",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I67.5 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I67.6",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I67.6 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I67.7",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I67.7 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I67.8",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I67.8 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I67.9",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I67.9 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I69.0",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I69.0 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I69.1",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I69.1 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I69.2",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I69.2 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I69.3",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I69.3 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I69.4",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I69.4 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I69.8",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I69.8 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I20.0",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I20.0 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I20.1",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I20.1 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I20.8",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I20.8 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I20.9",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I20.9 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I21.0",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I21.0 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I21.1",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I21.1 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I21.2",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I21.2 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I21.3",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I21.3 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I21.4",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I21.4 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I21.9",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I21.9 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I22.0",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I22.0 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I22.1",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I22.1 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I22.8",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I22.8 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I22.9",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I22.9 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I23.0",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I23.0 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I23.1",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I23.1 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I23.2",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I23.2 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I23.3",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I23.3 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I23.4",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I23.4 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I23.5",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I23.5 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I23.6",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I23.6 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I23.8",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I23.8 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I24.0",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I24.0 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I24.1",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I24.1 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I24.8",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I24.8 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I24.9",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I24.9 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I25.0",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I25.0 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I25.1",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I25.1 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I25.2",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I25.2 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I25.3",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I25.3 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I25.4",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I25.4 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I25.5",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I25.5 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I25.6",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I25.6 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I25.8",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I25.8 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "I10;I11.0;I11.9;I12.0;I12.9;I13.0;I13.1;I13.2;I13.9;I15.0;I15.1;I15.2;I15.8;I15.9",
+    "procedure": " ",
+    "secondary": "I25.9",
+    "description": "Urutan diagnosis perlu ditinjau. Evaluasi I25.9 sebagai diagnosis utama berdasarkan alasan perawatan dan dokumentasi episode.",
+    "recommendation": "Tinjau penempatan kode I10 atau I15.0 atau I15.1 atau I15.2 atau I15.8 atau I15.9 sebagai diagnosis sekunder dan cocokkan dengan kondisi yang terdokumentasi."
+  },
+  {
+    "primary": "N20",
+    "procedure": " ",
+    "secondary": "N30.0",
+    "description": "Dengan N20* maka N30* sampain N39* tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) N30* - N39*"
+  },
+  {
+    "primary": "N21",
+    "procedure": " ",
+    "secondary": "N30.1",
+    "description": "Dengan N21* maka N30* sampain N39* tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) N30* - N39*"
+  },
+  {
+    "primary": "N22",
+    "procedure": " ",
+    "secondary": "N30.2",
+    "description": "Dengan N22* maka N30* sampain N39* tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) N30* - N39*"
+  },
+  {
+    "primary": "N23",
+    "procedure": " ",
+    "secondary": "N30.3",
+    "description": "Dengan N23* maka N30* sampain N39* tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) N30* - N39*"
+  },
+  {
+    "primary": "I50.1;I11.0;I13.0;I13.2",
+    "procedure": " ",
+    "secondary": "J81",
+    "description": "Kasus Acute Lung Oedema (J81) dengan Heart Diseases NOS atau Heart Failure (I50.0- I50.9) atau (I11.0, I13.0, I13.2)",
+    "recommendation": "Kode Kombinasi J81 dengan heart disease (I50.-) atau Heart Failure (I11.0, I13.0, I13.2), dikoding dengan I50.1"
+  },
+  {
+    "primary": "I50.0;I11.0;I13.0;I13.2",
+    "procedure": " ",
+    "secondary": "J81",
+    "description": "Kasus Acute Lung Oedema (J81) dengan Heart Diseases NOS atau Heart Failure (I50.0- I50.9) atau (I11.0, I13.0, I13.2)",
+    "recommendation": "Kode Kombinasi J81 dengan heart disease (I50.-) atau Heart Failure (I11.0, I13.0, I13.2), dikoding dengan I50.1"
+  },
+  {
+    "primary": "I50.9;I11.0;I13.0;I13.2",
+    "procedure": " ",
+    "secondary": "J81",
+    "description": "Kasus Acute Lung Oedema (J81) dengan Heart Diseases NOS atau Heart Failure (I50.0- I50.9) atau (I11.0, I13.0, I13.2)",
+    "recommendation": "Kode Kombinasi J81 dengan heart disease (I50.-) atau Heart Failure (I11.0, I13.0, I13.2), dikoding dengan I50.1"
+  },
+  {
+    "primary": "A01.0",
+    "procedure": " ",
+    "secondary": "A09.0",
+    "description": "Dengan A01.0 maka A09.0 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) A09.0"
+  },
+  {
+    "primary": "A01.1",
+    "procedure": " ",
+    "secondary": "A09.0",
+    "description": "Dengan A01.1 maka A09.0 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) A09.0"
+  },
+  {
+    "primary": "A01.2",
+    "procedure": " ",
+    "secondary": "A09.0",
+    "description": "Dengan A01.2 maka A09.0 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) A09.0"
+  },
+  {
+    "primary": "A01.3",
+    "procedure": " ",
+    "secondary": "A09.0",
+    "description": "Dengan A01.3 maka A09.0 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) A09.0"
+  },
+  {
+    "primary": "A01.4",
+    "procedure": " ",
+    "secondary": "A09.0",
+    "description": "Dengan A01.4 maka A09.0 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) A09.0"
+  },
+  {
+    "primary": "A01.0",
+    "procedure": " ",
+    "secondary": "A09.9",
+    "description": "Dengan A01.0 maka A09.9 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) A09.9"
+  },
+  {
+    "primary": "A01.1",
+    "procedure": " ",
+    "secondary": "A09.9",
+    "description": "Dengan A01.1 maka A09.9 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) A09.9"
+  },
+  {
+    "primary": "A01.2",
+    "procedure": " ",
+    "secondary": "A09.9",
+    "description": "Dengan A01.2 maka A09.9 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) A09.9"
+  },
+  {
+    "primary": "A01.3",
+    "procedure": " ",
+    "secondary": "A09.9",
+    "description": "Dengan A01.3 maka A09.9 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) A09.9"
+  },
+  {
+    "primary": "A01.4",
+    "procedure": " ",
+    "secondary": "A09.9",
+    "description": "Dengan A01.4 maka A09.9 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) A09.9"
+  },
+  {
+    "primary": "A15.0",
+    "procedure": " ",
+    "secondary": "J18",
+    "description": "Dengan A15.0 maka J18.* tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) J18.0"
+  },
+  {
+    "primary": "A15.0",
+    "procedure": " ",
+    "secondary": "J18",
+    "description": "Dengan A15.0 maka J18.* tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) J18.9"
+  },
+  {
+    "primary": "A15.1",
+    "procedure": " ",
+    "secondary": "J18",
+    "description": "Dengan A15.1 maka J18.* tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) J18.0"
+  },
+  {
+    "primary": "A15.1",
+    "procedure": " ",
+    "secondary": "J18",
+    "description": "Dengan A15.1 maka J18.* tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) J18.9"
+  },
+  {
+    "primary": "A15.2",
+    "procedure": " ",
+    "secondary": "J18",
+    "description": "Dengan A15.2 maka J18.* tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) J18.0"
+  },
+  {
+    "primary": "A15.2",
+    "procedure": " ",
+    "secondary": "J18",
+    "description": "Dengan A15.2 maka J18.* tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) J18.9"
+  },
+  {
+    "primary": "A15.3",
+    "procedure": " ",
+    "secondary": "J18",
+    "description": "Dengan A15.3 maka J18.* tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) J18.0"
+  },
+  {
+    "primary": "A15.2",
+    "procedure": " ",
+    "secondary": "J18",
+    "description": "Dengan A15.2 maka J18.* tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) J18.9"
+  },
+  {
+    "primary": "A16.0",
+    "procedure": " ",
+    "secondary": "J18",
+    "description": "Dengan A16.0 maka J18.* tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) J18.0"
+  },
+  {
+    "primary": "A16.0",
+    "procedure": " ",
+    "secondary": "J18",
+    "description": "Dengan A16.0 maka J18.* tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) J18.9"
+  },
+  {
+    "primary": "A16.1",
+    "procedure": " ",
+    "secondary": "J18",
+    "description": "Dengan A16.1 maka J18.* tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) J18.0"
+  },
+  {
+    "primary": "A16.1",
+    "procedure": " ",
+    "secondary": "J18",
+    "description": "Dengan A16.1 maka J18.* tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) J18.9"
+  },
+  {
+    "primary": "A16.2",
+    "procedure": " ",
+    "secondary": "J18",
+    "description": "Dengan A16.2 maka J18.* tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) J18.0"
+  },
+  {
+    "primary": "A16.2",
+    "procedure": " ",
+    "secondary": "J18",
+    "description": "Dengan A16.2 maka J18.* tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) J18.9"
+  },
+  {
+    "primary": "J44.0",
+    "procedure": " ",
+    "secondary": "J18",
+    "description": "Dengan J44.0 maka J18.* tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) AX3"
+  },
+  {
+    "primary": "J44.9",
+    "procedure": " ",
+    "secondary": "J18",
+    "description": "Dengan kode J44.9 dan J18.*, maka keduanya disubstitusi dengan J44.0",
+    "recommendation": "Omit code (tidak dikoding) AX3"
+  },
+  {
+    "primary": "K35.2",
+    "procedure": " ",
+    "secondary": "K65.0",
+    "description": "Dengan K35.2 maka  K65.0 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) K65.0"
+  },
+  {
+    "primary": "K35.2",
+    "procedure": " ",
+    "secondary": "K65.8",
+    "description": "Dengan K35.2 maka  K65.8 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) K65.8"
+  },
+  {
+    "primary": "K35.2",
+    "procedure": " ",
+    "secondary": "K65.9",
+    "description": "Dengan K35.2 maka  K65.9 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) K65.9"
+  },
+  {
+    "primary": "K35.3",
+    "procedure": " ",
+    "secondary": "K65.0",
+    "description": "Dengan K35.3 maka  K65.0 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) K65.0"
+  },
+  {
+    "primary": "K35.3",
+    "procedure": " ",
+    "secondary": "K65.8",
+    "description": "Dengan K35.3 maka  K65.8 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) K65.8"
+  },
+  {
+    "primary": "K35.3",
+    "procedure": " ",
+    "secondary": "K65.9",
+    "description": "Dengan K35.3 maka  K65.9 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) K65.9"
+  },
+  {
+    "primary": "O42.",
+    "procedure": " ",
+    "secondary": "O41.",
+    "description": "Dengan O42. maka  O41. tidak perlu dikoding lagi",
+    "recommendation": " "
+  },
+  {
+    "primary": "O42.0",
+    "procedure": " ",
+    "secondary": "O41.0",
+    "description": "Dengan O42.0 maka  O41.0 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) O41.0"
+  },
+  {
+    "primary": "O42.0",
+    "procedure": " ",
+    "secondary": "O41.1",
+    "description": "Dengan O42.0 maka  O41.1 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) O41.1"
+  },
+  {
+    "primary": "O42.0",
+    "procedure": " ",
+    "secondary": "O41.8",
+    "description": "Dengan O42.0 maka  O41.8 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) O41.8"
+  },
+  {
+    "primary": "O42.0",
+    "procedure": " ",
+    "secondary": "O41.9",
+    "description": "Dengan O42.0 maka  O41.9 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) O41.9"
+  },
+  {
+    "primary": "O42.1",
+    "procedure": " ",
+    "secondary": "O41.0",
+    "description": "Dengan O42.1 maka  O41.0 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) O41.0"
+  },
+  {
+    "primary": "O42.1",
+    "procedure": " ",
+    "secondary": "O41.1",
+    "description": "Dengan O42.1 maka  O41.1 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) O41.1"
+  },
+  {
+    "primary": "O42.1",
+    "procedure": " ",
+    "secondary": "O41.8",
+    "description": "Dengan O42.1 maka  O41.8 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) O41.8"
+  },
+  {
+    "primary": "O42.1",
+    "procedure": " ",
+    "secondary": "O41.9",
+    "description": "Dengan O42.1 maka  O41.9 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) O41.9"
+  },
+  {
+    "primary": "O42.2",
+    "procedure": " ",
+    "secondary": "O41.0",
+    "description": "Dengan O42.2 maka  O41.0 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) O41.0"
+  },
+  {
+    "primary": "O42.2",
+    "procedure": " ",
+    "secondary": "O41.1",
+    "description": "Dengan O42.2 maka  O41.1 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) O41.1"
+  },
+  {
+    "primary": "O42.2",
+    "procedure": " ",
+    "secondary": "O41.8",
+    "description": "Dengan O42.2 maka  O41.8 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) O41.8"
+  },
+  {
+    "primary": "O42.2",
+    "procedure": " ",
+    "secondary": "O41.9",
+    "description": "Dengan O42.2 maka  O41.9 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) O41.9"
+  },
+  {
+    "primary": "O42.9",
+    "procedure": " ",
+    "secondary": "O41.0",
+    "description": "Dengan O42.9 maka  O41.0 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) O41.0"
+  },
+  {
+    "primary": "O42.9",
+    "procedure": " ",
+    "secondary": "O41.1",
+    "description": "Dengan O42.9 maka  O41.1 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) O41.1"
+  },
+  {
+    "primary": "O42.9",
+    "procedure": " ",
+    "secondary": "O41.8",
+    "description": "Dengan O42.9 maka  O41.8 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) O41.8"
+  },
+  {
+    "primary": "O42.9",
+    "procedure": " ",
+    "secondary": "O41.9",
+    "description": "Dengan O42.9 maka  O41.9 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) O41.9"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.0",
+    "description": "Dengan Z47.0 maka S02.0 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.0"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.00",
+    "description": "Dengan Z47.0 maka S02.00 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.00"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.01",
+    "description": "Dengan Z47.0 maka S02.01 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.01"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.1",
+    "description": "Dengan Z47.0 maka S02.1 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.1"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.10",
+    "description": "Dengan Z47.0 maka S02.10 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.10"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.11",
+    "description": "Dengan Z47.0 maka S02.11 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.11"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.2",
+    "description": "Dengan Z47.0 maka S02.2 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.2"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.20",
+    "description": "Dengan Z47.0 maka S02.20 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.20"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.21",
+    "description": "Dengan Z47.0 maka S02.21 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.21"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.3",
+    "description": "Dengan Z47.0 maka S02.3 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.3"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.30",
+    "description": "Dengan Z47.0 maka S02.30 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.30"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.31",
+    "description": "Dengan Z47.0 maka S02.31 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.31"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.4",
+    "description": "Dengan Z47.0 maka S02.4 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.4"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.40",
+    "description": "Dengan Z47.0 maka S02.40 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.40"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.41",
+    "description": "Dengan Z47.0 maka S02.41 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.41"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.5",
+    "description": "Dengan Z47.0 maka S02.5 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.5"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.50",
+    "description": "Dengan Z47.0 maka S02.50 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.50"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.51",
+    "description": "Dengan Z47.0 maka S02.51 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.51"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.6",
+    "description": "Dengan Z47.0 maka S02.6 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.6"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.60",
+    "description": "Dengan Z47.0 maka S02.60 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.60"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.61",
+    "description": "Dengan Z47.0 maka S02.61 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.61"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.7",
+    "description": "Dengan Z47.0 maka S02.7 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.7"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.70",
+    "description": "Dengan Z47.0 maka S02.70 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.70"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.71",
+    "description": "Dengan Z47.0 maka S02.71 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.71"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.8",
+    "description": "Dengan Z47.0 maka S02.8 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.8"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.80",
+    "description": "Dengan Z47.0 maka S02.80 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.80"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.81",
+    "description": "Dengan Z47.0 maka S02.81 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.81"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.9",
+    "description": "Dengan Z47.0 maka S02.9 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.9"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.90",
+    "description": "Dengan Z47.0 maka S02.90 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.90"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S02.91",
+    "description": "Dengan Z47.0 maka S02.91 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S02.91"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S12.0",
+    "description": "Dengan Z47.0 maka S12.0 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S12.0"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S12.00",
+    "description": "Dengan Z47.0 maka S12.00 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S12.00"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S12.01",
+    "description": "Dengan Z47.0 maka S12.01 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S12.01"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S12.1",
+    "description": "Dengan Z47.0 maka S12.1 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S12.1"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S12.10",
+    "description": "Dengan Z47.0 maka S12.10 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S12.10"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S12.11",
+    "description": "Dengan Z47.0 maka S12.11 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S12.11"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S12.2",
+    "description": "Dengan Z47.0 maka S12.2 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S12.2"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S12.20",
+    "description": "Dengan Z47.0 maka S12.20 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S12.20"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S12.21",
+    "description": "Dengan Z47.0 maka S12.21 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S12.21"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S12.7",
+    "description": "Dengan Z47.0 maka S12.7 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S12.7"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S12.70",
+    "description": "Dengan Z47.0 maka S12.70 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S12.70"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S12.71",
+    "description": "Dengan Z47.0 maka S12.71 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S12.71"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S12.8",
+    "description": "Dengan Z47.0 maka S12.8 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S12.8"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S12.80",
+    "description": "Dengan Z47.0 maka S12.80 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S12.80"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S12.81",
+    "description": "Dengan Z47.0 maka S12.81 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S12.81"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S12.9",
+    "description": "Dengan Z47.0 maka S12.9 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S12.9"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S12.90",
+    "description": "Dengan Z47.0 maka S12.90 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S12.90"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S12.91",
+    "description": "Dengan Z47.0 maka S12.91 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S12.91"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S22.0",
+    "description": "Dengan Z47.0 maka S22.0 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S22.0"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S22.00",
+    "description": "Dengan Z47.0 maka S22.00 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S22.00"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S22.01",
+    "description": "Dengan Z47.0 maka S22.01 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S22.01"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S22.1",
+    "description": "Dengan Z47.0 maka S22.1 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S22.1"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S22.10",
+    "description": "Dengan Z47.0 maka S22.10 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S22.10"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S22.11",
+    "description": "Dengan Z47.0 maka S22.11 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S22.11"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S22.2",
+    "description": "Dengan Z47.0 maka S22.2 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S22.2"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S22.20",
+    "description": "Dengan Z47.0 maka S22.20 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S22.20"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S22.21",
+    "description": "Dengan Z47.0 maka S22.21 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S22.21"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S22.3",
+    "description": "Dengan Z47.0 maka S22.3 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S22.3"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S22.30",
+    "description": "Dengan Z47.0 maka S22.30 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S22.30"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S22.31",
+    "description": "Dengan Z47.0 maka S22.31 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S22.31"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S22.4",
+    "description": "Dengan Z47.0 maka S22.4 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S22.4"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S22.40",
+    "description": "Dengan Z47.0 maka S22.40 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S22.40"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S22.41",
+    "description": "Dengan Z47.0 maka S22.41 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S22.41"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S22.5",
+    "description": "Dengan Z47.0 maka S22.5 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S22.5"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S22.50",
+    "description": "Dengan Z47.0 maka S22.50 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S22.50"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S22.51",
+    "description": "Dengan Z47.0 maka S22.51 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S22.51"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S22.8",
+    "description": "Dengan Z47.0 maka S22.8 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S22.8"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S22.80",
+    "description": "Dengan Z47.0 maka S22.80 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S22.80"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S22.81",
+    "description": "Dengan Z47.0 maka S22.81 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S22.81"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S22.9",
+    "description": "Dengan Z47.0 maka S22.9 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S22.9"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S22.90",
+    "description": "Dengan Z47.0 maka S22.90 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S22.90"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S22.91",
+    "description": "Dengan Z47.0 maka S22.91 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S22.91"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S32.0",
+    "description": "Dengan Z47.0 maka S32.0 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S32.0"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S32.00",
+    "description": "Dengan Z47.0 maka S32.00 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S32.00"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S32.01",
+    "description": "Dengan Z47.0 maka S32.01 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S32.01"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S32.1",
+    "description": "Dengan Z47.0 maka S32.1 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S32.1"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S32.10",
+    "description": "Dengan Z47.0 maka S32.10 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S32.10"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S32.11",
+    "description": "Dengan Z47.0 maka S32.11 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S32.11"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S32.2",
+    "description": "Dengan Z47.0 maka S32.2 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S32.2"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S32.20",
+    "description": "Dengan Z47.0 maka S32.20 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S32.20"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S32.21",
+    "description": "Dengan Z47.0 maka S32.21 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S32.21"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S32.3",
+    "description": "Dengan Z47.0 maka S32.3 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S32.3"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S32.30",
+    "description": "Dengan Z47.0 maka S32.30 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S32.30"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S32.31",
+    "description": "Dengan Z47.0 maka S32.31 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S32.31"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S32.4",
+    "description": "Dengan Z47.0 maka S32.4 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S32.4"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S32.40",
+    "description": "Dengan Z47.0 maka S32.40 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S32.40"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S32.41",
+    "description": "Dengan Z47.0 maka S32.41 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S32.41"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S32.5",
+    "description": "Dengan Z47.0 maka S32.5 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S32.5"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S32.50",
+    "description": "Dengan Z47.0 maka S32.50 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S32.50"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S32.51",
+    "description": "Dengan Z47.0 maka S32.51 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S32.51"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S32.7",
+    "description": "Dengan Z47.0 maka S32.7 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S32.7"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S32.70",
+    "description": "Dengan Z47.0 maka S32.70 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S32.70"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S32.71",
+    "description": "Dengan Z47.0 maka S32.71 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S32.71"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S32.8",
+    "description": "Dengan Z47.0 maka S32.8 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S32.8"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S32.80",
+    "description": "Dengan Z47.0 maka S32.80 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S32.80"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S32.81",
+    "description": "Dengan Z47.0 maka S32.81 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S32.81"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S42.0",
+    "description": "Dengan Z47.0 maka S42.0 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S42.0"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S42.00",
+    "description": "Dengan Z47.0 maka S42.00 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S42.00"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S42.01",
+    "description": "Dengan Z47.0 maka S42.01 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S42.01"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S42.1",
+    "description": "Dengan Z47.0 maka S42.1 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S42.1"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S42.10",
+    "description": "Dengan Z47.0 maka S42.10 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S42.10"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S42.11",
+    "description": "Dengan Z47.0 maka S42.11 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S42.11"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S42.2",
+    "description": "Dengan Z47.0 maka S42.2 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S42.2"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S42.20",
+    "description": "Dengan Z47.0 maka S42.20 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S42.20"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S42.21",
+    "description": "Dengan Z47.0 maka S42.21 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S42.21"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S42.3",
+    "description": "Dengan Z47.0 maka S42.3 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S42.3"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S42.30",
+    "description": "Dengan Z47.0 maka S42.30 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S42.30"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S42.31",
+    "description": "Dengan Z47.0 maka S42.31 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S42.31"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S42.4",
+    "description": "Dengan Z47.0 maka S42.4 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S42.4"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S42.40",
+    "description": "Dengan Z47.0 maka S42.40 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S42.40"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S42.41",
+    "description": "Dengan Z47.0 maka S42.41 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S42.41"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S42.7",
+    "description": "Dengan Z47.0 maka S42.7 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S42.7"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S42.70",
+    "description": "Dengan Z47.0 maka S42.70 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S42.70"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S42.71",
+    "description": "Dengan Z47.0 maka S42.71 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S42.71"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S42.8",
+    "description": "Dengan Z47.0 maka S42.8 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S42.8"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S42.80",
+    "description": "Dengan Z47.0 maka S42.80 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S42.80"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S42.81",
+    "description": "Dengan Z47.0 maka S42.81 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S42.81"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S42.9",
+    "description": "Dengan Z47.0 maka S42.9 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S42.9"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S42.90",
+    "description": "Dengan Z47.0 maka S42.90 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S42.90"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S42.91",
+    "description": "Dengan Z47.0 maka S42.91 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S42.91"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.0",
+    "description": "Dengan Z47.0 maka S52.0 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.0"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.00",
+    "description": "Dengan Z47.0 maka S52.00 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.00"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.01",
+    "description": "Dengan Z47.0 maka S52.01 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.01"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.1",
+    "description": "Dengan Z47.0 maka S52.1 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.1"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.10",
+    "description": "Dengan Z47.0 maka S52.10 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.10"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.11",
+    "description": "Dengan Z47.0 maka S52.11 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.11"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.2",
+    "description": "Dengan Z47.0 maka S52.2 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.2"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.20",
+    "description": "Dengan Z47.0 maka S52.20 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.20"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.21",
+    "description": "Dengan Z47.0 maka S52.21 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.21"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.3",
+    "description": "Dengan Z47.0 maka S52.3 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.3"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.30",
+    "description": "Dengan Z47.0 maka S52.30 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.30"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.31",
+    "description": "Dengan Z47.0 maka S52.31 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.31"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.4",
+    "description": "Dengan Z47.0 maka S52.4 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.4"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.40",
+    "description": "Dengan Z47.0 maka S52.40 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.40"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.41",
+    "description": "Dengan Z47.0 maka S52.41 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.41"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.5",
+    "description": "Dengan Z47.0 maka S52.5 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.5"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.50",
+    "description": "Dengan Z47.0 maka S52.50 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.50"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.51",
+    "description": "Dengan Z47.0 maka S52.51 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.51"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.6",
+    "description": "Dengan Z47.0 maka S52.6 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.6"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.60",
+    "description": "Dengan Z47.0 maka S52.60 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.60"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.61",
+    "description": "Dengan Z47.0 maka S52.61 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.61"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.7",
+    "description": "Dengan Z47.0 maka S52.7 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.7"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.70",
+    "description": "Dengan Z47.0 maka S52.70 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.70"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.71",
+    "description": "Dengan Z47.0 maka S52.71 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.71"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.8",
+    "description": "Dengan Z47.0 maka S52.8 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.8"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.80",
+    "description": "Dengan Z47.0 maka S52.80 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.80"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.81",
+    "description": "Dengan Z47.0 maka S52.81 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.81"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.9",
+    "description": "Dengan Z47.0 maka S52.9 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.9"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.90",
+    "description": "Dengan Z47.0 maka S52.90 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.90"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S52.91",
+    "description": "Dengan Z47.0 maka S52.91 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S52.91"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S62.0",
+    "description": "Dengan Z47.0 maka S62.0 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S62.0"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S62.00",
+    "description": "Dengan Z47.0 maka S62.00 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S62.00"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S62.01",
+    "description": "Dengan Z47.0 maka S62.01 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S62.01"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S62.1",
+    "description": "Dengan Z47.0 maka S62.1 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S62.1"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S62.10",
+    "description": "Dengan Z47.0 maka S62.10 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S62.10"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S62.11",
+    "description": "Dengan Z47.0 maka S62.11 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S62.11"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S62.2",
+    "description": "Dengan Z47.0 maka S62.2 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S62.2"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S62.20",
+    "description": "Dengan Z47.0 maka S62.20 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S62.20"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S62.21",
+    "description": "Dengan Z47.0 maka S62.21 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S62.21"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S62.3",
+    "description": "Dengan Z47.0 maka S62.3 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S62.3"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S62.30",
+    "description": "Dengan Z47.0 maka S62.30 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S62.30"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S62.31",
+    "description": "Dengan Z47.0 maka S62.31 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S62.31"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S62.4",
+    "description": "Dengan Z47.0 maka S62.4 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S62.4"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S62.40",
+    "description": "Dengan Z47.0 maka S62.40 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S62.40"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S62.41",
+    "description": "Dengan Z47.0 maka S62.41 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S62.41"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S62.5",
+    "description": "Dengan Z47.0 maka S62.5 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S62.5"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S62.50",
+    "description": "Dengan Z47.0 maka S62.50 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S62.50"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S62.51",
+    "description": "Dengan Z47.0 maka S62.51 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S62.51"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S62.6",
+    "description": "Dengan Z47.0 maka S62.6 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S62.6"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S62.60",
+    "description": "Dengan Z47.0 maka S62.60 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S62.60"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S62.61",
+    "description": "Dengan Z47.0 maka S62.61 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S62.61"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S62.7",
+    "description": "Dengan Z47.0 maka S62.7 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S62.7"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S62.70",
+    "description": "Dengan Z47.0 maka S62.70 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S62.70"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S62.71",
+    "description": "Dengan Z47.0 maka S62.71 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S62.71"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S62.8",
+    "description": "Dengan Z47.0 maka S62.8 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S62.8"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S62.80",
+    "description": "Dengan Z47.0 maka S62.80 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S62.80"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S62.81",
+    "description": "Dengan Z47.0 maka S62.81 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S62.81"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S72.0",
+    "description": "Dengan Z47.0 maka S72.0 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S72.0"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S72.00",
+    "description": "Dengan Z47.0 maka S72.00 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S72.00"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S72.01",
+    "description": "Dengan Z47.0 maka S72.01 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S72.01"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S72.1",
+    "description": "Dengan Z47.0 maka S72.1 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S72.1"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S72.10",
+    "description": "Dengan Z47.0 maka S72.10 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S72.10"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S72.11",
+    "description": "Dengan Z47.0 maka S72.11 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S72.11"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S72.2",
+    "description": "Dengan Z47.0 maka S72.2 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S72.2"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S72.20",
+    "description": "Dengan Z47.0 maka S72.20 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S72.20"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S72.21",
+    "description": "Dengan Z47.0 maka S72.21 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S72.21"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S72.3",
+    "description": "Dengan Z47.0 maka S72.3 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S72.3"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S72.30",
+    "description": "Dengan Z47.0 maka S72.30 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S72.30"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S72.31",
+    "description": "Dengan Z47.0 maka S72.31 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S72.31"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S72.4",
+    "description": "Dengan Z47.0 maka S72.4 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S72.4"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S72.40",
+    "description": "Dengan Z47.0 maka S72.40 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S72.40"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S72.41",
+    "description": "Dengan Z47.0 maka S72.41 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S72.41"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S72.7",
+    "description": "Dengan Z47.0 maka S72.7 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S72.7"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S72.70",
+    "description": "Dengan Z47.0 maka S72.70 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S72.70"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S72.71",
+    "description": "Dengan Z47.0 maka S72.71 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S72.71"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S72.8",
+    "description": "Dengan Z47.0 maka S72.8 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S72.8"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S72.80",
+    "description": "Dengan Z47.0 maka S72.80 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S72.80"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S72.81",
+    "description": "Dengan Z47.0 maka S72.81 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S72.81"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S72.9",
+    "description": "Dengan Z47.0 maka S72.9 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S72.9"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S72.90",
+    "description": "Dengan Z47.0 maka S72.90 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S72.90"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S72.91",
+    "description": "Dengan Z47.0 maka S72.91 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S72.91"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.0",
+    "description": "Dengan Z47.0 maka S82.0 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.0"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.00",
+    "description": "Dengan Z47.0 maka S82.00 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.00"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.01",
+    "description": "Dengan Z47.0 maka S82.01 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.01"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.1",
+    "description": "Dengan Z47.0 maka S82.1 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.1"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.10",
+    "description": "Dengan Z47.0 maka S82.10 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.10"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.11",
+    "description": "Dengan Z47.0 maka S82.11 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.11"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.2",
+    "description": "Dengan Z47.0 maka S82.2 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.2"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.20",
+    "description": "Dengan Z47.0 maka S82.20 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.20"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.21",
+    "description": "Dengan Z47.0 maka S82.21 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.21"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.3",
+    "description": "Dengan Z47.0 maka S82.3 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.3"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.30",
+    "description": "Dengan Z47.0 maka S82.30 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.30"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.31",
+    "description": "Dengan Z47.0 maka S82.31 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.31"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.4",
+    "description": "Dengan Z47.0 maka S82.4 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.4"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.40",
+    "description": "Dengan Z47.0 maka S82.40 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.40"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.41",
+    "description": "Dengan Z47.0 maka S82.41 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.41"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.5",
+    "description": "Dengan Z47.0 maka S82.5 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.5"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.50",
+    "description": "Dengan Z47.0 maka S82.50 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.50"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.51",
+    "description": "Dengan Z47.0 maka S82.51 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.51"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.6",
+    "description": "Dengan Z47.0 maka S82.6 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.6"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.60",
+    "description": "Dengan Z47.0 maka S82.60 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.60"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.61",
+    "description": "Dengan Z47.0 maka S82.61 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.61"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.7",
+    "description": "Dengan Z47.0 maka S82.7 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.7"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.70",
+    "description": "Dengan Z47.0 maka S82.70 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.70"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.71",
+    "description": "Dengan Z47.0 maka S82.71 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.71"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.8",
+    "description": "Dengan Z47.0 maka S82.8 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.8"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.80",
+    "description": "Dengan Z47.0 maka S82.80 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.80"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.81",
+    "description": "Dengan Z47.0 maka S82.81 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.81"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.9",
+    "description": "Dengan Z47.0 maka S82.9 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.9"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.90",
+    "description": "Dengan Z47.0 maka S82.90 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.90"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S82.91",
+    "description": "Dengan Z47.0 maka S82.91 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S82.91"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S92.0",
+    "description": "Dengan Z47.0 maka S92.0 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S92.0"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S92.00",
+    "description": "Dengan Z47.0 maka S92.00 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S92.00"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S92.01",
+    "description": "Dengan Z47.0 maka S92.01 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S92.01"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S92.1",
+    "description": "Dengan Z47.0 maka S92.1 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S92.1"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S92.10",
+    "description": "Dengan Z47.0 maka S92.10 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S92.10"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S92.11",
+    "description": "Dengan Z47.0 maka S92.11 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S92.11"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S92.2",
+    "description": "Dengan Z47.0 maka S92.2 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S92.2"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S92.20",
+    "description": "Dengan Z47.0 maka S92.20 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S92.20"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S92.21",
+    "description": "Dengan Z47.0 maka S92.21 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S92.21"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S92.3",
+    "description": "Dengan Z47.0 maka S92.3 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S92.3"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S92.30",
+    "description": "Dengan Z47.0 maka S92.30 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S92.30"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S92.31",
+    "description": "Dengan Z47.0 maka S92.31 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S92.31"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S92.4",
+    "description": "Dengan Z47.0 maka S92.4 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S92.4"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S92.40",
+    "description": "Dengan Z47.0 maka S92.40 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S92.40"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S92.41",
+    "description": "Dengan Z47.0 maka S92.41 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S92.41"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S92.5",
+    "description": "Dengan Z47.0 maka S92.5 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S92.5"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S92.50",
+    "description": "Dengan Z47.0 maka S92.50 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S92.50"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S92.51",
+    "description": "Dengan Z47.0 maka S92.51 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S92.51"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S92.7",
+    "description": "Dengan Z47.0 maka S92.7 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S92.7"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S92.70",
+    "description": "Dengan Z47.0 maka S92.70 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S92.70"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S92.71",
+    "description": "Dengan Z47.0 maka S92.71 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S92.71"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S92.9",
+    "description": "Dengan Z47.0 maka S92.9 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S92.9"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S92.90",
+    "description": "Dengan Z47.0 maka S92.90 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S92.90"
+  },
+  {
+    "primary": "Z47.0",
+    "procedure": " ",
+    "secondary": "S92.91",
+    "description": "Dengan Z47.0 maka S92.91 tidak perlu dikoding lagi",
+    "recommendation": "Omit code (tidak dikoding) S92.91"
+  },
+  {
+    "primary": "O80.0",
+    "procedure": "75.69;73.6",
+    "secondary": " ",
+    "description": "Dengan metode persalinan O80.0 dan tindakan dengan kode 73.6 dan 75.69, maka cukup gunakan kode 73.6. Dan 75.69 tidak perlu dikoding lagi",
+    "recommendation": "Prosedur menggunakan kode 73.6"
+  },
+  {
+    "primary": "O80.1",
+    "procedure": "75.69;73.6",
+    "secondary": " ",
+    "description": "Dengan metode persalinan O80.1 dan tindakan dengan kode 73.6 dan 75.69, maka cukup gunakan kode 73.6. Dan 75.69 tidak perlu dikoding lagi",
+    "recommendation": "Prosedur menggunakan kode 73.6"
+  },
+  {
+    "primary": "O80.8",
+    "procedure": "75.69;73.6",
+    "secondary": " ",
+    "description": "Dengan metode persalinan O80.8 dan tindakan dengan kode 73.6 dan 75.69, maka cukup gunakan kode 73.6. Dan 75.69 tidak perlu dikoding lagi",
+    "recommendation": "Prosedur menggunakan kode 73.6"
+  },
+  {
+    "primary": "O80.9",
+    "procedure": "75.69;73.6",
+    "secondary": " ",
+    "description": "Dengan metode persalinan O80.9 dan tindakan dengan kode 73.6 dan 75.69, maka cukup gunakan kode 73.6. Dan 75.69 tidak perlu dikoding lagi",
+    "recommendation": "Prosedur menggunakan kode 73.6"
+  },
+  {
+    "primary": "O83.0",
+    "procedure": "75.69;73.6",
+    "secondary": " ",
+    "description": "Dengan metode persalinan O83.0 dan tindakan dengan kode 73.6 dan 75.69, maka cukup gunakan kode 73.6. Dan 75.69 tidak perlu dikoding lagi",
+    "recommendation": "Prosedur menggunakan kode 73.6"
+  },
+  {
+    "primary": "O83.1",
+    "procedure": "75.69;73.6",
+    "secondary": " ",
+    "description": "Dengan metode persalinan O83.1 dan tindakan dengan kode 73.6 dan 75.69, maka cukup gunakan kode 73.6. Dan 75.69 tidak perlu dikoding lagi",
+    "recommendation": "Prosedur menggunakan kode 73.6"
+  },
+  {
+    "primary": "O83.2",
+    "procedure": "75.69;73.6",
+    "secondary": " ",
+    "description": "Dengan metode persalinan O83.2 dan tindakan dengan kode 73.6 dan 75.69, maka cukup gunakan kode 73.6. Dan 75.69 tidak perlu dikoding lagi",
+    "recommendation": "Prosedur menggunakan kode 73.6"
+  },
+  {
+    "primary": "O83.3",
+    "procedure": "75.69;73.6",
+    "secondary": " ",
+    "description": "Dengan metode persalinan O83.3 dan tindakan dengan kode 73.6 dan 75.69, maka cukup gunakan kode 73.6. Dan 75.69 tidak perlu dikoding lagi",
+    "recommendation": "Prosedur menggunakan kode 73.6"
+  },
+  {
+    "primary": "O83.4",
+    "procedure": "75.69;73.6",
+    "secondary": " ",
+    "description": "Dengan metode persalinan O83.4 dan tindakan dengan kode 73.6 dan 75.69, maka cukup gunakan kode 73.6. Dan 75.69 tidak perlu dikoding lagi",
+    "recommendation": "Prosedur menggunakan kode 73.6"
+  },
+  {
+    "primary": "O83.8",
+    "procedure": "75.69;73.6",
+    "secondary": " ",
+    "description": "Dengan metode persalinan O83.8 dan tindakan dengan kode 73.6 dan 75.69, maka cukup gunakan kode 73.6. Dan 75.69 tidak perlu dikoding lagi",
+    "recommendation": "Prosedur menggunakan kode 73.6"
+  },
+  {
+    "primary": "O83.9",
+    "procedure": "75.69;73.6",
+    "secondary": " ",
+    "description": "Dengan metode persalinan O83.9 dan tindakan dengan kode 73.6 dan 75.69, maka cukup gunakan kode 73.6. Dan 75.69 tidak perlu dikoding lagi",
+    "recommendation": "Prosedur menggunakan kode 73.6"
+  },
+  {
+    "primary": "J18.9 ",
+    "procedure": "",
+    "secondary": "J44.0;J44.9",
+    "description": "Evaluasi kode kombinasi J44.0 ketika pneumonia dan PPOK tercatat bersama sebagai J18.9 dengan J44.0 atau J44.9.",
+    "recommendation": "Kasus Pneumonia dengan PPOK J18.9 dan J44.0 atau J44.9 "
+  },
+  {
+    "primary": "K29.0;K29.1;K29.2;K29.3;K29.4;K29.5;K29.6;K29.7;K29.8;K29.9",
+    "procedure": " 44.12;44.13;44.14;45.12;45.13;45.14;45.16",
+    "secondary": " ",
+    "description": "Kode diagnosis Gastritis K29.- digunakan  setelah konfirmasi hasil pemeriksaan penunjang Endoskopi (44.12, 44.13, 44.14, 45.12, 45.13, 45.14, dan 45.16)",
+    "recommendation": "Kode diagnosis Gastritis K29.- "
+  },
+  {
+    "primary": "K35.",
+    "procedure": " ",
+    "secondary": "K65",
+    "description": " Kode Appendicitis (K35.-) disertai peritonitis dan/atau perforasi (K65.-), abses peritoneal ",
+    "recommendation": " Cukup menggunakan kode gabungan K35.-"
+  },
+  {
+    "primary": "O80;O83",
+    "procedure": "75.69",
+    "secondary": " ",
+    "description": "Jika kode O80 dan O83 dengan 75.69 harus disertai?kode?O70",
+    "recommendation": ""
+  }
+]

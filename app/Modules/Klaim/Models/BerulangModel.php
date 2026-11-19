@@ -39,7 +39,7 @@ class BerulangModel extends Model{
                         a.CG AS cg,
                         a.CT AS ct,
                         a.SL AS sl,
-                        a.PENGAJUAN AS pengajuan,
+                        a.PENGAJUAN AS pengajuan, u.tarif_rs, u.total_tarif AS nilai_inacbg,
                         a.ALGORITMA_TYPE AS algoritma_type,
                         a.ALGORITMA AS algoritma,
                         a.KETERANGAN_VERIFIKASI AS keterangan_verifikasi,
@@ -50,13 +50,20 @@ class BerulangModel extends Model{
                         LPAD(MONTH(a.TGLPULANG), 2, '0') AS periode
                         
                     FROM dt01_bpjs_pending_klaim a
-                    WHERE a.KODEPPK = '".$koders."'
-                    AND   YEAR(a.TGLPULANG) = ".$periode."
+                    LEFT JOIN (
+                        SELECT sep,
+                            CASE WHEN COUNT(DISTINCT tarif_rs) = 1 THEN MAX(tarif_rs) END AS tarif_rs,
+                            CASE WHEN COUNT(DISTINCT total_tarif) = 1 THEN MAX(total_tarif) END AS total_tarif
+                        FROM dt01_bpjs_ur_dt
+                        WHERE kode_rs = ? AND discharge_date >= ? AND discharge_date < ?
+                        GROUP BY sep
+                    ) u ON u.sep = a.NOSEP
+                    WHERE a.KODEPPK = ? AND a.TGLPULANG >= ? AND a.TGLPULANG < ?
                     and   a.algoritma='Prosedur berulang'
                     ORDER BY a.TGLPULANG DESC
                 ";
 
-        $recordset = $this->db->query($query);
+        $recordset = $this->db->query($query, [$koders, sprintf('%04d-01-01', $periode), sprintf('%04d-01-01', $periode+1), $koders, sprintf('%04d-01-01', $periode), sprintf('%04d-01-01', $periode+1)]);
         return $recordset->getResult();
     }
 }

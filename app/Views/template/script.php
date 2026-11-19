@@ -71,6 +71,12 @@
         if ($segment1 === 'ur' && in_array($segment2, ['auditkoding','topup'], true) && $segment3 === 'detail') {
             $jsPage = $segment2 . 'detail';
         }
+        if ($segment1 === 'klaim' && in_array($segment2, ['slitlamp','berulang'], true)) {
+            $jsPage = 'claimcases';
+        }
+        if ($segment1 === 'klaim' && in_array($segment2, ['pending','slitlamp','berulang'], true)) {
+            echo '<script src="' . base_url('assets/js/klaim/line-chart.js?v=' . time()) . '"></script>' . PHP_EOL;
+        }
         $jspath = FCPATH . 'assets/js/' . $segment1 . '/' . $jsPage . '.js';
         if (file_exists($jspath)) {
             echo '<script type="text/javascript" src="' . base_url('assets/js/' . $segment1 . '/' . $jsPage . '.js?v=' . time()) . '"></script>' . PHP_EOL;

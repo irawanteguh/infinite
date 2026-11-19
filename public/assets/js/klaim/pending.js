@@ -19,14 +19,12 @@
         charts[id]=new ApexCharts(byId(id),Object.assign({chart:{fontFamily:'Poppins, sans-serif',height:285,toolbar:{show:false},animations:{enabled:false}},dataLabels:{enabled:false},grid:{borderColor:'#edf2f3',strokeDashArray:4},legend:{position:'top',horizontalAlign:'left',fontSize:'10px'},noData:{text:'Belum ada data'}},options));charts[id].render();
     }
     function line(id,s,field){
-        const metric=(month,status)=>{
-            if(!month)return null;const item=month.statuses[status];if(!item)return 0;
-            return field==='count'?item.count:(item.count===0?0:item.amount);
-        };
+        const metric = (month, status) => month?.statuses[status]?.[field] ?? 0;
         const keys=Object.keys(s.statuses),colors=keys.map((key,i)=>key==='PENDING'?'#087e82':key==='TIDAK LAYAK'?'#c9878e':['#93b6c3','#d5bc82','#9fbaa9'][i%3]);
-        chart(id,{chart:{type:'line',height:285,toolbar:{show:false},animations:{enabled:false},fontFamily:'Poppins, sans-serif'},series:keys.map(key=>({name:statusName(key),data:Object.values(s.months).map(m=>metric(m,key))})),colors,
-            stroke:{width:3,curve:'straight'},markers:{size:3,hover:{sizeOffset:2}},xaxis:{categories:months,labels:{style:{fontSize:'10px',colors:'#81979d'}},axisBorder:{show:false},axisTicks:{show:false}},
-            yaxis:{min:0,forceNiceScale:true,labels:{formatter:v=>field==='count'?nf.format(v):compact.format(v),style:{fontSize:'10px',colors:'#81979d'}}},tooltip:{shared:true,intersect:false,y:{formatter:v=>v==null?'Belum ada nilai':field==='count'?nf.format(v)+' klaim':fullMoney(v)}},responsive:[{breakpoint:576,options:{chart:{height:265},legend:{fontSize:'9px'}}}]});
+        const series = keys.map(key => ({name:statusName(key),data:Object.values(s.months).map(m=>metric(m,key))}));
+        chart(id, klaimLineChartOptions(months, series, colors,
+            field === 'count' ? value => nf.format(value) : value => compact.format(value),
+            field === 'count' ? value => nf.format(value) + ' klaim' : fullMoney));
     }
     function contributors(id,rows,labelField,countField,total,unit){
         const colors=['#087e82','#6bb5aa','#93b6c3','#d5bc82','#dba990','#ca8989'];
@@ -47,7 +45,7 @@
         const cards=[];
         [['PENDING','Pending','bi-hourglass-split'],['TIDAK LAYAK','Tidak layak','bi-file-earmark-x']].forEach(([key,label,icon])=>{const m=s.statuses[key];cards.push({label:'Klaim '+label.toLowerCase(),value:nf.format(m.count),note:pct(m.count,total)+' dari klaim tercatat pada filter ini',icon});});
         [['PENDING','pending'],['TIDAK LAYAK','tidak layak']].forEach(([key,label])=>{const m=s.statuses[key];cards.push({label:'Nilai pengajuan '+label,value:money(m.count===0?0:m.amount),title:fullMoney(m.count===0?0:m.amount),note:nf.format(m.valued)+' dari '+nf.format(m.count)+' klaim memiliki nilai'+(m.count?' ('+pct(m.valued,m.count)+')':''),icon:'bi-cash-stack'});});
-        byId('pending-kpis').innerHTML=cards.map((c,i)=>'<article class="prem-card pe-kpi '+(i===2?'pe-kpi-highlight':'')+'"><div class="pe-kpi-top"><span>'+escape(c.label)+'</span><i class="bi '+c.icon+'" aria-hidden="true"></i></div><strong title="'+escape(c.title||c.value)+'">'+escape(c.value)+'</strong><p>'+escape(c.note)+'</p></article>').join('');
+        byId('pending-kpis').innerHTML=cards.map((c,i)=>'<article class="prem-card pe-kpi col-12 col-md-6 col-xl-3 '+(i===2?'pe-kpi-highlight':'')+'"><div class="pe-kpi-top"><span>'+escape(c.label)+'</span><i class="bi '+c.icon+'" aria-hidden="true"></i></div><strong class="'+(i>=2?'pending-amount-warning':'')+'" title="'+escape(c.title||c.value)+'">'+escape(c.value)+'</strong><p>'+escape(c.note)+'</p></article>').join('');
         const missing=total-s.total.valued;
         byId('pending-value-note').className='pending-value-note'+(missing?'':' is-complete');
         byId('pending-value-note').innerHTML='<i class="bi bi-info-circle" aria-hidden="true"></i><span>'+escape(missing?nf.format(missing)+' klaim belum memiliki nilai pengajuan. Total rupiah hanya mencakup '+nf.format(s.total.valued)+' dari '+nf.format(total)+' klaim ('+pct(s.total.valued,total)+').':'Nilai pengajuan tersedia pada seluruh '+nf.format(total)+' klaim dalam filter ini.')+'</span>';
@@ -60,10 +58,10 @@
         byId('pending-progress').innerHTML=insights;
         line('pending-count-chart',s,'count');line('pending-value-chart',s,'amount');
         byId('pending-monthly').innerHTML=Object.entries(s.months).map(([month,m])=>{
-            const label=months[Number(month)-1]+' '+filters().selectperiode;
+            const label=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'][Number(month)-1];
             if(!m)return '<tr><td>'+label+'</td><td>—</td><td>—</td><td>—</td><td><small>Belum ada data</small></td><td>—</td><td>—</td></tr>';
             const prior=s.months[Number(month)-1];const delta=prior?m.total.count-prior.total.count:null;
-            return '<tr class="'+(Number(month)===s.latest?'is-current':'')+'"><td>'+label+'</td><td>'+nf.format(m.statuses.PENDING.count)+'</td><td>'+nf.format(m.statuses['TIDAK LAYAK'].count)+'</td><td>'+nf.format(m.total.count)+'</td><td>'+(delta===null?'—<small>Bulan sebelumnya tanpa data</small>':signed(delta)+'<small>'+(prior.total.count?(delta/prior.total.count*100).toLocaleString('id-ID',{maximumFractionDigits:1})+'%':'Basis nol')+'</small>')+'</td><td title="'+escape(fullMoney(m.total.amount))+'">'+escape(money(m.total.amount))+'</td><td>'+pct(m.total.valued,m.total.count)+'<small>'+nf.format(m.total.valued)+' / '+nf.format(m.total.count)+' klaim</small></td></tr>';
+            return '<tr><td>'+label+'</td><td>'+nf.format(m.statuses.PENDING.count)+'</td><td>'+nf.format(m.statuses['TIDAK LAYAK'].count)+'</td><td>'+nf.format(m.total.count)+'</td><td>'+(delta===null?'—<small>Data bulan sebelumnya belum tersedia</small>':signed(delta)+'<small>'+(prior.total.count?(delta/prior.total.count*100).toLocaleString('id-ID',{maximumFractionDigits:1})+'%':'Jumlah bulan sebelumnya 0')+'</small>')+'</td><td title="'+escape(fullMoney(m.total.amount))+'">'+escape(money(m.total.amount))+'</td><td>'+pct(m.total.valued,m.total.count)+'<small>'+nf.format(m.total.valued)+' / '+nf.format(m.total.count)+' klaim</small></td></tr>';
         }).join('');
         // Use the shared helper; all twelve months stay visible in calendar order.
         initDataTable('#pending-monthly-table',null,12,{paging:false,searching:false,info:false,lengthChange:false,ordering:false});

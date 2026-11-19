@@ -1,0 +1,33 @@
+@import url("../ur/dashboard.css");
+@import url("../ur/toolbar.css");
+.klaim-case-page{--prem-accent:#087e82;--prem-ink:#15373e;--prem-soft:#eaf6f4;min-width:0;padding-bottom:20px}
+.klaim-case-page .ur-hero{background:transparent}
+.klaim-case-panel{padding:24px;margin-bottom:20px;border:1px solid #e1ebed;border-radius:16px;background:#fff;box-shadow:0 8px 28px #1c454b04;min-width:0}
+.klaim-case-page .ur-panel-head{margin-bottom:20px}
+.klaim-case-page .ur-panel-head h2{color:#234a54;font-weight:600;margin:0}
+.klaim-case-page .ur-panel-head p{color:#81969b;line-height:1.6;margin:5px 0 0}
+.klaim-case-chart{width:100%;min-height:285px;overflow:hidden}
+.klaim-case-scroll{max-width:100%;overflow-x:auto}
+.klaim-case-table{min-width:1400px;width:100%;font-variant-numeric:tabular-nums}
+.klaim-case-table th{padding:12px 14px!important;background:#eff7f5!important;color:#62858b!important;white-space:nowrap;font-size:12px;font-weight:600}
+.klaim-case-table td{padding:10px 14px!important;vertical-align:middle;color:#42636d;font-size:12px}
+.klaim-case-table td:nth-child(3),.klaim-case-table td:nth-child(11),.klaim-case-table td:nth-child(12){white-space:normal;min-width:200px;max-width:320px;overflow-wrap:anywhere}
+.klaim-case-info{display:flex;align-items:flex-start;gap:12px;padding:16px 20px;border:1px solid #dceae5;border-radius:12px;background:#f6faf9;color:#789095;line-height:1.7}
+.klaim-case-info>i{color:#087e82;margin-top:3px}
+.klaim-case-info strong{color:#42636d}
+@media(max-width:575px){.klaim-case-chart{min-height:265px}.klaim-case-panel,.klaim-case-info{padding:16px}}
+.klaim-case-page .klaim-case-table{min-width:960px}
+.klaim-case-page .klaim-case-table td:nth-child(3){min-width:180px;max-width:240px}
+.klaim-case-page .klaim-case-table td:nth-child(6){white-space:nowrap;text-align:right}
+.klaim-case-page .case-status-pending{background:#fbf6eb;color:#846d43;border:1px solid #e9ddbd}
+.klaim-case-page .case-status-rejected{background:#fbf0f1;color:#a7616c;border:1px solid #ead2d7}
+.klaim-case-page .case-detail-row>td{padding:0 0 12px!important}
+.case-detail{padding:16px 20px;background:#f6faf9;border:1px solid #dceae5;border-radius:10px;white-space:normal}
+.case-detail-heading{font-weight:600;color:#234a54;margin-bottom:14px}
+.case-detail-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 24px;margin:0}
+.case-detail-grid>div{min-width:0}
+.case-detail-grid dt{font-weight:400;color:#81969b;margin-bottom:4px}
+.case-detail-grid dd{color:#42636d;margin:0;line-height:1.6;overflow-wrap:anywhere;white-space:pre-line}
+.case-detail-wide{grid-column:1/-1;border-top:1px solid #dceae5;padding-top:12px}
+@media(max-width:767px){.case-detail-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:575px){.case-detail-grid{grid-template-columns:1fr}}

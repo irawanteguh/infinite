@@ -101,3 +101,4 @@ function dataraweklaimdetail(){
         }
     });
 };
+$('#klaim-case-refresh').on('click', dataraweklaimdetail);

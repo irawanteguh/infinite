@@ -27,12 +27,12 @@
 		<div class="d-flex align-items-stretch flex-shrink-0">
 			<div class="d-flex align-items-stretch flex-shrink-0">
 				<?php  
-					// include_once(APPPATH."views/template/search.php");
-					// include_once(APPPATH."views/template/activity.php");
-					// include_once(APPPATH."views/template/notification.php");
-					// include_once(APPPATH."views/template/chat.php");
-					// include_once(APPPATH."views/template/quickmenu.php");        
-					include_once(APPPATH."views/template/user.php");
+					// include_once(APPPATH."Views/template/search.php");
+					// include_once(APPPATH."Views/template/activity.php");
+					// include_once(APPPATH."Views/template/notification.php");
+					// include_once(APPPATH."Views/template/chat.php");
+					// include_once(APPPATH."Views/template/quickmenu.php");        
+					include_once(APPPATH."Views/template/user.php");
 				?>
 				<div class="d-flex align-items-center d-lg-none ms-2 me-n3" title="Show header menu">
 					<div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px" id="kt_header_menu_mobile_toggle">

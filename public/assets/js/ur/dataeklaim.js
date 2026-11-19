@@ -11,6 +11,13 @@
     const status = (message, error = false) => $('#ek-status').text(message).toggleClass('is-error', error);
 
     function summary(value) {
+        [['cbg', 'total_tarif'], ['idrg', 'idrg_total_tarif']].forEach(([id, key]) => {
+            const difference = value ? numeric(value[key]) - numeric(value.tarif_rs) : 0;
+            $('#ek-' + id + '-difference')
+                .text(value ? 'Selisih terhadap tarif RS ' + (difference > 0 ? '+' : '') + money(difference) : '')
+                .toggleClass('is-negative', !!value && difference < 0)
+                .toggleClass('is-positive', !!value && difference > 0);
+        });
         $('#ek-count').text(value ? nf.format(numeric(value.episodes)) : '—');
         [['hospital','tarif_rs'],['cbg','total_tarif'],['idrg','idrg_total_tarif']].forEach(([id, key]) => $('#ek-' + id).text(value ? money(value[key]) : '—'));
     }
@@ -40,7 +47,7 @@
         status('Memuat data periode ' + period + '…');
         request = $.ajax({
             url:url + 'ur/dataeklaim/dataraweklaim', type:'POST', dataType:'json', timeout:45000,
-            data:Object.assign({}, data, {selectperiode:period, service:selectedService, refreshSummary:fresh ? '1' : '0'}),
+            data:Object.assign({}, data, {selectperiode:period, service:selectedService, month:$('#ek-month').val() || '', refreshSummary:fresh ? '1' : '0'}),
             success:function(response) {
                 if (current !== generation) return;
                 if (!response || response.responseCode !== '00' || !Array.isArray(response.data)) {
@@ -110,8 +117,16 @@
         button.find('i').toggleClass('bi-chevron-down', opened).toggleClass('bi-chevron-up', !opened);
         button.closest('tr').toggleClass('ek-row-open', !opened);
     });
+    if ($.fn.select2) {
+        $('#selectperiode,#ek-service,#ek-month').each(function () {
+            const control = $(this);
+            if (!control.data('select2')) {
+                control.select2({width: '100%', minimumResultsForSearch: Infinity});
+            }
+        });
+    }
     window.dataraweklaim = load;
-    $('#selectperiode,#ek-service').on('change', load);
+    $('#selectperiode,#ek-service,#ek-month').on('change', load);
     $('#ek-refresh').on('click', load);
     load();
 })();

@@ -13,28 +13,30 @@ class DataeklaimModel extends Model
         return array_map(static fn($year) => (object) ['periode' => $year], range((int) date('Y'), 2014));
     }
 
-    private function scoped($koders, int $year, string $service = '')
+    private function scoped($koders, int $year, string $service = '', int $month = 0)
     {
+        $startDate = sprintf('%04d-%02d-01', $year, $month ?: 1);
+        $endDate = $month ? date('Y-m-d', strtotime($startDate . ' +1 month')) : sprintf('%04d-01-01', $year + 1);
         $builder = $this->db->table('dt01_bpjs_ur_dt a')
             ->where('a.kode_rs', $koders)
-            ->where('a.discharge_date >=', sprintf('%04d-01-01', $year))
-            ->where('a.discharge_date <', sprintf('%04d-01-01', $year + 1));
+            ->where('a.discharge_date >=', $startDate)
+            ->where('a.discharge_date <', $endDate);
         if ($service !== '') $builder->where('a.ptd', $service);
         return $builder;
     }
 
-    public function page($koders, int $year, int $start, int $length, string $term, bool $refreshSummary = false, string $service = '')
+    public function page($koders, int $year, int $start, int $length, string $term, bool $refreshSummary = false, string $service = '', int $month = 0)
     {
         $cache = service('cache');
-        $key = 'eklaim_summary_' . hash('sha256', $koders . ':' . $year . ':' . $service);
+        $key = 'eklaim_summary_' . hash('sha256', $koders . ':' . $year . ':' . $service . ':' . $month);
         $summary = $refreshSummary ? null : $cache->get($key);
         if (!is_array($summary)) {
-            $summary = $this->scoped($koders, $year, $service)
+            $summary = $this->scoped($koders, $year, $service, $month)
                 ->select('COUNT(*) AS episodes, COALESCE(SUM(a.tarif_rs), 0) AS tarif_rs, COALESCE(SUM(a.total_tarif), 0) AS total_tarif, COALESCE(SUM(a.idrg_total_tarif), 0) AS idrg_total_tarif', false)
                 ->get()->getRowArray();
             $cache->save($key, $summary, 30);
         }
-        $builder = $this->scoped($koders, $year, $service);
+        $builder = $this->scoped($koders, $year, $service, $month);
         if ($term !== '') {
             $builder->groupStart();
             foreach (['sep', 'nokartu', 'mrn', 'nama_pasien', 'dpjp', 'diaglist', 'proclist'] as $index => $column) {

@@ -37,7 +37,7 @@
                 <div id="pending-detail-message" class="alert alert-warning d-none" role="status"></div>
                 <div class="hu-table-scroll pending-detail-frame" role="region" aria-label="Rincian klaim sesuai filter">
                     <table class="table align-middle table-row-dashed gy-2" id="dataraweklaim_table">
-                        <thead><tr class="fw-bolder text-muted bg-light"><th class="text-start ps-4 rounded-start">No.</th><th>SEP / pasien</th><th>Pelayanan</th><th>Tanggal pelayanan</th><th>Verifikasi</th><th>INA-CBG / severity</th><th>Status</th><th class="text-end">Pengajuan</th><th>Tipe algoritma</th><th class="pe-4 rounded-end">Algoritma &amp; catatan</th></tr></thead>
+                        <thead><tr class="fw-bolder text-muted bg-light"><th class="text-start ps-4 rounded-start">No.</th><th>SEP / pasien</th><th>Pelayanan</th><th>Tanggal pelayanan</th><th>Verifikasi</th><th>INA-CBG / severity</th><th>Status</th><th class="text-end">Pengajuan</th><th class="pe-4 rounded-end">Algoritma &amp; catatan</th></tr></thead>
                         <tbody class="fw-bold text-gray-600" id="resultdataraweklaim"></tbody>
                     </table>
                 </div>

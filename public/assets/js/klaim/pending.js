@@ -12,6 +12,11 @@
     let summaryRequest=null,detailRequest=null,table=null,searchTimer=null,sequence=0;const charts={};
     function filters(){return {selectperiode:String($('#selectperiode').val()||''),month:byId('pending-month').value,service:byId('pending-service').value,status:byId('pending-status').value};}
     function message(text){byId('pending-message').textContent=text;byId('pending-message').className='alert alert-warning mt-6';}
+    function showEmptyInfo(){
+        const card=byId('pending-message');
+        card.className='prem-card pending-info-card mt-6';
+        card.innerHTML='<span class="pending-info-icon"><i class="bi bi-info-circle" aria-hidden="true"></i></span><div><h2>Belum ada data untuk filter ini.</h2><p>Ubah tahun, bulan, pelayanan, atau status.</p></div>';
+    }
     function destroyChart(id){if(charts[id]){charts[id].destroy();delete charts[id];}byId(id).replaceChildren();}
     function chart(id,options){
         destroyChart(id);
@@ -39,7 +44,7 @@
     function render(s){
         const total=s.total.count;byId('pending-content').hidden=!total;
         byId('pending-scope').querySelector('span').textContent=total?date(s.firstDate)+' – '+date(s.lastDate)+' · '+nf.format(total)+' klaim · '+s.monthsWithData+' bulan memiliki data · Diperbarui '+s.generatedAt:'Belum ada klaim pada filter terpilih';
-        if(!total){Object.keys(charts).forEach(destroyChart);message('Belum ada data untuk filter ini. Ubah tahun, bulan, pelayanan, atau status.');return;}
+        if(!total){Object.keys(charts).forEach(destroyChart);showEmptyInfo();return;}
         const other=Object.entries(s.statuses).filter(([key])=>!['PENDING','TIDAK LAYAK'].includes(key));
         if(other.length)message('Status lain tetap tercatat: '+other.map(([key,v])=>statusName(key)+' ('+nf.format(v.count)+')').join(', ')+'. Tidak digabungkan ke Tidak Layak.');
         const cards=[];
@@ -92,7 +97,6 @@
             {data:null,render:r=>escape(r.kdinacbg||'—')+'<small class="pending-cell-muted">SL '+escape(r.sl||'—')+'</small>'},
             {data:'status',render:badge},
             {data:'pengajuan',className:'pending-cell-money',render:v=>escape(fullMoney(v))},
-            {data:'algoritma_type',render:v=>escape(v||'Belum terisi')},
             {data:null,className:'pending-notes',render:r=>r.algoritma||r.keterangan_verifikasi?'<details><summary>Lihat verifikasi</summary><div><b>Algoritma</b>\n'+escape((r.algoritma||'—').split('|').join('\n'))+'\n\n<b>Catatan</b>\n'+escape(r.keterangan_verifikasi||'—')+'</div></details>':'<span class="pending-cell-muted">Belum terisi</span>'}
         ],language:{emptyTable:'Belum ada rincian klaim pada filter ini.',zeroRecords:'Tidak ada klaim yang sesuai pencarian.',processing:'Memuat rincian…',search:'Cari',lengthMenu:'_MENU_',info:'Menampilkan _START_–_END_ dari _TOTAL_ klaim',infoEmpty:'Belum ada klaim',infoFiltered:'(disaring dari _MAX_ klaim)',paginate:{next:'<i class="next" aria-hidden="true"></i><span class="visually-hidden">Berikutnya</span>',previous:'<i class="previous" aria-hidden="true"></i><span class="visually-hidden">Sebelumnya</span>'}}});
     }

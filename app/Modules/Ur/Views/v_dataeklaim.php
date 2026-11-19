@@ -5,16 +5,15 @@
     <section class="prem-card ur-filterbar app-filter-card" aria-labelledby="ek-filter-title">
         <div class="ur-filter-heading app-filter-heading"><span class="prem-eyebrow">CAKUPAN DATA</span><h2 id="ek-filter-title"><i class="bi bi-funnel me-2" aria-hidden="true"></i>Filter E-Klaim</h2><p>Pilih periode pulang dan jenis layanan untuk menyesuaikan ringkasan dan daftar klaim.</p></div>
         <div class="ur-filters app-filter-fields">
-            <div class="ur-filter"><label for="selectperiode">Periode pulang</label><select data-control="select2" data-placeholder="Pilih periode" data-hide-search="true" class="form-select form-select-sm form-select-solid" name="selectperiode" id="selectperiode"><?php echo $periode; ?></select></div>
+<div class="ur-filter"><label for="ek-month">Bulan pulang</label><select id="ek-month" class="form-select form-select-sm form-select-solid" data-control="select2" data-hide-search="true"><option value="">Semua bulan</option><option value="1">Januari</option><option value="2">Februari</option><option value="3">Maret</option><option value="4">April</option><option value="5">Mei</option><option value="6">Juni</option><option value="7">Juli</option><option value="8">Agustus</option><option value="9">September</option><option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option></select></div>
             <div class="ur-filter"><label for="ek-service">Jenis layanan</label><select id="ek-service" name="service" class="form-select form-select-sm form-select-solid" data-control="select2" data-hide-search="true"><option value="">Semua layanan</option><option value="1">Rawat inap</option><option value="2">Rawat jalan</option></select></div>
-            <button type="button" id="ek-refresh" class="btn btn-light-primary"><i class="bi bi-arrow-clockwise" aria-hidden="true"></i>Muat ulang</button>
-            <span class="ur-filter-note"><i class="bi bi-info-circle me-2" aria-hidden="true"></i>Ringkasan dan tabel mengikuti periode serta layanan terpilih.<br>Data berdasarkan tanggal pulang pasien.</span>
         </div>
+        <div class="ek-filter-info"><i class="bi bi-info-circle me-2" aria-hidden="true"></i>Ringkasan dan tabel mengikuti periode serta layanan terpilih. Data berdasarkan tanggal pulang pasien.</div>
         <div class="ur-scope app-filter-scope"><i class="bi bi-calendar-range" aria-hidden="true"></i><span>Periode tersedia mengikuti data TXT E-Klaim yang telah diunggah.</span></div>
     </section>
     <section class="ek-summary" aria-label="Ringkasan periode terpilih">
         <?php foreach ([['count','Jumlah episode','bi-files','Episode pada periode terpilih'],['hospital','Total tarif RS','bi-hospital','Akumulasi biaya rumah sakit'],['cbg','Total INA-CBG','bi-cash-stack','Akumulasi tarif INA-CBG'],['idrg','Total iDRG','bi-calculator','Akumulasi tarif iDRG']] as $metric): ?>
-        <div class="card ek-metric"><div class="ek-metric-label"><?= $metric[1] ?><i class="bi <?= $metric[2] ?>" aria-hidden="true"></i></div><strong id="ek-<?= $metric[0] ?>">—</strong><small><?= $metric[3] ?></small></div>
+        <div class="card ek-metric"><div class="ek-metric-label"><?= $metric[1] ?><i class="bi <?= $metric[2] ?>" aria-hidden="true"></i></div><strong id="ek-<?= $metric[0] ?>">—</strong><small><?= $metric[3] ?></small><?php if (in_array($metric[0], ['cbg', 'idrg'], true)): ?><small class="ek-difference" id="ek-<?= $metric[0] ?>-difference" aria-live="polite"></small><?php endif; ?></div>
         <?php endforeach; ?>
     </section>
     <section class="card ek-panel" aria-labelledby="ek-table-title">

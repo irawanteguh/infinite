@@ -96,3 +96,39 @@ body #kt_content .pending-page #pending-kpis>.pe-kpi>p{margin:0;margin-top:auto;
 .pending-page #pending-monthly-table td:last-child small{margin-top:0;line-height:1.25}
 .pending-page #pending-monthly-table td:nth-child(5){line-height:1.25}
 .pending-page #pending-monthly-table td:nth-child(5) small{margin-top:0;line-height:1.25}
+
+.pending-page .pending-info-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 24px;
+    background: #f0f8f6;
+    border-color: #cddfdb;
+}
+.pending-info-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #dcefeb;
+    color: #087e82;
+    font-size: 22px;
+}
+.pending-info-card h2 {
+    margin: 0 0 6px;
+    color: #15373e;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+.pending-info-card p {
+    margin: 0;
+    color: #648088;
+    font-size: 12px;
+    line-height: 1.8;
+}
+@media (max-width: 575px) {
+    .pending-page .pending-info-card { padding: 18px; gap: 12px; }
+}

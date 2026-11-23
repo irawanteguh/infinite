@@ -26,7 +26,7 @@
         details = [];
         $('#icu-content').prop('hidden', true);
         $('#icu-refresh').prop('disabled', true);
-        showStatus('Memuat daftar kasus los…');
+        showStatus('Memuat daftar kasus ICU…');
 
         request = $.ajax({
             url: url + 'ur/icu/cases',
@@ -36,7 +36,7 @@
         }).done(function (response) {
             if (token !== generation) return;
             if (response.responseCode !== '00') {
-                showStatus(response.responseDesc || 'Daftar kasus gagal dimuat.');
+                showStatus(response.responseDesc || 'Daftar kasus ICU gagal dimuat.');
                 return;
             }
             details = Array.isArray(response.responseResult) ? response.responseResult : [];
@@ -45,7 +45,7 @@
             renderCases();
         }).fail(function (xhr, state) {
             if (token === generation && state !== 'abort') {
-                showStatus(xhr.responseJSON?.responseDesc || 'Daftar kasus gagal dimuat. Klik Perbarui untuk mencoba kembali.');
+                showStatus(xhr.responseJSON?.responseDesc || 'Daftar kasus ICU gagal dimuat. Klik Perbarui untuk mencoba kembali.');
             }
         }).always(function () {
             if (token === generation) $('#icu-refresh').prop('disabled', false);

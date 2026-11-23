@@ -44,6 +44,8 @@ class SetupPeMasters extends BaseCommand
         (new \Modules\Pe\Database\AddRespondentClinic())->up();
         require_once APPPATH . 'Modules/Pe/Database/2026-11-13-000015_UseSkmInstrumentType.php';
         (new \Modules\Pe\Database\UseSkmInstrumentType())->up();
+        require_once APPPATH . 'Modules/Pe/Database/2026-11-23-000016_AddResponseActive.php';
+        (new \Modules\Pe\Database\AddResponseActive())->up();
         CLI::write('Master PE dan tabel jawaban PREM/PROM siap digunakan.', 'green');
     }
 }

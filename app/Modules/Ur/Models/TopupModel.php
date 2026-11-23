@@ -8,6 +8,40 @@ class TopupModel extends CaseRuleModel{
     protected $DBGroup = null;
     protected $ruleSet = 'topup';
 
+    public function caseSummary($koders, $year, bool $refresh = false)
+    {
+        $cache = service('cache');
+        $rulesVersion = hash_file('sha256', APPPATH . 'Modules/Ur/Config/topup.json');
+        $cacheKey = 'ur_topup_summary_v2_' . hash('sha256', $koders . ':' . $year . ':' . $rulesVersion);
+        if (!$refresh) {
+            $summary = $cache->get($cacheKey);
+            if (is_array($summary)) {
+                return $summary;
+            }
+        }
+
+        $groups = [];
+        $metrics = ['los', 'tarif_rs', 'total_tarif', 'idrg_total_tarif',
+            'topup_actual', 'topup_potential', 'topup_unpriced', 'topup_pending_count'];
+        foreach ($this->cases($koders, $year, false, true) as $episode) {
+            $severity = in_array($episode['sl'], ['I', 'II', 'III'], true) ? $episode['sl'] : 'Lainnya';
+            $doctor = $episode['dpjp'] === null || $episode['dpjp'] === '' ? 'Belum terisi' : $episode['dpjp'];
+            $key = $episode['month'] . ':' . $severity . ':' . $doctor;
+            if (!isset($groups[$key])) {
+                $groups[$key] = [
+                    'month' => $episode['month'], 'sl' => $severity, 'dpjp' => $doctor, 'episodes' => 0,
+                ] + array_fill_keys($metrics, 0);
+            }
+            $groups[$key]['episodes']++;
+            foreach ($metrics as $metric) {
+                $groups[$key][$metric] += (float) $episode[$metric];
+            }
+        }
+        $summary = array_values($groups);
+        $cache->save($cacheKey, $summary, 120);
+        return $summary;
+    }
+
     function periode(){
         $query = "
                     with recursive periode as (

@@ -39,3 +39,15 @@ body #ur-monthly-table thead th{background:#eff7f5!important;color:#62858b;font-
 .ur-dashboard-toolbar .btn i{color:inherit!important}
 .ur-dashboard-toolbar .btn:hover,.ur-dashboard-toolbar .btn:focus,.ur-dashboard-toolbar .btn:active{background:#d9eeea!important;border-color:#bddcd6!important;color:#06676b!important}
 .ur-dashboard-toolbar .btn:focus-visible{outline:3px solid #94d5d2;outline-offset:2px}
+
+.ur-dashboard .ur-standard-donut {
+    width: 290px;
+    max-width: 100%;
+    min-height: 300px;
+}
+@media (max-width: 575px) {
+    .ur-dashboard .ur-standard-donut {
+        width: 250px;
+        min-height: 260px;
+    }
+}

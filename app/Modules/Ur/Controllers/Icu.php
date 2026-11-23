@@ -75,8 +75,8 @@ class Icu extends BaseController
         try {
             return response()->setJSON(['responseCode' => '00', 'responseHead' => 'success', 'responseDesc' => 'Data berhasil dimuat.', 'responseResult' => $this->md->$method($koders, (int) $year)]);
         } catch (\Throwable $e) {
-            log_message('error', 'UR LOS data query failed.');
-            return response()->setStatusCode(500)->setJSON(['responseCode' => '01', 'responseDesc' => 'Data icu gagal dimuat. Silakan coba kembali.', 'responseResult' => []]);
+            log_message('error', 'UR ICU data query failed.');
+            return response()->setStatusCode(500)->setJSON(['responseCode' => '01', 'responseDesc' => 'Data ICU gagal dimuat. Silakan coba kembali.', 'responseResult' => []]);
         }
     }
 }

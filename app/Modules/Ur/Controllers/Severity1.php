@@ -76,7 +76,7 @@ class Severity1 extends BaseController
             return response()->setJSON(['responseCode' => '00', 'responseHead' => 'success', 'responseDesc' => 'Data berhasil dimuat.', 'responseResult' => $this->md->$method($koders, (int) $year)]);
         } catch (\Throwable $e) {
             log_message('error', 'UR severity I data query failed.');
-            return response()->setStatusCode(500)->setJSON(['responseCode' => '01', 'responseDesc' => 'Data severity1 gagal dimuat. Silakan coba kembali.', 'responseResult' => []]);
+            return response()->setStatusCode(500)->setJSON(['responseCode' => '01', 'responseDesc' => 'Data severity I gagal dimuat. Silakan coba kembali.', 'responseResult' => []]);
         }
     }
 }

@@ -75,8 +75,8 @@ class Auditkoding extends BaseController
         try {
             return response()->setJSON(['responseCode' => '00', 'responseHead' => 'success', 'responseDesc' => 'Data berhasil dimuat.', 'responseResult' => $this->md->$method($koders, (int) $year)]);
         } catch (\Throwable $e) {
-            log_message('error', 'UR LOS data query failed.');
-            return response()->setStatusCode(500)->setJSON(['responseCode' => '01', 'responseDesc' => 'Data auditkoding gagal dimuat. Silakan coba kembali.', 'responseResult' => []]);
+            log_message('error', 'UR audit koding data query failed.');
+            return response()->setStatusCode(500)->setJSON(['responseCode' => '01', 'responseDesc' => 'Data audit koding gagal dimuat. Silakan coba kembali.', 'responseResult' => []]);
         }
     }
     public function indicators()
@@ -94,7 +94,7 @@ class Auditkoding extends BaseController
             return response()->setJSON(['responseCode' => '00', 'responseHead' => 'success', 'responseDesc' => 'Data berhasil dimuat.', 'responseResult' => $this->md->summary($koders, (int) $year), 'comparison' => $this->md->comparison($koders, (int) $year), 'pendingRules' => $this->md->pendingRules($koders, (int) $year)]);
         } catch (\Throwable $e) {
             log_message('error', 'UR auditkoding summary query failed.');
-            return response()->setStatusCode(500)->setJSON(['responseCode' => '01', 'responseDesc' => 'Data auditkoding gagal dimuat. Silakan coba kembali.', 'responseResult' => []]);
+            return response()->setStatusCode(500)->setJSON(['responseCode' => '01', 'responseDesc' => 'Data audit koding gagal dimuat. Silakan coba kembali.', 'responseResult' => []]);
         }
     }
 

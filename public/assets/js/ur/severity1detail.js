@@ -26,7 +26,7 @@
         details = [];
         $('#s1-content').prop('hidden', true);
         $('#s1-refresh').prop('disabled', true);
-        showStatus('Memuat daftar kasus severity1…');
+        showStatus('Memuat daftar kasus severity I…');
 
         request = $.ajax({
             url: url + 'ur/severity1/cases',
@@ -36,7 +36,7 @@
         }).done(function (response) {
             if (token !== generation) return;
             if (response.responseCode !== '00') {
-                showStatus(response.responseDesc || 'Daftar kasus gagal dimuat.');
+                showStatus(response.responseDesc || 'Daftar kasus severity I gagal dimuat.');
                 return;
             }
             details = Array.isArray(response.responseResult) ? response.responseResult : [];
@@ -45,7 +45,7 @@
             renderCases();
         }).fail(function (xhr, state) {
             if (token === generation && state !== 'abort') {
-                showStatus(xhr.responseJSON?.responseDesc || 'Daftar kasus gagal dimuat. Klik Perbarui untuk mencoba kembali.');
+                showStatus(xhr.responseJSON?.responseDesc || 'Daftar kasus severity I gagal dimuat. Klik Perbarui untuk mencoba kembali.');
             }
         }).always(function () {
             if (token === generation) $('#s1-refresh').prop('disabled', false);

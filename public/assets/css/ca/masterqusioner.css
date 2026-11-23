@@ -1,0 +1,23 @@
+#ca-master #ca-risks .badge-light-success,
+#ca-master #ca-questions .badge-light-success {
+    background: #e5f2ef;
+    color: #087e82;
+    border: 1px solid #b9dcd6;
+}
+#ca-master #ca-risks .badge-light-warning {
+    background: #fbf6eb;
+    color: #846d43;
+    border: 1px solid #e9ddbd;
+}
+#ca-master #ca-risks .badge-light-danger {
+    background: #fbf0f1;
+    color: #a7616c;
+    border: 1px solid #ead2d7;
+}
+
+
+#ca-master .pe-master-table thead th {
+    background: #eff7f5;
+    color: #62858b;
+    font-weight: 600;
+}

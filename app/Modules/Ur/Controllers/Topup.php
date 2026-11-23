@@ -73,10 +73,15 @@ class Topup extends BaseController
             return response()->setStatusCode(403)->setJSON(['responseCode' => '01', 'responseDesc' => 'Rumah sakit pada sesi belum dipilih.', 'responseResult' => []]);
         }
         try {
-            return response()->setJSON(['responseCode' => '00', 'responseHead' => 'success', 'responseDesc' => 'Data berhasil dimuat.', 'responseResult' => $this->md->$method($koders, (int) $year)]);
+            $result = $method === 'caseSummary'
+                ? $this->md->caseSummary($koders, (int) $year, request()->getPost('refreshSummary') === '1')
+                : $this->md->cases($koders, (int) $year);
+            return response()->setJSON(['responseCode' => '00', 'responseHead' => 'success', 'responseDesc' => 'Data berhasil dimuat.', 'responseResult' => $result]);
         } catch (\Throwable $e) {
-            log_message('error', 'UR LOS data query failed.');
-            return response()->setStatusCode(500)->setJSON(['responseCode' => '01', 'responseDesc' => 'Data topup gagal dimuat. Silakan coba kembali.', 'responseResult' => []]);
+            log_message('error', 'Query Top-up gagal ({type}, kode {code}).', [
+                'type' => get_class($e), 'code' => $e->getCode(),
+            ]);
+            return response()->setStatusCode(500)->setJSON(['responseCode' => '01', 'responseDesc' => 'Data Top-up gagal dimuat. Silakan coba kembali.', 'responseResult' => []]);
         }
     }
 }

@@ -1,6 +1,88 @@
 (function () {
     'use strict';
     const selector = '#dataraweklaim_table';
+    if (!document.querySelector(selector)) {
+        const form = document.querySelector('#review-filters');
+        if (!form) return;
+
+        $('#review-year').on('change', () => form.requestSubmit());
+        $('#review-filters select').on('change', () => form.requestSubmit());
+        const section = document.querySelector('#review-trends');
+        if (section) setupReviewTrends(section);
+        return;
+    }
+    function setupReviewTrends(section) {
+        const status = section.querySelector('#review-trend-status');
+        const chartGrid = section.querySelector('#review-trend-charts');
+        const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+        const number = new Intl.NumberFormat('id-ID');
+        const currentMonth = Number(section.dataset.currentMonth);
+
+        const loadTrends = async () => {
+            status.textContent = 'Menghitung tren dari data E-Klaim…';
+            const counts = Array.from({length:12}, () => ({}));
+            const endpoint = new URL(section.dataset.endpoint);
+            endpoint.searchParams.set('year', section.dataset.year);
+            endpoint.searchParams.set('service', section.dataset.service);
+            try {
+                const response = await fetch(endpoint, {
+                    cache:'no-store', headers:{Accept:'application/json'}
+                });
+                if (!response.ok) throw new Error('Tren gagal dimuat.');
+                const {months} = await response.json();
+                if (!months || typeof months !== 'object') throw new Error('Hasil tren tidak valid.');
+                for (let month = 1; month <= 12; month++) {
+                    counts[month - 1] = months[month] || {};
+                }
+
+                const last = counts.reduce((latest, month, index) => month.episodes ? index : latest, -1);
+                if (last < 0) {
+                    status.textContent = 'Tidak ada data episode untuk tahun dan layanan ini.';
+                    return;
+                }
+
+                chartGrid.hidden = false;
+                const monthLabels = labels.map((label, index) => index + 1 === currentMonth ? label + '*' : label);
+                for (const el of chartGrid.querySelectorAll('[data-trend-category]')) {
+                    const key = el.dataset.trendCategory;
+                    const values = counts.map(month => month.episodes ? (month[key] || 0) : null);
+                    const change = chartGrid.querySelector('[data-trend-change="' + key + '"]');
+                    if (last > 0 && values[last - 1] !== null) {
+                        const delta = values[last] - values[last - 1];
+                        const direction = delta < 0 ? 'Turun ' + number.format(-delta)
+                            : delta > 0 ? 'Naik ' + number.format(delta) : 'Tetap';
+                        change.textContent = labels[last - 1] + ' → ' + monthLabels[last] + ' · ' + direction
+                            + ' (' + number.format(values[last - 1]) + ' → ' + number.format(values[last]) + ' SEP)';
+                    } else {
+                        change.textContent = 'Belum ada dua bulan berurutan untuk dibandingkan.';
+                    }
+
+                    const available = values.map((value, index) => value === null ? null
+                        : monthLabels[index] + ' ' + number.format(value) + ' SEP').filter(Boolean);
+                    el.replaceChildren();
+                    el.setAttribute('aria-label', available.join(', '));
+                    if (typeof ApexCharts === 'undefined') {
+                        el.textContent = available.join(' · ');
+                        continue;
+                    }
+                    const chart = new ApexCharts(el, {
+                        chart:{type:'bar', height:200, toolbar:{show:false}, animations:{enabled:false}, fontFamily:'inherit'},
+                        series:[{name:'SEP dengan temuan', data:values}],
+                        xaxis:{categories:monthLabels}, yaxis:{min:0, decimalsInFloat:0, forceNiceScale:true},
+                        colors:['#087e82'], plotOptions:{bar:{borderRadius:3}}, dataLabels:{enabled:false},
+                        noData:{text:'Tidak ada data'}
+                    });
+                    await chart.render();
+                }
+                status.textContent = currentMonth ? '* Bulan berjalan. Data masih dapat bertambah.' : '';
+            } catch (error) {
+                chartGrid.hidden = true;
+                status.textContent = 'Tren gagal dimuat. Muat ulang halaman untuk mencoba kembali.';
+            }
+        };
+        loadTrends();
+    }
+
     const nf = new Intl.NumberFormat('id-ID', { maximumFractionDigits: 0 });
     const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
     const numeric = value => Number.isFinite(Number(value)) ? Number(value) : 0;
@@ -128,5 +210,19 @@
     window.dataraweklaim = load;
     $('#selectperiode,#ek-service,#ek-month').on('change', load);
     $('#ek-refresh').on('click', load);
+    const reviewLink = document.querySelector('#ek-review-link');
+    if (reviewLink) {
+        const reviewUrl = new URL(reviewLink.href);
+        const updateReviewLink = () => {
+            reviewUrl.search = new URLSearchParams({
+                year: $('#selectperiode').val() || '',
+                month: $('#ek-month').val() || '',
+                service: $('#ek-service').val() || ''
+            }).toString();
+            reviewLink.href = reviewUrl.toString();
+        };
+        $('#selectperiode,#ek-service,#ek-month').on('change', updateReviewLink);
+        updateReviewLink();
+    }
     load();
 })();

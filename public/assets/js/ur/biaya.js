@@ -34,8 +34,9 @@ $('#biaya-kpis').html(metrics.map(([label,value,description,icon],i) =>
 if(typeof ApexCharts!=='undefined'){
 const active=[...new Set(data.map(r=>num(r.month)))].sort((a,b)=>a-b);
 const options=[
-['biaya-trend',{chart:{type:'bar',height:285,toolbar:{show:false},animations:{enabled:false}},series:[{name:'Episode',data:active.map(m=>sum(data.filter(r=>num(r.month)===m),'episodes'))}],xaxis:{categories:active.map(m=>months[m-1])},plotOptions:{bar:{columnWidth:'48%',borderRadius:4}},dataLabels:{enabled:false}}],
-['biaya-severity',{chart:{type:'donut',height:285,animations:{enabled:false}},series:['I','II','III','Lainnya'].map(s=>sum(data.filter(r=>s==='Lainnya'?!['I','II','III'].includes(r.sl):r.sl===s),'episodes')),labels:['SL I','SL II','SL III','Lainnya'],legend:{position:'bottom'}}]];
+['biaya-trend',{chart:{type:'bar',height:285,toolbar:{show:false},animations:{enabled:false}},series:[{name:'Episode',data:active.map(m=>sum(data.filter(r=>num(r.month)===m),'episodes'))}],xaxis:{categories:active.map(m=>months[m-1])},plotOptions:{bar:{columnWidth:'48%',borderRadius:4}},dataLabels:{enabled:false}}]];
+
+charts.push(renderUrDonut('biaya-severity', ['I','II','III','Lainnya'].map(severity => sum(data.filter(row => severity === 'Lainnya' ? !['I','II','III'].includes(row.sl) : row.sl === severity), 'episodes')), ['SL I','SL II','SL III','Lainnya']));
 options.forEach(([id,opt])=>{const c=new ApexCharts(document.getElementById(id),{...opt,colors:['#087e82','#93b6c3','#64748b','#d3ad69']});charts.push(c);c.render();});
 }
 const groups=new Map();data.forEach(r=>{const name=r.dpjp||'Belum terisi';if(!groups.has(name))groups.set(name,[]);groups.get(name).push(r);});

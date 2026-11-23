@@ -76,8 +76,10 @@ class Skm extends Prem
             ['medical_record_number'], \Modules\Pe\Config\InpatientRespondent::FIELDS
         )));
         db_connect()->table('dt01_pe_skm_response_hd')->where('response_id', $source['response_id'])
+            ->where('active', '1')
             ->where('group_id', $context['group_id'])->where('org_id', $context['org_id'])->update($updates);
         db_connect()->table('dt01_pe_prem_response_hd')->where('skm_response_id', $source['response_id'])
+            ->where('active', '1')
             ->where('group_id', $context['group_id'])->where('org_id', $context['org_id'])->update($updates);
         return $result;
     }
@@ -140,6 +142,7 @@ class Skm extends Prem
         }
         session()->set('prem_form_tokens', $premTokens);
         $completed = db_connect()->table('dt01_pe_prem_response_hd')->where('skm_response_id', $id)
+            ->where('active', '1')
             ->where('group_id', $tenant['group_id'])->where('org_id', $tenant['org_id'])->get()->getRowArray();
         if ($completed) return view('Modules\Pe\Views\v_skm_complete', ['tenant' => $tenant]);
         return view('Modules\Pe\Views\v_prem', [

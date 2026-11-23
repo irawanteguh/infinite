@@ -13,7 +13,7 @@ class DataeklaimModel extends Model
         return array_map(static fn($year) => (object) ['periode' => $year], range((int) date('Y'), 2014));
     }
 
-    private function scoped($koders, int $year, string $service = '', int $month = 0)
+    protected function scoped($koders, int $year, string $service = '', int $month = 0)
     {
         $startDate = sprintf('%04d-%02d-01', $year, $month ?: 1);
         $endDate = $month ? date('Y-m-d', strtotime($startDate . ' +1 month')) : sprintf('%04d-01-01', $year + 1);

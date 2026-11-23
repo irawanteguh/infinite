@@ -26,7 +26,7 @@
         details = [];
         $('#auditkoding-content').prop('hidden', true);
         $('#auditkoding-refresh').prop('disabled', true);
-        showStatus('Memuat daftar kasus los…');
+        showStatus('Memuat daftar kasus audit koding…');
 
         request = $.ajax({
             url: url + 'ur/auditkoding/cases',
@@ -36,7 +36,7 @@
         }).done(function (response) {
             if (token !== generation) return;
             if (response.responseCode !== '00') {
-                showStatus(response.responseDesc || 'Daftar kasus gagal dimuat.');
+                showStatus(response.responseDesc || 'Daftar kasus audit koding gagal dimuat.');
                 return;
             }
             details = Array.isArray(response.responseResult) ? response.responseResult : [];
@@ -45,7 +45,7 @@
             renderCases();
         }).fail(function (xhr, state) {
             if (token === generation && state !== 'abort') {
-                showStatus(xhr.responseJSON?.responseDesc || 'Daftar kasus gagal dimuat. Klik Perbarui untuk mencoba kembali.');
+                showStatus(xhr.responseJSON?.responseDesc || 'Daftar kasus audit koding gagal dimuat. Klik Perbarui untuk mencoba kembali.');
             }
         }).always(function () {
             if (token === generation) $('#auditkoding-refresh').prop('disabled', false);

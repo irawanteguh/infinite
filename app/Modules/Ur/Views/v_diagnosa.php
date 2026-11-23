@@ -5,7 +5,7 @@
     <div id="diagnosa-status" class="ur-status" role="status" aria-live="polite" hidden></div>
     <div id="diagnosa-content" hidden>
         <section id="diagnosa-kpis" class="ur-kpis" aria-label="Ringkasan diagnosa"></section>
-        <div class="ur-grid-equal"><section class="card card-flush ur-panel"><div class="ur-panel-head"><div><h2>Episode diagnosa per bulan</h2></div></div><div id="diagnosa-trend" class="ur-chart"></div></section><section class="card card-flush ur-panel"><div class="ur-panel-head"><div><h2>Komposisi severity</h2></div></div><div id="diagnosa-severity" class="ur-chart"></div></section></div>
+        <div class="ur-grid-equal"><section class="card card-flush ur-panel"><div class="ur-panel-head"><div><h2>Episode diagnosa per bulan</h2></div></div><div id="diagnosa-trend" class="ur-chart"></div></section><section class="card card-flush ur-panel"><div class="ur-panel-head"><div><h2>Komposisi severity</h2></div></div><div class="pe-service-layout"><div id="diagnosa-severity" class="pe-donut" role="img" aria-label="Komposisi episode menurut severity"></div><div id="diagnosa-severity-legend" class="pe-service-legend"></div></div></section></div>
 <section class="ur-filterbar app-filter-card" aria-labelledby="diagnosa-doctor-filter-title">
     <div class="app-filter-heading"><h2 id="diagnosa-doctor-filter-title"><i class="bi bi-funnel me-2" aria-hidden="true"></i>Filter diagnosa per dokter</h2></div>
     <div class="app-filter-fields">

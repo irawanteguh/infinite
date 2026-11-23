@@ -42,6 +42,7 @@ class PremModel extends Model
     {
         return $this->db->tableExists($this->responseHeader) && $this->db->tableExists($this->responseDetail)
             && $this->db->fieldExists('service_type', $this->responseHeader)
+            && $this->db->fieldExists('active', $this->responseHeader)
             && $this->db->fieldExists('medical_record_number', $this->responseHeader);
     }
 
@@ -90,13 +91,18 @@ class PremModel extends Model
 
     public function submitted($instrumentId, $key): ?array
     {
-        return $this->db->table($this->responseHeader)->where('instrument_id', $instrumentId)
+        $response = $this->db->table($this->responseHeader)->where('instrument_id', $instrumentId)
             ->where('submission_key', $key)->get()->getRowArray();
+        if ($response && (string) $response['active'] !== '1') {
+            throw new \InvalidArgumentException('Respons ini sudah dinonaktifkan. Silakan mulai pengisian baru.');
+        }
+        return $response;
     }
 
     public function responseHeader(string $responseId, string $group, string $org): ?array
     {
         return $this->db->table($this->responseHeader . ' h')
+            ->where('h.active', '1')
             ->select('h.*, i.name AS instrument_name')
             ->join('dt01_pe_instrument_ms i', 'i.instrument_id = h.instrument_id AND i.group_id = h.group_id AND i.org_id = h.org_id')
             ->where('h.response_id', $responseId)->where('h.group_id', $group)->where('h.org_id', $org)
@@ -105,6 +111,7 @@ class PremModel extends Model
     public function responseDetails(string $responseId, string $group, string $org): array
     {
         return $this->db->table($this->responseDetail . ' r')
+            ->where('h.active', '1')
             ->select('r.response_id, r.question_id, r.domain_id, d.name AS domain_name, q.question AS question_text, r.sort_order, r.score')
             ->join($this->responseHeader . ' h', 'h.response_id = r.response_id AND h.group_id = r.group_id AND h.org_id = r.org_id')
             ->join('dt01_pe_instrument_ms i', 'i.instrument_id = h.instrument_id AND i.group_id = h.group_id AND i.org_id = h.org_id')
@@ -128,11 +135,15 @@ class PremModel extends Model
         $linkedSkm = $this->instrumentType === 'PREM' && !$this->skmTransactions && !empty($context['skm_response_id']);
         if ($linkedSkm) {
             $source = $this->db->table('dt01_pe_skm_response_hd')->where('response_id', $context['skm_response_id'])
+                ->where('active', '1')
                 ->where('group_id', $instrument['group_id'])->where('org_id', $instrument['org_id'])->get()->getRowArray();
             if (!$source || $source['medical_record_number'] !== ($context['medical_record_number'] ?? null) || $source['service_type'] !== ($context['service_type'] ?? null)) {
                 throw new \InvalidArgumentException('Data lanjutan PREM tidak sesuai dengan respons SKM.');
             }
             $previous = $this->db->table($this->responseHeader)->where('skm_response_id', $context['skm_response_id'])->where('group_id', $instrument['group_id'])->where('org_id', $instrument['org_id'])->get()->getRowArray();
+            if ($previous && (string) $previous['active'] !== '1') {
+                throw new \InvalidArgumentException('Respons PREM ini sudah dinonaktifkan. Silakan mulai pengisian SKM baru.');
+            }
             if ($previous) return $previous['response_id'];
         }
         $respondent = ($isSkmInstrument || ($linkedSkm && isset($context['respondent_name'])))

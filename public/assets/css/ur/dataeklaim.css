@@ -48,3 +48,23 @@
 .ek-page .ur-filters{flex-wrap:wrap}.ek-page .ur-filter-note{flex:0 0 100%;margin-left:0;align-self:auto}
 
 .ek-page .ek-filter-info{display:block;padding:0 24px 20px;margin:0;color:#7b9298;font-size:11px;line-height:1.9}.ek-filter-info i{color:#7ba5a5}@media(max-width:575px){.ek-page .ek-filter-info{padding:0 18px 18px}}
+
+.ek-page.ek-review table td.ek-sep {
+    width: auto;
+    min-width: 170px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.ek-page.ek-review table td:nth-child(2) {
+    min-width: 100px;
+}
+
+.ek-page .ek-review-detail-row > td {
+    padding: 0 !important;
+    border: 0;
+}
+
+.ek-review .ek-toggle[aria-expanded="true"] i {
+    transform: rotate(180deg);
+}

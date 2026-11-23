@@ -393,3 +393,56 @@ function renderchartpie(name, data) {
     chartInstances[name] = new ApexCharts(chartContainer, options);
     chartInstances[name].render();
 }
+function renderUrDonut(id, series, labels, unit = 'episode') {
+    const element = document.getElementById(id);
+    const number = new Intl.NumberFormat('id-ID');
+    const total = series.reduce((sum, value) => sum + Number(value), 0);
+    if (!element.parentElement.classList.contains('pe-service-layout')) {
+        const layout = document.createElement('div');
+        layout.className = 'pe-service-layout';
+        element.before(layout);
+        layout.append(element);
+    }
+    element.classList.remove('ur-chart');
+    element.classList.add('pe-donut', 'ur-standard-donut');
+    let legend = element.parentElement.querySelector('.pe-service-legend');
+    if (!legend) {
+        legend = document.createElement('div');
+        legend.className = 'pe-service-legend';
+        element.after(legend);
+    }
+    legend.replaceChildren();
+    labels.forEach((label, index) => {
+        const row = document.createElement('div');
+        const name = document.createElement('span');
+        name.className = 'pe-legend-name';
+        const dot = document.createElement('i');
+        dot.className = 'pe-dot pe-dot-' + index;
+        dot.setAttribute('aria-hidden', 'true');
+        name.append(dot, document.createTextNode(label));
+        const value = document.createElement('strong');
+        value.textContent = number.format(series[index]);
+        const share = document.createElement('small');
+        share.textContent = (total ? series[index] / total * 100 : 0)
+            .toLocaleString('id-ID', {maximumFractionDigits: 1}) + '%';
+        value.append(share);
+        row.append(name, value);
+        legend.append(row);
+    });
+    const chart = new ApexCharts(element, {
+        chart: {type: 'donut', height: 300, fontFamily: 'inherit', animations: {enabled: false}},
+        series: series, labels: labels, colors: ['#087e82', '#75bdb5', '#c0d8e3', '#d6dde0'],
+        stroke: {width: 4, colors: ['#fff']}, dataLabels: {enabled: false}, legend: {show: false},
+        plotOptions: {pie: {donut: {size: '77%', labels: {
+            show: true, name: {fontSize: '12px', color: '#8aa0a6'},
+            value: {fontSize: '28px', fontWeight: 600, color: '#15373e'},
+            total: {show: true, showAlways: true, label: unit === 'kemunculan episode' ? 'Total kemunculan' : 'Total ' + unit,
+                fontSize: '12px', color: '#8aa0a6', formatter: () => number.format(total)}
+        }}}},
+        tooltip: {y: {formatter: value => number.format(value) + ' ' + unit}},
+        responsive: [{breakpoint: 576, options: {chart: {height: 260},
+            plotOptions: {pie: {donut: {labels: {value: {fontSize: '24px'}}}}}}}]
+    });
+    chart.render();
+    return chart;
+}

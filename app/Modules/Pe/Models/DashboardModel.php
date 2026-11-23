@@ -15,6 +15,7 @@ class DashboardModel extends Model
     private function scoped(string $table, string $group, string $org, array $filters)
     {
         $builder = $this->db->table($table . ' h')
+            ->where('h.active', '1')
             ->where('h.group_id', $group)->where('h.org_id', $org)
             ->where('h.submitted_at >=', $filters['start'] . ' 00:00:00')
             ->where('h.submitted_at <', (new \DateTimeImmutable($filters['end']))->modify('+1 day')->format('Y-m-d') . ' 00:00:00');

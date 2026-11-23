@@ -10,9 +10,11 @@ class SkmReportModel extends Model
     {
         $until = (new \DateTimeImmutable($end))->modify('+1 day')->format('Y-m-d');
         $skm = $this->db->table('dt01_pe_skm_response_hd h')->select('h.*, i.name AS instrument_name')
+            ->where('h.active', '1')
             ->join('dt01_pe_instrument_ms i', 'i.instrument_id=h.instrument_id AND i.group_id=h.group_id AND i.org_id=h.org_id')
             ->where('h.group_id', $group)->where('h.org_id', $org)->where('h.submitted_at >=', $start.' 00:00:00')->where('h.submitted_at <', $until.' 00:00:00')->get()->getResultArray();
         $prem = $this->db->table('dt01_pe_prem_response_hd p')->select('p.*, s.service_type AS source_service, s.submitted_at AS source_date, i.name AS instrument_name')
+            ->where('p.active', '1')->where('s.active', '1')
             ->join('dt01_pe_skm_response_hd s', 's.response_id=p.skm_response_id AND s.group_id=p.group_id AND s.org_id=p.org_id')
             ->join('dt01_pe_instrument_ms i', 'i.instrument_id=p.instrument_id AND i.group_id=p.group_id AND i.org_id=p.org_id')
             ->where('s.group_id', $group)->where('s.org_id', $org)->where('s.submitted_at >=', $start.' 00:00:00')->where('s.submitted_at <', $until.' 00:00:00')
@@ -45,6 +47,7 @@ class SkmReportModel extends Model
     {
         if (!$headers) return [];
         return $this->db->table('dt01_pe_'.$prefix.'_response_dt r')
+            ->where('h.active', '1')
             ->select('r.response_id,r.question_id,r.domain_id,r.score,q.question,q.sort_order,d.name AS domain_name')
             ->join('dt01_pe_'.$prefix.'_response_hd h','h.response_id=r.response_id AND h.group_id=r.group_id AND h.org_id=r.org_id')
             ->join('dt01_pe_question_ms q','q.question_id=r.question_id AND q.instrument_id=h.instrument_id AND q.group_id=h.group_id AND q.org_id=h.org_id')

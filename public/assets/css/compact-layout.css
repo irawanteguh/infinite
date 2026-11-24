@@ -135,6 +135,9 @@ body #kt_toolbar .module-toolbar-actions .btn i{color:inherit}
 #session-idle-countdown{color:#087e82;font-variant-numeric:tabular-nums}
 #session-idle-modal .session-idle-dialog{max-width:560px;margin-inline:auto;width:calc(100% - 32px)}
 
+#new_password_hint li.is-met{color:var(--infinite-teal)}
+#new_password_hint li.is-met > i{color:inherit}
+
 /* Keep module content inside the space available next to the fixed sidebar. */
 body #kt_wrapper,body #kt_content,body #kt_post,body #kt_content_container{min-width:0}
 body #kt_content_container{width:100%;max-width:100%;box-sizing:border-box}

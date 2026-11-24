@@ -24,6 +24,7 @@ class Filters extends BaseConfig
         'honeypot'      => Honeypot::class,
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
+        'user-activity' => \App\Filters\UserActivityFilter::class,
         'auth'          => \App\Filters\AuthFilter::class,
     ];
 
@@ -74,7 +75,8 @@ class Filters extends BaseConfig
         ],
 
         'after' => [
-            'toolbar',
+            'user-activity',
+            'toolbar' => ['except' => ['auth/signin', 'auth/changepassword', 'auth/auth/changepassword']],
             // 'honeypot',
             // 'secureheaders',
         ],

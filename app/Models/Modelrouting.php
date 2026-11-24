@@ -18,13 +18,25 @@ class Modelrouting extends Model{
         return \App\Libraries\ModuleAccess::navigation($menus,$state);
     }
 
-    public function allMenus(): array{
+    public function allMenus(): array
+    {
+        return $this->menuRows(true);
+    }
+
+    protected function menuRows(bool $activeOnly, bool $lock = false): array
+    {
+        $details = $activeOnly ? '' : ', a.status AS status, a.version AS version';
         $query = "
-            select a.modules_id, a.modules_name, a.modules_header_id, a.package, a.def_controller, a.parent, a.icon, a.urut
+            select a.modules_id, a.modules_name, a.modules_header_id, a.package, a.def_controller, a.parent, a.icon, a.urut, a.active{$details}
             from dt01_gen_modules_ms a
-            where a.active = '1'
-            order by modules_header_id asc, a.urut asc
         ";
+        if ($activeOnly) {
+            $query .= " where a.active = '1'";
+        }
+        $query .= " order by coalesce(a.modules_header_id, '') asc, a.urut asc, a.modules_id asc";
+        if ($lock && $this->db->DBDriver === 'MySQLi') {
+            $query .= ' FOR UPDATE';
+        }
 
         return $this->db->query($query)->getResultArray();
     }

@@ -3,6 +3,8 @@
 namespace Modules\Auth\Controllers;
 
 use App\Controllers\BaseController;
+use App\Libraries\UserActivity;
+use CodeIgniter\Security\Exceptions\SecurityException;
 use Modules\Auth\Models\SignModel;
 
 class Auth extends BaseController{
@@ -34,10 +36,11 @@ class Auth extends BaseController{
     }
 
     public function signin(){
-        $username = trim((string) $this->request->getPost('username'));
-        $password = encodedata($this->request->getPost('password'));
+        $username = $this->request->getPost('username');
+        $username = is_string($username) ? trim($username) : '';
+        $password = $this->request->getPost('password');
 
-        if ($username === '' || $password === '') {
+        if ($username === '' || !is_string($password) || $password === '') {
             return $this->response->setJSON([
                 'responseCode' => '01',
                 'responseHead' => 'error',
@@ -89,6 +92,7 @@ class Auth extends BaseController{
             ];
 
             $this->session->set($sessiondata);
+            UserActivity::record($this->request, 'login', 200);
 
             return $this->response->setJSON([
                 'responseCode' => '00',
@@ -105,7 +109,65 @@ class Auth extends BaseController{
         ]);
     }
 
+    public function changepassword()
+    {
+        $request = request();
+        $response = response()->setHeader('Cache-Control', 'no-store');
+        $reply = static function (int $status, string $message) use ($response) {
+            return $response->setStatusCode($status)->setJSON([
+                'message' => $message,
+                'csrfHash' => csrf_hash(),
+            ]);
+        };
+
+        if (strtoupper($request->getMethod()) !== 'POST') {
+            return $reply(405, 'Metode permintaan tidak diizinkan.');
+        }
+        $scope = [
+            'group_id' => (string) $this->session->get('groupid'),
+            'org_id' => (string) $this->session->get('orgid'),
+            'user_id' => (string) $this->session->get('userid'),
+        ];
+        if (!$this->session->get('loggedin') || in_array('', $scope, true)) {
+            return $reply(401, 'Sesi berakhir. Silakan login kembali.');
+        }
+        try {
+            service('security')->verify($request);
+        } catch (SecurityException $e) {
+            return $reply(403, 'Sesi formulir berakhir. Silakan coba kembali.');
+        }
+
+        $current = $request->getPost('current_password');
+        $new = $request->getPost('new_password');
+        $confirmation = $request->getPost('confirm_password');
+        if (!is_string($current) || $current === '' || strlen($current) > 1000) {
+            return $reply(422, 'Masukkan password lama yang valid.');
+        }
+        if (!is_string($new) || !SignModel::meetsPasswordPolicy($new)) {
+            return $reply(422, 'Password baru harus terdiri dari minimal ' . SignModel::PASSWORD_MIN_LENGTH
+                . ' karakter, maksimal ' . SignModel::PASSWORD_MAX_BYTES . ' byte, serta memuat huruf besar, huruf kecil, angka, dan simbol.');
+        }
+        if ($new !== $confirmation) {
+            return $reply(422, 'Konfirmasi password baru tidak cocok.');
+        }
+        if ($current === $new) {
+            return $reply(422, 'Gunakan password baru yang berbeda.');
+        }
+
+        try {
+            if (!$this->md->changeOwnPassword($scope, $current, $new)) {
+                return $reply(422, 'Password lama tidak cocok atau akun sudah berubah.');
+            }
+        } catch (\Throwable $e) {
+            log_message('error', 'Ganti password gagal ({type}).', ['type' => get_class($e)]);
+            return $reply(503, 'Password belum dapat disimpan. Silakan coba kembali.');
+        }
+
+        return $reply(200, 'Password berhasil diganti.');
+    }
+
     public function logoutsystem(){
+        UserActivity::record($this->request, 'logout', 302);
         $this->session->destroy();
         return redirect()->to(site_url('/'));
     }

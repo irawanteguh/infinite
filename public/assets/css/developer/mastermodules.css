@@ -1,0 +1,61 @@
+@import url("../pe/dashboard.css");
+
+.mastermodules-page .module-tree-node {
+    position: relative;
+    margin-block: 0.85rem;
+}
+.mastermodules-page .module-tree-node > .module-tree-list {
+    --tree-line: 4px solid #8db5a7;
+    --tree-indent: clamp(0.85rem, 2.5vw, 1.75rem);
+    margin-inline-start: var(--tree-indent);
+    padding-inline-start: var(--tree-indent);
+    border-inline-start: var(--tree-line);
+}
+.mastermodules-page .module-tree-node > .module-tree-list > .module-tree-node::before {
+    content: "";
+    position: absolute;
+    inset-inline-start: calc(-1 * var(--tree-indent));
+    inset-block-start: 1.4rem;
+    width: var(--tree-indent);
+    border-block-start: var(--tree-line);
+}
+.mastermodules-page .module-tree-row {
+    border: 1px solid #e5ece9;
+    background-color: #fff;
+}
+.mastermodules-page .module-tree-node:has(> .module-tree-list) > .module-tree-row,
+.mastermodules-page .module-tree-node.is-dragging > .module-tree-row {
+    background-color: var(--infinite-teal-soft);
+}
+.mastermodules-page .module-tree-icon {
+    color: var(--infinite-teal);
+}
+.mastermodules-page .module-badge-active {
+    color: var(--infinite-teal);
+    background-color: var(--infinite-teal-soft);
+}
+.mastermodules-page .module-tree-position {
+    min-width: 2ch;
+}
+.mastermodules-page .module-tree-name {
+    min-width: 0;
+    flex-basis: 8rem;
+}
+.mastermodules-page .module-drag-handle {
+    cursor: grab;
+}
+.mastermodules-page .module-tree-node:is(.is-drop-before, .is-drop-after)::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    height: 3px;
+    border-radius: 3px;
+    background-color: var(--infinite-teal);
+    pointer-events: none;
+}
+.mastermodules-page .module-tree-node.is-drop-before::after {
+    inset-block-start: -3px;
+}
+.mastermodules-page .module-tree-node.is-drop-after::after {
+    inset-block-end: -3px;
+}

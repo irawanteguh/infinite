@@ -28,7 +28,9 @@ class AuthFilter implements FilterInterface{
             log_message('error','Module permission lookup failed: {message}',['message'=>$e->getMessage()]);
             return service('response')->setStatusCode(503)->setBody('Hak akses belum dapat diperiksa. Silakan coba kembali.');
         }
-        if ($request->isAJAX() || strpos($request->getHeaderLine('Accept'),'application/json') !== false) {
+        $json = $request->isAJAX() || strpos($request->getHeaderLine('Accept'), 'application/json') !== false;
+        \App\Libraries\UserActivity::record($request, 'denied', $json ? 403 : 302);
+        if ($json) {
             return service('response')->setStatusCode(403)->setJSON(['responseCode'=>'01','responseDesc'=>'Akses modul belum diberikan. Hubungi pengelola akses organisasi.']);
         }
         return redirect()->to(site_url('additional/welcomepage'));

@@ -9,7 +9,7 @@
                     <img src="<?= isset($_SESSION['userid']) && !empty($_SESSION['userid']) ? base_url('assets/media/avatars/' . $_SESSION['userid'] . '.jpg') : base_url('assets/media/avatars/blank.png') ?>" alt="User" onerror="this.onerror=null;this.src='<?= base_url('assets/media/avatars/blank.png') ?>';">
                 </div>
                 <div class="d-flex flex-column">
-                    <div class="fw-bolder d-flex align-items-center fs-5"><?php echo $_SESSION['name']?>
+                    <div class="fw-bolder d-flex align-items-center fs-5"><?= esc((string) session('name')) ?>
                     <span class="badge badge-light-success fw-bolder fs-8 px-2 py-1 ms-2">Pro</span></div>
                     <a href="#" class="fw-bold text-muted text-hover-primary fs-7">RSUD Pasar Minggu</a>
                 </div>
@@ -41,6 +41,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="menu-item px-5">
+            <a class="menu-link px-5" href="#" data-bs-toggle="modal" data-bs-target="#modal_change_password">Ganti Password</a>
         </div>
         <div class="menu-item px-5">
             <a class="menu-link px-5" href="#" data-bs-toggle="modal" data-bs-target="#modal_logout">Sign Out</a>

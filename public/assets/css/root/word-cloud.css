@@ -1,0 +1,29 @@
+.app-word-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    gap: 12px 18px;
+    min-height: 240px;
+    padding: 20px 0;
+}
+
+.app-cloud-word {
+    max-width: 100%;
+    font-weight: 500;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.app-cloud-color-0 { color: var(--app-status-teal-text); }
+.app-cloud-color-1 { color: #559887; }
+.app-cloud-color-2 { color: #628da8; }
+.app-cloud-color-3 { color: #84988b; }
+.app-cloud-negative { color: #d76b82; }
+
+@media (max-width: 575px) {
+    .app-word-cloud {
+        gap: 10px 12px;
+    }
+}

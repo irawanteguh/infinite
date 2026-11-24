@@ -402,6 +402,7 @@ class Routingsystem
     ): string {
 
         $id = $this->menuId($menu);
+        $titleClass = ($menu['parent'] ?? '') === 'H' ? 'menu-title text-uppercase' : 'menu-title';
 
         $children = $this->children[$id] ?? [];
 
@@ -425,7 +426,7 @@ class Routingsystem
                 . ($isActive ? 'active' : '')
                 . '">
 
-                        <span class="menu-title">
+                        <span class="' . $titleClass . '">
                             '
                 . $this->escape(
                     $menu['modules_name'] ?? ''
@@ -447,7 +448,7 @@ class Routingsystem
             . ($isOpen ? 'active' : '')
             . '">
 
-                    <span class="menu-title">
+                    <span class="' . $titleClass . '">
                         '
             . $this->escape(
                 $menu['modules_name'] ?? ''

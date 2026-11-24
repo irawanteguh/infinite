@@ -163,9 +163,9 @@ $chart = $data ? [
                 <div class="col-12 col-lg-6"><section class="prem-card pe-panel h-100" aria-label="Word cloud saran dan masukan">
                     <div class="pe-panel-heading"><div><span class="prem-eyebrow">ANALISIS SARAN DAN MASUKAN</span><h2>Word cloud</h2><p>Kata yang paling banyak muncul pada masukan SKM dan PREM sesuai filter aktif.</p></div></div>
                     <?php if ($data['feedback']['words']): $maxWord = max(array_column($data['feedback']['words'], 'count')); ?>
-                    <div class="pe-word-cloud" role="list" aria-label="Kata yang paling sering muncul pada masukan">
+                    <div class="app-word-cloud" role="list" aria-label="Kata yang paling sering muncul pada masukan">
                         <?php foreach ($data['feedback']['words'] as $index => $word): ?>
-                        <span role="listitem" class="pe-cloud-word <?= ($word['sentiment'] ?? 'neutral') === 'negative' ? 'pe-cloud-negative' : 'pe-cloud-color-' . ($index % 4) ?>" style="font-size:<?= 13 + round(25 * sqrt($word['count'] / $maxWord)) ?>px" title="<?= esc($word['word'], 'attr') ?>"><?= esc($word['word']) ?></span>
+                        <span role="listitem" class="app-cloud-word <?= ($word['sentiment'] ?? 'neutral') === 'negative' ? 'app-cloud-negative' : 'app-cloud-color-' . ($index % 4) ?>" style="font-size:<?= 13 + round(25 * sqrt($word['count'] / $maxWord)) ?>px" title="<?= esc($word['word'], 'attr') ?>"><?= esc($word['word']) ?></span>
                         <?php endforeach; ?>
                     </div>
                     <?php else: ?><div class="pe-panel-empty"><p>Belum ada saran tertulis pada filter ini.</p></div><?php endif; ?>

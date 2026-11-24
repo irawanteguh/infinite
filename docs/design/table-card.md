@@ -1,29 +1,14 @@
-# Card tabel
+# Kartu tabel
 
-Acuan: Daftar E-Klaim. [Indeks](README.md).
+[Indeks](README.md)
 
-Sumber global: public/assets/css/table-card.css, table-header.css, serta public/assets/js/root/filterdatatables.js.
+Gunakan **app-table-card**, **app-table-heading**, **app-table-title**, **app-table-description**, dan **app-table-search**. Letakkan judul dan deskripsi di kiri serta pencarian di kanan. Pada ponsel, pencarian dapat memenuhi lebar kartu.
 
-## Header dan area isi
+- Header tabel memakai latar #EFF7F5 dan teks #62858B. Header dan sel angka serta kolom **Actions** rata kanan dengan **text-end**.
+- Pada contoh dengan filter tahun, kolom **Bulan** cukup menampilkan nama bulan.
+- Kolom **Actions** memakai **btn-group** dengan satu tombol dropdown dan menu **dropdown-menu-end**. **Detail** membuka modal baris, sedangkan **Salin** menyalin isi baris. Kolom aksi dikecualikan dari pencarian.
+- Batasi scroll horizontal pada area tabel. Footer meletakkan jumlah baris dan pilihan ukuran halaman di kiri, lalu pagination di kanan.
 
-Gunakan app-table-card pada card, app-table-heading pada header, app-table-title untuk judul, app-table-description untuk deskripsi, dan app-table-search untuk pembungkus input search.
+Untuk inisialisasi manual, panggil **initDataTable()** dan tandai tabel dengan atribut **data-datatable="manual"**. Gunakan pesan kosong dari helper. Untuk tabel besar, pertahankan strategi pencarian dan pagination modul yang berlaku.
 
-Judul/deskripsi di kiri dan search di kanan. Padding desktop 24px, ponsel 16px. Judul 20px, deskripsi 14px, search lebar 320px dengan tinggi minimal 42px; di ponsel search memenuhi lebar. Header ke tabel berjarak 20px. Pembungkus app-table-search sudah menyediakan ikon; tidak perlu ikon pencarian kedua.
-
-Thead tebal 700, latar #eff7f5, teks #62858b pada tabel UR. Kolom identitas rata kiri, nilai angka/uang rata kanan. Gunakan scope=col pada header baru. Pisahkan RM dari nama pasien bila perlu. Data panjang seperti diagnosis dapat dipindahkan ke Detail yang bisa dibuka/tutup.
-
-## Inisialisasi
-
-~~~js
-initDataTable('#page-table', '#page-search', 10);
-~~~
-
-Seluruh inisialisasi DataTables memakai helper tersebut. data-datatable=manual berarti script halaman akan memanggil helper sendiri; ini bukan pengganti pemanggilan helper. Jangan membuat instance DataTables kedua untuk tabel yang sama.
-
-Helper dapat melengkapi header/search pada card satu tabel. Card dengan beberapa tabel tetap memerlukan struktur header/kontrol yang jelas di view. Tetapkan teks judul/deskripsi secara eksplisit untuk modul baru, jangan mengandalkan fallback generik.
-
-Footer: dropdown tanpa label Tampilkan dan Showing … records di kiri; pagination di kanan; halaman aktif teal. Scroll horizontal dibatasi pada tabel.
-
-Rekap bulanan UR memakai paging:false, searching:false, info:false, lengthChange:false, dom:'t' agar semua bulan tampil. Tabel detail besar memakai serverSide:true, pilihan 10/25/50/100, dan pencarian dengan jeda 400ms. Jangan mengirim seluruh data tahunan untuk pagination di browser.
-
-Baris total memakai tfoot. Jelaskan apakah total mengikuti filter atau pencarian. Kolom persentase harus didampingi pembilang dan pembanding, misalnya Total Episode, Episode Positif, dan % Episode Positif. Pesan tabel kosong mengikuti helper; lihat [status](info-state.md).
+[CSS kartu tabel](../../public/assets/css/root/table-card.css) · [CSS header dan footer tabel](../../public/assets/css/root/table-header.css) · [Helper DataTables](../../public/assets/js/root/filterdatatables.js)

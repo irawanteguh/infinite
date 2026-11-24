@@ -4,7 +4,7 @@ function eklaimAlert(options) {
         buttonsStyling: false,
         customClass: {
             ...options.customClass,
-            popup: "eklaim-alert",
+            popup: ["eklaim-alert", options.customClass?.popup].filter(Boolean).join(" "),
             confirmButton: "btn btn-primary",
             cancelButton: "btn btn-light"
         }
@@ -620,22 +620,48 @@ function prosesImportTxtEklaim(data) {
         return;
     }
 
-    $("#importProgressTxtEklaim").text("0");
-    $("#importSpeedTxtEklaim").text("0");
-    $("#importEtaTxtEklaim").text("Calculating...");
+    const stages = [
+        "Periksa berkas dan kolom wajib",
+        "Kirim dan proses data per batch",
+        "Siapkan ringkasan hasil impor"
+    ];
+    let progressPopup;
+
+    function setImportStage(currentStage) {
+        progressPopup.querySelectorAll(".report-progress-step").forEach((step, stepIndex) => {
+            const complete = stepIndex < currentStage;
+            const current = stepIndex === currentStage;
+            step.classList.toggle("is-complete", complete);
+            step.classList.toggle("is-current", current);
+            if (current) step.setAttribute("aria-current", "step");
+            else step.removeAttribute("aria-current");
+            step.querySelector(".report-progress-icon").innerHTML = complete
+                ? '<i class="bi bi-check-lg"></i>'
+                : current ? '<span class="spinner-border spinner-border-sm"></span>' : '<span class="report-progress-dot"></span>';
+        });
+        progressPopup.querySelector("[data-eklaim-stage]").textContent = stages[currentStage] || "Proses impor selesai";
+    }
 
     eklaimAlert({
-        title: "Importing E-Klaim Data",
+        title: "Mengimpor data E-Klaim",
+        width: "min(560px, calc(100vw - 32px))",
+        customClass: { popup: "report-progress-popup" },
         html: `
-            <div class="text-center">
-                <div class="fs-5 mb-3">Please wait while the data is being imported...</div>
+            <div class="report-progress">${stages.map(label => `
+                <div class="report-progress-step">
+                    <span class="report-progress-icon" aria-hidden="true"></span><span>${label}</span>
+                </div>`).join("")}
+            </div>
+            <div class="text-center mt-3">
+                <div class="visually-hidden" data-eklaim-stage role="status"></div>
                 <div class="fs-3 fw-bold text-primary">
                     <span id="importProgressTxtEklaim">0</span> / ${total.toLocaleString("id-ID")}
                 </div>
-                <div class="progress mt-3" style="height:10px;">
+                <div class="progress report-progress-meter mt-3">
                     <div
                         id="importProgressBarTxtEklaim"
-                        class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                        class="progress-bar progress-bar-striped progress-bar-animated"
+                        aria-label="Progres impor E-Klaim"
                         role="progressbar"
                         style="width:0%"
                         aria-valuenow="0"
@@ -645,12 +671,12 @@ function prosesImportTxtEklaim(data) {
                 </div>
                 <div class="mt-3 small text-muted">
                     <div>
-                        Processing Speed:
-                        <span id="importSpeedTxtEklaim">0</span> records/sec
+                        Kecepatan:
+                        <span id="importSpeedTxtEklaim">0</span> baris/detik
                     </div>
                     <div>
-                        Estimated Time Remaining:
-                        <span id="importEtaTxtEklaim">Calculating...</span>
+                        Estimasi waktu tersisa:
+                        <span id="importEtaTxtEklaim">Menghitung…</span>
                     </div>
                 </div>
             </div>
@@ -658,8 +684,9 @@ function prosesImportTxtEklaim(data) {
         allowOutsideClick: false,
         allowEscapeKey: false,
         showConfirmButton: false,
-        didOpen: function() {
-            Swal.showLoading();
+        didOpen: function(popup) {
+            progressPopup = popup;
+            setImportStage(1);
             kirimBatchTxtEklaim();
         }
     });
@@ -712,7 +739,7 @@ function prosesImportTxtEklaim(data) {
 
                 const remaining = total - index;
                 const eta = speed > 0 ? remaining / speed : 0;
-                $("#importEtaTxtEklaim").text(remaining > 0 ? formatDuration(eta) : "Completed");
+                $("#importEtaTxtEklaim").text(remaining > 0 ? formatDuration(eta) : "Selesai");
 
                 if (index < total) {
                     kirimBatchTxtEklaim();
@@ -721,11 +748,11 @@ function prosesImportTxtEklaim(data) {
 
                 $("#importProgressBarTxtEklaim").css("width", "100%").attr("aria-valuenow", 100);
                 $("#importProgressTxtEklaim").text(total.toLocaleString("id-ID"));
-                $("#importEtaTxtEklaim").text("Completed");
+                $("#importEtaTxtEklaim").text("Selesai");
+                setImportStage(2);
 
-
-                // FINAL RESULT
                 setTimeout(function() {
+                    setImportStage(stages.length);
                     const totalResult   = total;
                     const successResult = totalSuccess;
                     const failedResult  = totalFailed;

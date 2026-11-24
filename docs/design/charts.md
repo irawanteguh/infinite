@@ -1,17 +1,18 @@
-# Grafik
+# Grafik dan word cloud
 
-Acuan: public/assets/js/ur/dashboard.js, severity1.js, severity3.js, los.js, dan tarifpositif.js. [Indeks](README.md).
+[Indeks](README.md)
 
-Gunakan ApexCharts yang sudah tersedia. Pertahankan tipe grafik sesuai makna: garis untuk tren/rasio, batang untuk jumlah atau kontribusi. Header berisi judul dan deskripsi singkat tanpa label kapital tambahan yang mengulang judul.
+| Komponen | Contoh |
+| --- | --- |
+| Batang bertumpuk | Nilai per bulan dengan satu seri untuk setiap kategori. |
+| Garis | Nilai bulanan dengan penanda titik. |
+| Garis dengan acuan | Grafik garis dengan garis horizontal putus-putus. Nilai 30 adalah acuan dummy pada demo. |
+| Donut | Cincin 77%, pemisah putih, total tebal di tengah, dan legenda eksternal berisi jumlah dan persentase. Angka total memakai 36 px di desktop dan 30 px pada layar kecil. |
+| Peringkat | Batang horizontal hingga enam entri, diurutkan dari nilai terbesar. Lebar batang menunjukkan bagian dari total data yang lolos filter. |
+| Word cloud | Ukuran kata mengikuti frekuensi, dengan variasi warna seperti dashboard PE. Kata negatif pada contoh berwarna merah muda #D76B82. |
 
-## Tampilan
+Grafik bulanan memakai nama bulan tanpa tahun. Batang dan garis memakai angka dummy langsung. Donut dan peringkat menyertakan persentase untuk menunjukkan proporsi dari total aktif. Sediakan pesan saat filter tidak menghasilkan data.
 
-Tinggi grafik UR sekitar 285–300px. Teal #087e82 menjadi seri utama; #93b6c3 atau #93aab3 menjadi pembanding. Warna layanan harus tetap konsisten saat filter menghilangkan seri lain. Legenda di atas, rata kiri. Gunakan grid tipis, label yang terbaca, dan matikan toolbar chart jika tidak diperlukan.
+Word cloud Testing Page memakai kata dan frekuensi dummy yang tetap. Grafik lainnya mengikuti filter halaman.
 
-Nama bulan ditulis lengkap. Tooltip menyebut unit: episode, hari, Rp atau %. Jangan menggunakan formatter rupiah untuk grafik jumlah. Bila layar sempit, label boleh dimiringkan tanpa menyingkat nama bulan.
-
-## CRR
-
-CRR layanan = total INA-CBG layanan ÷ total tarif RS layanan × 100%. Rawat jalan dan rawat inap menjadi dua seri dengan perhitungan masing-masing. Tampilkan garis acuan 100%. Bulan tanpa data atau dengan tarif RS nol memakai null/jeda, bukan nol persen. CRR bukan laba/rugi aktual.
-
-Saat filter berubah, hancurkan instance grafik lama sebelum menggambar ulang. Jika library tidak tersedia, tampilkan pesan yang mengarahkan ke tabel; tabel tetap bisa dibaca. Berikan aria-label untuk grafik dan sediakan tabel atau ringkasan sebagai alternatif membaca data.
+[Konfigurasi grafik contoh](../../public/assets/js/developer/testingpage.js) · [Tampilan peringkat](../../public/assets/css/developer/testingpage.css) · [CSS word cloud bersama](../../public/assets/css/root/word-cloud.css)

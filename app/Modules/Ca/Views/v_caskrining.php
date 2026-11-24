@@ -56,7 +56,7 @@
                     </div>
                     <a href="<?= esc($url . '&start=1', 'attr') ?>" class="btn prem-btn-primary">Mulai mengisi <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i></a>
                 </div>
-                <aside class="prem-welcome-aside">
+                <aside class="prem-welcome-aside app-geometric-banner">
                     <span class="prem-hero-icon"><i class="bi bi-clipboard-heart" aria-hidden="true"></i></span>
                     <h2>AURA — A Place of Care, A Space for Hope</h2>
                     <p>Kenali risiko melalui skrining sesuai kondisi dan riwayat kesehatan Anda.</p>

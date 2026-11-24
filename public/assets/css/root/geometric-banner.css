@@ -1,0 +1,47 @@
+.app-geometric-banner {
+    --app-banner-heading: #fff;
+    --app-banner-copy: #cee6e8;
+    --app-banner-accent: #8ed6cd;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background-color: #12383f;
+    background-image:
+        radial-gradient(ellipse at 92% 4%, rgb(33 163 148 / 32%), transparent 52%),
+        linear-gradient(115deg, #102c37 8%, #143e45 65%, #165457);
+}
+
+.app-geometric-banner::before,
+.app-geometric-banner::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.app-geometric-banner::before {
+    inset: 0 0 0 24%;
+    background-image: conic-gradient(
+        from 45deg,
+        rgb(126 222 201 / 36%) 0 25%,
+        rgb(126 222 201 / 9%) 0 50%,
+        rgb(16 44 55 / 40%) 0 75%,
+        rgb(126 222 201 / 20%) 0
+    );
+    background-size: 84px 84px;
+    clip-path: polygon(28% 0, 100% 0, 100% 100%, 0 100%);
+    mask-image: linear-gradient(to right, transparent 12%, #000 62%);
+}
+
+.app-geometric-banner::after {
+    inset: 0 0 0 46%;
+    background: linear-gradient(135deg, rgb(133 234 209 / 36%), rgb(8 126 130 / 14%));
+    clip-path: polygon(65% 0, 100% 0, 100% 58%, 77% 100%, 25% 100%);
+}
+
+@media (max-width: 575.98px) {
+    .app-geometric-banner::before {
+        inset-inline-start: 15%;
+        background-size: 64px 64px;
+    }
+}

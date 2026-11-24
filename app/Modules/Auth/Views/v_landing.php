@@ -20,13 +20,7 @@
     </header>
 
     <main class="flex-grow-1">
-        <section id="beranda" class="landing-hero position-relative overflow-hidden py-15 py-lg-20">
-            <svg class="landing-medical-pattern" viewBox="0 0 900 520" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-                <path d="M-20 300 H170 L208 300 L235 258 L275 345 L320 205 L360 300 H500 L535 300 L565 270 L595 330 L630 285 H920" fill="none" stroke="#75e6df" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                <g fill="none" stroke="#a6edff" stroke-width="3" opacity=".8"><path d="M720 100v56m-28-28h56"/><path d="M815 205v40m-20-20h40"/><path d="M700 390v42m-21-21h42"/></g>
-                <circle cx="760" cy="320" r="92" fill="none" stroke="#a6edff" stroke-width="1.5" stroke-dasharray="5 10"/>
-                <circle cx="760" cy="320" r="62" fill="none" stroke="#75e6df" stroke-width="1.5"/>
-            </svg>
+        <section id="beranda" class="landing-hero app-geometric-banner py-15 py-lg-20">
             <div class="container-xxl px-4 position-relative">
                 <div class="row align-items-center gy-12 gx-xl-15">
                     <div class="col-lg-6">
@@ -220,7 +214,7 @@
 
         <section id="ekosistem" class="landing-connect py-12 py-lg-15">
             <div class="container-xxl px-4">
-                <div class="landing-connect-banner p-8 p-lg-12 d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-6">
+                <div class="landing-connect-banner app-geometric-banner p-8 p-lg-12 d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-6">
                     <div class="d-flex align-items-center gap-5">
                         <span class="symbol symbol-60px symbol-circle bg-white bg-opacity-10"><span class="symbol-label"><i class="bi bi-hospital text-white fs-2"></i></span></span>
                         <div><h2 class="text-white fw-bolder mb-2">Terhubung dalam satu ekosistem layanan</h2><p class="text-white text-opacity-75 mb-0">INFINITE — Integrated Healthcare Data Analytics Platform</p></div>

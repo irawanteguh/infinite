@@ -73,18 +73,18 @@
 }
 
 .ca-result-success {
-    background: var(--prem-soft);
-    color: var(--prem-accent);
+    background: var(--app-status-teal-bg);
+    color: var(--app-status-teal-text);
 }
 
 .ca-result-warning {
-    background: #fbf6eb;
-    color: #846d43;
+    background: var(--app-status-yellow-bg);
+    color: var(--app-status-yellow-text);
 }
 
 .ca-result-danger {
-    background: #fbf0f1;
-    color: #8d5660;
+    background: var(--app-status-red-bg);
+    color: var(--app-status-red-text);
 }
 
 

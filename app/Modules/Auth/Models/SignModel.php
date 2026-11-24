@@ -41,6 +41,15 @@ class SignModel extends Model{
         return null;
     }
 
+    public function ownUsername(string $group, string $org, string $user): string
+    {
+        $account = $this->db->table('dt01_gen_user_data')->select('username')
+            ->where(['group_id' => $group, 'org_id' => $org, 'user_id' => $user, 'active' => '1'])
+            ->get()->getRowArray();
+
+        return (string) ($account['username'] ?? '');
+    }
+
     public function changeOwnPassword(array $scope, string $current, string $new): bool
     {
         $scope['active'] = '1';

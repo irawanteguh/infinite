@@ -30,7 +30,7 @@ body #ur-executive .ur-method-grid h3{margin:0 0 4px!important;line-height:1.3!i
 body #ur-executive .ur-method-grid p{margin:0!important;line-height:1.5!important}
 body #ur-executive .ur-method-period{margin-top:12px;padding-top:10px;line-height:1.5}
 /* Monthly dashboard headings match the UR tariff tables. */
-body #ur-monthly-table thead th{background:#eff7f5!important;color:#62858b;font-weight:700!important;padding:12px;white-space:nowrap;vertical-align:middle}
+body #ur-monthly-table thead th{font-weight:700!important;padding:12px;white-space:nowrap;vertical-align:middle}
 
 .ur-dashboard .ur-crr-note{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;border:1px solid #dceae5;border-radius:12px;background:#f6faf9;color:#789095;line-height:1.7;margin-top:16px}.ur-crr-note>i{flex-shrink:0;color:#087e82;font-size:18px;line-height:1.5}.ur-crr-note>div{min-width:0}@media(max-width:575px){.ur-dashboard .ur-crr-note{padding:12px 14px}}
 

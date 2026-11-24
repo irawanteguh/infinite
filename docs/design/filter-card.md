@@ -1,34 +1,13 @@
-# Card filter
+# Kartu filter
 
-Acuan sementara: filter modul UR, khususnya Data E-Klaim. [Indeks](README.md).
+[Indeks](README.md)
 
-Sumber global: public/assets/css/filter-card.css, dimuat oleh app/Views/template/head.php.
+Gunakan **app-filter-card** sebagai pembungkus, **app-filter-heading** untuk judul dan deskripsi, **app-filter-fields** untuk kontrol, serta **app-filter-scope** untuk pesan cakupan atau validasi. Letakkan label di atas kontrol. Pada layar sempit, kontrol turun ke baris berikutnya.
 
-## Struktur
+Testing Page memakai **Jenis layanan** dengan Select2, **Dari tanggal**, **Sampai tanggal**, serta tombol **Terapkan** dan **Atur ulang**. Pilihan tahun berada di toolbar. Rentang tanggal demo mengambil seluruh bulan yang bersinggungan. Rentang terbalik memunculkan pesan merah dan mempertahankan hasil terakhir. Periode tanpa data menampilkan pesan kuning.
 
-~~~html
-<section class="app-filter-card" aria-labelledby="page-filter-title">
-  <div class="app-filter-heading">
-    <h2 id="page-filter-title"><i class="bi bi-funnel me-2" aria-hidden="true"></i>Filter data</h2>
-    <p>Pilih periode dan jenis layanan untuk menyesuaikan data.</p>
-  </div>
-  <div class="app-filter-fields">
-    <div>
-      <label for="page-service">Jenis layanan</label>
-      <select id="page-service" class="form-select">
-        <option value="">Semua layanan</option>
-        <option value="1">Rawat inap</option>
-        <option value="2">Rawat jalan</option>
-      </select>
-    </div>
-    <button type="button" class="btn btn-light-primary">Muat ulang</button>
-  </div>
-  <div class="app-filter-scope">Data berdasarkan tanggal pulang.</div>
-</section>
-~~~
+Untuk filter status seperti **Filter pertanyaan** di PE, kelompokkan tombol **Semua**, **Aktif**, dan **Nonaktif** dalam grup **app-filter-options** di dalam **app-filter-fields**. Gunakan **app-filter-option** untuk setiap tombol. Lebar grup mengikuti isi dan tombol dapat turun baris saat ruang sempit. Terapkan pilihan langsung, tandai tombol aktif dengan **aria-pressed**, dan tampilkan jumlah hasil di **app-filter-scope**. Di Testing Page, pilihan status langsung memperbarui jumlah pertanyaan dummy di pesan cakupan. Filter status ini bekerja secara independen dari filter tanggal dan layanan.
 
-Field 42px, gap 16px, radius card 14px, aksen #087e82. Label berada di atas kontrol. Tombol sejajar bagian bawah field. Di ponsel field tersusun vertikal. Native select dan Select2 memakai tema teal dari select-theme.css.
+Saat pola ini dipakai di modul, jelaskan cakupan filter dan pertahankan nama field, pilihan, serta kriteria modul. Gunakan cakupan filter yang konsisten pada ringkasan, grafik, dan tabel.
 
-Pertahankan method/action form, ID, name, nilai option, dan event handler. Untuk submit server, ganti pembungkus field menjadi form.app-filter-fields dengan action/method yang sesuai. Contoh di atas adalah struktur visual; event Muat ulang tetap perlu dihubungkan script modul.
-
-Ringkasan dan tabel harus mengikuti cakupan filter yang sama. Pergantian filter pada tabel server-side mengembalikan halaman ke awal. Pisahkan form laporan/unduhan dari area field filter. Jangan menghapus filter bisnis yang diperlukan hanya untuk menyederhanakan layout.
+[CSS kartu filter](../../public/assets/css/root/filter-card.css) · [Tema kontrol](../../public/assets/css/root/select-theme.css) · [Pemilih tanggal](../../public/assets/js/root/datepicker.js)

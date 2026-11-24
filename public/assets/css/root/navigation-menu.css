@@ -1,0 +1,20 @@
+:is(#kt_aside, [data-kt-drawer-name="header-menu"]) .menu-item > .menu-link:is(:hover, :focus-visible, .active):not(.disabled),
+:is(#kt_aside, [data-kt-drawer-name="header-menu"]) .menu-item:is(.hover, .here, .show) > .menu-link:not(.disabled) {
+    color: var(--app-status-teal-text);
+    background-color: var(--app-status-teal-bg);
+}
+
+:is(#kt_aside, [data-kt-drawer-name="header-menu"]) .menu-item > .menu-link:is(:hover, :focus-visible, .active):not(.disabled) :is(.menu-title, .menu-icon, .menu-icon i),
+:is(#kt_aside, [data-kt-drawer-name="header-menu"]) .menu-item:is(.hover, .here, .show) > .menu-link:not(.disabled) :is(.menu-title, .menu-icon, .menu-icon i) {
+    color: var(--app-status-teal-text);
+}
+
+:is(#kt_aside, [data-kt-drawer-name="header-menu"]) .menu-item > .menu-link:is(:hover, :focus-visible, .active):not(.disabled) .menu-icon svg [fill]:not([fill="none"]):not(.permanent):not(g),
+:is(#kt_aside, [data-kt-drawer-name="header-menu"]) .menu-item:is(.hover, .here, .show) > .menu-link:not(.disabled) .menu-icon svg [fill]:not([fill="none"]):not(.permanent):not(g) {
+    fill: var(--app-status-teal-text);
+}
+
+:is(#kt_aside, [data-kt-drawer-name="header-menu"]) .menu-item > .menu-link:is(:hover, :focus-visible, .active):not(.disabled) .menu-bullet .bullet,
+:is(#kt_aside, [data-kt-drawer-name="header-menu"]) .menu-item:is(.hover, .here, .show) > .menu-link:not(.disabled) .menu-bullet .bullet {
+    background-color: var(--app-status-teal-text);
+}

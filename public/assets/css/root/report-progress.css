@@ -1,0 +1,33 @@
+.report-progress-popup.swal2-popup { padding: 28px 32px 30px; overflow: visible; }
+.report-progress-popup .swal2-html-container { overflow: visible; max-height: none; margin: 12px 0 0; }
+.report-progress { text-align: left; max-width: 440px; margin: 16px auto 4px; }
+.report-progress-step { display: flex; align-items: center; gap: 13px; position: relative; min-height: 48px; color: #648088; font-size: 13px; font-weight: 600; }
+.report-progress-step:not(:last-child)::after { content: ''; position: absolute; left: 13px; top: 34px; bottom: -13px; width: 2px; background: #dce9e5; }
+.report-progress-step.is-complete:not(:last-child)::after { background: var(--app-status-teal-text); }
+.report-progress-icon { width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; border: 2px solid #dce9e5; background: #fff; z-index: 1; }
+.report-progress-dot { width: 7px; height: 7px; background: #dce9e5; border-radius: 50%; }
+.report-progress-step.is-current { color: var(--app-status-teal-text); }
+.report-progress-step.is-current .report-progress-icon { border-color: var(--app-status-teal-text); color: var(--app-status-teal-text); }
+.report-progress-step.is-complete { color: var(--app-status-teal-text); }
+.report-progress-step.is-complete .report-progress-icon { border-color: var(--app-status-teal-text); background: var(--app-status-teal-text); color: #fff; }
+.report-progress-step.is-complete .report-progress-icon i { color: #fff !important; font-size: 15px; font-weight: 800; }
+
+.report-progress-popup .btn-primary:focus-visible {
+    outline: 2px solid var(--app-status-teal-text);
+    outline-offset: 2px;
+}
+
+@media (max-width: 575.98px) {
+    .report-progress-popup.swal2-popup { padding: 20px 18px 22px; }
+    .report-progress-step { font-size: 12px; }
+}
+
+.report-progress-popup .report-progress-meter {
+    height: 10px;
+    background-color: var(--app-status-teal-bg);
+    border-radius: 8px;
+}
+
+.report-progress-popup .report-progress-meter > .progress-bar {
+    background-color: var(--app-status-teal-text);
+}

@@ -26,7 +26,7 @@ body #kt_content .tn-services-card h3{font-size:15px!important;font-weight:600;c
 .tn-services-stats small{color:#81969b;line-height:1.5}
 .tn-page .ur-table-wrap{max-width:100%;overflow:auto}
 .tn-page .tn-monthly-wrap{max-height:none}
-.tn-page .ur-table th{background:#eff7f5!important;color:#62858b;font-weight:600;padding:12px;white-space:nowrap}
+.tn-page .ur-table th{font-weight:600;padding:12px;white-space:nowrap}
 .tn-page .ur-table td{padding:10px 12px;color:#42636d}
 .tn-page .ur-table tfoot td{font-weight:600;background:#f0f8f5;color:#234a54}
 .tn-dpjp-table{min-width:1000px}

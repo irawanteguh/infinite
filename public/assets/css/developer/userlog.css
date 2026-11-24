@@ -1,15 +1,2 @@
 @import url("../pe/dashboard.css");
-
-.userlog-page .timeline-item > .timeline-label {
-    width: 66px;
-    flex: 0 0 66px;
-}
-.userlog-page ol.timeline-label::before {
-    left: 70px;
-}
-.userlog-page .timeline-content {
-    min-width: 0;
-}
-.userlog-page time.timeline-label::before {
-    content: none;
-}
+@import url("../root/user-activity.css");

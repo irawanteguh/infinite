@@ -22,3 +22,40 @@ body #kt_content .app-filter-card .app-filter-scope :is(i,svg){color:var(--filte
 body #kt_content .app-filter-card .app-filter-fields>.badge{align-self:center;white-space:normal;line-height:1.6;background:#e5f2ef!important;color:#426f65!important}
 @media(max-width:767px){body #kt_content .app-filter-card .app-filter-fields>div:not(.pe-filter-actions){flex:1 1 200px}body #kt_content .app-filter-card .ur-filter-note{flex-basis:100%;margin:0}}
 @media(max-width:575px){body #kt_content .app-filter-card .app-filter-heading{padding:16px 16px 0!important}body #kt_content .app-filter-card .app-filter-fields{padding:16px!important;gap:12px!important}body #kt_content .app-filter-card .app-filter-fields>div:not(.pe-filter-actions){flex-basis:100%}body #kt_content .app-filter-card .app-filter-scope{padding:10px 16px!important}body #kt_content .app-filter-card .app-filter-fields>.btn,body #kt_content .app-filter-card .pe-filter-actions{width:100%}}
+
+body #kt_content .app-filter-card .app-filter-fields > div.app-filter-options {
+    display: inline-flex;
+    flex: 0 1 auto;
+    flex-wrap: wrap;
+    gap: 4px;
+    width: max-content;
+    max-width: 100%;
+    padding: 4px;
+    border: 1px solid #d8e8e3;
+    border-radius: 9px;
+    background: var(--app-status-teal-bg);
+}
+
+body #kt_content .app-filter-options .app-filter-option {
+    min-height: 36px;
+    padding: 8px 14px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: #426f65;
+}
+
+body #kt_content .app-filter-options .app-filter-option[aria-pressed="false"]:hover {
+    background: #dfeee9;
+    color: var(--app-status-teal-text);
+}
+
+body #kt_content .app-filter-options .app-filter-option[aria-pressed="true"] {
+    background: var(--app-status-teal-text);
+    color: #fff;
+}
+
+body #kt_content .app-filter-options .app-filter-option:focus-visible {
+    outline: 2px solid var(--app-status-teal-text);
+    outline-offset: 2px;
+}

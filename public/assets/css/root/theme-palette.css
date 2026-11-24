@@ -1,0 +1,10 @@
+:root {
+    --app-status-teal-bg: #eaf6f4;
+    --app-status-teal-text: #087e82;
+    --app-status-yellow-bg: #fff4d6;
+    --app-status-yellow-text: #805800;
+    --app-status-red-bg: #fde9e9;
+    --app-status-red-text: #a63c45;
+    --app-table-header-bg: #eff7f5;
+    --app-table-header-text: #62858b;
+}

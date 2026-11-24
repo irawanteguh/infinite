@@ -47,3 +47,46 @@ body :is(.dataTables_wrapper .app-table-footer,.app-table-footer-manual) select:
 @media(max-width:767px){body :is(.dataTables_wrapper .app-table-footer,.app-table-footer-manual){align-items:flex-start}body :is(.dataTables_wrapper .app-table-meta,.app-table-footer-manual .app-table-meta){width:100%}body :is(.dataTables_wrapper .app-table-footer,.app-table-footer-manual) .pagination{justify-content:flex-start}}
 /* Standard table headings stay bold across module styles. */
 body table.table thead :is(th,td){font-weight:700!important}
+
+/* Shared palette for existing table headers. */
+.ca-dashboard .table thead th,
+.pe-dashboard .pe-insight-table thead th,
+.pe-dashboard .pe-monthly-table thead th {
+    background: var(--app-table-header-bg);
+    color: var(--app-table-header-text);
+}
+
+.auditkoding-page .ur-table th,
+.biaya-page .ur-table th,
+.cm-page .cm-table thead th,
+.diagnosa-page .ur-table th,
+.dm-page .ur-table th,
+.ek-page table th,
+.icu-page .ur-table th,
+.los-page .ur-table th,
+.mal-page .ur-table th,
+.pending-page .pending-details th,
+.pending-page .pending-monthly th,
+.pn-page .ur-table th,
+.s1-page .ur-table th,
+.s3-page .ur-table th,
+.sl-page .ur-table th,
+.tn-page .ur-table th,
+.topup-page .ur-table th,
+.tp-page .ur-table th,
+.tumor-page .ur-table th,
+.vent-page .ur-table th,
+body #ur-monthly-table thead th {
+    background: var(--app-table-header-bg) !important;
+    color: var(--app-table-header-text);
+}
+
+.klaim-case-table th {
+    background: var(--app-table-header-bg) !important;
+    color: var(--app-table-header-text) !important;
+}
+
+#testing-table thead th {
+    background-color: var(--app-table-header-bg);
+    color: var(--app-table-header-text);
+}

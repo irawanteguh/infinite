@@ -18,7 +18,7 @@ $selecting = request()->getGet('select') === '1';
                     <div class="prem-facts"><span><i class="bi bi-list-check"></i> <?= count($instruments) ?> pilihan kuesioner</span><span><i class="bi bi-person-check"></i> Nomor rekam medis opsional</span></div>
                     <a href="<?= esc($publicUrl . '&select=1', 'attr') ?>" class="btn prem-btn-primary">Mulai mengisi <i class="bi bi-arrow-right ms-2"></i></a>
                 </div>
-                <aside class="prem-welcome-aside">
+                <aside class="prem-welcome-aside app-geometric-banner">
                     <span class="prem-hero-icon"><i class="bi bi-chat-heart"></i></span><h2>Pengalaman Anda berarti.</h2><p>Berikan penilaian sesuai pengalaman pelayanan yang Anda terima.</p>
                     <div class="prem-guide"><span>01</span><div>Pilih pelayanan yang ingin Anda nilai.</div></div>
                     <div class="prem-guide"><span>02</span><div>Isi data responden, lalu pilih satu jawaban yang tersedia untuk setiap pernyataan.</div></div>

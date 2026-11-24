@@ -24,6 +24,11 @@
 <link href="<?= base_url('assets/routingsystem/global/plugins.bundle.css') ?>" rel="stylesheet" type="text/css" />
 <link href="<?= base_url('assets/routingsystem/css/style.bundle.css') ?>" rel="stylesheet" type="text/css" />
 
+<?php $themePaletteCss = FCPATH . 'assets/css/root/theme-palette.css'; ?>
+<?php if (is_file($themePaletteCss)): ?>
+<link href="<?= base_url('assets/css/root/theme-palette.css?v=' . filemtime($themePaletteCss)) ?>" rel="stylesheet" type="text/css" />
+<?php endif; ?>
+
 <?php
 
     $uri      = service('uri');
@@ -51,7 +56,7 @@
     }
 
 
-    if ($segment1 !== '' && $segment2 !== '') {
+    if ($segment1 !== '' && $segment1 !== 'root' && $segment2 !== '') {
         $cssFile = FCPATH . 'assets/css/' . $segment1 . '/' . $segment2 . '.css';
         if (file_exists($cssFile)) {
             echo PHP_EOL . '<!-- Load CSS Files Folder ' . $segment1 . '/' . $segment2 . ' -->' . PHP_EOL;
@@ -59,41 +64,26 @@
         }
     }
 
-    if (in_array($segment1, ['organization', 'hr'], true)) {
-        $organizationHeaderCss = FCPATH . 'assets/css/headorganization.css';
-        if (is_file($organizationHeaderCss)) {
-            echo '<link href="' . base_url('assets/css/headorganization.css?v=' . filemtime($organizationHeaderCss)) . '" rel="stylesheet" type="text/css" />' . PHP_EOL;
+    $sharedStyles = [
+        'navigation-menu.css',
+        'geometric-banner.css',
+        'headorganization.css',
+        'table-header.css',
+        'button-theme.css',
+        'typography.css',
+        'compact-layout.css',
+        'filter-card.css',
+        'word-cloud.css',
+        'report-progress.css',
+        'table-card.css',
+        'select-theme.css',
+    ];
+    foreach ($sharedStyles as $stylesheet):
+        $cssPath = 'assets/css/root/' . $stylesheet;
+        $cssFile = FCPATH . $cssPath;
+        if (!is_file($cssFile)) {
+            continue;
         }
-    }
-
-    $tableHeaderCss = FCPATH . 'assets/css/table-header.css';
-    if (is_file($tableHeaderCss)) {
-        echo '<link href="' . base_url('assets/css/table-header.css?v=' . filemtime($tableHeaderCss)) . '" rel="stylesheet" type="text/css" />' . PHP_EOL;
-    }
-
 ?>
-
-<?php $buttonThemeCss = FCPATH . 'assets/css/button-theme.css'; ?>
-<?php if (is_file($buttonThemeCss)): ?>
-<link href="<?= base_url('assets/css/button-theme.css?v=' . filemtime($buttonThemeCss)) ?>" rel="stylesheet" type="text/css" />
-<?php endif; ?>
-<?php $typographyCss = FCPATH . 'assets/css/typography.css'; ?>
-<?php if (is_file($typographyCss)): ?>
-<link href="<?= base_url('assets/css/typography.css?v=' . filemtime($typographyCss)) ?>" rel="stylesheet" type="text/css" />
-<?php endif; ?>
-<?php $compactLayoutCss = FCPATH . 'assets/css/compact-layout.css'; ?>
-<?php if (is_file($compactLayoutCss)): ?>
-<link href="<?= base_url('assets/css/compact-layout.css?v=' . filemtime($compactLayoutCss)) ?>" rel="stylesheet" type="text/css" />
-<?php endif; ?>
-<?php $filterCardCss = FCPATH . 'assets/css/filter-card.css'; ?>
-<?php if (is_file($filterCardCss)): ?>
-<link href="<?= base_url('assets/css/filter-card.css?v=' . filemtime($filterCardCss)) ?>" rel="stylesheet" type="text/css" />
-<?php endif; ?>
-<?php $tableCardCss = FCPATH . 'assets/css/table-card.css'; ?>
-<?php if (is_file($tableCardCss)): ?>
-<link href="<?= base_url('assets/css/table-card.css?v=' . filemtime($tableCardCss)) ?>" rel="stylesheet" type="text/css" />
-<?php endif; ?>
-<?php $selectThemeCss = FCPATH . 'assets/css/select-theme.css'; ?>
-<?php if (is_file($selectThemeCss)): ?>
-<link href="<?= base_url('assets/css/select-theme.css?v=' . filemtime($selectThemeCss)) ?>" rel="stylesheet" type="text/css" />
-<?php endif; ?>
+<link href="<?= base_url($cssPath . '?v=' . filemtime($cssFile)) ?>" rel="stylesheet" type="text/css" />
+<?php endforeach; ?>

@@ -46,14 +46,44 @@ class UserActivityModel extends Model
         }
     }
 
-    public function timeline(string $group, string $org, string $before, int $limit): array
+    public function timeline(string $group, string $org, string $before, ?int $limit, ?string $user = null, ?string $date = null): array
     {
         $query = $this->scopedActivities($group, $org);
+        if ($user !== null) {
+            $query->where('user_id', $user);
+        }
+        if ($date !== null) {
+            $day = new \DateTimeImmutable($date);
+            $query->where('created_at >=', $day->format('Y-m-d H:i:s'))
+                ->where('created_at <', $day->modify('+1 day')->format('Y-m-d H:i:s'));
+        }
         if ($before !== '') {
             $query->where('activity_id <', $before);
         }
 
         return $query->orderBy('activity_id', 'DESC')->get($limit)->getResultArray();
+    }
+
+    public function ownTimeline(string $group, string $org, string $user, string $date): array
+    {
+        return $this->timeline($group, $org, '', null, $user, $date);
+    }
+
+    public function latestPerDay(string $group, string $org, ?string $user = null): array
+    {
+        $latestIds = $this->scopedActivities($group, $org);
+        if ($user !== null) {
+            $latestIds->where('user_id', $user);
+        }
+        $latestIds->selectMax('activity_id')->groupBy('DATE(created_at)', false);
+        if ($user === null) {
+            $latestIds->groupBy('user_id');
+        }
+
+        return $this->db->table($this->table)
+            ->select('DATE(created_at) AS activity_date, created_at, event, http_method, route, user_id, user_name', false)
+            ->whereIn('activity_id', $latestIds)
+            ->orderBy('activity_date', 'DESC')->orderBy('activity_id', 'DESC')->get()->getResultArray();
     }
 
     public function latestPerUser(string $group, string $org): array

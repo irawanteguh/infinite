@@ -1,28 +1,17 @@
-# Panduan desain aplikasi
+# Panduan desain Infinite
 
-Status: **standar sementara menggunakan modul UR**. Panduan ini mendokumentasikan pola yang sudah diterapkan; perubahan desain berikutnya mengikuti keputusan pengguna.
+[Developer → Testing Page](http://localhost/infinite/developer/testingpage) adalah acuan visual komponen. Halaman ini memakai data dummy lokal agar tampilan dan interaksi bisa ditinjau tanpa model data modul.
 
-Dokumentasi tidak dimuat oleh browser. Mengubah Markdown tidak mengubah aplikasi. Implementasi berada di view PHP, CSS, dan JavaScript yang disebutkan pada setiap panduan.
+| Panduan | Cakupan |
+| --- | --- |
+| [Dasar tampilan](foundations.md) | Layout, palet, tipografi, ringkasan, status, dan modal |
+| [Toolbar](toolbar.md) | Tahun, Impor, Perbarui, dan Cetak |
+| [Kartu filter](filter-card.md) | Select2, pemilih tanggal, filter status, dan pesan cakupan |
+| [Kartu tabel](table-card.md) | Header, pencarian, pagination, dan dropdown Actions |
+| [Grafik dan word cloud](charts.md) | Batang bertumpuk, garis, garis acuan, donut, peringkat, dan word cloud |
+| [Modal progres](report-progress.md) | Tahap pembuatan laporan, progres impor, dan ringkasan hasil |
+| [Pemeriksaan perubahan](review-checklist.md) | Layout, interaksi, dan cakupan data |
 
-## Daftar panduan
+Saat menerapkan pola ke modul, gunakan komponen bersama dan pertahankan arti data, aturan filter, serta perilaku modul yang berlaku.
 
-| Panduan | Isi | Acuan UR |
-| --- | --- | --- |
-| [Dasar desain](foundations.md) | Warna, tipografi, jarak, responsif | Dashboard, Tarif Positif |
-| [Toolbar](toolbar.md) | Tahun, impor, perbarui, cetak | Toolbar dashboard dan Tarif Positif |
-| [Card filter](filter-card.md) | Header, field, tombol, cakupan | Data E-Klaim |
-| [Card ringkasan](summary-card.md) | KPI, angka, ikon, keterangan | Tarif Positif, Severity I/III, LOS |
-| [Card tabel](table-card.md) | Judul, deskripsi, search, padding, footer | Daftar E-Klaim |
-| [Grafik](charts.md) | Warna, sumbu, tooltip, CRR | Dashboard, Severity I/III |
-| [Kotak info dan status](info-state.md) | Info, loading, error, data kosong | CRR dashboard, Casemix Index |
-| [Modal dan sesi](modal-session.md) | Struktur modal dan idle timeout | Modal session timeout |
-| [Pemeriksaan perubahan](review-checklist.md) | Verifikasi layout dan perilaku | Seluruh halaman UR |
-
-## Cara menggunakan
-
-1. Pilih halaman UR yang paling dekat dengan kebutuhan modul.
-2. Gunakan komponen global yang sudah tersedia sebelum menambahkan CSS khusus halaman.
-3. Pertahankan ID, nama field, endpoint, dan kriteria perhitungan yang sudah digunakan.
-4. Ikuti panduan komponen dan lakukan pemeriksaan yang relevan.
-
-Panduan ini belum berarti seluruh modul lama sudah mengikuti standar. Jangan mengubah logika bisnis hanya untuk menyamakan tampilan.
+[View Testing Page](../../app/Modules/Developer/Views/v_testingpage.php) · [Toolbar demo](../../app/Modules/Developer/toolbar/testingpage.php) · [CSS demo](../../public/assets/css/developer/testingpage.css) · [JavaScript demo](../../public/assets/js/developer/testingpage.js)

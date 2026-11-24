@@ -1,29 +1,37 @@
-# Dasar desain sementara
+# Dasar tampilan
 
-Acuan: modul UR. Kembali ke [indeks](README.md).
+[Indeks](README.md)
 
-## Warna
+## Layout dan tipografi
 
-| Kegunaan | Warna acuan |
-| --- | --- |
-| Aksen utama / tombol / halaman aktif | #087e82 |
-| Hover utama | #066b6e |
-| Latar info / filter | #f6faf9 |
-| Latar header tabel | #eff7f5 |
-| Pilihan / tombol lembut | #e5f2ef |
-| Judul | #234a54 |
-| Teks isi | #42636d |
-| Deskripsi | #81969b |
-| Border card | #e1ebed |
+Gunakan Poppins dari template, grid Bootstrap/Metronic, dan jarak dari layout bersama. Letakkan filter sebelum ringkasan dan grafik. Kartu grafik berpasangan pada layar lebar dan bertumpuk pada layar sempit. Judul menyebut fungsi komponen, misalnya **Grafik garis** atau **Tabel data**. Tambahkan deskripsi bila diperlukan untuk menjelaskan satuan atau cakupan.
 
-Gunakan warna semantik untuk nilai negatif dan error. Jangan mengubah nilai negatif menjadi positif hanya untuk menyamakan warna. Header halaman memakai latar transparan; hindari gradasi dekoratif seperti versi UR lama.
+## Palet
 
-## Tipografi dan jarak
+| Pemakaian | Latar | Teks dan ikon |
+| --- | --- | --- |
+| Info dan berhasil | #EAF6F4 | #087E82 |
+| Menunggu, memuat, dan data kosong | #FFF4D6 | #805800 |
+| Gagal dan kesalahan validasi | #FDE9E9 | #A63C45 |
 
-Sumber global: public/assets/css/typography.css dan public/assets/css/compact-layout.css. Ukuran default desktop: isi 14px, caption 12px, tabel 13px, judul halaman 28px, judul card 20px. Header tabel memakai bobot 700 dari table-header.css.
+Tombol primer memakai teal #087E82 dengan teks putih dan hover #066B6E. Teks utama pada contoh kartu memakai #234A54. Sertakan label atau ikon yang dapat dikenali bersama warna status.
 
-Card tabel mengikuti padding 24px, turun menjadi 16px di ponsel; radius 16px. Filter memakai radius 14px dan tinggi kontrol 42px. Grid KPI memakai jarak 16px. Periksa CSS global yang menggunakan !important sebelum menambah override.
+## Navigasi samping dan navbar
 
-## Responsif
+Gunakan latar teal soft serta teks, ikon, dan bullet teal saat menu aside atau navbar di-hover, mendapat fokus keyboard, atau aktif. Induk submenu yang terbuka memakai warna yang sama. Label navbar dengan parent H ditampilkan dalam huruf kapital. [CSS navigasi](../../public/assets/css/root/navigation-menu.css)
 
-Gunakan min-width:0 pada item grid/flex. Card tidak boleh membuat halaman melebar. Hanya tabel yang boleh digulir horizontal. Search berpindah ke baris berikutnya saat ruang tidak cukup. Gunakan label terlihat, fokus keyboard yang jelas, dan teks selain warna untuk menjelaskan status.
+## Banner geometris
+
+Gunakan kelas **app-geometric-banner** untuk banner bergaya Welcome Page. Pola segitiga dan bidang bersudut berada di sisi kanan agar area teks tetap terbaca. Gunakan teal gelap yang sama pada banner sambutan dan gunakan variabel warna judul, teks, serta ikon yang disediakan CSS banner. [CSS banner bersama](../../public/assets/css/root/geometric-banner.css)
+
+## Kartu ringkasan
+
+Susun label dan ikon di bagian atas kartu. Letakkan angka utama yang tebal dan satuannya pada baris berikutnya. Kartu total memakai latar #F6FBFA dan angka teal. Kartu rincian memakai latar putih dan wadah ikon teal soft. Perbarui semua kartu sesuai cakupan filter.
+
+## Dasar pembacaan dan modal
+
+Panel **Dasar pembacaan** memakai latar teal muda, aksen di atas, dua kolom pada layar yang cukup lebar, dan catatan di bawah garis pemisah. Gunakan panel untuk menjelaskan arti angka, sumber, atau cara membaca grafik.
+
+Modal berpusat di layar dan memiliki judul, isi singkat, serta tombol tutup. Modal detail mengambil data dari baris yang dipilih. Modal ringkasan mengikuti filter yang telah diterapkan.
+
+[Tipografi bersama](../../public/assets/css/root/typography.css) · [Layout bersama](../../public/assets/css/root/compact-layout.css) · [Palet bersama](../../public/assets/css/root/theme-palette.css) · [Tema tombol](../../public/assets/css/root/button-theme.css) · [CSS contoh](../../public/assets/css/developer/testingpage.css)

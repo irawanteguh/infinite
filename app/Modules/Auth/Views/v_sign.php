@@ -1,18 +1,4 @@
-<?php
-    $hour = (int) date('G');
-
-    if ($hour >= 5 && $hour < 12) {
-        $background = 'morning-city.png';
-    } elseif ($hour >= 12 && $hour < 16) {
-        $background = 'sunrise-city.png';
-    } elseif ($hour >= 16 && $hour < 19) {
-        $background = 'sunset-city.png';
-    } else {
-        $background = 'night-city.png';
-    }
-?>
-
-<div class="login-page d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-cover bgi-attachment-fixed" style="background-image: url('<?= base_url('assets/media/ambient/' . $background) ?>');">
+<div class="login-page app-geometric-banner d-flex flex-column flex-column-fluid">
     <div class="login-shell d-flex flex-center flex-column flex-column-fluid p-10">
         <div class="login-card mx-auto">
             <form class="form w-100" novalidate="novalidate" id="kt_sign_in_form" action="<?= site_url('auth/signin') ?>" method="post">

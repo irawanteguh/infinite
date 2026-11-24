@@ -11,12 +11,10 @@
             <p>Pilih status pertanyaan yang ingin ditampilkan.</p>
         </div>
         <div class="app-filter-fields">
-            <div class="d-flex flex-wrap gap-3 align-items-center">
-                <div id="ca-status" class="pe-status-options" role="group" aria-label="Status pertanyaan">
-                    <button type="button" class="btn pe-status-option active" data-status="" aria-pressed="true">Semua</button>
-                    <button type="button" class="btn pe-status-option" data-status="1" aria-pressed="false">Aktif</button>
-                    <button type="button" class="btn pe-status-option" data-status="0" aria-pressed="false">Nonaktif</button>
-                </div>
+            <div id="ca-status" class="app-filter-options" role="group" aria-label="Status pertanyaan">
+                <button type="button" class="btn btn-sm app-filter-option active" data-status="" aria-pressed="true">Semua</button>
+                <button type="button" class="btn btn-sm app-filter-option" data-status="1" aria-pressed="false">Aktif</button>
+                <button type="button" class="btn btn-sm app-filter-option" data-status="0" aria-pressed="false">Nonaktif</button>
             </div>
         </div>
     </section>

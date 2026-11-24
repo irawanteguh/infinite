@@ -1,27 +1,11 @@
 # Pemeriksaan perubahan desain
 
-Gunakan seperlunya sesuai perubahan. [Indeks](README.md).
+[Indeks](README.md)
 
-## Layout
-
-- Header halaman, toolbar, filter, KPI dan tabel mengikuti pola UR yang sesuai.
-- Judul/deskripsi card tidak berulang; search di kanan dan turun dengan rapi di ponsel.
-- Teks thead tebal; angka rata kanan; nama bulan lengkap.
-- Tidak ada scroll horizontal pada seluruh halaman. Scroll hanya pada tabel yang lebar.
-- Info memakai ikon teal; pilihan select, fokus dan pagination aktif senada.
-
-## Data dan interaksi
-
-- ID, endpoint, nilai option dan kriteria bisnis tetap sesuai modul.
-- Filter memengaruhi tabel, KPI dan grafik pada cakupan yang dijelaskan.
-- Tabel besar dimuat per halaman; rekap bulanan menampilkan seluruh bulan.
-- Pencarian DPJP independen bila rawat jalan/inap dipisahkan ke dua card.
-- Total dan persentase benar sesudah filter/pencarian; denominator jelas.
-- Nilai nol, denominator nol, null, data kosong dan error dibedakan.
-- Detail bisa dibuka/tutup; pagination dan refresh tidak menggandakan baris atau handler.
-
-## Validasi
-
-Jalankan pemeriksaan sintaks PHP/JavaScript untuk file yang diubah. Gunakan data uji yang relevan bila perhitungan, pagination, atau filter berubah. Periksa tampilan desktop dan ponsel melalui browser bila tersedia. Jika browser tidak dapat dipakai, sebutkan bahwa validasi visual belum dilakukan; pemeriksaan sintaks bukan bukti layout sudah benar.
-
-Dokumentasi sebaiknya diperbarui saat pola desain yang disepakati berubah. Jangan membuat aset screenshot, script verifikasi sementara, atau profil browser uji sebagai dependensi aplikasi.
+- Bandingkan judul, palet, ikon status, dan jarak dengan komponen di Testing Page.
+- Periksa layout desktop dan ponsel. Pastikan toolbar dan filter dapat turun baris, legenda donut terbaca, serta scroll horizontal terbatas pada area tabel.
+- Periksa header dan perataan tabel. Coba pencarian, pagination, dan dropdown Actions pada baris yang berbeda.
+- Coba filter normal, rentang terbalik, reset, dan periode kosong. Periksa total, satuan, dan penyebut persentase.
+- Periksa label dan fokus saat berinteraksi dengan tombol, Select2, dropdown, dan modal.
+- Pada modal progres, uji perpindahan tahap, tampilan selesai dan gagal, serta kesesuaian progress bar dengan data yang sudah diproses.
+- Untuk perubahan implementasi, jalankan pemeriksaan sintaks dan uji interaksi di browser jika tersedia. Laporkan pemeriksaan visual yang belum bisa dilakukan.

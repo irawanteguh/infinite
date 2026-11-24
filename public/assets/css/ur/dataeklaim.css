@@ -7,7 +7,7 @@
 .ek-status{padding:10px 14px;background:#f0f8f5;color:#42636d;border-radius:8px;margin-bottom:16px;font-size:12px}.ek-status:empty{display:none}.ek-status.is-error{background:#fff4ed;color:#984f25}
 .ek-table-container{min-width:0;max-width:100%}.ek-datatable-scroll{overflow-x:auto;max-width:100%}.ek-datatable-scroll:focus-visible{outline:2px solid #087e82;outline-offset:3px}
 .ek-page table{width:100%;min-width:1320px;table-layout:auto;font-size:12px}
-.ek-page table th{white-space:nowrap;background:#eff7f5!important;color:#62858b;font-weight:600;padding:10px 12px}
+.ek-page table th{white-space:nowrap;font-weight:600;padding:10px 12px}
 .ek-page table td{padding:10px 12px;color:#42636d;vertical-align:middle;font-variant-numeric:tabular-nums}
 .ek-page table td:first-child{width:44px;color:#81969b}.ek-page table td:nth-child(2){min-width:185px;max-width:270px;overflow-wrap:anywhere}.ek-page table td.ek-rm{min-width:90px;white-space:nowrap}.ek-page table td.ek-sep{min-width:140px;white-space:nowrap}.ek-page table td.ek-date{min-width:100px;white-space:nowrap}.ek-page table td.ek-dpjp{min-width:180px;max-width:240px;white-space:normal;overflow-wrap:anywhere}.ek-page table td.text-end{white-space:nowrap}
 .ek-page table tbody tr:hover,.ek-page table tr.ek-row-open{background:#f6faf9}.ek-patient{font-weight:600;color:#234a54}.ek-mrn{display:block;font-size:11px;color:#81969b;margin-top:2px;line-height:1.5}

@@ -1,0 +1,85 @@
+.user-activity-timeline .timeline-item > .timeline-label {
+    width: 66px;
+    flex: 0 0 66px;
+}
+.user-activity-timeline ol.timeline-label::before {
+    left: 70px;
+}
+.user-activity-timeline .timeline-content {
+    min-width: 0;
+}
+.user-activity-timeline time.timeline-label::before {
+    content: none;
+}
+.user-activity-timeline .user-activity-bullet {
+    color: var(--app-status-teal-text);
+}
+.user-activity-timeline .user-activity-bullet-warning {
+    color: var(--app-status-yellow-text);
+}
+.user-activity-timeline .user-activity-bullet-danger {
+    color: var(--app-status-red-text);
+}
+
+.activity-log thead th {
+    background-color: var(--app-table-header-bg);
+    color: var(--app-table-header-text);
+}
+
+.activity-log .activity-selected > td {
+    background-color: var(--app-status-teal-bg);
+}
+
+.activity-timeline-title {
+    scroll-margin-top: 10rem;
+}
+
+@media (min-width: 992px) and (min-height: 480px) {
+    .activity-table-column {
+        --activity-sticky-top: calc(65px + var(--kt-toolbar-height, 55px) + 1rem);
+        position: sticky;
+        top: var(--activity-sticky-top);
+    }
+
+    .activity-table-column .card-body {
+        display: flex;
+        flex-direction: column;
+        max-height: calc(100vh - var(--activity-sticky-top) - 1rem);
+    }
+
+    .activity-table-column .table-responsive {
+        min-height: 0;
+        overflow: auto;
+    }
+
+    .activity-table-column thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+}
+
+.user-activity-timeline-personal ol.timeline-label::before {
+    left: calc(.5rem - 1.5px);
+}
+
+.user-activity-timeline-personal .timeline-label .timeline-badge {
+    margin-left: 0;
+}
+
+.activity-log .badge {
+    --activity-badge-bg: var(--app-status-teal-bg);
+    --activity-badge-text: var(--app-status-teal-text);
+    background-color: var(--activity-badge-bg);
+    color: var(--activity-badge-text);
+}
+
+.activity-log .badge-light-warning {
+    --activity-badge-bg: var(--app-status-yellow-bg);
+    --activity-badge-text: var(--app-status-yellow-text);
+}
+
+.activity-log .badge-light-danger {
+    --activity-badge-bg: var(--app-status-red-bg);
+    --activity-badge-text: var(--app-status-red-text);
+}

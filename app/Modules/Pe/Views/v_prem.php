@@ -55,7 +55,7 @@ $sections = array_values($sections);
                     <button type="button" id="prem-start" class="btn prem-btn-primary">Mulai mengisi <i class="bi bi-arrow-right ms-2"></i></button>
                     <?php if ($isProm): ?><a href="<?= $publicUrl ?>" class="btn btn-light ms-2">Ganti pilihan</a><?php endif; ?>
                 </div>
-                <aside class="prem-welcome-aside">
+                <aside class="prem-welcome-aside app-geometric-banner">
                     <span class="prem-hero-icon"><i class="bi bi-chat-heart"></i></span>
                     <h2><?= $isProm ? 'Kenali perkembangan kondisi pasien.' : 'Pengalaman Anda berarti.' ?></h2>
                     <p><?= $isProm ? 'Tidak ada jawaban benar atau salah. Pilih jawaban yang paling sesuai dengan kondisi pasien saat ini.' : 'Berikan penilaian sesuai pengalaman pelayanan yang Anda terima hari ini.' ?></p>

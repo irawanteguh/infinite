@@ -35,8 +35,6 @@ body .eklaim-alert .btn { margin:0; padding:11px 20px; border-radius:8px; font-s
 body .eklaim-alert .btn-primary { background:#087e82!important; border:1px solid #087e82!important; color:#fff!important; }
 body .eklaim-alert .btn-light { background:#f3f7f8!important; border:1px solid #e2eaec!important; color:#638087!important; }
 body .eklaim-alert .swal2-loader { border-color:#087e82 transparent #087e82 transparent; }
-body .eklaim-alert .progress { background:#edf6f3; border-radius:8px; }
-body .eklaim-alert .progress-bar { background-color:#087e82!important; }
 body .eklaim-alert .text-primary { color:#087e82!important; }
 body .eklaim-alert .border.rounded { background:#f6faf9; border:1px solid #dceae5!important; border-radius:12px!important; padding:18px!important; }
 body .eklaim-alert .text-muted { color:#81969b!important; }

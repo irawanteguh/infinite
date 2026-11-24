@@ -2,6 +2,7 @@
 
 namespace App\Libraries;
 
+use App\Models\Modelrouting;
 use CodeIgniter\HTTP\RequestInterface;
 use Modules\Developer\Models\UserActivityModel;
 
@@ -20,6 +21,19 @@ class UserActivity
     public static function setReorderDetails(array $details): void
     {
         self::$reorderDetails = $details;
+    }
+
+    public static function moduleNames(): array
+    {
+        $names = [];
+        foreach ((new Modelrouting())->allMenus() as $menu) {
+            if (ModuleAccess::hasRoute($menu)) {
+                $key = strtolower(trim($menu['package']) . '/' . trim($menu['def_controller']));
+                $names[$key] = (string) $menu['modules_name'];
+            }
+        }
+
+        return $names;
     }
 
     public static function describe(array $activity, array $moduleNames): string

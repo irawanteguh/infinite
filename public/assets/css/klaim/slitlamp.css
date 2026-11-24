@@ -9,7 +9,7 @@
 .klaim-case-chart{width:100%;min-height:285px;overflow:hidden}
 .klaim-case-scroll{max-width:100%;overflow-x:auto}
 .klaim-case-table{min-width:1400px;width:100%;font-variant-numeric:tabular-nums}
-.klaim-case-table th{padding:12px 14px!important;background:#eff7f5!important;color:#62858b!important;white-space:nowrap;font-size:12px;font-weight:600}
+.klaim-case-table th{padding:12px 14px!important;white-space:nowrap;font-size:12px;font-weight:600}
 .klaim-case-table td{padding:10px 14px!important;vertical-align:middle;color:#42636d;font-size:12px}
 .klaim-case-table td:nth-child(3),.klaim-case-table td:nth-child(11),.klaim-case-table td:nth-child(12){white-space:normal;min-width:200px;max-width:320px;overflow-wrap:anywhere}
 .klaim-case-info{display:flex;align-items:flex-start;gap:12px;padding:16px 20px;border:1px solid #dceae5;border-radius:12px;background:#f6faf9;color:#789095;line-height:1.7}

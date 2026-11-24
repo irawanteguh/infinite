@@ -10,7 +10,7 @@
 .sl-page .ur-panel{padding:24px;margin-bottom:20px}.sl-page .ur-grid-equal{gap:20px;margin-bottom:20px}.sl-page .ur-grid-equal>.ur-panel{margin-bottom:0}
 .sl-page .ur-panel-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px 20px;margin-bottom:20px}
 .sl-page .ur-panel-head h2{color:#234a54;font-weight:600;margin:0}.sl-page .ur-panel-head p{color:#81969b;line-height:1.6;margin:5px 0 0}
-.sl-page .ur-table th{background:#eff7f5!important;color:#62858b;white-space:nowrap;padding:12px}.sl-page .ur-table td{color:#42636d;padding:10px 12px}
+.sl-page .ur-table th{white-space:nowrap;padding:12px}.sl-page .ur-table td{color:#42636d;padding:10px 12px}
 .sl-page .mal-monthly-wrap{max-height:none}
 .sl-page .ur-table-wrap{max-height:none}
 .sl-page #sl-analysis>.alert{background:#edf6f3;border:1px solid #dce9e5;color:#42636d;border-radius:12px}

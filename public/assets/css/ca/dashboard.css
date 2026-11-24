@@ -1,4 +1,3 @@
-@import url("../pe/dashboard.css");
 @import url("../ur/dashboard.css");
 
 .ca-dashboard {
@@ -33,8 +32,6 @@
     margin-bottom: 0;
 }
 .ca-dashboard .table thead th {
-    background: #eff7f5;
-    color: #62858b;
     font-weight: 600;
     white-space: nowrap;
     padding: 14px 16px;
@@ -51,18 +48,18 @@
     font-weight: 500;
 }
 .ca-dashboard .badge-light-success {
-    background: #e5f2ef;
-    color: #087e82;
+    background: var(--app-status-teal-bg);
+    color: var(--app-status-teal-text);
     border: 1px solid #b9dcd6;
 }
 .ca-dashboard .badge-light-warning {
-    background: #fbf6eb;
-    color: #846d43;
+    background: var(--app-status-yellow-bg);
+    color: var(--app-status-yellow-text);
     border: 1px solid #e9ddbd;
 }
 .ca-dashboard .badge-light-danger {
-    background: #fbf0f1;
-    color: #a7616c;
+    background: var(--app-status-red-bg);
+    color: var(--app-status-red-text);
     border: 1px solid #ead2d7;
 }
 .ca-dashboard summary {
@@ -78,17 +75,17 @@
 
 .ca-dashboard .ca-kpi-warning {
     border-top-color: #dfc384;
-    background: linear-gradient(135deg, #fff, #fbf6eb);
+    background: linear-gradient(135deg, #fff, var(--app-status-yellow-bg));
 }
 .ca-dashboard .ca-kpi-warning strong {
-    color: #846d43 !important;
+    color: var(--app-status-yellow-text) !important;
 }
 .ca-dashboard .ca-kpi-danger {
     border-top-color: #c7838e;
-    background: linear-gradient(135deg, #fff, #fbf0f1);
+    background: linear-gradient(135deg, #fff, var(--app-status-red-bg));
 }
 .ca-dashboard .ca-kpi-danger strong {
-    color: #a7616c !important;
+    color: var(--app-status-red-text) !important;
 }
 
 body #kt_content .ca-dashboard .prem-card:not(.app-filter-card) {

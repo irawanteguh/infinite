@@ -43,7 +43,7 @@
     }
     window.load=function(){
         const token=++generation;if(request)request.abort();destroy();rows=[];$('#s1-content').prop('hidden',true);$('#s1-status').prop('hidden',true);$('#s1-coverage').text('Memuat cakupan data…');$('#s1-refresh').prop('disabled',true);
-        $('#s1-status').text('Memuat ringkasan severity I…').prop('hidden',false);
+        showDataLoading();
         request=$.ajax({url:url+'ur/severity1/summary',type:'POST',dataType:'json',data:{selectperiode:$('#selectperiode').val()}})
             .done(function(response){if(token!==generation)return;if(response.responseCode!=='00'){$('#s1-status').text(response.responseDesc||'Data gagal dimuat.').prop('hidden',false);return;}rows=Array.isArray(response.responseResult)?response.responseResult:[];render();})
             .fail(function(xhr,state){if(token===generation&&state!=='abort'){$('#s1-status').text(xhr.responseJSON?.responseDesc||'Data gagal dimuat. Klik Perbarui untuk mencoba kembali.').prop('hidden',false);$('#s1-coverage').text('Data belum tersedia');}})

@@ -1,6 +1,6 @@
 <script> var url = '<?php echo base_url();?>'; </script>
 
-<title>INFINITE | Integrated Healthcare Data Analytics Platform</title>
+<title><?= esc($documentTitle ?? 'INFINITE | Integrated Healthcare Data Analytics Platform') ?></title>
 <meta name="description" content="INFINITE is an integrated healthcare data analytics platform for hospital performance monitoring, clinical analytics, financial analysis, operational reporting, and business intelligence." />
 <meta name="keywords" content="INFINITE, Healthcare Analytics, Hospital Data Analytics, Healthcare Business Intelligence, Hospital Dashboard, Medical Analytics, Clinical Analytics, Financial Analytics, Patient Analytics, Hospital Information System, INA-CBG, BPJS" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />

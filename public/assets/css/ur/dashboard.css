@@ -25,9 +25,11 @@
 .ur-crr-panel{margin-bottom:24px}.ur-dashboard .ur-crr-note{font-size:12px!important;color:#81979d;line-height:1.7;margin:12px 0 0}.ur-crr-panel #ur-crr-summary{display:inline-block;white-space:normal}
 
 /* Compact spacing for the dashboard reading guide. */
-body #ur-executive .ur-method-grid{gap:10px 24px}
-body #ur-executive .ur-method-grid h3{margin:0 0 4px!important;line-height:1.3!important}
-body #ur-executive .ur-method-grid p{margin:0!important;line-height:1.5!important}
+body #ur-executive .ur-method-grid{gap:12px 24px}
+body #ur-executive .ur-method-grid h3{margin:0!important;padding:0!important;line-height:1!important}
+body #ur-executive .ur-method-grid p{margin:0!important;padding:0!important;line-height:1.3!important}
+body #ur-executive .ur-method-formulas{margin:2px 0 0;padding-left:20px;line-height:1.5}
+body #ur-executive .ur-method-formulas li+li{margin-top:4px}
 body #ur-executive .ur-method-period{margin-top:12px;padding-top:10px;line-height:1.5}
 /* Monthly dashboard headings match the UR tariff tables. */
 body #ur-monthly-table thead th{font-weight:700!important;padding:12px;white-space:nowrap;vertical-align:middle}
@@ -50,4 +52,44 @@ body #ur-monthly-table thead th{font-weight:700!important;padding:12px;white-spa
         width: 250px;
         min-height: 260px;
     }
+}
+.report-progress-popup .ur-loading-meter > .progress-bar {
+    width: 35%;
+    animation: ur-dashboard-loading 1.4s ease-in-out infinite;
+}
+@keyframes ur-dashboard-loading {
+    from { transform: translateX(-110%); }
+    to { transform: translateX(390%); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .report-progress-popup .ur-loading-meter > .progress-bar {
+        width: 100%;
+        animation: none;
+    }
+}
+.ur-loading-popup.swal2-popup {
+    border-radius: 20px;
+    border: 1px solid var(--app-table-header-bg);
+    box-shadow: 0 24px 70px rgb(18 56 63 / 18%);
+}
+.ur-loading-popup .swal2-title {
+    color: var(--app-status-teal-text);
+    font-size: 22px;
+    padding-top: 0;
+}
+.ur-loading-popup .report-progress {
+    margin-top: 0;
+}
+.ur-loading-description {
+    color: var(--app-table-header-text);
+    font-size: 14px;
+    line-height: 1.6;
+    text-align: center;
+    margin: 0 0 24px;
+}
+.ur-loading-caption {
+    color: var(--app-status-teal-text);
+    font-size: 12px;
+    text-align: center;
+    margin: 12px 0 0;
 }

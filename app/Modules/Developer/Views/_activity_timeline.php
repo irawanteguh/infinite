@@ -20,8 +20,7 @@
                     $status = (int) $row['http_status'];
                     $activityDateTime = str_replace(' ', 'T', $row['created_at']);
                     $activityTime = substr($row['created_at'], 11, 8);
-                    $details = $row['route'] === '/developer/mastermodules/reorder'
-                        ? json_decode($row['details'] ?? '', true) : null;
+                    $details = json_decode($row['details'] ?? '', true);
                     $detailId = 'userlog-details-' . (string) $row['activity_id'];
                     $statusColor = $status >= 400 || $row['event'] === 'denied' ? 'danger' : ($status >= 300 ? 'warning' : 'success');
                     ?>
@@ -80,6 +79,13 @@
                                                 </tbody>
                                             </table>
                                         <?php endif ?>
+                                    <?php elseif (is_array($details)): ?>
+                                        <dl class="mt-3 mb-0">
+                                            <?php foreach ($details as $key => $value): ?>
+                                                <dt><?= esc((string) $key) ?></dt>
+                                                <dd class="text-break"><?= esc(is_array($value) ? json_encode($value, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) : (string) $value) ?></dd>
+                                            <?php endforeach ?>
+                                        </dl>
                                     <?php endif ?>
                                 </div>
                             </div>

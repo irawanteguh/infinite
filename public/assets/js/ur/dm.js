@@ -49,7 +49,7 @@ $('#dm-doctors').html([...groups].filter(([name,items])=>{
 }).sort((a,b)=>b[1].length-a[1].length).map(([name,r])=>{const gap=sum(r,'total_tarif')-sum(r,'tarif_rs');return '<tr><td>'+esc(name)+'</td><td>'+nf.format(r.length)+'</td><td>'+(sum(r,'los')/r.length).toLocaleString('id-ID',{maximumFractionDigits:1})+' hari</td><td>'+money(sum(r,'tarif_rs'))+'</td><td>'+money(sum(r,'total_tarif'))+'</td><td class="'+(gap<0?'ur-negative':'ur-positive')+'">'+money(gap)+'</td></tr>';}).join(''));
 initDataTable('#dm-table',null,10,{searching:false,order:[]});
 }
-window.load=function(){const token=++generation;if(request)request.abort();$('#dm-content').prop('hidden',true);$('#dm-status').text('Memuat ringkasan dm…').prop('hidden',false);$('#dm-refresh').prop('disabled',true);
+window.load=function(){const token=++generation;if(request)request.abort();$('#dm-content').prop('hidden',true);$('#dm-status').text('');showDataLoading();$('#dm-refresh').prop('disabled',true);
 request=$.ajax({url:url+'ur/dm/summary',type:'POST',dataType:'json',data:{selectperiode:$('#selectperiode').val()}}).done(r=>{if(token!==generation)return;if(r.responseCode!=='00'){$('#dm-status').text(r.responseDesc||'Data gagal dimuat.');return;}rows=Array.isArray(r.responseResult)?r.responseResult:[];render();}).fail((xhr,state)=>{if(token===generation&&state!=='abort')$('#dm-status').text('Data gagal dimuat. Klik Perbarui untuk mencoba kembali.');}).always(()=>{if(token===generation)$('#dm-refresh').prop('disabled',false);});};
 $('#selectperiode').on('change',()=>{link();window.load();});$('#dm-month').on('change',()=>{link();render();});$('#dm-search').on('input',render);$('.dm-gap-option').on('click',function(){
     $('.dm-gap-option').attr('aria-pressed','false');

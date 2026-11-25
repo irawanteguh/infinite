@@ -1,0 +1,106 @@
+.os-page .app-geometric-banner h1 {
+    color: var(--app-banner-heading);
+}
+.os-page .app-geometric-banner p {
+    color: var(--app-banner-copy);
+}
+.os-page .os-group-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    color: var(--app-status-teal-text);
+    background: var(--app-status-teal-bg);
+}
+.os-page .card {
+    border-radius: 16px;
+    border-color: var(--app-table-header-bg);
+    box-shadow: 0 8px 28px rgb(28 69 75 / 4%);
+}
+.os-page .card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+}
+.os-page .card-body > p {
+    margin-bottom: 8px;
+}
+.os-page .os-action-description {
+    min-width: 0;
+    flex: 1;
+}
+.os-page .os-card-heading {
+    width: 100%;
+    flex-wrap: wrap;
+}
+.os-page .os-card-heading > .os-status {
+    margin-left: auto;
+    flex-shrink: 0;
+}
+.os-page .os-action-description h3 {
+    margin-bottom: 2px !important;
+}
+.os-page .os-card-heading {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 8px;
+}
+.os-page .os-action-icon {
+    font-size: 28px;
+    color: var(--app-status-teal-text);
+    flex-shrink: 0;
+    line-height: 1.2;
+}
+.os-page .app-geometric-banner {
+    border-radius: 20px;
+}
+.os-page .card-body > .os-table-name {
+    flex-grow: 0;
+    color: var(--app-table-header-text);
+}
+.os-page .os-status {
+    display: inline-flex;
+    align-items: center;
+    white-space: normal;
+    text-align: left;
+    line-height: 1.5;
+    padding: 6px 10px;
+    border-radius: 8px;
+}
+.os-page .os-status-ready {
+    color: var(--app-status-teal-text);
+    background: var(--app-status-teal-bg);
+}
+.os-page .os-status-ready i {
+    color: inherit;
+}
+.os-page .os-status-pending {
+    color: var(--app-status-yellow-text);
+    background: var(--app-status-yellow-bg);
+}
+.os-page .os-status-error {
+    color: var(--app-status-red-text);
+    background: var(--app-status-red-bg);
+}
+.os-page .table thead th {
+    background: var(--app-table-header-bg);
+    color: var(--app-table-header-text);
+}
+.os-delete-progress .progress-bar {
+    width: 35%;
+    animation: os-delete-progress 1.4s ease-in-out infinite;
+}
+@keyframes os-delete-progress {
+    from { transform: translateX(-110%); }
+    to { transform: translateX(390%); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .os-delete-progress .progress-bar {
+        animation: none;
+        width: 100%;
+    }
+}

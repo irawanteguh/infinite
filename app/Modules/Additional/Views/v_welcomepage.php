@@ -85,19 +85,19 @@ $months = [1=>'Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus'
     </aside>
     <section id="welcome-activity" class="activity-log row g-4 align-items-start" aria-labelledby="welcome-activity-title">
         <div class="col-12 col-lg-8 activity-table-column">
-            <div class="card welcome-summary-card">
-                <div class="card-body p-5 p-lg-6">
-                    <div class="d-flex align-items-center gap-3 mb-3">
-                        <span class="welcome-summary-icon d-inline-flex align-items-center justify-content-center rounded-3 flex-shrink-0">
-                            <i class="bi bi-calendar3 fs-3" aria-hidden="true"></i>
-                        </span>
+            <div class="card welcome-summary-card app-table-card">
+                    <div class="card-header app-table-heading">
                         <div>
-                            <h2 id="welcome-activity-title" class="welcome-summary-title fs-3 fw-bold mb-1">Aktivitas saya</h2>
-                            <p class="text-gray-700 mb-0">Riwayat akun Anda di organisasi aktif selama <?= \Modules\Developer\Models\UserActivityModel::RETENTION_DAYS ?> hari terakhir.</p>
+                            <h2 id="welcome-activity-title" class="app-table-title">Aktivitas saya</h2>
+                            <p class="app-table-description">Riwayat akun Anda di organisasi aktif selama <?= \Modules\Developer\Models\UserActivityModel::RETENTION_DAYS ?> hari terakhir.</p>
                         </div>
                     </div>
+                <div class="card-body">
                     <?php if ($activity['message'] !== ''): ?>
-                        <p class="alert alert-warning mb-0" role="alert"><?= esc($activity['message']) ?></p>
+                        <div class="alert alert-danger mb-0" role="alert">
+                            <strong class="d-block"><i class="bi bi-exclamation-circle me-2" aria-hidden="true"></i>Gagal memuat</strong>
+                            <?= esc($activity['message']) ?>
+                        </div>
                     <?php elseif (!$activity['dailyActivities']): ?>
                         <p class="text-muted mb-0">Belum ada aktivitas.</p>
                     <?php else: ?>
@@ -110,15 +110,20 @@ $months = [1=>'Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus'
             </div>
         </div>
         <div class="col-12 col-lg-4">
-            <section class="card welcome-summary-card" aria-labelledby="welcome-activity-timeline-title">
-                <div class="card-body p-5 p-lg-6">
-                    <div class="d-flex align-items-center gap-3">
-                        <span class="welcome-summary-icon d-inline-flex align-items-center justify-content-center rounded-3 flex-shrink-0">
-                            <i class="bi bi-clock-history fs-3" aria-hidden="true"></i>
-                        </span>
-                        <h3 id="welcome-activity-timeline-title" class="activity-timeline-title welcome-summary-title fs-3 fw-bold mb-0">Timeline aktivitas</h3>
+            <section class="card welcome-summary-card app-table-card" aria-labelledby="welcome-activity-timeline-title">
+                    <div class="card-header app-table-heading">
+                        <div>
+                            <h3 id="welcome-activity-timeline-title" class="activity-timeline-title app-table-title">Timeline aktivitas</h3>
+                            <p class="app-table-description">Rincian aktivitas akun Anda pada tanggal yang dipilih.</p>
+                        </div>
                     </div>
-                    <?php if ($activity['message'] === ''): ?>
+                <div class="card-body">
+                    <?php if ($activity['message'] !== ''): ?>
+                        <div class="alert alert-danger mb-0" role="alert">
+                            <strong class="d-block"><i class="bi bi-exclamation-circle me-2" aria-hidden="true"></i>Gagal memuat</strong>
+                            <?= esc($activity['message']) ?>
+                        </div>
+                    <?php else: ?>
                         <div class="mt-3">
                             <?= view('Modules\Developer\Views\_activity_timeline', $activity + ['personalTimeline' => true]) ?>
                         </div>

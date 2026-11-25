@@ -43,7 +43,7 @@
     }
     window.load=function(){
         const token=++generation;if(request)request.abort();destroy();rows=[];$('#los-content').prop('hidden',true);$('#los-status').prop('hidden',true);$('#los-coverage').text('Memuat cakupan data…');$('#los-refresh').prop('disabled',true);
-        $('#los-status').text('Memuat ringkasan lama rawat…').prop('hidden',false);
+        showDataLoading();
         request=$.ajax({url:url+'ur/los/summary',type:'POST',dataType:'json',data:{selectperiode:$('#selectperiode').val()}})
             .done(function(response){if(token!==generation)return;if(response.responseCode!=='00'){$('#los-status').text(response.responseDesc||'Data gagal dimuat.').prop('hidden',false);return;}rows=Array.isArray(response.responseResult)?response.responseResult:[];render();})
             .fail(function(xhr,state){if(token===generation&&state!=='abort'){$('#los-status').text(xhr.responseJSON?.responseDesc||'Data gagal dimuat. Klik Perbarui untuk mencoba kembali.').prop('hidden',false);$('#los-coverage').text('Data belum tersedia');}})

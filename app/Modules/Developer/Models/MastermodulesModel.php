@@ -16,6 +16,24 @@ class MastermodulesModel extends Modelrouting
         return hash('sha256', serialize([$module['modules_name'], $module['icon'], $module['package'], $module['def_controller'], $module['status'], $module['version']]));
     }
 
+    public static function defaultChildPackage(array $header, array $children): string
+    {
+        $package = trim((string) $header['package']);
+        if ($package !== '') {
+            return $package;
+        }
+
+        $packages = [];
+        foreach ($children as $child) {
+            $package = trim((string) $child['package']);
+            if ($package !== '') {
+                $packages[$package] = $package;
+            }
+        }
+
+        return count($packages) === 1 ? reset($packages) : '';
+    }
+
     public function updateDetails(string $id, array $details, string $revision): void
     {
         $this->mutateCatalog(function (array $catalog) use ($id, $details, $revision): void {
@@ -28,26 +46,37 @@ class MastermodulesModel extends Modelrouting
             if (!$this->db->table('dt01_gen_modules_ms')->where('modules_id', $id)->update($data)) {
                 throw new \RuntimeException('Could not update module details.');
             }
+            \App\Libraries\UserActivity::setDetails([
+                'Modul' => $current['modules_name'],
+                'Sebelum' => array_intersect_key($current, $data),
+                'Sesudah' => $data,
+            ]);
         });
     }
 
     public function addChild(string $parent, array $details, string $actor): void
     {
         $this->mutateCatalog(function (array $catalog) use ($parent, $details, $actor): void {
-            if (!isset(array_column($catalog, null, 'modules_id')[$parent])) {
+            $header = array_column($catalog, null, 'modules_id')[$parent] ?? null;
+            if ($header === null) {
                 throw new \DomainException('Modul induk sudah tidak tersedia.');
             }
 
-            $data = $this->validatedDetails($catalog, $details);
             $lastPosition = 0;
+            $children = [];
             foreach ($catalog as $module) {
                 if ((string) $module['modules_header_id'] === $parent) {
+                    $children[] = $module;
                     $lastPosition = max($lastPosition, (int) $module['urut']);
                 }
             }
+            if ($details['package'] === '') {
+                $details['package'] = self::defaultChildPackage($header, $children);
+            }
+            $data = $this->validatedDetails($catalog, $details);
             if (!$this->db->table('dt01_gen_modules_ms')->insert($data + [
                 'modules_id' => generateuuid(),
-                'modules_header_id' => $parent,
+                'modules_header_id' => $header['modules_id'],
                 'parent' => 'N',
                 'active' => '1',
                 'urut' => $lastPosition + 1,
@@ -55,6 +84,7 @@ class MastermodulesModel extends Modelrouting
             ])) {
                 throw new \RuntimeException('Could not add submodule.');
             }
+            \App\Libraries\UserActivity::setDetails(['Induk' => $header['modules_name'], 'Modul baru' => $data]);
         });
     }
 
@@ -66,8 +96,14 @@ class MastermodulesModel extends Modelrouting
             }
         }
         $icon = (string) $details['icon'];
-        if ($icon !== (string) ($current['icon'] ?? '') && !preg_match('/\A(?:bi bi-[a-z0-9-]+)?\z/D', $icon)) {
-            throw new \DomainException('Gunakan format ikon Bootstrap, misalnya bi bi-grid.');
+        if ($icon !== (string) ($current['icon'] ?? '')) {
+            if (preg_match('/\Abi-[a-z0-9-]+\z/D', $icon)) {
+                $icon = 'bi ' . $icon;
+            }
+            if (!preg_match('/\A(?:bi bi-[a-z0-9-]+)?\z/D', $icon) || strlen($icon) > 500) {
+                throw new \DomainException('Gunakan format ikon Bootstrap, misalnya bi-terminal atau bi bi-terminal.');
+            }
+            $details['icon'] = $icon;
         }
 
         $package = (string) $details['package'];
@@ -75,12 +111,12 @@ class MastermodulesModel extends Modelrouting
         if ($package === (string) ($current['package'] ?? '') && $controller === (string) ($current['def_controller'] ?? '')) {
             return $details;
         }
-        if (($package === '') !== ($controller === '')
+        if (($package === '' && $controller !== '')
             || !preg_match('/\A(?:[a-z][a-z0-9_]*)?\z/D', $package)
             || !preg_match('/\A(?:[a-z][a-z0-9_]*)?\z/D', $controller)) {
             throw new \DomainException('Isi Package dan Def Controller dengan segmen rute huruf kecil, angka, atau garis bawah.');
         }
-        if ($package !== '') {
+        if ($controller !== '') {
             foreach ($catalog as $module) {
                 if ($module['modules_id'] !== ($current['modules_id'] ?? null)
                     && strtolower(trim((string) $module['package'])) === $package

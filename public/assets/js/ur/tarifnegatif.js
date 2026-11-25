@@ -15,7 +15,7 @@
         const token=++generation;
         if(request)request.abort();
         $('#tn-refresh').prop('disabled',true);
-        showStatus('#tn-status','Memuat ringkasan tarif negatif…');
+        showDataLoading();
         request=$.ajax({url:url+'ur/tarifnegatif/'+endpoint,type:'POST',dataType:'json',data:{selectperiode:$('#selectperiode').val(),...params}})
             .done(function(response){if(token!==generation)return;if(response.responseCode!=='00'){showStatus('#tn-status',response.responseDesc||'Data gagal dimuat.');return;}success(response.responseResult);})
             .fail(function(xhr,state){if(token!==generation||state==='abort')return;showStatus('#tn-status',xhr.responseJSON?.responseDesc||'Data gagal dimuat. Klik Perbarui untuk mencoba kembali.');})

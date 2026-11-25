@@ -97,7 +97,12 @@
         });
         crrChart(data);
         const labels=monthly.map(row=>months[row.month-1]);
-        chart('ur-finance-chart',[{name:'Tarif RS',data:monthly.map(r=>r.tarif_rs)},{name:'Total INA-CBG',data:monthly.map(r=>r.total_tarif)},{name:'IDRG',data:monthly.map(r=>r.idrg_total_tarif)}],labels,true);
+        const financeMonths = months.map((label, index) => monthly.find(row => row.month === index + 1));
+        chart('ur-finance-chart',[
+            {name:'Tarif RS',data:financeMonths.map(row=>row ? row.tarif_rs : null)},
+            {name:'Total INA-CBG',data:financeMonths.map(row=>row ? row.total_tarif : null)},
+            {name:'IDRG',data:financeMonths.map(row=>row ? row.idrg_total_tarif : null)}
+        ],fullMonths,true);
         chart('ur-visit-chart',[{name:'Rawat inap',data:monthly.map(r=>r.ri)},{name:'Rawat jalan',data:monthly.map(r=>r.rj)}],labels,false);
         const ri=sum(inpatient,'jumlah_kasus');
         $('#ur-severity').html(ri ? ['I','II','III'].map((sl,i)=>meter('Severity '+sl,sum(inpatient.filter(row=>String(row.sl)===sl),'jumlah_kasus'),ri,['#087e82','#75bdb5','#c0d8e3'][i])).join('') : '<p class="ur-empty">Tidak ada episode rawat inap pada filter ini.</p>');
@@ -114,12 +119,16 @@
         rows=[]; $('#ur-content').prop('hidden',true); $('#ur-coverage').text('Memuat cakupan data…'); $('#ur-status').prop('hidden',true);
         $('#ur-executive').attr('aria-busy','true'); $('#ur-refresh').prop('disabled',true);
         Swal.fire({
-            title: 'Memuat data',
-            text: 'Mohon tunggu, ringkasan UR sedang disiapkan.',
+            title: 'Menyiapkan dashboard UR',
+            html: '<div class="report-progress" role="status" aria-live="polite">' +
+                '<p class="ur-loading-description">Memuat ringkasan dan grafik E-Klaim.</p>' +
+                '<div class="progress report-progress-meter ur-loading-meter" aria-label="Data dashboard sedang dimuat">' +
+                '<div class="progress-bar"></div></div>' +
+                '<p class="ur-loading-caption">Sedang memproses data…</p></div>',
+            customClass: {popup: 'report-progress-popup ur-loading-popup'},
             allowOutsideClick: false,
             allowEscapeKey: false,
-            showConfirmButton: false,
-            didOpen: function () { Swal.showLoading(); }
+            showConfirmButton: false
         });
         request=$.ajax({url:url+'ur/dashboard/dataraweklaim',type:'POST',dataType:'json',data:{selectperiode:$('#selectperiode').val()}})
             .done(function(response){rows=Array.isArray(response.responseResult)?response.responseResult:[];render();})

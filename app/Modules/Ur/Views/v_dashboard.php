@@ -15,12 +15,12 @@
         <section class="pe-kpis ur-kpis" id="ur-kpis" aria-label="Indikator utama"></section>
         <div class="ur-grid-main ur-grid-full">
             <section class="prem-card pe-panel ur-panel"><div class="pe-panel-heading ur-panel-head"><div><div class="prem-eyebrow ur-eyebrow"><i class="bi bi-graph-up-arrow me-2"></i>PERBANDINGAN TARIF</div><h2>Tren tarif bulanan</h2><p>Tarif RS, total INA-CBG, dan IDRG pada cakupan terpilih.</p></div><span class="pe-panel-label ur-tag">Rupiah</span></div><div id="ur-finance-chart" class="ur-chart" role="img" aria-label="Tren tarif RS, INA-CBG, dan IDRG per bulan"></div></section>
-        </div>
-        <section class="prem-card pe-panel ur-panel ur-crr-panel" aria-labelledby="ur-crr-title">
+        <section class="prem-card pe-panel ur-panel" aria-labelledby="ur-crr-title">
             <div class="pe-panel-heading ur-panel-head"><div><div class="prem-eyebrow ur-eyebrow"><i class="bi bi-graph-up-arrow me-2" aria-hidden="true"></i>RASIO CAKUPAN</div><h2 id="ur-crr-title">Tren CRR rawat jalan &amp; rawat inap</h2><p>Total INA-CBG ÷ tarif RS × 100% per layanan. Garis acuan menunjukkan rasio 100%.</p></div><span class="pe-panel-label ur-tag" id="ur-crr-summary"></span></div>
             <div id="ur-crr-chart" class="ur-chart" role="img" aria-label="Tren CRR bulanan"></div>
             <div class="ur-crr-note" role="note"><i class="bi bi-info-circle" aria-hidden="true"></i><div>Bulan tanpa data atau dengan tarif RS nol ditampilkan sebagai jeda. CRR tiap layanan dihitung dari total tarif layanan tersebut, bukan rata-rata persentase bulanan. Rasio ini membandingkan tarif, bukan laba atau rugi aktual.</div></div>
         </section>
+        </div>
         <div class="ur-grid-equal">
             <section class="prem-card pe-panel ur-panel"><div class="pe-panel-heading ur-panel-head"><div><div class="prem-eyebrow ur-eyebrow"><i class="bi bi-activity me-2"></i>AKTIVITAS LAYANAN</div><h2>Tren episode pelayanan</h2><p>Episode klaim, bukan jumlah pasien unik.</p></div></div><div id="ur-visit-chart" class="ur-chart" role="img" aria-label="Tren episode rawat inap dan rawat jalan per bulan"></div></section>
             <section class="prem-card pe-panel ur-panel"><div class="pe-panel-heading ur-panel-head"><div><div class="prem-eyebrow ur-eyebrow"><i class="bi bi-pie-chart-fill me-2"></i>KOMPLEKSITAS RAWAT INAP</div><h2>Komposisi severity</h2><p>Severity yang tercatat pada hasil grouping INA-CBG.</p></div></div><div id="ur-severity"></div><div class="ur-mini-grid" id="ur-clinical"></div></section>
@@ -33,7 +33,13 @@
             <div class="pe-panel-heading ur-panel-head"><div><span class="prem-eyebrow">PANDUAN MEMBACA DATA</span><h2 id="ur-method-title"><i class="bi bi-info-circle me-2" aria-hidden="true"></i>Dasar pembacaan</h2><p>Pahami sumber nilai dan rumus sebelum menafsirkan hasil dashboard.</p></div></div>
             <div class="ur-method-grid">
                 <div><h3>Nilai INA-CBG</h3><p>Memakai TOTAL_TARIF, termasuk komponen tambahan yang tercatat pada data E-Klaim.</p></div>
-                <div><h3>Selisih dan rasio cakupan</h3><p><strong>Selisih = total INA-CBG − tarif RS</strong><br>Rasio cakupan = total INA-CBG ÷ tarif RS × 100%.</p></div>
+                <div>
+                    <h3>Selisih dan rasio cakupan</h3>
+                    <ul class="ur-method-formulas">
+                        <li><strong>Selisih = total INA-CBG − tarif RS</strong></li>
+                        <li>Rasio cakupan = total INA-CBG ÷ tarif RS × 100%.</li>
+                    </ul>
+                </div>
                 <div><h3>Tarif bukan biaya aktual</h3><p>Tarif RS bukan biaya aktual. Selisih tarif tidak menunjukkan laba atau rugi akuntansi.</p></div>
                 <div><h3>Nilai IDRG</h3><p>Nilai pembanding pada data impor, bukan konfirmasi pembayaran yang diterima rumah sakit.</p></div>
             </div>

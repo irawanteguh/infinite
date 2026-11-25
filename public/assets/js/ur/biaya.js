@@ -50,7 +50,7 @@ $('#biaya-doctors').html([...groups].filter(([name,items])=>{
 }).sort((a,b)=>sum(b[1],'episodes')-sum(a[1],'episodes')).map(([name,r])=>{const gap=sum(r,'total_tarif')-sum(r,'tarif_rs');return '<tr><td>'+esc(name)+'</td><td>'+nf.format(sum(r,'episodes'))+'</td><td>'+(sum(r,'los')/sum(r,'episodes')).toLocaleString('id-ID',{maximumFractionDigits:1})+' hari</td><td>'+money(sum(r,'tarif_rs'))+'</td><td>'+money(sum(r,'total_tarif'))+'</td><td class="'+(gap<0?'ur-negative':'ur-positive')+'">'+money(gap)+'</td></tr>';}).join(''));
 initDataTable('#biaya-table',null,10,{searching:false,order:[]});
 }
-window.load=function(){const token=++generation;if(request)request.abort();$('#biaya-content').prop('hidden',true);$('#biaya-status').text('Memuat ringkasan biaya…').prop('hidden',false);$('#biaya-refresh').prop('disabled',true);
+window.load=function(){const token=++generation;if(request)request.abort();$('#biaya-content').prop('hidden',true);$('#biaya-status').text('');showDataLoading();$('#biaya-refresh').prop('disabled',true);
 request=$.ajax({url:url+'ur/biaya/summary',type:'POST',dataType:'json',data:{selectperiode:$('#selectperiode').val(),field:$('#cost-field').val(),group:$('#cost-group').val()}}).done(r=>{if(token!==generation)return;if(r.responseCode!=='00'){$('#biaya-status').text(r.responseDesc||'Data gagal dimuat.');return;}rows=Array.isArray(r.responseResult)?r.responseResult:[];render();}).fail((xhr,state)=>{if(token===generation&&state!=='abort')$('#biaya-status').text('Data gagal dimuat. Klik Perbarui untuk mencoba kembali.');}).always(()=>{if(token===generation)$('#biaya-refresh').prop('disabled',false);});};
 $('#selectperiode').on('change',()=>{link();window.load();});$('#biaya-month').on('change',()=>{link();render();});$('#biaya-search').on('input',render);$('.biaya-gap-option').on('click',function(){
     $('.biaya-gap-option').attr('aria-pressed','false');
@@ -82,7 +82,8 @@ $('#selectperiode').on('change',()=>{link();window.load();});$('#biaya-month').o
     }
     function load(){
         const token=++generation;if(request)request.abort();rows=[];
-        $('#cost-status').text('Memuat variasi komponen tarif…');
+        $('#cost-status').text('');
+        showDataLoading();
         request=$.ajax({url:url+'ur/biaya/components',type:'POST',dataType:'json',data:{selectperiode:$('#selectperiode').val(),field:$('#cost-field').val(),group:$('#cost-group').val()}})
         .done(r=>{if(token!==generation)return;if(r.responseCode!=='00'){$('#cost-status').text(r.responseDesc||'Data gagal dimuat.');return;}rows=Array.isArray(r.responseResult)?r.responseResult:[];$('#cost-status').text('');render();})
         .fail((xhr,state)=>{if(token===generation&&state!=='abort')$('#cost-status').text('Variasi komponen tarif gagal dimuat.');});

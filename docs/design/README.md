@@ -10,6 +10,7 @@
 | [Kartu tabel](table-card.md) | Header, pencarian, pagination, dan dropdown Actions |
 | [Grafik dan word cloud](charts.md) | Batang bertumpuk, garis, garis acuan, donut, peringkat, dan word cloud |
 | [Modal progres](report-progress.md) | Tahap pembuatan laporan, progres impor, dan ringkasan hasil |
+| [Pesan dan status](messages.md) | Message informasi, berhasil, gagal, data kosong, dan memuat |
 | [Pemeriksaan perubahan](review-checklist.md) | Layout, interaksi, dan cakupan data |
 
 Saat menerapkan pola ke modul, gunakan komponen bersama dan pertahankan arti data, aturan filter, serta perilaku modul yang berlaku.

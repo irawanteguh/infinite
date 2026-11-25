@@ -92,7 +92,8 @@
         const token = ++generation;
         if (request) request.abort();
         rows = []; render();
-        $('#case-message').text('Memuat data klaim…');
+        $('#case-message').text('');
+        showDataLoading();
         $('#klaim-case-refresh').prop('disabled',true);
         request = $.ajax({
             url:url+'klaim/'+module+'/dataraweklaimdetail',type:'POST',dataType:'json',

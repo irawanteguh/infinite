@@ -126,8 +126,22 @@
         refreshSummary = false;
         $('#ek-refresh').prop('disabled', true);
         $(selector).attr('aria-busy', 'true');
-        status('Memuat data periode ' + period + '…');
+        status('');
         request = $.ajax({
+            beforeSend: function () {
+                Swal.fire({
+                    title: 'Menyiapkan Data E-Klaim',
+                    html: '<div class="report-progress" role="status" aria-live="polite">' +
+                        '<p class="ur-loading-description">Memuat rincian data E-Klaim.</p>' +
+                        '<div class="progress report-progress-meter ur-loading-meter" aria-label="Data E-Klaim sedang dimuat">' +
+                        '<div class="progress-bar"></div></div>' +
+                        '<p class="ur-loading-caption">Sedang memproses data…</p></div>',
+                    customClass: {popup: 'report-progress-popup ur-loading-popup'},
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    showConfirmButton: false
+                });
+            },
             url:url + 'ur/dataeklaim/dataraweklaim', type:'POST', dataType:'json', timeout:45000,
             data:Object.assign({}, data, {selectperiode:period, service:selectedService, month:$('#ek-month').val() || '', refreshSummary:fresh ? '1' : '0'}),
             success:function(response) {
@@ -146,6 +160,7 @@
             },
             complete:function() {
                 if (current !== generation) return;
+                Swal.close();
                 $(selector).attr('aria-busy', 'false');
                 $('#ek-refresh').prop('disabled', false);
                 request = null;

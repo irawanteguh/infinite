@@ -10,10 +10,14 @@ class AddUserActivityDetails extends Migration
 
     public function up()
     {
+        $this->db->resetDataCache();
         if (!$this->db->fieldExists('details', self::TABLE)) {
-            $this->forge->addColumn(self::TABLE, [
+            if (!$this->forge->addColumn(self::TABLE, [
                 'details' => ['type' => 'MEDIUMTEXT', 'null' => true],
-            ]);
+            ])) {
+                throw new \RuntimeException('Gagal menambahkan kolom detail aktivitas pengguna.');
+            }
+            $this->db->resetDataCache();
         }
     }
 

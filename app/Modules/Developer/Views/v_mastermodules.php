@@ -90,7 +90,8 @@
                                                 <i class="bi bi-pencil me-4" aria-hidden="true"></i>Edit
                                             </button>
                                             <button type="button" class="dropdown-item btn btn-sm text-primary" data-bs-toggle="modal" data-bs-target="#mastermodules-edit"
-                                                data-add-child data-module-id="<?= esc($id, 'attr') ?>" data-module-name="<?= esc($name, 'attr') ?>">
+                                                data-add-child data-module-id="<?= esc($id, 'attr') ?>" data-module-name="<?= esc($name, 'attr') ?>"
+                                                data-module-package="<?= esc(\Modules\Developer\Models\MastermodulesModel::defaultChildPackage($module, $groups[$id] ?? []), 'attr') ?>">
                                                 <i class="bi bi-plus-lg me-4" aria-hidden="true"></i>Tambah Submodul
                                             </button>
                                         </div>
@@ -149,7 +150,7 @@
                             <input class="form-control form-control-solid" id="mastermodules-edit-controller" name="def_controller" maxlength="100" spellcheck="false" aria-describedby="mastermodules-route-hint">
                         </div>
                     </div>
-                    <div class="form-text" id="mastermodules-route-hint">Rute dipakai oleh navigasi dan hak akses. Untuk modul pengelompokan, kosongkan kedua kolom.</div>
+                    <div class="form-text" id="mastermodules-route-hint">Isi Def Controller untuk membuat tautan navigasi. Package wajib diisi jika Def Controller diisi.</div>
                     <fieldset class="mt-4" data-module-edit-fields>
                         <div class="row g-3">
                             <div class="col-12 col-sm-6">

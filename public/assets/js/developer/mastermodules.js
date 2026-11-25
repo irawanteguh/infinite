@@ -137,7 +137,7 @@ if (mastermodulesEditModal) {
         form.elements.module_id.value = trigger.dataset.moduleId;
         form.elements.module_name.value = addingChild ? '' : trigger.dataset.moduleName;
         form.elements.icon.value = addingChild ? '' : trigger.dataset.moduleIcon;
-        form.elements.package.value = addingChild ? '' : trigger.dataset.modulePackage;
+        form.elements.package.value = trigger.dataset.modulePackage;
         form.elements.def_controller.value = addingChild ? '' : trigger.dataset.moduleController;
         editFields.hidden = addingChild;
         editFields.disabled = addingChild;

@@ -14,11 +14,19 @@ class UserActivity
         'POST /developer/mastermodules/update' => 'Mengajukan perubahan detail modul',
         'POST /developer/mastermodules/addchild' => 'Mengajukan penambahan submodul',
         'POST /developer/backupdb/backup' => 'Meminta backup database',
+        'POST /developer/os/setup' => 'Menjalankan penyiapan tabel aktivitas pengguna',
+        'POST /developer/os/preview' => 'Memeriksa log aktivitas kedaluwarsa',
+        'POST /developer/os/prune' => 'Menjalankan pembersihan log aktivitas kedaluwarsa',
     ];
 
     private static ?array $reorderDetails = null;
 
     public static function setReorderDetails(array $details): void
+    {
+        self::$reorderDetails = $details;
+    }
+
+    public static function setDetails(array $details): void
     {
         self::$reorderDetails = $details;
     }
@@ -93,8 +101,13 @@ class UserActivity
         try {
             $model = new UserActivityModel();
             $extra = [];
-            if ($details !== null && $event === 'request' && $method === 'POST'
-                && $route === '/developer/mastermodules/reorder') {
+            if ($details === null && $event === 'page') {
+                $names = self::moduleNames();
+                $key = implode('/', array_slice(explode('/', ltrim($route, '/')), 0, 2));
+                $details = ['Halaman' => $names[$key] ?? $key];
+            }
+            if ($details !== null) {
+                $details['Status HTTP'] = $status;
                 $extra['details'] = json_encode($details, JSON_THROW_ON_ERROR | JSON_INVALID_UTF8_SUBSTITUTE);
             }
             $model->record($scope + [
@@ -107,6 +120,11 @@ class UserActivity
             ] + $extra);
         } catch (\Throwable $e) {
             log_message('error', 'User Log: gagal menyimpan aktivitas ({type}).', ['type' => get_class($e)]);
+            return;
+        }
+
+        // Maintenance requests must not trigger the automatic global purge.
+        if ($route === '/developer/os' || strpos($route, '/developer/os/') === 0) {
             return;
         }
 

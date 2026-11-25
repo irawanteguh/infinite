@@ -156,6 +156,21 @@ function initDataTable(tableSelector, searchSelector = null, pageLength = 10, op
         settings
     );
 
+    // Render page-size options outside scroll/card containers.
+    if ($.fn.select2) {
+        const container = table.table().container();
+        const pageSize = $(container).find('.dataTables_length select');
+        const dropdownParent = $(element.closest('.modal') || document.body);
+        pageSize.attr('aria-label', 'Jumlah baris per halaman').select2({
+            minimumResultsForSearch: Infinity,
+            width: '74px',
+            dropdownParent,
+        });
+        $(element).one('destroy.dt.pageSize', () => {
+            if (pageSize.hasClass('select2-hidden-accessible')) pageSize.select2('destroy');
+        });
+    }
+
     // Debounce external search too; DataTables searchDelay only covers its own input.
     if (searchSelector) {
         let searchTimer = null;

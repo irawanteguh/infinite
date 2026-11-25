@@ -1,0 +1,161 @@
+<main class="os-page">
+    <header class="app-geometric-banner rounded-4 p-6 p-lg-8 mb-7">
+        <h1 class="mb-2">Operasional Sistem</h1>
+        <p class="mb-0">Kelola penyiapan dan pemeliharaan layanan Infinite.</p>
+    </header>
+
+    <?php if ($message = session()->getFlashdata('os_success')): ?>
+        <div class="alert alert-success" role="status"><?= esc($message) ?></div>
+    <?php endif ?>
+    <?php if ($message = session()->getFlashdata('os_error')): ?>
+        <div class="alert alert-warning" role="alert"><?= esc($message) ?></div>
+    <?php endif ?>
+
+    <section aria-label="Pemeliharaan aktivitas pengguna">
+    <div class="row g-5">
+        <div class="col-12 col-lg-6">
+            <section class="card card-bordered h-100" aria-labelledby="os-setup-title">
+                <div class="card-body">
+                    <div class="os-card-heading">
+                    <div class="os-action-description">
+                        <h3 class="fs-4 mb-1" id="os-setup-title">Siapkan tabel aktivitas</h3>
+                        <p class="text-muted mb-2">Buat atau lengkapi tabel riwayat aktivitas untuk sistem.</p>
+                    </div>
+                    <?php if ($tableReady === true): ?>
+                        <span class="badge os-status os-status-ready" role="status"><i class="bi bi-check-circle me-2" aria-hidden="true"></i>Sudah siap</span>
+                    <?php elseif ($tableReady === false): ?>
+                        <span class="badge os-status os-status-pending" role="status">Perlu penyiapan</span>
+                    <?php else: ?>
+                        <span class="badge os-status os-status-error" role="alert">Status tabel belum dapat diperiksa. Muat ulang halaman.</span>
+                    <?php endif ?>
+                    </div>
+                    <p class="os-table-name mb-0">Tabel <button class="btn btn-link p-0" type="button" data-bs-toggle="modal" data-bs-target="#os-table-schema"><code>dt01_gen_user_activity</code></button></p>
+                    <div class="modal fade" id="os-table-schema" tabindex="-1" aria-labelledby="os-schema-title" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h2 class="modal-title fs-4" id="os-schema-title">Struktur kolom data</h2>
+                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                                </div>
+                                <div class="modal-body">
+                    <div class="table-responsive w-100">
+                        <table class="table table-row-dashed align-middle w-100 mb-0" data-datatable="false" aria-label="Kolom tabel aktivitas pengguna">
+                            <thead>
+                                <tr><th scope="col">Nama kolom</th><th scope="col">Tipe data</th></tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ([
+                                    'activity_id' => 'BIGINT UNSIGNED · AUTO_INCREMENT',
+                                    'group_id' => 'VARCHAR(64)',
+                                    'org_id' => 'VARCHAR(64)',
+                                    'user_id' => 'VARCHAR(64)',
+                                    'user_name' => 'VARCHAR(255)',
+                                    'event' => 'VARCHAR(20)',
+                                    'route' => 'VARCHAR(200)',
+                                    'http_method' => 'VARCHAR(16)',
+                                    'http_status' => 'SMALLINT UNSIGNED',
+                                    'created_at' => 'DATETIME',
+                                    'details' => 'MEDIUMTEXT · NULL',
+                                ] as $column => $type): ?>
+                                    <tr>
+                                        <td><code><?= esc($column) ?></code></td>
+                                        <td><?= esc($type) ?></td>
+                                    </tr>
+                                <?php endforeach ?>
+                            </tbody>
+                        </table>
+                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-light" type="button" data-bs-dismiss="modal">Tutup</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <form class="align-self-end" data-setup-table method="post" action="<?= esc(site_url('developer/os/setup'), 'attr') ?>">
+                        <?= csrf_field() ?>
+                        <button class="btn btn-primary" type="submit" <?= $tableReady !== false ? 'disabled' : '' ?>><i class="bi bi-database-gear me-1" aria-hidden="true"></i>Siapkan tabel</button>
+                    </form>
+                </div>
+            </section>
+        </div>
+        <div class="col-12">
+            <section class="card app-table-card h-100" aria-labelledby="os-prune-title">
+                    <div class="card-header os-card-heading app-table-heading">
+                        <div class="os-action-description">
+                            <h3 class="fs-4 mb-1" id="os-prune-title">Bersihkan log kedaluwarsa</h3>
+                            <p class="text-muted mb-2">Periksa log organisasi aktif yang berusia lebih dari <?= esc((string) $retentionDays) ?> hari.</p>
+                        </div>
+                        <label class="app-table-search">
+                            <input id="os-log-search" type="search" class="form-control form-control-solid" placeholder="Cari log…" aria-label="Cari log aktivitas">
+                        </label>
+                    </div>
+                <div class="card-body">
+                    <?php if ($preview !== null): ?>
+                        <p role="status"><strong><?= esc((string) $preview['count']) ?></strong> log kedaluwarsa.</p>
+                    <?php endif ?>
+                    <div class="table-responsive w-100">
+                        <table id="os-log-table" class="table table-row-dashed align-middle w-100 mb-0" data-datatable="manual" aria-label="Log aktivitas organisasi aktif">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Waktu</th>
+                                    <th scope="col">Pengguna</th>
+                                    <th scope="col">Organisasi</th>
+                                    <th scope="col">Aktivitas</th>
+                                    <th scope="col">Rute</th>
+                                    <th scope="col" class="text-end pe-4">Status HTTP</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($logs as $log): ?>
+                                    <tr>
+                                        <td class="text-nowrap"><?= esc($log['created_at']) ?></td>
+                                        <td><?= esc($log['user_name']) ?></td>
+                                        <td><?= esc($log['org_name'] ?? '—') ?></td>
+                                        <td><?= esc(\Modules\Developer\Models\UserActivityModel::EVENTS[$log['event']][0] ?? $log['event']) ?></td>
+                                        <td><?= esc($log['http_method'] . ' ' . $log['route']) ?></td>
+                                        <td class="text-end pe-4"><?= esc((string) $log['http_status']) ?></td>
+                                    </tr>
+                                <?php endforeach ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex flex-wrap justify-content-end align-self-end gap-2">
+                        <button class="btn btn-light-danger" type="button" data-bs-toggle="modal" data-bs-target="#os-prune-expired">Hapus log lebih dari 30 hari</button>
+                        <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#os-prune-all">Hapus semua log</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    </section>
+
+    <?php foreach (['expired' => 'Hapus log lebih dari 30 hari', 'all' => 'Hapus semua log'] as $mode => $label): ?>
+        <div class="modal fade" id="os-prune-<?= esc($mode) ?>" tabindex="-1" aria-labelledby="os-prune-title-<?= esc($mode) ?>" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <form class="modal-content" method="post" action="<?= esc(site_url('developer/os/prune'), 'attr') ?>">
+                    <?= csrf_field() ?>
+                    <input type="hidden" name="mode" value="<?= esc($mode, 'attr') ?>">
+                    <div class="modal-header">
+                        <h2 class="modal-title fs-4" id="os-prune-title-<?= esc($mode) ?>"><?= esc($label) ?></h2>
+                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                    </div>
+                    <div class="modal-body">
+                        <label class="form-label" for="os-org-<?= esc($mode) ?>">Organisasi</label>
+                        <select class="form-select form-select-solid" name="org_id" id="os-org-<?= esc($mode) ?>"
+                            data-control="select2" data-dropdown-parent="#os-prune-<?= esc($mode) ?>"
+                            data-placeholder="Pilih organisasi" data-hide-search="true" required>
+                            <option value="">Pilih organisasi</option>
+                            <option value="<?= esc((string) session('orgid'), 'attr') ?>"><?= esc((string) session('orgname')) ?></option>
+                        </select>
+                        <p class="text-muted mt-4 mb-0"><?= $mode === 'expired' ? 'Log yang berusia lebih dari 30 hari pada organisasi terpilih akan dihapus permanen.' : 'Seluruh log pada organisasi terpilih akan dihapus permanen.' ?></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-light" type="button" data-bs-dismiss="modal">Batal</button>
+                        <button class="btn btn-danger" type="submit">Hapus log</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    <?php endforeach ?>
+</main>

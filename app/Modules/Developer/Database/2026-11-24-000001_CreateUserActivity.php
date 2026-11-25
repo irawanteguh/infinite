@@ -23,7 +23,9 @@ class CreateUserActivity extends Migration
         $this->forge->addKey('activity_id', true);
         $this->forge->addKey(['group_id', 'org_id', 'activity_id']);
         $this->forge->addKey(['group_id', 'org_id', 'created_at']);
-        $this->forge->createTable('dt01_gen_user_activity', true);
+        if (!$this->forge->createTable('dt01_gen_user_activity', true)) {
+            throw new \RuntimeException('Gagal membuat tabel aktivitas pengguna.');
+        }
     }
 
     public function down()

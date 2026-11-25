@@ -15,6 +15,8 @@ body #kt_content .app-table-card>.table-responsive{min-width:0}
 @media(max-width:575px){body #kt_content .app-table-card.prem-card{padding:16px!important}body #kt_content .app-table-card>.card-header.app-table-heading,body .modal .app-table-card>.card-header.app-table-heading{padding:16px 16px 0!important}body #kt_content .app-table-card>.card-body,body .modal .app-table-card>.card-body{padding:0 16px 16px!important}body #kt_content .app-table-card .app-table-search,body .modal .app-table-card .app-table-search{width:100%}}
 
 /* Empty tables: centered icon, general title and a short next step. */
+body .app-table-heading > :first-child:not(.app-table-search){min-width:0;max-width:100%}
+body .app-table-description{overflow-wrap:anywhere}
 body .dataTables_wrapper td.dataTables_empty{padding:26px 16px!important;text-align:center!important;white-space:normal!important}
 body .dataTables_wrapper .app-table-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:110px;text-align:center;white-space:normal}
 body .dataTables_wrapper .app-table-empty-icon{display:block;flex-shrink:0;color:#087e82;margin-bottom:4px}

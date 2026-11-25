@@ -26,9 +26,34 @@ class UserActivityModel extends Model
         return (new \DateTimeImmutable())->modify('-' . self::RETENTION_DAYS . ' days')->format('Y-m-d H:i:s');
     }
 
-    public function pruneExpired(bool $dryRun = false): int
+    public function maintenanceLogs(string $group, string $org): array
     {
-        $query = $this->db->table($this->table)->where('created_at <', self::retentionCutoff());
+        return $this->db->table($this->table . ' a')
+            ->select('a.created_at, a.user_name, a.event, a.route, a.http_method, a.http_status, o.org_name')
+            ->join('dt01_gen_organization_ms o', 'o.org_id = a.org_id', 'left')
+            ->where('a.group_id', $group)->where('a.org_id', $org)
+            ->orderBy('a.activity_id', 'DESC')->get()->getResultArray();
+    }
+
+    public function deleteOrganizationLogs(array $scope, bool $expiredOnly): int
+    {
+        $query = $this->db->table($this->table)
+            ->where('group_id', $scope['group_id'])->where('org_id', $scope['org_id']);
+        if ($expiredOnly) {
+            $query->where('created_at <', self::retentionCutoff());
+        }
+        if (!$query->delete()) {
+            throw new \RuntimeException('Gagal menghapus log aktivitas.');
+        }
+        return $this->db->affectedRows();
+    }
+
+    public function pruneExpired(bool $dryRun = false, array $scope = [], ?string $cutoff = null): int
+    {
+        $query = $this->db->table($this->table)->where('created_at <', $cutoff ?? self::retentionCutoff());
+        if ($scope !== []) {
+            $query->where('group_id', $scope['group_id'])->where('org_id', $scope['org_id']);
+        }
         if ($dryRun) {
             return $query->countAllResults();
         }

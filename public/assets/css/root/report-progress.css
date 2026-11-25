@@ -31,3 +31,32 @@
 .report-progress-popup .report-progress-meter > .progress-bar {
     background-color: var(--app-status-teal-text);
 }
+.app-loading-meter>.progress-bar{width:35%;animation:app-loading-slide 1.4s ease-in-out infinite}
+@keyframes app-loading-slide{from{transform:translateX(-110%)}to{transform:translateX(390%)}}
+@media(prefers-reduced-motion:reduce){.app-loading-meter>.progress-bar{width:100%;animation:none}}
+.app-loading-popup.swal2-popup {
+    border-radius: 20px;
+    border: 1px solid var(--app-table-header-bg);
+    box-shadow: 0 24px 70px rgb(18 56 63 / 18%);
+}
+.app-loading-popup .swal2-title {
+    color: var(--app-status-teal-text);
+    font-size: 22px;
+    padding-top: 0;
+}
+.app-loading-popup .report-progress {
+    margin-top: 0;
+}
+.app-loading-popup .app-loading-description {
+    color: var(--app-table-header-text);
+    font-size: 14px;
+    line-height: 1.6;
+    text-align: center;
+    margin: 0 0 24px;
+}
+.app-loading-popup .app-loading-caption {
+    color: var(--app-status-teal-text);
+    font-size: 12px;
+    text-align: center;
+    margin: 12px 0 0;
+}

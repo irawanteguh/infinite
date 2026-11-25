@@ -8,3 +8,29 @@
     --app-table-header-bg: #eff7f5;
     --app-table-header-text: #62858b;
 }
+
+/* Horizontal chart guides remain visible against white plot backgrounds. */
+body .apexcharts-grid .apexcharts-gridline {
+    stroke-width: 1.5px;
+    stroke: #c5d8d9;
+}
+
+/* Messages share the status palette demonstrated on Testing Page. */
+body .alert:is(.alert-info, .alert-primary, .alert-success) {
+    background-color: var(--app-status-teal-bg);
+    color: var(--app-status-teal-text);
+    border-color: transparent;
+}
+body .alert.alert-warning {
+    background-color: var(--app-status-yellow-bg);
+    color: var(--app-status-yellow-text);
+    border-color: transparent;
+}
+body .alert.alert-danger {
+    background-color: var(--app-status-red-bg);
+    color: var(--app-status-red-text);
+    border-color: transparent;
+}
+body .alert:is(.alert-info, .alert-primary, .alert-success, .alert-warning, .alert-danger) .bi {
+    color: inherit;
+}

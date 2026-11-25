@@ -152,7 +152,18 @@
         destroyCharts();tableData=null;payload={rows:[],casegroups:[],cmgs:[],monthlyCmi:[]};
         $('#cm-content').prop('hidden',true);$('#cm-status').prop('hidden',true);$('#cm-refresh').prop('disabled',true);
         $('#cm-coverage').text('Memuat cakupan data…');
-        Swal.fire({title:'Memuat data casemix',text:'Mohon tunggu, ringkasan sedang disiapkan.',allowOutsideClick:false,allowEscapeKey:false,showConfirmButton:false,didOpen:()=>Swal.showLoading()});
+        Swal.fire({
+            title: 'Menyiapkan Casemix Index',
+            html: '<div class="report-progress" role="status" aria-live="polite">' +
+                '<p class="ur-loading-description">Memuat ringkasan dan grafik casemix.</p>' +
+                '<div class="progress report-progress-meter ur-loading-meter" aria-label="Data casemix sedang dimuat">' +
+                '<div class="progress-bar"></div></div>' +
+                '<p class="ur-loading-caption">Sedang memproses data…</p></div>',
+            customClass: {popup: 'report-progress-popup ur-loading-popup'},
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: false
+        });
         request=$.ajax({url:url+'ur/casemixindex/summary',type:'POST',dataType:'json',data:{selectperiode:$('#selectperiode').val()}})
             .done(function(response){
                 if(token!==generation)return;

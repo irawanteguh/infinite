@@ -12,7 +12,10 @@
     </aside>
 
     <?php if ($message !== ''): ?>
-        <p class="alert alert-warning" role="alert"><?= esc($message) ?></p>
+        <div class="alert alert-danger" role="alert">
+            <strong class="d-block"><i class="bi bi-exclamation-circle me-2" aria-hidden="true"></i>Gagal memuat</strong>
+            <?= esc($message) ?>
+        </div>
     <?php endif ?>
 
     <div class="activity-log row g-4 align-items-start">

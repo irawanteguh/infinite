@@ -49,7 +49,7 @@ $('#pn-doctors').html([...groups].filter(([name,items])=>{
 }).sort((a,b)=>b[1].length-a[1].length).map(([name,r])=>{const gap=sum(r,'total_tarif')-sum(r,'tarif_rs');return '<tr><td>'+esc(name)+'</td><td>'+nf.format(r.length)+'</td><td>'+(sum(r,'los')/r.length).toLocaleString('id-ID',{maximumFractionDigits:1})+' hari</td><td>'+money(sum(r,'tarif_rs'))+'</td><td>'+money(sum(r,'total_tarif'))+'</td><td class="'+(gap<0?'ur-negative':'ur-positive')+'">'+money(gap)+'</td></tr>';}).join(''));
 initDataTable('#pn-table',null,10,{searching:false,order:[]});
 }
-window.load=function(){const token=++generation;if(request)request.abort();$('#pn-content').prop('hidden',true);$('#pn-status').text('Memuat ringkasan pneumonia…').prop('hidden',false);$('#pn-refresh').prop('disabled',true);
+window.load=function(){const token=++generation;if(request)request.abort();$('#pn-content').prop('hidden',true);$('#pn-status').text('');showDataLoading();$('#pn-refresh').prop('disabled',true);
 request=$.ajax({url:url+'ur/pneumonia/summary',type:'POST',dataType:'json',data:{selectperiode:$('#selectperiode').val()}}).done(r=>{if(token!==generation)return;if(r.responseCode!=='00'){$('#pn-status').text(r.responseDesc||'Data gagal dimuat.');return;}rows=Array.isArray(r.responseResult)?r.responseResult:[];render();}).fail((xhr,state)=>{if(token===generation&&state!=='abort')$('#pn-status').text('Data gagal dimuat. Klik Perbarui untuk mencoba kembali.');}).always(()=>{if(token===generation)$('#pn-refresh').prop('disabled',false);});};
 $('#selectperiode').on('change',()=>{link();window.load();});$('#pn-month').on('change',()=>{link();render();});$('#pn-search').on('input',render);$('.pn-gap-option').on('click',function(){
     $('.pn-gap-option').attr('aria-pressed','false');

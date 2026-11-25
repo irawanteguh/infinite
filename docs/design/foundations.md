@@ -22,6 +22,31 @@ Gunakan latar teal soft serta teks, ikon, dan bullet teal saat menu aside atau n
 
 ## Banner geometris
 
+Contoh tersedia di bagian atas Testing Page. Banner contoh memakai sudut membulat 20px, padding 24px pada desktop dan 20px pada ponsel, serta judul dan deskripsi singkat.
+
+Variasi pola tersedia pada Testing Page dengan lapisan gradien teal gelap untuk menjaga keterbacaan judul dan deskripsi.
+
+Pertahankan gradasi teal banner saat mengganti atau meningkatkan ketajaman aset pola. Gunakan lapisan berikut sesuai contoh Testing Page.
+
+```css
+background-image:
+    linear-gradient(100deg, #102c37 5%, rgb(18 56 63 / 95%) 38%, rgb(8 126 130 / 55%) 100%),
+    var(--testing-banner-pattern);
+```
+
+Perbaikan ketajaman pola dilakukan pada kualitas aset sumber dengan mempertahankan warna, arah, dan opasitas gradasi ini.
+
+| Variasi | Kelas contoh | Aset |
+| --- | --- | --- |
+| Pola abstrak | `testing-banner-chaotic` | `public/assets/media/banners/chaotic.jpg` |
+| Geometri segitiga | `testing-banner-triangles` | `public/assets/media/banners/triangles.jpg` |
+| Pola persegi | `testing-banner-squares` | `public/assets/media/banners/squares.jpg` |
+| Ornamen floral | `testing-banner-floral` | `public/assets/media/banners/floral.jpg` |
+| Gelombang organik | `testing-banner-waves` | `public/assets/media/banners/waves.jpg` |
+| Geometri diagonal | `testing-banner-diagonal` | `public/assets/media/banners/diagonal.jpg` |
+
+Gunakan gambar sebagai latar dekoratif dengan teks HTML di atasnya. Terapkan variabel `--app-banner-heading` dan `--app-banner-copy` untuk warna teks. Atur pemotongan pola melalui background-position dan background-size agar teks tetap terbaca pada desktop dan ponsel. Implementasi contoh berada di `public/assets/css/developer/testingpage.css`. Untuk halaman lain, gunakan komponen banner bersama dan simpan pengaturan pola khusus halaman di stylesheet modul.
+
 Gunakan kelas **app-geometric-banner** untuk banner bergaya Welcome Page. Pola segitiga dan bidang bersudut berada di sisi kanan agar area teks tetap terbaca. Gunakan teal gelap yang sama pada banner sambutan dan gunakan variabel warna judul, teks, serta ikon yang disediakan CSS banner. [CSS banner bersama](../../public/assets/css/root/geometric-banner.css)
 
 ## Kartu ringkasan

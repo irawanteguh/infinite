@@ -20,6 +20,24 @@ $palette = [
         <p class="text-muted mb-0">Contoh komponen dan interaksi antarmuka dengan data dummy.</p>
     </header>
 
+    <div class="row g-5 mb-6">
+        <?php foreach ([
+            'chaotic' => 'Pola abstrak',
+            'triangles' => 'Geometri segitiga',
+            'squares' => 'Pola persegi',
+            'floral' => 'Ornamen floral',
+            'waves' => 'Gelombang organik',
+            'diagonal' => 'Geometri diagonal',
+        ] as $pattern => $label): ?>
+            <div class="col-12">
+                <section class="app-geometric-banner testing-banner testing-banner-<?= esc($pattern, 'attr') ?>" aria-labelledby="testing-banner-<?= esc($pattern, 'attr') ?>">
+                    <h2 id="testing-banner-<?= esc($pattern, 'attr') ?>"><?= esc($label) ?></h2>
+                    <p>Ringkasan informasi dan aktivitas organisasi dalam satu tempat.</p>
+                </section>
+            </div>
+        <?php endforeach ?>
+    </div>
+
     <section id="testing-filters" class="app-filter-card" aria-labelledby="testing-filter-title">
         <div class="app-filter-heading">
             <h2 id="testing-filter-title"><i class="bi bi-funnel me-2" aria-hidden="true"></i>Filter data</h2>

@@ -158,3 +158,41 @@
     font-size: 12px;
     line-height: 1.5;
 }
+.testing-banner {
+    padding: 24px;
+    border-radius: 20px;
+}
+#testing-page .testing-banner h2 {
+    color: var(--app-banner-heading);
+    margin: 0 0 6px;
+}
+#testing-page .testing-banner p {
+    color: var(--app-banner-copy);
+    margin: 0;
+    max-width: 560px;
+    line-height: 1.6;
+}
+@media (max-width: 575.98px) {
+    .testing-banner {
+        padding: 20px;
+    }
+}
+.testing-banner-chaotic { --testing-banner-pattern: url("../../media/banners/chaotic.jpg"); }
+.testing-banner-triangles { --testing-banner-pattern: url("../../media/banners/triangles.jpg"); }
+.testing-banner-squares { --testing-banner-pattern: url("../../media/banners/squares.jpg"); }
+.testing-banner-floral { --testing-banner-pattern: url("../../media/banners/floral.jpg"); }
+.testing-banner-waves { --testing-banner-pattern: url("../../media/banners/waves.jpg"); }
+.testing-banner-diagonal { --testing-banner-pattern: url("../../media/banners/diagonal.jpg"); }
+#testing-page .testing-banner {
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-image: linear-gradient(100deg, #102c37 5%, rgb(18 56 63 / 95%) 38%, rgb(8 126 130 / 55%) 100%), var(--testing-banner-pattern);
+    background-position: center, center top;
+    background-size: cover, 100% auto;
+}
+#testing-page .testing-banner::before,
+#testing-page .testing-banner::after {
+    display: none;
+}

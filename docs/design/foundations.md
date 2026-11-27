@@ -24,6 +24,8 @@ Select native dan Select2 single memakai padding 6px vertikal, 10px kiri, dan 32
 
 Tombol primer memakai teal #087E82 dengan teks putih dan hover #066B6E. Teks utama pada contoh kartu memakai #234A54. Sertakan label atau ikon yang dapat dikenali bersama warna status.
 
+Badge status memakai palet yang sama melalui kelas `badge-light-*`. Pemetaan arti status dan kompatibilitas kelas lama ada di [referensi badge](messages.md#badge-status).
+
 ## Navigasi samping dan navbar
 
 Gunakan latar teal soft serta teks, ikon, dan bullet teal saat menu aside atau navbar di-hover, mendapat fokus keyboard, atau aktif. Induk submenu yang terbuka memakai warna yang sama. Label navbar dengan parent H ditampilkan dalam huruf kapital. [CSS navigasi](../../public/assets/css/root/navigation-menu.css)
@@ -62,6 +64,19 @@ Banner dekoratif modul memakai kelas **app-geometric-banner** dari [CSS banner b
 Pertahankan latar teal gelap, aksen garis teal–emas, serta overlay lebih gelap di sisi teks. Ornamennya tetap terlihat pada sisi kanan. Gunakan variabel `--app-banner-heading`, `--app-banner-copy`, dan `--app-banner-accent` untuk teks dan ikon. Pengaturan pola, overlay, dan pemotongan dimiliki CSS bersama. Stylesheet modul menangani dimensi dan tata letak konten.
 
 Standar berlaku pada banner Welcome, FAQ, Operasional Sistem, login, landing, dan panel sambutan survei yang memakai kelas bersama. Contoh variasi pola di Testing Page tetap menjadi demonstrasi alternatif. Periksa keterbacaan dan pemotongan gambar pada desktop dan ponsel ketika menambahkan banner.
+
+### Posisi judul dan deskripsi banner
+
+Bungkus judul dan deskripsi dengan `app-banner-heading` di awal banner header modul. Tempatkan pembungkus di kiri atas area isi, dengan teks rata kiri dan lebar maksimum 680 px. Pertahankan padding banner responsif. Pada ponsel, teks tetap rata kiri dan membungkus mengikuti lebar yang tersedia. Kontrol tambahan ditempatkan sesudah pembungkus. Judul memakai `--app-banner-heading` dan deskripsi memakai `--app-banner-copy` dari CSS bersama.
+
+### Tipografi banner modul
+
+| Lebar layar | Judul | Deskripsi |
+| --- | --- | --- |
+| Desktop dan tablet, mulai 768 px | 32 px, tebal 700, line-height 1.3 | 16 px, line-height 1.7 |
+| Ponsel, di bawah 768 px | 26 px, tebal 700, line-height 1.3 | 14 px, line-height 1.7 |
+
+Ukuran diterapkan pada judul dan deskripsi di dalam `app-banner-heading` melalui CSS banner bersama. Aturan ini mendapat prioritas atas kelas ukuran utilitas template dan tipografi umum. Pertahankan posisi kiri atas, rata kiri, serta tinggi yang mengikuti isi saat teks membungkus.
 
 ### Tinggi banner modul
 

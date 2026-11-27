@@ -17,7 +17,7 @@
 body #kt_content .cm-page .cm-casegroup h3{font-size:14px!important;line-height:1.5!important;font-weight:500;color:#42636d;margin:10px 0 8px!important;overflow-wrap:anywhere}
 .cm-casegroup>strong{font-size:24px;color:#15373e;font-weight:600;letter-spacing:-.3px}.cm-casegroup>small{display:block;font-size:12px;color:#81969b;margin-top:10px;line-height:1.6}
 .cm-casegroup .ur-meter{margin-top:12px}.cm-casegroup .ur-meter span{background:#75b5a0}
-.cm-page .badge-light-primary{background:#eaf6f4!important;color:#087e82!important}
+.cm-page .badge-light-primary{background:var(--app-status-teal-bg)!important;color:var(--app-status-teal-text)!important}
 .cm-detail-head{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .cm-search{display:flex;align-items:center;gap:10px;width:270px;max-width:100%;min-width:0;padding:0 13px;background:#f5f8fa;border:1px solid transparent;border-radius:7px;min-height:42px}
 .cm-search .cm-search-icon{display:block;flex:0 0 14px;width:14px;height:14px;color:#8aa0a5;transform:translateY(-1px)}

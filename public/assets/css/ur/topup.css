@@ -75,8 +75,8 @@ body #kt_content .topup-detail-page .app-datatable-scroll{
     max-height:none!important;
 }
 body #kt_content .topup-detail-page :is(.topup-los-badge,.mal-los-badge){
-    background:#eaf6f4!important;
-    color:#087e82!important;
+    background:var(--app-status-teal-bg)!important;
+    color:var(--app-status-teal-text)!important;
     border:1px solid #c9e3dc;
     font-weight:600;
 }
@@ -117,8 +117,8 @@ body #kt_content .topup-gap-options .topup-gap-option[data-gap="negative"]:focus
 
 
 body #kt_content #topup-case-table .topup-status-entered{
-    background:#e5f2ef;color:#087e82;border:1px solid #bddcd6;font-weight:500;white-space:nowrap;
+    background:var(--app-status-teal-bg);color:var(--app-status-teal-text);border:1px solid #bddcd6;font-weight:500;white-space:nowrap;
 }
 body #kt_content #topup-case-table .topup-status-pending{
-    background:#fbf6eb;color:#846d43;border:1px solid #e9ddbd;font-weight:500;white-space:nowrap;
+    background:var(--app-status-yellow-bg);color:var(--app-status-yellow-text);border:1px solid #e9ddbd;font-weight:500;white-space:nowrap;
 }

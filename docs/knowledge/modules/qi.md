@@ -1,5 +1,7 @@
 # QI — indikator dan laporan mutu
 
+Banner Master Indikator mengikuti posisi kiri atas dengan pembungkus `app-banner-heading`. Header tabel mengikuti variabel palet kartu tabel bersama.
+
 | Alur | Titik masuk |
 | --- | --- |
 | Definisi dan periode | [Masterindikator](../../../app/Modules/Qi/Controllers/Masterindikator.php) dan [Periodepelaporan](../../../app/Modules/Qi/Controllers/Periodepelaporan.php) mengelola definisi, periode, dan tim periode. |
@@ -11,3 +13,5 @@
 Model memakai grup default. Tabel utama `dt01_qi_indikator_ms`, `dt01_qi_indikator_hd`, `dt01_qi_indikator_it`, `dt01_qi_periode_mutu`, `dt01_qi_komite_mutu_hd`, tabel Fishbone/PDSA, dan master department. Route `qi/<controller>` mengikuti login/grant. Cakupan group/org dan unit/PIC bergantung aksi. Rumus ringkasan ada di [aturan bisnis](../business-rules.md).
 
 [Views](../../../app/Modules/Qi/Views/), [aset QI](../../../public/assets/js/qi/), dan direktori pendukung `Modal`, `Toolbar`, `Team`, `Progress` memuat form serta tampilan laporan. Target aktif, isi periode dan kecocokan hasil PDF dengan data deployment belum diverifikasi.
+
+Master Indikator memakai banner Betawi dan kartu tabel bersama, pencarian, serta toolbar Tambah indikator/Perbarui. Pengambilan data, penyimpanan, dan perubahan status memakai showDataLoading di beforeSend. Form mencegah submit berulang dan tabel ditandai manual untuk inisialisasi DataTables. File UI terkait berada di view, Modal, Toolbar, CSS, dan JS masterindikator.

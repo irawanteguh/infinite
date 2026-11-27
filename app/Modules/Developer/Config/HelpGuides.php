@@ -145,7 +145,7 @@ final class HelpGuides
             'module' => 'Qi',
             'description' => 'Indikator unit, periode, capaian, Fishbone, PDSA, dan laporan.',
             'route' => 'qi/summary',
-            'steps' => ['Siapkan master indikator dan periode pelaporan.', 'Ajukan indikator unit, tetapkan PIC, lalu isi nilai bulanan sesuai akses.', 'Tinjau Summary dan tindak lanjut Fishbone atau PDSA.', 'Buat laporan berdasarkan periode yang dipilih.'],
+            'steps' => ['Pada Master Indikator, gunakan pencarian kode, nama, jenis, atau status. Pilih Tambah indikator untuk membuat definisi, Actions untuk edit atau mengubah status, dan Perbarui untuk memuat ulang daftar.', 'Siapkan periode pelaporan.', 'Ajukan indikator unit, tetapkan PIC, lalu isi nilai bulanan sesuai akses.', 'Tinjau Summary dan tindak lanjut Fishbone atau PDSA.', 'Buat laporan berdasarkan periode yang dipilih.'],
             'filters' => 'Tahun, periode, indikator, dan unit sesuai halaman.',
             'question' => 'Mengapa PIC tidak dapat mengisi nilai?',
             'answer' => 'Periksa penugasan PIC, keterkaitan unit, status indikator, serta tenggat input.',

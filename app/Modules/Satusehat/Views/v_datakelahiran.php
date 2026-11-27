@@ -1,7 +1,9 @@
 <div id="birth-page" data-url="<?= esc(site_url('satusehat/datakelahiran'), 'attr') ?>" data-csrf="<?= esc(csrf_hash(), 'attr') ?>">
     <header class="birth-banner app-geometric-banner app-module-banner p-6 mb-6">
-        <h1 class="fw-bold mb-2">Transaksi Data Kelahiran</h1>
-        <p class="mb-0">Pendaftaran kunjungan ibu dan bayi, pencatatan kelahiran, serta pelaporan akta lahir.</p>
+        <div class="app-banner-heading">
+            <h1 class="fw-bold mb-2">Transaksi Data Kelahiran</h1>
+            <p class="mb-0">Pendaftaran kunjungan ibu dan bayi, pencatatan kelahiran, serta pelaporan akta lahir.</p>
+        </div>
     </header>
     <div id="birth-status" class="alert alert-info" role="status" hidden></div>
     <section id="birth-list" class="card app-table-card">

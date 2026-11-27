@@ -18,6 +18,18 @@ Gunakan pasangan variabel `--app-status-teal-bg` dan `--app-status-teal-text`, a
 
 Gunakan kelas bersama `alert alert-info` untuk informasi, `alert alert-success` untuk berhasil, `alert alert-warning` untuk data kosong atau menunggu, dan `alert alert-danger` untuk gagal memuat. Palet kelas ini ditetapkan di `theme-palette.css` mengikuti Testing Page. Pesan gagal memuat menggunakan judul **Gagal memuat** dan ikon `bi-exclamation-circle`, diikuti rincian pesan.
 
+## Badge status
+
+Badge memakai palet yang sama dengan pesan. Definisi bersama ada di `theme-palette.css` dan berlaku pada badge di halaman, tabel, serta modal.
+
+| Arti | Kelas yang digunakan | Latar | Teks |
+| --- | --- | --- | --- |
+| Informasi, kategori, aktif, berhasil | `badge badge-light-primary`, `badge badge-light-info`, atau `badge badge-light-success` | #EAF6F4 | #087E82 |
+| Menunggu, perhatian, belum lengkap | `badge badge-light-warning` | #FFF4D6 | #805800 |
+| Gagal, ditolak, nonaktif | `badge badge-light-danger` | #FDE9E9 | #A63C45 |
+
+Gunakan label yang menjelaskan arti status. Ikon mengikuti warna teks. Pilih kelas berdasarkan arti data yang sudah ditetapkan modul. Kelas solid `badge-primary/info/success/warning/danger` dan `bg-primary/info/success/warning/danger` pada elemen `.badge` juga diarahkan ke palet ini untuk kompatibilitas halaman lama. Untuk implementasi baru, gunakan varian `badge-light-*`. Warna domain khusus seperti tingkat matriks risiko mengikuti definisi domain yang terverifikasi. Simpan aturan warna status pada stylesheet bersama.
+
 ## Penempatan
 
 Konfirmasi tindakan di dalam aplikasi menggunakan SweetAlert, termasuk penghapusan dan pengabaian perubahan. Gunakan judul singkat, keterangan dampak tindakan, ikon `question` teal, `showCancelButton: true`, `buttonsStyling: false`, tombol aksi `btn btn-primary`, dan tombol Cancel `btn btn-light ms-3`. Teks tombol aksi menjelaskan tindakannya, misalnya **Hapus environment**. Jalankan tindakan hanya jika `result.isConfirmed` bernilai true. Peringatan saat menutup atau memuat ulang tab tetap memakai mekanisme `beforeunload` bawaan browser.
@@ -44,3 +56,5 @@ Ikon SweetAlert untuk konfirmasi (`question`) dan informasi (`info`) memakai tea
 Atribut `data-testing-tone` pada demo mengikuti stylesheet Testing Page. Pada halaman modul, gunakan variabel palet bersama dalam stylesheet modul, atau kelas pesan bersama yang sudah tersedia.
 
 [Palet bersama](../../public/assets/css/root/theme-palette.css) · [View Testing Page](../../app/Modules/Developer/Views/v_testingpage.php) · [CSS demo](../../public/assets/css/developer/testingpage.css)
+
+Saat memeriksa modul, telusuri juga badge dari JavaScript dan aturan CSS lokal. Badge kustom yang sudah memakai variabel palet bersama dapat dipertahankan. Kondisi belum diisi atau status belum tersedia memakai warning, dan status nonaktif memakai danger.

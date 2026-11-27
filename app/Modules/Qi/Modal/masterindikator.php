@@ -1,8 +1,8 @@
 <div class="modal fade" id="modal_add_masterindikator" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content d-flex flex-column overflow-hidden">
-            <div class="modal-header pb-0">
-                <h1 class="mb-3">Add Master Indikator Mutu</h1>
+            <div class="modal-header">
+                <h2 class="fs-4 mb-0">Tambah indikator mutu</h2>
                 <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
                     <span class="svg-icon svg-icon-1">
                         <i class="bi bi-x-lg"></i>
@@ -187,8 +187,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer p-1">	
-                    <input class="btn btn-light-primary" id="btnproses" type="submit" value="SUBMIT" name="simpan" >			
+                <div class="modal-footer">
+                    <input class="btn btn-primary" type="submit" value="Simpan indikator" name="simpan" >
                 </div>  
             </form>  
         </div>
@@ -196,10 +196,10 @@
 </div>
 
 <div class="modal fade" id="modal_edit_masterindikator" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content d-flex flex-column overflow-hidden">
-            <div class="modal-header pb-0">
-                <h1 class="mb-3">Edit Master Indikator Mutu</h1>
+            <div class="modal-header">
+                <h2 class="fs-4 mb-0">Edit indikator mutu</h2>
                 <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
                     <span class="svg-icon svg-icon-1">
                         <i class="bi bi-x-lg"></i>
@@ -387,8 +387,8 @@
                     </div>
 
                 </div>
-                <div class="modal-footer p-1">  
-                    <input class="btn btn-light-primary" id="btnproses" type="submit" value="SUBMIT" name="simpan" >            
+                <div class="modal-footer">
+                    <input class="btn btn-primary" type="submit" value="Simpan indikator" name="simpan" >
                 </div>  
             </form>  
         </div>

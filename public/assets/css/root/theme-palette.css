@@ -41,3 +41,24 @@ body .swal2-icon:is(.swal2-question, .swal2-info) {
 body .swal2-icon:is(.swal2-question, .swal2-info) .swal2-icon-content {
     color: inherit;
 }
+
+/* Semantic badges share the same status palette as messages. */
+body .badge:is(.badge-light-primary, .badge-light-info, .badge-light-success,
+    .badge-primary, .badge-info, .badge-success, .bg-primary, .bg-info, .bg-success) {
+    background-color: var(--app-status-teal-bg) !important;
+    color: var(--app-status-teal-text) !important;
+}
+body .badge:is(.badge-light-warning, .badge-warning, .bg-warning) {
+    background-color: var(--app-status-yellow-bg) !important;
+    color: var(--app-status-yellow-text) !important;
+}
+body .badge:is(.badge-light-danger, .badge-danger, .bg-danger) {
+    background-color: var(--app-status-red-bg) !important;
+    color: var(--app-status-red-text) !important;
+}
+body .badge:is(.badge-light-primary, .badge-light-info, .badge-light-success,
+    .badge-primary, .badge-info, .badge-success, .bg-primary, .bg-info, .bg-success,
+    .badge-light-warning, .badge-warning, .bg-warning,
+    .badge-light-danger, .badge-danger, .bg-danger) .bi {
+    color: inherit !important;
+}

@@ -1,7 +1,9 @@
 <div id="help-center" class="d-flex flex-column gap-6">
     <section class="app-geometric-banner app-module-banner rounded-3 p-6 p-md-8" aria-labelledby="help-title">
-        <h2 id="help-title" class="text-white fw-bolder fs-2 mb-2">Ada yang ingin Anda pelajari?</h2>
-        <p class="text-white mb-5">Panduan modul dan jawaban untuk pekerjaan sehari-hari di Infinite.</p>
+        <div class="app-banner-heading">
+            <h2 id="help-title" class="text-white fw-bolder fs-2 mb-2">Ada yang ingin Anda pelajari?</h2>
+            <p class="text-white mb-5">Panduan modul dan jawaban untuk pekerjaan sehari-hari di Infinite.</p>
+        </div>
         <label for="help-search" class="text-white fw-bold mb-2">Cari dokumentasi</label>
         <input id="help-search" type="search" class="form-control form-control-solid"
                placeholder="Cari modul, impor, periode, hak akses…" autocomplete="off" aria-controls="help-articles">
@@ -59,7 +61,7 @@
                     </article>
                 <?php endforeach ?>
             </div>
-            <p class="text-gray-600 fs-7 mt-5 mb-0">Pilihan fitur mengikuti izin akun dan konfigurasi organisasi. Hasil integrasi serta ketersediaan data perlu diperiksa pada layanan dan periode yang digunakan.</p>
+            <p class="text-gray-600 fs-7 mt-5 mb-0">Badge teal menunjukkan informasi atau berhasil, kuning menunjukkan menunggu atau perhatian, dan merah menunjukkan gagal atau nonaktif. Pilihan fitur mengikuti izin akun dan konfigurasi organisasi. Hasil integrasi serta ketersediaan data perlu diperiksa pada layanan dan periode yang digunakan.</p>
         </section>
     </div>
 </div>

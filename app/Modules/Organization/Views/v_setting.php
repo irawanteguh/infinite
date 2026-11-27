@@ -59,7 +59,7 @@
                         <td><?= esc($names[$grant->department_id] ?? $grant->department_id) ?></td>
                         <td class="text-nowrap"><?= esc(date('d.m.Y H:i:s', strtotime($grant->granted_at))) ?></td>
                         <td class="text-nowrap"><?= esc(date('d.m.Y H:i:s', strtotime($grant->expires_at))) ?></td>
-                        <td><span class="badge <?= !$active ? 'badge-light-secondary' : ($expired ? 'badge-light-danger' : 'badge-light-success') ?>"><?= !$active ? 'Dinonaktifkan' : ($expired ? 'Berakhir' : 'Berlaku') ?></span></td>
+                        <td><span class="badge <?= !$active ? 'badge-light-danger' : ($expired ? 'badge-light-danger' : 'badge-light-success') ?>"><?= !$active ? 'Dinonaktifkan' : ($expired ? 'Berakhir' : 'Berlaku') ?></span></td>
                         <td><span class="badge <?= $active ? 'badge-light-success' : 'badge-light-danger' ?>"><?= $active ? 'Aktif' : 'Nonaktif' ?></span></td>
                         <td class="text-end pe-4">
                             <?php if ($active && $canDeactivate): ?>

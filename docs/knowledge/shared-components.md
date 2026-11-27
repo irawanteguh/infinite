@@ -16,3 +16,5 @@ Gunakan [panduan desain](../design/README.md) dan [Testing Page](../../app/Modul
 | Identitas dan organisasi | [system_helper.php](../../app/Helpers/system_helper.php) menyediakan `generateuuid()`, `encodedata()`, dan `decodedata()`. [Routingsystem](../../app/Libraries/Routingsystem.php) membangun navigasi, [DepartmentModel](../../app/Modules/Organization/Models/DepartmentModel.php) menangani master unit, dan [ModuleAccess](../../app/Libraries/ModuleAccess.php) menangani grant serta menu. |
 
 Pemuatan bundle, perilaku dropdown, dan render PDF bergantung pada layout serta aset deployment. Periksa halaman terkait pada browser ketika mengubah komponen tersebut.
+
+Badge status lintas modul memakai palet teal, kuning, dan merah di theme-palette.css. PE dan NTI memakai kelas badge-light untuk status. Badge khusus pada UR, Klaim, dan Operasional Sistem memakai variabel palet bersama. Warna matriks risiko dan simulasi mengikuti definisi domainnya.

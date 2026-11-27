@@ -256,12 +256,12 @@ function loadIndikatorUnitSubmit(){
         const statusLabels = {
             unlimited: ['badge-light-success', 'Tanpa batas tanggal'],
             open: ['badge-light-success', 'Masih dibuka'],
-            upcoming: ['badge-light-secondary', 'Belum masuk periode'],
+            upcoming: ['badge-light-warning', 'Belum masuk periode'],
             granted: ['badge-light-warning', 'Izin khusus 24 jam'],
             closed: ['badge-light-danger', 'Batas waktu berakhir']
         };
         const statusDisplay = inputStatus && statusLabels[inputStatus.status]
-            ? statusLabels[inputStatus.status] : ['badge-light-secondary', 'Status tidak tersedia'];
+            ? statusLabels[inputStatus.status] : ['badge-light-warning', 'Status tidak tersedia'];
         if (canInput) {
         btnaction += "<a class='dropdown-item btn btn-sm text-primary' data-bs-toggle='modal' data-bs-target='#modal_input_nilai_indikator' "+getvariabel+" onclick='getdatapenilaian($(this));'><i class='bi bi-pencil text-primary me-4'></i>"+(hasSubmitted ? "Edit Penilaian" : "Submit Penilaian")+"</a>";
         }
@@ -286,7 +286,7 @@ function loadIndikatorUnitSubmit(){
                 : "<td><span class='text-muted'>-</span></td>";
             tableresult += "<td>";
             if (!hasSubmitted) {
-                tableresult += "<span class='badge badge-light-secondary'>Belum diisi</span>";
+                tableresult += "<span class='badge badge-light-warning'>Belum diisi</span>";
             } else {
                 tableresult += "<span class='badge " + (targetMet ? "badge-light-success" : "badge-light-danger") + "'>";
                 tableresult += targetMet ? "<i class='bi bi-check-circle-fill me-2 text-success'></i>Achieved" : "<i class='bi bi-x-circle-fill me-2 text-danger'></i>Not Achieved";
@@ -504,7 +504,7 @@ function dataindikatorunit() {
                 tableResult += "<td><span class='badge badge-light-info'>"+result[i].target+(result[i].kode ||"")+"</span></td>";     
                 tableResult += "<td><span class='badge "+badgeAvg+"'>"+avg.toFixed(2)+"%</span></td>";
 
-                tableResult += "<td>" + (result[i].statusidindikatorunit == "0" ? "<span class='badge badge-light-info'>Submitted</span>" : result[i].statusidindikatorunit == "1" ? "<span class='badge badge-light-success'>Approved</span>" : result[i].statusidindikatorunit == "9" ? "<span class='badge badge-light-danger'>Declined</span>" : "<span class='badge badge-light-secondary'>Unknown</span>") + "</td>";
+                tableResult += "<td>" + (result[i].statusidindikatorunit == "0" ? "<span class='badge badge-light-info'>Submitted</span>" : result[i].statusidindikatorunit == "1" ? "<span class='badge badge-light-success'>Approved</span>" : result[i].statusidindikatorunit == "9" ? "<span class='badge badge-light-danger'>Declined</span>" : "<span class='badge badge-light-warning'>Unknown</span>") + "</td>";
 
                 tableResult += "<td>";
                     tableResult += "<div class='d-flex align-items-center'>";

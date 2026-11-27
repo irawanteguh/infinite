@@ -75,8 +75,8 @@ body #kt_content .pn-detail-page .app-datatable-scroll{
     max-height:none!important;
 }
 body #kt_content .pn-detail-page :is(.pn-los-badge,.mal-los-badge){
-    background:#eaf6f4!important;
-    color:#087e82!important;
+    background:var(--app-status-teal-bg)!important;
+    color:var(--app-status-teal-text)!important;
     border:1px solid #c9e3dc;
     font-weight:600;
 }

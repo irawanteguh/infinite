@@ -30,10 +30,7 @@
 .mastermodules-page .module-tree-icon {
     color: var(--infinite-teal);
 }
-.mastermodules-page .module-badge-active {
-    color: var(--infinite-teal);
-    background-color: var(--infinite-teal-soft);
-}
+
 .mastermodules-page .module-tree-position {
     min-width: 2ch;
 }

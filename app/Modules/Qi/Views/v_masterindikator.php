@@ -1,37 +1,39 @@
-<div class="card">
-    <div class="card-header border-0 pt-6">
-        <div class="card-title">
-            <div class="d-flex align-items-center position-relative my-1">
-                <span class="svg-icon svg-icon-1 position-absolute ms-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2" rx="1" transform="rotate(45 17.0365 15.1223)" fill="black"></rect>
-                        <path d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z" fill="black"></path>
-                    </svg>
-                </span>
-                <input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Search Data" id="searchtable">
+<div id="master-indikator-page" class="d-flex flex-column gap-6">
+    <header class="app-geometric-banner app-module-banner rounded-3 p-6 p-md-8 d-flex flex-column">
+        <div class="app-banner-heading">
+            <h2 class="text-white fw-bolder fs-2 mb-2">Master Indikator Mutu</h2>
+            <p class="text-white mb-0">Kelola definisi, numerator, denominator, dimensi mutu, dan status indikator organisasi.</p>
+        </div>
+    </header>
+    <div id="master-indikator-feedback" class="alert alert-danger mb-0" role="alert" hidden></div>
+    <section class="card app-table-card" aria-labelledby="master-indikator-title">
+        <div class="card-header app-table-heading">
+            <div>
+                <h2 id="master-indikator-title" class="app-table-title">Daftar indikator</h2>
+                <p class="app-table-description">Cari indikator berdasarkan kode, nama, jenis, atau status.</p>
+            </div>
+            <div class="app-table-search">
+                <i class="bi bi-search" aria-hidden="true"></i>
+                <label for="searchtable" class="visually-hidden">Cari indikator</label>
+                <input type="search" class="form-control form-control-solid" placeholder="Cari indikator…" id="searchtable">
             </div>
         </div>
-    </div>
-
-    <div class="card-body pt-0">
-        <div class="table-responsive">
-            <table class="table align-middle table-row-dashed gy-2 fs-8" id="datamasterindikator_table">
+        <div class="card-body">
+            <table class="table align-middle table-row-dashed gy-2 fs-8" id="datamasterindikator_table" data-datatable="manual">
                 <thead>
-                    <tr class="fw-bolder text-muted bg-light">
-                        <th class="text-start ps-4 rounded-start">#</th>
-                        <th>Code</th>
-                        <th>Indikator</th>
-                        <!-- <th>Dasar Pemikiran / Tujuan</th> -->
-                        <th>Numerator / Denumerator</th>
-                        <!-- <th>Inklusi / Eksklusi</th> -->
-                        <th>Satuan</th>
-                        <th>Status</th>
-                        <th>Update By</th>
-                        <th class="text-end pe-4 rounded-end">Actions</th>
+                    <tr>
+                        <th scope="col" class="text-end">#</th>
+                        <th scope="col">Kode</th>
+                        <th scope="col">Indikator</th>
+                        <th scope="col">Numerator / Denominator</th>
+                        <th scope="col">Satuan</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Diperbarui oleh</th>
+                        <th scope="col" class="text-end">Actions</th>
                     </tr>
                 </thead>
-                <tbody class="fw-bold text-gray-600" id="resultdatamasterindikator"></tbody>
+                <tbody class="text-gray-700" id="resultdatamasterindikator"></tbody>
             </table>
         </div>
-    </div>
+    </section>
 </div>

@@ -105,6 +105,12 @@ Jangan memuat seluruh references secara otomatis.
   tinggi minimum 180 px mulai lebar 768 px dan 160 px pada ponsel.
   Tinggi bertambah mengikuti isi. Ikuti referensi tinggi banner di
   `docs/design/foundations.md`; gunakan definisi CSS bersama.
+- Judul dan deskripsi banner modul dibungkus `app-banner-heading`,
+  diletakkan di kiri atas dan rata kiri sesuai panduan desain.
+- Font judul banner 32 px pada desktop/tablet dan 26 px pada ponsel,
+  tebal 700 dengan line-height 1.3. Deskripsi 16 px dan 14 px,
+  dengan line-height 1.7. Gunakan CSS banner bersama dan referensi
+  tipografi banner di `docs/design/foundations.md`.
 - Gunakan ornamen garis kecil ondel-ondel, Monas, Abang None, dan
   kawung yang tersebar acak dengan rotasi ringan serta palet teal–emas.
 - Gunakan aset dan overlay dari CSS bersama
@@ -150,6 +156,16 @@ Jangan memuat seluruh references secara otomatis.
 - Hindari duplikasi instance grafik.
 
 ## Messages dan Feedback
+
+- Badge status mengikuti palet bersama di `theme-palette.css` dan
+  referensi `docs/design/messages.md#badge-status`.
+- Gunakan `badge badge-light-primary/info/success` untuk informasi,
+  kategori, aktif, atau berhasil; `badge badge-light-warning` untuk
+  menunggu/perhatian; `badge badge-light-danger` untuk gagal, ditolak,
+  atau nonaktif. Pilih salah satu kelas varian yang sesuai arti status.
+- Sertakan label status dan gunakan warna ikon yang mengikuti teks.
+  Gunakan variabel warna bersama. Warna domain khusus mengikuti
+  aturan bisnis yang terverifikasi.
 
 - Ikuti `docs/design/messages.md`.
 - Gunakan palet status bersama.

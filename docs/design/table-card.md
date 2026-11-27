@@ -9,6 +9,7 @@ Semua tabel memakai kelas **fs-8 gy-2** pada tag `<table>` untuk ukuran teks dan
 Header kartu memakai padding atas dan samping 24px, dengan jarak 20px menuju isi tabel. Isi kartu memakai padding samping dan bawah 24px. Pada layar hingga 575px, padding menjadi 16px. Judul dan deskripsi berada dalam satu pembungkus, dengan jarak 5px di atas deskripsi dan tanpa margin bawah. Gunakan aturan bersama di `table-card.css` agar header dan isi tabel sejajar.
 
 - Header tabel memakai latar #EFF7F5 dan teks #62858B. Header dan sel angka serta kolom **Actions** rata kanan dengan **text-end**.
+- Palet header diterapkan oleh selector bersama `.app-table-card table.table thead th`. Gunakan `card-header app-table-heading` dengan judul/deskripsi dalam satu pembungkus dan pencarian sebagai saudara pembungkus tersebut.
 - Pada contoh dengan filter tahun, kolom **Bulan** cukup menampilkan nama bulan.
 - Kolom **Actions** memakai **btn-group** dengan satu tombol dropdown dan menu **dropdown-menu-end**. **Detail** membuka modal baris, sedangkan **Salin** menyalin isi baris. Kolom aksi dikecualikan dari pencarian.
 - Batasi scroll horizontal pada area tabel. Footer meletakkan jumlah baris dan pilihan ukuran halaman di kiri, lalu pagination di kanan.

@@ -1,4 +1,11 @@
-﻿datamasterindikator();
+datamasterindikator();
+
+function finishIndicatorLoading() {
+    window.showDataLoading.owner = null;
+    Swal.close();
+}
+$('#master-indikator-refresh').on('click', datamasterindikator);
+
 
 function getdata(btn){
 
@@ -8,7 +15,7 @@ function getdata(btn){
     $("#modal_edit_masterindikator_tujuan").val(btn.data("tujuan"));
     $("#modal_edit_masterindikator_definisi").val(btn.data("definisi"));
     $("#modal_edit_masterindikator_numerator").val(btn.data("numerator"));
-    $("#modal_edit_masterindikator_denominator").val(btn.data("denominator"));
+    $("#modal_edit_masterindikator_denominator").val(btn.data("denumerator"));
     $("#modal_edit_masterindikator_formula").val(btn.data("formula"));
     $("#modal_edit_masterindikator_populasi").val(btn.data("populasi"));
     $("#modal_edit_masterindikator_kriteriainklusi").val(btn.data("inklusi"));
@@ -32,49 +39,45 @@ function getdata(btn){
 
 }
 
-function updateActivation (el) {
-    const id        = el.data("indikatorid");
-    const active    = el.data("active");
-    const newActive = active == 1 ? 0 : 1;
-    const isActive  = active == 1;
-
+function updateActivation(el) {
+    if (el.data('submitting')) return;
+    const isActive = String(el.data('active')) === '1';
     Swal.fire({
-        ttitle             : isActive ? "Deactivate Indicator?" : "Activate Indicator?",
-        html              : isActive ? `Indicator ini akan dinonaktifkan dan tidak dapat digunakan.<br><small class="text-muted">Dialog ini akan tertutup otomatis dalam <b>10 detik</b>.</small>` : `Indicator ini akan diaktifkan kembali dan dapat digunakan.<br><small class="text-muted">Dialog ini akan tertutup otomatis dalam <b>10 detik</b>.</small>`,
-        icon              : "warning",
-        showCancelButton  : true,
-        confirmButtonColor: isActive ? "#d33" : "#50CD89",
-        cancelButtonColor : "#6c757d",
-        confirmButtonText : isActive ? '<i class="bi bi-trash3 text-white"></i> Yes, Deactivate' : '<i class="bi bi-check-circle text-white"></i> Yes, Activate',
-        cancelButtonText  : "Cancel",
-        reverseButtons    : true,
-        timer             : 10000,
-        timerProgressBar  : true
-    }).then(function(result) {
-        if (result.isConfirmed) {
-            $.ajax({
-                url      : url + "qi/masterindikator/updateindikator",
-                type     : "POST",
-                data     : {indikatorid : id,active: newActive},
-                dataType : "JSON",
-                success  : function(response) {
-                    if (response.responseCode === "00") {
-                        Swal.fire({
-                            title             : "Success",
-                            text              : response.responseDesc,
-                            icon              : "success",
-                            timer             : 1500,
-                            showConfirmButton : false,
-                            didClose          : function() {
-                                datamasterindikator();
-                            }
-                        });
-                    } else {
-                        Swal.fire("Error", response.responseDesc, "error");
-                    }
+        titleText: isActive ? 'Nonaktifkan indikator?' : 'Aktifkan indikator?',
+        text: isActive ? 'Status master indikator akan diubah menjadi nonaktif.' : 'Status master indikator akan diubah menjadi aktif.',
+        icon: 'question',
+        showCancelButton: true,
+        buttonsStyling: false,
+        confirmButtonText: isActive ? 'Nonaktifkan' : 'Aktifkan',
+        cancelButtonText: 'Batal',
+        customClass: {confirmButton: 'btn btn-primary', cancelButton: 'btn btn-light ms-3'}
+    }).then(function (result) {
+        if (!result.isConfirmed) return;
+        $.ajax({
+            url: url + 'qi/masterindikator/updateindikator',
+            type: 'POST',
+            data: {indikatorid: el.data('indikatorid'), active: isActive ? 0 : 1},
+            dataType: 'JSON',
+            beforeSend: function () {
+                el.data('submitting', true);
+                showDataLoading('Memperbarui status', 'Menyimpan status master indikator.');
+            },
+            success: function (response) {
+                finishIndicatorLoading();
+                if (response.responseCode === '00') {
+                    datamasterindikator();
+                } else {
+                    Swal.fire({titleText: 'Status belum tersimpan', text: response.responseDesc, icon: 'error'});
                 }
-            });
-        }
+            },
+            error: function () {
+                finishIndicatorLoading();
+                Swal.fire({titleText: 'Gagal memperbarui status', text: 'Silakan coba kembali.', icon: 'error'});
+            },
+            complete: function () {
+                el.data('submitting', false);
+            }
+        });
     });
 }
 
@@ -84,30 +87,21 @@ function datamasterindikator() {
         type      : "POST",
         dataType  : "JSON",
         beforeSend: function () {
-            Swal.fire({
-                title            : "Processing",
-                html             : "Please wait while the system displays the requested data.",
-                allowOutsideClick: false,
-                allowEscapeKey   : false,
-                showConfirmButton: false,
-                didOpen          : () => Swal.showLoading()
-            });
+            showDataLoading('Menyiapkan indikator', 'Memuat definisi dan status indikator organisasi.');
 
-            $("#resultdatamasterindikator").empty();
+            $("#master-indikator-refresh").prop("disabled", true);
+            $("#master-indikator-feedback").prop("hidden", true);
         },
         success: function (response) {
-            if (response.responseCode !== "00") {
-                Swal.fire({
-                    icon             : "info",
-                    title            : "No Records Found",
-                    text             : "No records are available for the selected period.",
-                    showConfirmButton: false,
-                    timer            : 2000
-                });
-                return;
-            }
-
-            const result = Array.isArray(response.responseResult) ? response.responseResult : [];
+            finishIndicatorLoading();
+            const rows = response.responseCode === "00" && Array.isArray(response.responseResult)
+                ? response.responseResult : [];
+            const escapeValue = value => String(value ?? '').replace(/[&<>"']/g, character => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[character]));
+            const result = rows.map(row => Object.fromEntries(
+                Object.entries(row).map(([key, value]) => [key, escapeValue(value)])
+            ));
 
             let tableResult = "";
 
@@ -139,7 +133,7 @@ function datamasterindikator() {
                     getvariabel += " data-dimensi_keselamatan=\"" + result[i].dimensi_mutu_keselamatan + "\"";
                     getvariabel += " data-dimensi_waktu=\"" + result[i].dimensi_mutu_waktu + "\"";
                     getvariabel += " data-dimensi_efektif=\"" + result[i].dimensi_mutu_efektif + "\"";
-                    getvariabel += " data-dimensi_efesien=\"" + result[i].dimensi_mutu_efesien + "\"";
+                    getvariabel += " data-dimensi_efisien=\"" + result[i].dimensi_mutu_efesien + "\"";
                     getvariabel += " data-dimensi_pasien=\"" + result[i].dimensi_mutu_pasien + "\"";
                     getvariabel += " data-dimensi_integrasi=\"" + result[i].dimensi_mutu_integrasi + "\"";
                     
@@ -147,17 +141,16 @@ function datamasterindikator() {
 
                 let btnaction = "";
 
-                btnaction += "<a href='javascript:void(0);' class='dropdown-item btn btn-sm "+(result[i].active === '1' ? 'text-danger' : 'text-success')+"' "+getvariabel+" data-active='"+result[i].active+"' onclick='updateActivation($(this));'><i class='bi "+(result[i].active === '1' ? 'bi-x-circle text-danger' : 'bi-check-circle text-success')+" me-4'></i>"+(result[i].active === '1' ? 'Deactivate' : 'Activate')+"</a>";
+                btnaction += "<a href='javascript:void(0);' class='dropdown-item btn btn-sm "+(result[i].active === '1' ? 'text-danger' : 'text-success')+"' "+getvariabel+" data-active='"+result[i].active+"' onclick='updateActivation($(this));'><i class='bi "+(result[i].active === '1' ? 'bi-x-circle text-danger' : 'bi-check-circle text-success')+" me-4'></i>"+(result[i].active === '1' ? 'Nonaktifkan' : 'Aktifkan')+"</a>";
                 btnaction += "<a class='dropdown-item btn btn-sm text-primary' data-bs-toggle='modal' data-bs-target='#modal_edit_masterindikator' "+getvariabel+" onclick='getdata($(this));'><i class='bi bi-pencil text-primary me-4'></i>Edit</a>";
 
                 tableResult += "<tr>";
 
-                    tableResult += "<td class='ps-4'>"+(parseInt(i) + 1)+"</td>";
+                    tableResult += "<td class='text-end'>"+(parseInt(i) + 1)+"</td>";
                     tableResult += "<td>"+(result[i].indikator_code || "-")+"</td>";
 
                     tableResult += "<td>";
                         tableResult += "<div>"+(result[i].indikator || "-")+"</div>";
-                        // tableResult += "<div class='fst-italic'>"+(result[i].definisi || "-")+"</div>";
                         tableResult += "<div>";
                         tableResult += badgeDimensiMutu(result[i].dimensi_mutu_keselamatan, "Keselamatan Pasien", "info");
                         tableResult += badgeDimensiMutu(result[i].dimensi_mutu_waktu, "Tepat Waktu", "info");
@@ -169,11 +162,6 @@ function datamasterindikator() {
                         tableResult += result[i].jenis ? "<div><span class='badge badge-light-primary mt-4'>" + result[i].jenis + "</span></div>" : "";
                     tableResult += "</td>";
 
-                    // tableResult += "<td>";
-                    // tableResult += "<div><span class='fw-bold text-primary'>Dasar Pemikiran</span><br>" + (result[i].dasar_pemikiran || "-") + "</div>";
-                    // tableResult += "<hr class='my-2'>";
-                    // tableResult += "<div><span class='fw-bold text-success'>Tujuan</span><br>" + (result[i].tujuan || "-") + "</div>";
-                    // tableResult += "</td>";
 
                     tableResult += "<td>";
                     tableResult += "<div><span class='fw-bold text-primary'>Numerator</span><br>" + (result[i].numerator || "-") + "</div>";
@@ -181,16 +169,10 @@ function datamasterindikator() {
                     tableResult += "<div><span class='fw-bold text-success'>Denominator</span><br>" + (result[i].denumerator || "-") + "</div>";
                     tableResult += "</td>";
 
-                    // tableResult += "<td>";
-                    // tableResult += "<div><span class='fw-bold text-primary'>Inklusi</span><br>" + (result[i].inklusi || "-") + "</div>";
-                    // tableResult += "<hr class='my-2'>";
-                    // tableResult += "<div><span class='fw-bold text-success'>Eksklusi</span><br>" + (result[i].eksklusi || "-") + "</div>";
-                    // tableResult += "</td>";
 
                     tableResult += "<td>"+(result[i].satuan || "")+"</td>";
 
-                    // Status
-                    tableResult += "<td>" + (result[i].active == "1" ? "<span class='badge badge-light-success'>Active</span>" : "<span class='badge badge-light-danger'>Inactive</span>") + "</td>";
+                    tableResult += "<td>" + (result[i].active == "1" ? "<span class='badge badge-light-success'>Aktif</span>" : "<span class='badge badge-light-danger'>Nonaktif</span>") + "</td>";
 
                     tableResult += "<td>";
                         tableResult += "<div class='d-flex align-items-center'>";
@@ -214,7 +196,6 @@ function datamasterindikator() {
                         tableResult += "</div>";
                     tableResult += "</td>";
 
-                    // Action
                     tableResult += "<td class='text-end'>";
                         tableResult += "<div class='btn-group'>";
                             tableResult += "<button type='button' class='btn btn-light-primary btn-sm dropdown-toggle' data-bs-toggle='dropdown'> Actions</button>";
@@ -227,27 +208,37 @@ function datamasterindikator() {
                 tableResult += "</tr>";
             }
 
+            if ($.fn.DataTable.isDataTable('#datamasterindikator_table')) {
+                $('#datamasterindikator_table').DataTable().destroy();
+            }
             $("#resultdatamasterindikator").html(tableResult);
 
-            initDataTable("#datamasterindikator_table","#searchtable",10);
+            initDataTable("#datamasterindikator_table", "#searchtable", 10, {
+                columnDefs: [{targets: -1, searchable: false, orderable: false}],
+                language: {emptyTable: 'Belum ada master indikator pada organisasi ini.'}
+            });
         },
         error: function () {
+            finishIndicatorLoading();
+            $("#master-indikator-feedback").text('Gagal memuat indikator. Gunakan Perbarui untuk mencoba kembali.').prop('hidden', false);
             Swal.fire({
                 icon             : "error",
-                title            : "Request Failed",
-                text             : "An error occurred while processing your request.",
+                title            : "Gagal memuat",
+                text             : "Permintaan belum berhasil. Silakan coba kembali.",
                 confirmButtonText: "OK"
             });
         },
         complete: function () {
-            Swal.close();
+            $("#master-indikator-refresh").prop("disabled", false);
         }
     });
 }
 
 $(document).on("submit", "#formeditmasterindikator", function (e) {
 	e.preventDefault();
-	var data = new  FormData(this);
+	const form = $(this);
+    if (form.data('submitting')) return;
+    var data = new FormData(this);
 	$.ajax({
         url        : url+'qi/masterindikator/editmasterindikator',
         data       : data,
@@ -257,23 +248,20 @@ $(document).on("submit", "#formeditmasterindikator", function (e) {
         processData: false,
         contentType: false,
         beforeSend : function () {
-            Swal.fire({
-                title: 'Processing',
-                html : 'Please wait while the system displays the requested data.',
-                allowOutsideClick: false,
-                allowEscapeKey   : false,
-                showConfirmButton: false,
-                didOpen: () => Swal.showLoading()
-            });
+            form.data('submitting', true);
+            form.find('[type="submit"]').prop('disabled', true);
+            showDataLoading('Menyimpan indikator', 'Menyimpan perubahan master indikator.');
         },
 		success: function (response) {
+            finishIndicatorLoading();
             if (response.responseCode !== "00") {
                 Swal.fire({
-                    title            : "<h1 class='font-weight-bold'>For Your Information</h1>",
-                    html             : "<b>"+response.responseDesc+"</b>",
+                    titleText        : "Perubahan belum tersimpan",
+                    text             : response.responseDesc,
                     icon             : response.responseHead,
-                    confirmButtonText: 'Please Try Again',
-                    customClass      : {confirmButton: 'btn btn-danger'},
+                    confirmButtonText: 'Tutup',
+                    buttonsStyling   : false,
+                    customClass      : {confirmButton: 'btn btn-primary'},
                     timerProgressBar : true,
                     timer            : 5000,
                     showClass        : {popup: "animate__animated animate__fadeInUp animate__faster"},
@@ -287,12 +275,17 @@ $(document).on("submit", "#formeditmasterindikator", function (e) {
 			datamasterindikator();
 		},
         error: function () {
+            finishIndicatorLoading();
             Swal.fire({
                 icon             : "error",
-                title            : "Request Failed",
-                text             : "An error occurred while processing your request.",
+                title            : "Gagal memuat",
+                text             : "Permintaan belum berhasil. Silakan coba kembali.",
                 confirmButtonText: "OK"
             });
+        },
+        complete: function () {
+            form.data('submitting', false);
+            form.find('[type="submit"]').prop('disabled', false);
         }
 	});
     return false;
@@ -300,7 +293,9 @@ $(document).on("submit", "#formeditmasterindikator", function (e) {
 
 $(document).on("submit", "#formaddmasterindikator", function (e) {
 	e.preventDefault();
-	var data = new  FormData(this);
+	const form = $(this);
+    if (form.data('submitting')) return;
+    var data = new FormData(this);
 	$.ajax({
         url        : url+'qi/masterindikator/addmasterindikator',
         data       : data,
@@ -310,23 +305,20 @@ $(document).on("submit", "#formaddmasterindikator", function (e) {
         processData: false,
         contentType: false,
         beforeSend : function () {
-            Swal.fire({
-                title: 'Processing',
-                html : 'Please wait while the system displays the requested data.',
-                allowOutsideClick: false,
-                allowEscapeKey   : false,
-                showConfirmButton: false,
-                didOpen: () => Swal.showLoading()
-            });
+            form.data('submitting', true);
+            form.find('[type="submit"]').prop('disabled', true);
+            showDataLoading('Menyimpan indikator', 'Menyimpan perubahan master indikator.');
         },
 		success: function (response) {
+            finishIndicatorLoading();
             if (response.responseCode !== "00") {
                 Swal.fire({
-                    title            : "<h1 class='font-weight-bold'>For Your Information</h1>",
-                    html             : "<b>"+response.responseDesc+"</b>",
+                    titleText        : "Perubahan belum tersimpan",
+                    text             : response.responseDesc,
                     icon             : response.responseHead,
-                    confirmButtonText: 'Please Try Again',
-                    customClass      : {confirmButton: 'btn btn-danger'},
+                    confirmButtonText: 'Tutup',
+                    buttonsStyling   : false,
+                    customClass      : {confirmButton: 'btn btn-primary'},
                     timerProgressBar : true,
                     timer            : 5000,
                     showClass        : {popup: "animate__animated animate__fadeInUp animate__faster"},
@@ -340,12 +332,17 @@ $(document).on("submit", "#formaddmasterindikator", function (e) {
 			datamasterindikator();
 		},
         error: function () {
+            finishIndicatorLoading();
             Swal.fire({
                 icon             : "error",
-                title            : "Request Failed",
-                text             : "An error occurred while processing your request.",
+                title            : "Gagal memuat",
+                text             : "Permintaan belum berhasil. Silakan coba kembali.",
                 confirmButtonText: "OK"
             });
+        },
+        complete: function () {
+            form.data('submitting', false);
+            form.find('[type="submit"]').prop('disabled', false);
         }
 	});
     return false;

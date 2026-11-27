@@ -1,7 +1,9 @@
 <div id="encounter-page" data-url="<?= esc(site_url('satusehat/encounter'), 'attr') ?>" data-csrf="<?= esc(csrf_hash(), 'attr') ?>">
     <header class="encounter-banner app-geometric-banner app-module-banner p-6 p-md-8 mb-6">
-        <h1 class="fw-bold mb-2">Pendaftaran Encounter</h1>
-        <p class="mb-0">Daftarkan kunjungan pasien dan pantau pengirimannya ke SATUSEHAT.</p>
+        <div class="app-banner-heading">
+            <h1 class="fw-bold mb-2">Pendaftaran Encounter</h1>
+            <p class="mb-0">Daftarkan kunjungan pasien dan pantau pengirimannya ke SATUSEHAT.</p>
+        </div>
     </header>
     <div id="encounter-message" class="alert alert-info" role="status" hidden></div>
     <section id="encounter-list" class="card app-table-card">

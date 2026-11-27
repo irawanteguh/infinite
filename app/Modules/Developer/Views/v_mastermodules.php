@@ -64,7 +64,7 @@
                                         <div class="text-muted fs-7 text-break"><?= esc($route) ?></div>
                                     <?php endif ?>
                                 </div>
-                                <span class="badge <?= $active ? 'module-badge-active' : 'badge-light-danger' ?>"><?= $active ? 'Aktif' : 'Nonaktif' ?></span>
+                                <span class="badge <?= $active ? 'badge-light-success' : 'badge-light-danger' ?>"><?= $active ? 'Aktif' : 'Nonaktif' ?></span>
                                 <div class="module-tree-actions d-flex flex-wrap gap-1">
                                     <?php if ($canMove): ?>
                                         <button type="button" class="btn btn-icon btn-sm btn-light" data-move="-1" aria-label="Naikkan <?= esc($name, 'attr') ?>" <?= $index === 0 ? 'disabled' : '' ?>>

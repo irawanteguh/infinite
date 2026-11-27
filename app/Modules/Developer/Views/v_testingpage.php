@@ -347,9 +347,9 @@ $palette = [
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#testing-modal">Lihat detail</button>
                         <a class="btn btn-light-primary" href="#testing-filters">Ke filter</a>
                         <button type="button" class="btn btn-primary" disabled>Nonaktif</button>
-                        <span class="badge" data-testing-tone="teal">Selesai</span>
-                        <span class="badge" data-testing-tone="yellow">Menunggu</span>
-                        <span class="badge" data-testing-tone="red">Gagal</span>
+                        <span class="badge badge-light-success" data-testing-tone="teal">Selesai</span>
+                        <span class="badge badge-light-warning" data-testing-tone="yellow">Menunggu</span>
+                        <span class="badge badge-light-danger" data-testing-tone="red">Gagal</span>
                     </div>
                 </div>
             </div>

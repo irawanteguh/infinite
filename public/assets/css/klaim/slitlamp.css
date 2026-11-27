@@ -19,8 +19,8 @@
 .klaim-case-page .klaim-case-table{min-width:960px}
 .klaim-case-page .klaim-case-table td:nth-child(3){min-width:180px;max-width:240px}
 .klaim-case-page .klaim-case-table td:nth-child(6){white-space:nowrap;text-align:right}
-.klaim-case-page .case-status-pending{background:#fbf6eb;color:#846d43;border:1px solid #e9ddbd}
-.klaim-case-page .case-status-rejected{background:#fbf0f1;color:#a7616c;border:1px solid #ead2d7}
+.klaim-case-page .case-status-pending{background:var(--app-status-yellow-bg);color:var(--app-status-yellow-text);border:1px solid #e9ddbd}
+.klaim-case-page .case-status-rejected{background:var(--app-status-red-bg);color:var(--app-status-red-text);border:1px solid #ead2d7}
 .klaim-case-page .case-detail-row>td{padding:0 0 12px!important}
 .case-detail{padding:16px 20px;background:#f6faf9;border:1px solid #dceae5;border-radius:10px;white-space:normal}
 .case-detail-heading{font-weight:600;color:#234a54;margin-bottom:14px}

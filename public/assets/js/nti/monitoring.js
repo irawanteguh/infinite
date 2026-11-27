@@ -109,7 +109,7 @@
         $('clock').title = 'Server time - Asia/Jakarta (UTC+07:00)';
     }
     updateClock();
-    function badge(node, text, state = '') { node.textContent = text; node.className = 'badge ' + state; }
+    function badge(node, text, state = '') { node.textContent = text; node.className = 'badge ' + ({good: 'badge-light-success', bad: 'badge-light-danger'}[state] || 'badge-light-warning'); }
     function empty(container, message) {
         container.replaceChildren();
         const node = document.createElement('div'); node.className = 'empty'; node.textContent = message; container.append(node);

@@ -90,6 +90,12 @@ body #ur-monthly-table thead th {
     background-color: var(--app-table-header-bg);
     color: var(--app-table-header-text);
 }
+
+body .app-table-card table.table thead th {
+    background-color: var(--app-table-header-bg);
+    color: var(--app-table-header-text);
+    font-weight: 600;
+}
 #tablePreviewEklaim :is(thead,tbody,tfoot) tr > :first-child {
     padding-inline-start: 1rem !important;
 }

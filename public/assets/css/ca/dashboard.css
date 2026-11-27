@@ -129,3 +129,14 @@ body #kt_content :is(#ca-instrument-summary, #ca-response-history) > .card-body 
     padding: 0 !important;
     margin: 0;
 }
+
+.ca-domicile-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.ca-domicile-dot-0 { background: #087e82; }
+.ca-domicile-dot-1 { background: #7fbea9; }
+.ca-domicile-dot-2 { background: #b5c5cd; }
+#ca-domicile-legend li:last-child { border-bottom: 0 !important; }

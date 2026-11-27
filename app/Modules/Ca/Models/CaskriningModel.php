@@ -18,6 +18,11 @@ class CaskriningModel extends Model
         return hash('sha256', json_encode($instrument, JSON_THROW_ON_ERROR));
     }
 
+    public function supportsAnswerTypes(): bool
+    {
+        return $this->db->fieldExists('answer_type', CreateScreeningTransactions::DETAIL);
+    }
+
     public function store(array $instrument, array $answers, ?string $name, ?string $domicile, string $user, ?string $phone = null, bool $contactConsent = false): array
     {
         $questions = $instrument['questions'];
@@ -26,27 +31,44 @@ class CaskriningModel extends Model
         }
 
         $details = [];
+        $scores = [];
+        $warnings = [];
+        $supportsAnswerTypes = $this->supportsAnswerTypes();
         foreach ($questions as $question) {
             $choice = $answers[$question['question_id']] ?? null;
             if (!is_string($choice) || !ctype_digit($choice) || !isset($question['answer_options'][$choice])) {
                 throw new \InvalidArgumentException('Pilihan jawaban tidak valid. Periksa kembali setiap pertanyaan.');
             }
 
-            [$label, $score] = $question['answer_options'][$choice];
-            $details[] = [
+            $option = $question['answer_options'][$choice];
+            [$label, $score] = $option;
+            $type = ($option[2] ?? false) === true ? 'warning' : ($score === null ? 'unscored' : 'score');
+            if ($type !== 'score' && !$supportsAnswerTypes) {
+                throw new \RuntimeException('Jenis jawaban belum didukung oleh tabel detail skrining.');
+            }
+            if ($type === 'warning') {
+                $warnings[] = $question['question'];
+            } elseif ($type === 'score') {
+                $scores[] = $score;
+            }
+            $detail = [
                 'question_id' => $question['question_id'],
                 'sort_order' => $question['sort_order'],
                 'question_text' => $question['question'],
                 'answer_label' => $label,
-                'answer_score' => $score,
+                'answer_score' => $score ?? 0,
             ];
+            if ($supportsAnswerTypes) {
+                $detail['answer_type'] = $type;
+            }
+            $details[] = $detail;
         }
 
-        $definition = ScreeningMasters::INSTRUMENTS[$instrument['code']];
-        $total = count($details) === count($questions) ? array_sum(array_column($details, 'answer_score')) : null;
+        $definition = ScreeningMasters::INSTRUMENTS[$instrument['code']] ?? null;
+        $total = $scores ? array_sum($scores) : null;
         $risk = null;
-        if ($total !== null && (!empty($instrument['risk_ranges']) || self::matchesSource($questions, $definition['questions']))) {
-            foreach ($instrument['risks'] ?? $definition['risks'] as [$min, $max, $level]) {
+        if ($total !== null && (!empty($instrument['risk_ranges']) || ($definition && self::matchesSource($questions, $definition['questions'])))) {
+            foreach ($instrument['risks'] ?? $definition['risks'] ?? [] as [$min, $max, $level]) {
                 if (($min === null || $total >= $min) && $total <= $max) {
                     $risk = $level;
                     break;
@@ -94,7 +116,7 @@ class CaskriningModel extends Model
             throw $error;
         }
 
-        return ['name' => $instrument['name'], 'total' => $total, 'risk' => $risk];
+        return ['name' => $instrument['name'], 'total' => $total, 'risk' => $risk, 'warnings' => $warnings];
     }
 
     private static function matchesSource(array $questions, array $source): bool

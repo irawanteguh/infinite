@@ -4,10 +4,13 @@ namespace Modules\Ca\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\Security\Exceptions\SecurityException;
+use Modules\Ca\Config\ScreeningMasters;
 use Modules\Ca\Models\MasterqusionerModel;
 
 class Masterqusioner extends BaseController
 {
+    private const CODE_RULE = 'required|regex_match[/\A[A-Za-z][A-Za-z0-9_-]{0,9}\z/]';
+
     public function index()
     {
         return view('template/dashboard-light-aside', [
@@ -20,10 +23,21 @@ class Masterqusioner extends BaseController
         return $this->execute(function ($model, $group, $org) {
             $ready = $model->ready();
             return [
-                'responseResult' => $model->masters($group, $org, $ready),
+                'responseResult' => $model->masters($group, $org, $ready, true),
                 'responseDesc' => $ready ? '' : 'Tabel master belum tersedia. Templat masih dapat dilihat dan dipratinjau.',
             ];
         });
+    }
+
+    public function createinstrument()
+    {
+        return $this->execute(function ($model, $group, $org, $audit) {
+            $data = $this->validated(['code' => self::CODE_RULE, 'name' => 'required|max_length[200]']);
+            $code = strtoupper($data['code']);
+            unset($data['code']);
+            $model->createInstrument($group, $org, $code, $data + $audit);
+            return ['responseDesc' => 'Instrumen berhasil ditambahkan.', 'instrumentCode' => $code];
+        }, true);
     }
 
     public function initialize()
@@ -39,11 +53,11 @@ class Masterqusioner extends BaseController
     {
         return $this->execute(function ($model, $group, $org, $audit) {
             $data = $this->validated([
-                'code' => 'required|in_list[IASTO,APCS]',
+                'code' => self::CODE_RULE,
                 'name' => 'required|max_length[200]',
                 'active' => 'required|in_list[0,1]',
             ]);
-            $code = $data['code'];
+            $code = strtoupper($data['code']);
             unset($data['code']);
             $data['risk_ranges'] = $this->riskRanges($code);
             $model->saveInstrument($group, $org, $code, $data + $audit);
@@ -55,13 +69,13 @@ class Masterqusioner extends BaseController
     {
         return $this->execute(function ($model, $group, $org, $audit) {
             $data = $this->validated([
-                'code' => 'required|in_list[IASTO,APCS]',
+                'code' => self::CODE_RULE,
                 'question_id' => 'permit_empty|is_natural_no_zero|max_length[10]',
                 'question' => 'required|max_length[4000]',
                 'sort_order' => 'required|is_natural_no_zero|less_than_equal_to[9999]',
                 'active' => 'required|in_list[0,1]',
             ]);
-            $code = $data['code'];
+            $code = strtoupper($data['code']);
             $id = $data['question_id'];
             unset($data['code'], $data['question_id']);
             $data['answer_options'] = $this->answerOptions($code);
@@ -72,11 +86,21 @@ class Masterqusioner extends BaseController
 
     private function riskRanges(string $code): array
     {
+        $limits = [];
+        foreach (ScreeningMasters::RISK_LABELS as $index => $label) {
+            $limits[] = [
+                request()->getPost('risk_min_' . $index),
+                request()->getPost('risk_max_' . $index),
+            ];
+        }
+        if (!isset(ScreeningMasters::INSTRUMENTS[$code])
+            && $limits === array_fill(0, count(ScreeningMasters::RISK_LABELS), ['', ''])) {
+            return [];
+        }
+
         $ranges = [];
         $previousMax = null;
-        foreach (\Modules\Ca\Config\ScreeningMasters::INSTRUMENTS[$code]['risks'] as $index => [$defaultMin, $defaultMax, $label]) {
-            $min = request()->getPost('risk_min_' . $index);
-            $max = request()->getPost('risk_max_' . $index);
+        foreach ($limits as $index => [$min, $max]) {
             if (!is_string($min) || !is_string($max)
                 || ($min !== '' && !preg_match('/^[0-9]{1,6}$/', $min))
                 || !preg_match('/^[0-9]{1,6}$/', $max)
@@ -88,7 +112,7 @@ class Masterqusioner extends BaseController
             if (($min !== null && $min > $max) || ($index > 0 && $min !== $previousMax + 1)) {
                 throw new \InvalidArgumentException('Rentang skor harus berurutan, tanpa tumpang tindih atau celah.');
             }
-            $ranges[] = [$min, $max, $label];
+            $ranges[] = [$min, $max, ScreeningMasters::RISK_LABELS[$index]];
             $previousMax = $max;
         }
         return $ranges;
@@ -98,17 +122,33 @@ class Masterqusioner extends BaseController
     {
         $labels = request()->getPost('label');
         $scores = request()->getPost('score');
+        $types = request()->getPost('answer_type');
         if (!is_array($labels) || !is_array($scores) || array_keys($labels) !== array_keys($scores)
+            || ($types !== null && (!is_array($types) || array_keys($labels) !== array_keys($types)))
             || count($labels) < 2 || count($labels) > 20) {
-            throw new \InvalidArgumentException('Isi 2 hingga 20 pilihan jawaban beserta skornya.');
+            throw new \InvalidArgumentException('Isi 2 hingga 20 pilihan jawaban.');
         }
 
         $options = [];
-        $range = $code === 'IASTO' ? '/^[1-4]$/' : '/^[0-3]$/';
+        $range = [
+            'IASTO' => '/\A[1-4]\z/',
+            'APCS' => '/\A[0-3]\z/',
+        ][$code] ?? '/\A[0-9]{1,6}\z/';
         foreach ($labels as $index => $label) {
             $score = $scores[$index];
-            if (!is_string($label) || trim($label) === '' || mb_strlen(trim($label)) > 500
-                || !is_string($score) || !preg_match($range, $score)) {
+            $type = $types === null ? 'score' : $types[$index];
+            if (!is_string($label) || trim($label) === '' || mb_strlen(trim($label)) > 500) {
+                throw new \InvalidArgumentException('Isi teks setiap pilihan jawaban.');
+            }
+            if ($type !== 'score') {
+                if (isset(ScreeningMasters::INSTRUMENTS[$code])
+                    || !in_array($type, ['unscored', 'warning'], true) || $score !== '') {
+                    throw new \InvalidArgumentException('Jenis penilaian pilihan jawaban tidak valid.');
+                }
+                $options[] = $type === 'warning' ? [trim($label), null, true] : [trim($label), null];
+                continue;
+            }
+            if (!is_string($score) || !preg_match($range, $score)) {
                 throw new \InvalidArgumentException('Isi teks pilihan dan skor dalam rentang instrumen.');
             }
             $options[] = [trim($label), (int) $score];

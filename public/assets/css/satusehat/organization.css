@@ -1,0 +1,7 @@
+#organization-table thead th {
+    background: var(--app-table-header-bg);
+    color: var(--app-table-header-text);
+}
+#organization-page [hidden] {
+    display: none !important;
+}

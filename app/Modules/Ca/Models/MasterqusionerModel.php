@@ -20,12 +20,16 @@ class MasterqusionerModel extends Model
         return $this->db->table(self::INSTRUMENTS)->where('group_id', $group)->where('org_id', $org);
     }
 
-    public function masters(string $group, string $org, bool $ready): array
+    public function masters(string $group, string $org, bool $ready, bool $includeCustom = false): array
     {
         $saved = $ready ? array_column($this->instruments($group, $org)->get()->getResultArray(), null, 'code') : [];
         $result = [];
 
-        foreach (ScreeningMasters::INSTRUMENTS as $code => $definition) {
+        $definitions = ScreeningMasters::INSTRUMENTS;
+        if ($includeCustom) {
+            $definitions += array_fill_keys(array_keys($saved), null);
+        }
+        foreach ($definitions as $code => $definition) {
             $instrument = $saved[$code] ?? ['name' => $definition['name'], 'active' => '1'];
             $questions = [];
             if (isset($instrument['instrument_id'])) {
@@ -43,7 +47,7 @@ class MasterqusionerModel extends Model
                 'initialized' => isset($instrument['instrument_id']),
                 'writable' => $ready,
                 'risks' => $this->riskRanges($instrument, $code),
-                'note' => $definition['note'],
+                'custom' => $definition === null,
                 'questions' => $questions,
             ];
         }
@@ -63,7 +67,7 @@ class MasterqusionerModel extends Model
     private function riskRanges(array $instrument, string $code): array
     {
         return empty($instrument['risk_ranges'])
-            ? ScreeningMasters::INSTRUMENTS[$code]['risks']
+            ? (ScreeningMasters::INSTRUMENTS[$code]['risks'] ?? [])
             : json_decode($instrument['risk_ranges'], true, 512, JSON_THROW_ON_ERROR);
     }
 
@@ -117,8 +121,20 @@ class MasterqusionerModel extends Model
     public function saveInstrument(string $group, string $org, string $code, array $data): void
     {
         $instrumentId = $this->instrumentId($group, $org, $code);
-        $data['risk_ranges'] = json_encode($data['risk_ranges'], JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
+        if (isset($data['risk_ranges'])) {
+            $data['risk_ranges'] = json_encode($data['risk_ranges'], JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
+        }
         $this->checkWrite($this->instruments($group, $org)->where('instrument_id', $instrumentId)->update($data));
+    }
+
+    public function createInstrument(string $group, string $org, string $code, array $data): void
+    {
+        if (isset(ScreeningMasters::INSTRUMENTS[$code]) || $this->instruments($group, $org)->where('code', $code)->countAllResults()) {
+            throw new \InvalidArgumentException('Kode instrumen sudah digunakan.');
+        }
+        $this->checkWrite($this->db->table(self::INSTRUMENTS)->insert($data + [
+            'group_id' => $group, 'org_id' => $org, 'code' => $code, 'active' => '0',
+        ]));
     }
 
     public function saveQuestion(string $group, string $org, string $code, string $id, array $data): void

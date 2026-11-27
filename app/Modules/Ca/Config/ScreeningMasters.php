@@ -4,10 +4,16 @@ namespace Modules\Ca\Config;
 
 class ScreeningMasters
 {
+    public const RISK_LABELS = [
+        'Average Risk (Risiko ringan)',
+        'Moderate Risk (Risiko Sedang)',
+        'High Risk (Risiko Tinggi)',
+    ];
+
     public const INSTRUMENTS = [
         'IASTO' => [
             'name' => 'IASTO–PDPI 2023 · Skrining kanker paru',
-            'risks' => [[null, 11, 'Average Risk (Risiko ringan)'], [12, 16, 'Moderate Risk (Risiko Sedang)'], [17, 29, 'High Risk (Risiko Tinggi)']],
+            'risks' => [[null, 11, self::RISK_LABELS[0]], [12, 16, self::RISK_LABELS[1]], [17, 29, self::RISK_LABELS[2]]],
             'note' => 'Rentang yang dapat dihasilkan oleh sembilan pertanyaan adalah 9–28. Skor 29 tercantum pada sumber kategori. Formulir belum menentukan skor diagnosis kanker tepat 5 tahun lalu, berhenti merokok ≥15 tahun, atau aturan jika TBC dan PPOK sama-sama ada.',
             'questions' => [
                 ['Jenis kelamin Anda?', [['Laki-laki', 3], ['Perempuan', 1]]],
@@ -23,7 +29,7 @@ class ScreeningMasters
         ],
         'APCS' => [
             'name' => 'APCS · Skrining kanker kolorektal',
-            'risks' => [[0, 1, 'Average Risk (Risiko ringan)'], [2, 3, 'Moderate Risk (Risiko Sedang)'], [4, 7, 'High Risk (Risiko Tinggi)']],
+            'risks' => [[0, 1, self::RISK_LABELS[0]], [2, 3, self::RISK_LABELS[1]], [4, 7, self::RISK_LABELS[2]]],
             'note' => '',
             'questions' => [
                 ['Berapa usia Anda sekarang?', [['<50 tahun', 0], ['50–69 tahun', 2], ['≥70 tahun', 3]]],

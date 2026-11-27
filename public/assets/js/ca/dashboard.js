@@ -28,11 +28,13 @@
     };
     const monthly = new ApexCharts(document.getElementById('ca-monthly-chart'), {
         ...base,
-        chart: {...base.chart, type: 'bar'},
+        chart: {...base.chart, type: 'line'},
+        colors: ['#087e82', '#7fbea9', '#c7838e', '#dfc384', '#7199b4', '#967fa8'],
         series: data.series,
         xaxis: {categories: data.months.map((month) => new Date(Number(month.slice(0, 4)), Number(month.slice(5, 7)) - 1, 1).toLocaleDateString('id-ID', {month: 'long'}))},
         yaxis: {min: 0, forceNiceScale: true, labels: {formatter: (value) => Number.isInteger(value) ? String(value) : ''}},
-        plotOptions: {bar: {borderRadius: 4}},
+        stroke: {curve: 'straight', width: 3},
+        markers: {size: 4, hover: {size: 6}},
         legend: {position: 'top'},
     });
     monthly.render();
@@ -66,6 +68,23 @@
             colors: ['#087e82', '#7fbea9', '#b5c5cd'],
             series: data.domiciles.map((row) => row.total),
             labels: data.domiciles.map((row) => row.label),
+            stroke: {width: 4, colors: ['#fff']},
+            plotOptions: {pie: {donut: {
+                size: '77%',
+                labels: {
+                    show: true,
+                    name: {fontSize: '12px', color: '#8aa0a6'},
+                    value: {fontSize: '36px', fontWeight: 700, color: '#15373e'},
+                    total: {
+                        show: true, showAlways: true, label: 'Total pengisian',
+                        fontSize: '12px', color: '#8aa0a6',
+                        formatter: ({globals}) => globals.seriesTotals.reduce((sum, value) => sum + value, 0).toLocaleString('id-ID'),
+                    },
+                },
+            }}},
+            responsive: [{breakpoint: 576, options: {
+                plotOptions: {pie: {donut: {labels: {value: {fontSize: '30px'}}}}},
+            }}],
             legend: {show: false},
         }).render();
     }

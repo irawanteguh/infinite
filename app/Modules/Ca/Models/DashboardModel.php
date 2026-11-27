@@ -38,6 +38,30 @@ class DashboardModel extends Model
         return $builder;
     }
 
+    private function riskExpression(string $group, string $org): string
+    {
+        $cases = [];
+        foreach ($this->instruments($group, $org) as $instrument) {
+            $ranges = empty($instrument['risk_ranges'])
+                ? [] : json_decode($instrument['risk_ranges'], true, 512, JSON_THROW_ON_ERROR);
+            if (!$ranges) {
+                continue;
+            }
+            $categories = [];
+            foreach ($ranges as [$min, $max, $label]) {
+                $condition = 'h.total_score <= ' . (int) $max;
+                if ($min !== null) {
+                    $condition .= ' AND h.total_score >= ' . (int) $min;
+                }
+                $categories[] = 'WHEN ' . $condition . ' THEN ' . $this->db->escape($label);
+            }
+            $cases[] = 'WHEN i.instrument_id = ' . $this->db->escape($instrument['instrument_id'])
+                . ' THEN CASE ' . implode(' ', $categories) . ' ELSE NULL END';
+        }
+
+        return $cases ? 'CASE ' . implode(' ', $cases) . ' ELSE h.risk_level END' : 'h.risk_level';
+    }
+
     public function analytics(string $group, string $org, array $filters, int $page): array
     {
         $summaries = $this->scoped($group, $org, $filters)
@@ -45,17 +69,23 @@ class DashboardModel extends Model
             ->groupBy(['i.instrument_id', 'i.code', 'i.name'])->get()->getResultArray();
         $total = array_sum(array_column($summaries, 'total'));
         $scored = array_sum(array_column($summaries, 'scored'));
-        $risks = $this->scoped($group, $org, $filters)->select('i.code, h.risk_level, COUNT(*) AS total', false)
-            ->groupBy(['i.code', 'h.risk_level'])->get()->getResultArray();
+        $riskExpression = $this->riskExpression($group, $org);
+        $risks = $this->scoped($group, $org, $filters)->select('i.code, ' . $riskExpression . ' AS risk_level, COUNT(*) AS total', false)
+            ->groupBy('i.code')->groupBy($riskExpression, false)->get()->getResultArray();
         $classified = 0;
         foreach ($risks as $risk) {
             if ($risk['risk_level'] !== null && $risk['risk_level'] !== '') $classified += (int) $risk['total'];
         }
+        $monthlyInstruments = array_filter($this->instruments($group, $org),
+            static fn (array $instrument): bool => $filters['instrument'] === ''
+                || (string) $instrument['instrument_id'] === $filters['instrument']);
+        $instrumentNames = array_column($monthlyInstruments, 'name', 'code');
+        $emptyCounts = array_fill_keys(array_keys($instrumentNames), 0);
         $monthly = [];
         $cursor = (new \DateTimeImmutable($filters['start']))->modify('first day of this month');
         $last = substr($filters['end'], 0, 7);
         while ($cursor->format('Y-m') <= $last) {
-            $monthly[$cursor->format('Y-m')] = ['IASTO' => 0, 'APCS' => 0];
+            $monthly[$cursor->format('Y-m')] = $emptyCounts;
             $cursor = $cursor->modify('+1 month');
         }
         $rows = $this->scoped($group, $org, $filters)->select("SUBSTR(h.screened_at, 1, 7) AS month, i.code, COUNT(*) AS total", false)
@@ -67,8 +97,8 @@ class DashboardModel extends Model
             ->groupBy('h.domicile')->get()->getResultArray();
         $page = min($page, max(1, (int) ceil($total / 20)));
         $details = $this->scoped($group, $org, $filters)
-            ->select('h.response_id, h.screened_at, h.respondent_name, h.domicile, h.total_score, h.risk_level, i.code, i.name AS instrument_name')
+            ->select('h.response_id, h.screened_at, h.respondent_name, h.domicile, h.total_score, ' . $riskExpression . ' AS risk_level, i.code, i.name AS instrument_name', false)
             ->orderBy('h.screened_at', 'DESC')->orderBy('h.response_id', 'DESC')->limit(20, ($page - 1) * 20)->get()->getResultArray();
-        return compact('total', 'scored', 'classified', 'summaries', 'risks', 'monthly', 'domiciles', 'page', 'details');
+        return compact('total', 'scored', 'classified', 'summaries', 'risks', 'monthly', 'instrumentNames', 'domiciles', 'page', 'details');
     }
 }

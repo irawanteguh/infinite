@@ -1,0 +1,34 @@
+.encounter-banner { border-radius: 20px; }
+.encounter-banner h1 { color: var(--app-banner-heading); }
+.encounter-banner p { color: var(--app-banner-copy); }
+#encounter-page [hidden] { display: none !important; }
+#encounter-table thead th,
+#encounter-results-table thead th { background: var(--app-table-header-bg); color: var(--app-table-header-text); }
+#encounter-table :is(th, td),
+#encounter-results-table :is(th, td) { white-space: nowrap; }
+.encounter-state { display: inline-block; padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+.encounter-state[data-tone="success"] { background: var(--app-status-teal-bg); color: var(--app-status-teal-text); }
+.encounter-state[data-tone="waiting"] { background: var(--app-status-yellow-bg); color: var(--app-status-yellow-text); }
+.encounter-state[data-tone="error"] { background: var(--app-status-red-bg); color: var(--app-status-red-text); }
+
+#encounter-room-modal > .flatpickr-calendar {
+    position: fixed;
+    z-index: 1070;
+}
+
+#encounter-room-episodes thead th {
+    background: var(--app-table-header-bg);
+    color: var(--app-table-header-text);
+}
+#encounter-room-modal .form-check-input:checked {
+    background-color: var(--app-status-teal-text);
+    border-color: var(--app-status-teal-text);
+}
+#encounter-room-modal .form-check-input:focus {
+    border-color: var(--app-status-teal-text);
+    box-shadow: 0 0 0 .25rem rgb(8 126 130 / 15%);
+}
+
+.encounter-json { display: flex; max-height: 24rem; overflow: auto; }
+.encounter-json pre { flex: none; overflow: visible; font: 13px/1.6 monospace; white-space: pre; }
+.encounter-json-lines { position: sticky; left: 0; text-align: right; user-select: none; background: var(--app-table-header-bg); color: var(--app-table-header-text); }

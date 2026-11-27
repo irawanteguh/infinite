@@ -1,4 +1,4 @@
-<header class="backup-heading app-page-heading">
-    <div><h1>Backup Database</h1><p>Buat salinan database dan kelola file SQL yang tersimpan di server.</p></div>
-    
+<header class="backup-heading app-geometric-banner mb-5">
+    <h1 class="fw-bold mb-2">Backup Database</h1>
+    <p class="mb-0">Buat salinan database dan kelola file SQL yang tersimpan di server.</p>
 </header>

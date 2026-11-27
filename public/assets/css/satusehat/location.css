@@ -1,0 +1,7 @@
+#location-table thead th {
+    background: var(--app-table-header-bg);
+    color: var(--app-table-header-text);
+}
+#location-page [hidden] {
+    display: none !important;
+}

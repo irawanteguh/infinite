@@ -130,3 +130,5 @@ nb-configuration.xml
 writable/backups/
 
 writable/backups/
+
+/restapi-data/

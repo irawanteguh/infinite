@@ -7,3 +7,16 @@
 @media(max-width:359.98px){.login-shell{padding:22px 14px 14px!important}.login-card{padding:25px 20px!important}.login-logo{max-width:220px}.login-heading h1{font-size:22px}.login-eyebrow{font-size:8px}.login-footer{padding:12px 14px 20px!important}}
 @media(max-height:650px) and (max-width:991.98px){.login-shell{justify-content:flex-start!important;padding-top:20px!important}}
 @media(prefers-reduced-motion:reduce){.login-page,.login-card input.form-control{animation:none;transition:none}}
+
+.login-page.app-geometric-banner {
+    background-image:
+        linear-gradient(100deg, #102c37 5%, rgb(18 56 63 / 95%) 38%, rgb(8 126 130 / 55%) 100%),
+        url("../../media/banners/chaotic.jpg");
+    background-position: center;
+    background-size: cover;
+}
+
+.login-page.app-geometric-banner::before,
+.login-page.app-geometric-banner::after {
+    content: none;
+}

@@ -16,8 +16,8 @@ $chart = $data ? [
     'months' => array_keys($data['monthly']),
     'risks' => $data['risks'],
     'series' => array_map(static function ($code) use ($data) {
-        return ['name' => $code, 'data' => array_column($data['monthly'], $code)];
-    }, ['IASTO', 'APCS']),
+        return ['name' => $data['instrumentNames'][$code], 'data' => array_column($data['monthly'], $code)];
+    }, array_keys($data['instrumentNames'])),
     'domiciles' => array_map(static function ($row) use ($domicileLabels) {
         return ['label' => $domicileLabels[$row['domicile']] ?? 'Tidak diketahui', 'total' => (int) $row['total']];
     }, $data['domiciles']),
@@ -41,8 +41,16 @@ $chart = $data ? [
             <?php if (!$data['total']): ?><div class="alert alert-info mt-5">Belum ada pengisian skrining pada filter ini.</div><?php endif; ?>
 
             <div class="row g-5 mt-1">
-                <div class="col-lg-8"><section class="prem-card p-6 h-100"><h2 class="fs-4">Tren pengisian bulanan</h2><p class="text-muted fs-7">Jumlah pengisian skrining paru (IASTO) dan kolorektal (APCS).</p><div id="ca-monthly-chart"></div></section></div>
-                <div class="col-lg-4"><section class="prem-card p-6 h-100"><h2 class="fs-4">Domisili pasien</h2><p class="text-muted fs-7">Sebaran pengisian berdasarkan domisili yang dicantumkan pasien.</p><div id="ca-domicile-chart"></div><ul class="list-unstyled mb-0"><?php foreach ($data['domiciles'] as $row): ?><li class="d-flex justify-content-between py-2"><span><?= esc($domicileLabels[$row['domicile']] ?? 'Tidak diketahui') ?></span><strong><?= $number($row['total']) ?></strong></li><?php endforeach; ?></ul></section></div>
+                <div class="col-lg-8"><section class="prem-card p-6 h-100"><h2 class="fs-4">Tren pengisian bulanan</h2><p class="text-muted fs-7">Jumlah pengisian setiap instrumen sesuai filter aktif.</p><div id="ca-monthly-chart"></div></section></div>
+                <div class="col-lg-4"><section class="prem-card p-6 h-100"><h2 class="fs-4">Domisili pasien</h2><p class="text-muted fs-7">Sebaran pengisian berdasarkan domisili yang dicantumkan pasien.</p><div id="ca-domicile-chart"></div><ul class="list-unstyled mb-0" id="ca-domicile-legend">
+                    <?php $domicileTotal = array_sum(array_column($data['domiciles'], 'total')); ?>
+                    <?php foreach ($data['domiciles'] as $index => $row): ?>
+                        <li class="d-flex justify-content-between align-items-center gap-3 py-3 border-bottom">
+                            <span class="d-flex align-items-center gap-2"><span class="ca-domicile-dot ca-domicile-dot-<?= $index ?>" aria-hidden="true"></span><?= esc($domicileLabels[$row['domicile']] ?? 'Tidak diketahui') ?></span>
+                            <span class="text-end text-nowrap"><strong><?= $number($row['total']) ?></strong><span class="text-muted ms-2"><?= $number($domicileTotal > 0 ? $row['total'] / $domicileTotal * 100 : null, 1) ?>%</span></span>
+                        </li>
+                    <?php endforeach; ?>
+                </ul></section></div>
             </div>
 
             <div class="row g-5 mt-1">
@@ -71,14 +79,14 @@ $chart = $data ? [
                 <div class="col-lg-6">
                     <section class="prem-card p-6 h-100">
                         <h2 class="fs-4">Distribusi kategori risiko</h2>
-                        <p class="text-muted fs-7">Jumlah pengisian menurut kategori yang tersimpan pada masing-masing instrumen.</p>
+                        <p class="text-muted fs-7">Jumlah pengisian menurut rentang penilaian instrumen saat ini.</p>
                         <div id="ca-risk-chart"></div>
                     </section>
                 </div>
             </div>
 
             <section id="ca-instrument-summary" class="prem-card ca-table-card mt-5">
-                <div class="card-header app-table-heading"><div><h2 class="app-table-title">Ringkasan instrumen dan kategori risiko</h2><p class="app-table-description">Kategori mengikuti hasil yang tersimpan saat pengisian. Rata-rata dihitung dari pengisian yang memiliki skor.</p></div></div>
+                <div class="card-header app-table-heading"><div><h2 class="app-table-title">Ringkasan instrumen dan kategori risiko</h2><p class="app-table-description">Kategori dihitung dari skor menggunakan rentang penilaian instrumen saat ini. Rata-rata dihitung dari pengisian yang memiliki skor.</p></div></div>
                 <div class="card-body">
                 <div class="table-responsive"><table class="table table-row-dashed align-middle"><thead><tr><th>Instrumen</th><th>Pengisian</th><th>Memiliki skor</th><th>Rata-rata skor</th><th>Kategori risiko</th></tr></thead><tbody>
                     <?php foreach ($data['summaries'] as $summary): ?>
@@ -94,9 +102,9 @@ $chart = $data ? [
             </section>
 
             <section class="prem-card ca-table-card mt-5">
-                <div class="card-header app-table-heading"><div><h2 class="app-table-title">Jumlah pengisian per bulan</h2><p class="app-table-description">Jumlah pengisian skrining paru dan kolorektal pada setiap bulan dalam tahun terpilih.</p></div></div>
+                <div class="card-header app-table-heading"><div><h2 class="app-table-title">Jumlah pengisian per bulan</h2><p class="app-table-description">Jumlah pengisian setiap instrumen pada setiap bulan dalam tahun terpilih.</p></div></div>
                 <div class="card-body">
-                <div class="table-responsive"><table class="table table-row-dashed" data-datatable="false"><thead><tr><th>Bulan</th><th>IASTO</th><th>APCS</th><th>Total</th></tr></thead><tbody><?php foreach ($data['monthly'] as $month => $counts): ?><tr><td><?= esc($monthNames[(int) substr($month, 5, 2)]) ?></td><td><?= $number($counts['IASTO']) ?></td><td><?= $number($counts['APCS']) ?></td><td><?= $number(array_sum($counts)) ?></td></tr><?php endforeach; ?></tbody></table></div>
+                <div class="table-responsive"><table class="table table-row-dashed" data-datatable="false"><thead><tr><th>Bulan</th><?php foreach ($data['instrumentNames'] as $name): ?><th><?= esc($name) ?></th><?php endforeach; ?><th>Total</th></tr></thead><tbody><?php foreach ($data['monthly'] as $month => $counts): ?><tr><td><?= esc($monthNames[(int) substr($month, 5, 2)]) ?></td><?php foreach ($data['instrumentNames'] as $code => $name): ?><td><?= $number($counts[$code]) ?></td><?php endforeach; ?><td><?= $number(array_sum($counts)) ?></td></tr><?php endforeach; ?></tbody></table></div>
                 </div>
             </section>
 

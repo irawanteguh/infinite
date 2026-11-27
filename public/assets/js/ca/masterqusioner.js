@@ -55,8 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
         get('edit-instrument').classList.toggle('d-none', !instrument.writable);
         get('add-question').disabled = !instrument.writable;
         get('preview').disabled = false;
-        get('source-note').textContent = instrument.note;
-        get('source-note').classList.toggle('d-none', !instrument.note);
         get('risks').replaceChildren(...instrument.risks.map(([min, max, label], index) => {
             const range = min === null ? '≤' + max : min + '–' + max;
             return element('span', label + ' · ' + range, 'badge badge-light-' + ['success', 'warning', 'danger'][index]);
@@ -73,12 +71,16 @@ document.addEventListener('DOMContentLoaded', () => {
             row.insertCell().textContent = question.sort_order;
             row.insertCell().textContent = question.question;
             const list = element('ul', '', 'ps-5 mb-0');
-            for (const [label, score] of question.answer_options) {
-                list.append(element('li', label + ' · ' + score));
+            for (const [label, score, warning] of question.answer_options) {
+                const item = element('li', label + ' · ');
+                item.append(warning
+                    ? element('span', 'Tanda peringatan', 'badge badge-light-danger')
+                    : document.createTextNode(score === null ? 'Tanpa skor' : score));
+                list.append(item);
             }
             row.insertCell().append(list);
             const active = String(question.active) === '1';
-            row.insertCell().append(element('span', active ? 'Aktif' : 'Nonaktif', active ? 'badge badge-light-success' : 'badge badge-light'));
+            row.insertCell().append(element('span', active ? 'Aktif' : 'Nonaktif', active ? 'badge badge-light-success' : 'badge badge-light-warning'));
             const actions = row.insertCell();
             actions.className = 'text-end';
             if (instrument.writable) {
@@ -107,10 +109,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    async function load() {
-        const selected = select.value;
+    async function load(selected = select.value) {
         const payload = await request('data');
         instruments = payload.responseResult;
+        get('add-instrument').disabled = !instruments.some(({writable}) => writable);
         select.replaceChildren(...instruments.map((instrument) =>
             new Option(instrument.name + (String(instrument.active) === '0' ? ' (Nonaktif)' : ''), instrument.code)
         ));
@@ -128,9 +130,9 @@ document.addEventListener('DOMContentLoaded', () => {
         modal(kind).show();
     }
 
-    function addOption(label = '', score = '') {
-        const row = element('div', '', 'd-flex gap-2 mb-2');
-        const answer = element('input', '', 'form-control form-control-solid');
+    function addOption(label = '', score = '', warning = false) {
+        const row = element('div', '', 'd-flex flex-wrap gap-2 mb-2');
+        const answer = element('input', '', 'form-control form-control-solid flex-grow-1 w-auto');
         answer.name = 'label[]';
         answer.defaultValue = label;
         answer.maxLength = 500;
@@ -141,9 +143,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const points = element('input', '', 'form-control form-control-solid w-100px');
         points.type = 'number';
         points.name = 'score[]';
-        points.defaultValue = score;
+        points.defaultValue = score ?? '';
         points.min = current().code === 'IASTO' ? 1 : 0;
-        points.max = current().code === 'IASTO' ? 4 : 3;
+        points.max = current().custom ? 999999 : (current().code === 'IASTO' ? 4 : 3);
         points.placeholder = 'Skor';
         points.setAttribute('aria-label', 'Skor');
         points.required = true;
@@ -153,7 +155,26 @@ document.addEventListener('DOMContentLoaded', () => {
         remove.addEventListener('click', () => {
             if (options.children.length > 2) row.remove();
         });
-        row.append(answer, points, remove);
+        row.append(answer);
+        if (current().custom) {
+            const type = element('select', '', 'form-select form-select-solid w-auto');
+            type.name = 'answer_type[]';
+            type.setAttribute('aria-label', 'Jenis penilaian jawaban');
+            const currentType = warning ? 'warning' : (score === null ? 'unscored' : 'score');
+            for (const [value, title] of [['score', 'Skor'], ['unscored', 'Tanpa skor'], ['warning', 'Tanda peringatan']]) {
+                type.add(new Option(title, value, value === currentType, value === currentType));
+            }
+            const updateScore = () => {
+                const usesScore = type.value === 'score';
+                points.classList.toggle('d-none', !usesScore);
+                points.required = usesScore;
+                if (!usesScore) points.value = '';
+            };
+            type.addEventListener('change', updateScore);
+            updateScore();
+            row.append(type);
+        }
+        row.append(points, remove);
         options.append(row);
     }
 
@@ -161,9 +182,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const instrument = current();
         const next = Math.min(9999, Math.max(0, ...instrument.questions.map((q) => Number(q.sort_order))) + 1);
         get('question-title').textContent = question ? 'Edit pertanyaan' : 'Tambah pertanyaan';
+        get('answer-type-help').classList.toggle('d-none', !instrument.custom);
         options.replaceChildren();
         const answers = question ? question.answer_options : [['', ''], ['', '']];
-        for (const [label, score] of answers) addOption(label, score);
+        for (const [label, score, warning] of answers) addOption(label, score, warning);
         openForm('question', {
             code: instrument.code,
             question_id: question ? question.question_id : '',
@@ -210,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (kind) modal(kind).hide();
             message(get('message'), payload.responseDesc, 'alert-success');
             try {
-                await load();
+                await load(payload.instrumentCode || select.value);
             } catch (error) {
                 message(get('message'), 'Data tersimpan. ' + error.message, 'alert-warning');
             }
@@ -240,12 +262,19 @@ document.addEventListener('DOMContentLoaded', () => {
         body.set('code', current().code);
         save('initialize', body, event.currentTarget);
     });
-    get('edit-instrument').addEventListener('click', () => withStoredInstrument(({code, name, active, risks}) => {
+    get('add-instrument').addEventListener('click', () => {
+        if (!busy) openForm('create-instrument', {});
+    });
+    get('edit-instrument').addEventListener('click', () => withStoredInstrument(({code, name, active, risks, custom}) => {
         const values = {code, name, active};
-        risks.forEach(([min, max, label], index) => {
+        const riskFields = get('instrument-risks');
+        get('optional-risks').classList.toggle('d-none', !custom);
+        for (const input of riskFields.querySelectorAll('input')) {
+            input.required = !custom && input.name !== 'risk_min_0';
+        }
+        risks.forEach(([min, max], index) => {
             values['risk_min_' + index] = min ?? '';
             values['risk_max_' + index] = max;
-            get('risk-label-' + index).textContent = label;
         });
         openForm('instrument', values);
     }));
@@ -254,11 +283,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (options.children.length < 20) addOption();
     });
 
-    for (const kind of ['instrument', 'question']) {
+    for (const [kind, action] of [['create-instrument', 'createinstrument'], ['instrument', 'saveinstrument'], ['question', 'savequestion']]) {
         const form = get(kind + '-form');
         form.addEventListener('submit', (event) => {
             event.preventDefault();
-            save('save' + kind, new FormData(form), form.querySelector('[type=submit]'), kind);
+            save(action, new FormData(form), form.querySelector('[type=submit]'), kind);
         });
     }
 

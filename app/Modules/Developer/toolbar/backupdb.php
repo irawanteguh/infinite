@@ -1,2 +1,5 @@
-
-<button type="button" id="btnRefreshBackups" class="btn backup-btn-light"><i class="bi bi-arrow-clockwise" aria-hidden="true"></i> Muat ulang</button>
+<div class="module-toolbar-actions">
+    <button type="button" id="btnRefreshBackups" class="btn btn-sm btn-light-primary">
+        <i class="bi bi-arrow-clockwise" aria-hidden="true"></i> Perbarui
+    </button>
+</div>

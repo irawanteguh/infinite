@@ -87,6 +87,50 @@
     color: var(--app-status-red-text);
 }
 
+.ca-warning-dialog {
+    width: min(420px, calc(100vw - 32px));
+    padding: 28px;
+    border: 1px solid #f2cbd0;
+    border-radius: 18px;
+    box-shadow: 0 20px 60px rgb(70 35 40 / 15%);
+    font-family: inherit;
+}
+
+.ca-warning-dialog .ca-warning-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 16px;
+    border-color: var(--app-status-red-bg);
+    background: var(--app-status-red-bg);
+    color: var(--app-status-red-text);
+}
+
+.ca-warning-dialog .ca-warning-title {
+    margin: 0;
+    color: var(--app-status-red-text);
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.ca-warning-dialog .ca-warning-message {
+    margin: 10px 0 0;
+    color: #234a54;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.ca-warning-dialog .ca-warning-close {
+    min-width: 120px;
+    background: var(--app-status-red-text);
+    color: #fff;
+}
+
+.ca-warning-dialog .ca-warning-close:hover,
+.ca-warning-dialog .ca-warning-close:focus-visible {
+    background: #8e3038;
+    color: #fff;
+}
+
 
 @media (max-width: 575px) {
     .ca-screening .prem-choices {

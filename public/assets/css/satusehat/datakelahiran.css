@@ -1,0 +1,39 @@
+.birth-banner { border-radius: 20px; }
+.birth-banner h1 { color: var(--app-banner-heading); }
+.birth-banner p { color: var(--app-banner-copy); }
+#birth-page .birth-step {
+    color: #42636d;
+    border-radius: 8px;
+    padding: 12px;
+    line-height: 1.6;
+    white-space: normal;
+}
+#birth-page .birth-step:is(.active, :hover, :focus-visible) {
+    background: var(--app-status-teal-bg);
+    color: var(--app-status-teal-text);
+}
+#birth-page .birth-step.active { font-weight: 600; }
+.birth-request { border: 1px solid #e1ebed; border-radius: 10px; }
+.birth-request summary { cursor: pointer; list-style: none; color: #234a54; }
+.birth-request summary::-webkit-details-marker { display: none; }
+.birth-request summary:hover { background: #f5faf9; border-radius: 10px; }
+.birth-request-chevron { font-size: 10px; flex-shrink: 0; }
+.birth-request[open] .birth-request-chevron { transform: rotate(90deg); }
+.birth-method { font-size: 10px; font-weight: 700; color: #087e82; background: #eaf6f4; padding: 4px 6px; border-radius: 5px; flex-shrink: 0; }
+.birth-method[data-method="POST"] { background: #fff4d6; color: #805800; }
+.birth-method[data-method="PATCH"], .birth-method[data-method="PUT"] { background: #edf0fc; color: #505da1; }
+@media(min-width:992px) {
+    .birth-flow { position: sticky; top: 110px; max-height: calc(100vh - 130px); overflow-y: auto; scrollbar-width: thin; }
+}
+
+.birth-result { max-height: 320px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; }
+#birth-page [hidden] { display: none !important; }
+#birth-page .birth-step { white-space: normal; }
+
+#birth-patient-results thead th {
+    background: var(--app-table-header-bg);
+    color: var(--app-table-header-text);
+}
+#birth-patient-results :is(th, td) {
+    white-space: nowrap;
+}

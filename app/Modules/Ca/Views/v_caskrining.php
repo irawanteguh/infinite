@@ -24,6 +24,17 @@
                 <span class="prem-eyebrow d-block mt-7">JAWABAN BERHASIL DIKIRIM</span>
                 <h1 class="mt-3 mb-4">Terima kasih telah mengisi kuesioner.</h1>
                 <p class="prem-lead mx-auto"><?= esc($result['name']) ?></p>
+                <?php if (!empty($result['warnings'])): ?>
+                    <div class="alert alert-danger text-start mx-auto my-5" role="alert">
+                        <h2 class="fs-5 fw-bold text-reset"><i class="bi bi-exclamation-triangle me-2" aria-hidden="true"></i>Tanda peringatan</h2>
+                        <p class="mb-2">Jawaban berikut ditandai untuk tindak lanjut terlepas dari total skor.</p>
+                        <ul class="mb-0">
+                            <?php foreach ($result['warnings'] as $warning): ?>
+                                <li><?= esc($warning) ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endif; ?>
                 <div class="ca-result-summary mx-auto my-5 ca-result-<?= $riskColor ?>">
                     <div>
                         <span class="d-block text-gray-600 fs-7 mb-2">Total skor</span>
@@ -37,9 +48,11 @@
                 <?php if ($result['risk'] === null): ?>
                     <p class="text-muted">Kategori belum dapat ditentukan dari jawaban atau susunan kuesioner yang digunakan.</p>
                 <?php endif; ?>
-                <p class="text-muted mb-3 d-none" id="ca-result-countdown">
-                    Kembali otomatis dalam <span role="timer" class="fw-semibold">60</span> detik.
-                </p>
+                <?php if (empty($result['warnings'])): ?>
+                    <p class="text-muted mb-3 d-none" id="ca-result-countdown">
+                        Kembali otomatis dalam <span role="timer" class="fw-semibold">60</span> detik.
+                    </p>
+                <?php endif; ?>
                 <a id="ca-result-home" href="<?= esc($url . '&welcome=1', 'attr') ?>" class="btn btn-light">Kembali ke halaman awal</a>
             </section>
         <?php elseif (!$instrument): ?>
@@ -49,9 +62,9 @@
                 <div class="prem-welcome-copy">
                     <span class="prem-eyebrow">Oncology centre</span>
                     <h1>Kepedulian untuk kesehatan Anda,<br><span>dimulai dari skrining.</span></h1>
-                    <p class="prem-lead">Isi kuesioner sesuai kondisi dan riwayat kesehatan Anda untuk menilai risiko kanker paru atau kolorektal.</p>
+                    <p class="prem-lead">Isi kuesioner skrining yang tersedia sesuai kondisi dan riwayat kesehatan Anda.</p>
                     <div class="prem-facts">
-                        <span><i class="bi bi-list-check" aria-hidden="true"></i>2 pilihan kuesioner</span>
+                        <span><i class="bi bi-list-check" aria-hidden="true"></i><?= count($instruments) ?> pilihan kuesioner</span>
                         <span><i class="bi bi-person-check" aria-hidden="true"></i>Nama dan domisili opsional</span>
                     </div>
                     <a href="<?= esc($url . '&start=1', 'attr') ?>" class="btn prem-btn-primary">Mulai mengisi <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i></a>
@@ -60,7 +73,7 @@
                     <span class="prem-hero-icon"><i class="bi bi-clipboard-heart" aria-hidden="true"></i></span>
                     <h2>AURA — A Place of Care, A Space for Hope</h2>
                     <p>Kenali risiko melalui skrining sesuai kondisi dan riwayat kesehatan Anda.</p>
-                    <div class="prem-guide"><span>01</span><div>Pilih skrining kanker paru atau kolorektal.</div></div>
+                    <div class="prem-guide"><span>01</span><div>Pilih kuesioner skrining yang ingin Anda isi.</div></div>
                     <div class="prem-guide"><span>02</span><div>Pilih satu jawaban pada setiap pertanyaan.</div></div>
                     <div class="prem-guide"><span>03</span><div>Periksa jawaban sebelum mengirim.</div></div>
                 </aside>
@@ -81,27 +94,20 @@
                 <?php endif; ?>
                 <div class="prom-instrument-grid">
                     <?php foreach ($instruments as $item): ?>
-                        <?php $activeCount = count(array_filter($item['questions'], static function ($question) {
-                            return (string) $question['active'] === '1';
-                        })); ?>
                         <?php
-                        $enabled = $item['writable'] && (string) $item['active'] === '1' && $activeCount > 0;
-                        $cardTitle = $item['code'] === 'IASTO' ? 'Skrining Kanker Paru' : 'Skrining Kanker Kolorektal';
+                        $cardTitle = ['IASTO' => 'Skrining Kanker Paru', 'APCS' => 'Skrining Kanker Kolorektal'][$item['code']] ?? 'Skrining Kanker Payudara';
                         ?>
                         <form method="post" action="<?= esc(site_url('ca/caskrining/start'), 'attr') ?>" class="h-100">
                             <?= csrf_field() ?>
-                    <input type="hidden" name="group_id" value="<?= esc($group_id, 'attr') ?>">
-                    <input type="hidden" name="org_id" value="<?= esc($org_id, 'attr') ?>">
+                            <input type="hidden" name="group_id" value="<?= esc($group_id, 'attr') ?>">
+                            <input type="hidden" name="org_id" value="<?= esc($org_id, 'attr') ?>">
                             <input type="hidden" name="code" value="<?= esc($item['code'], 'attr') ?>">
-                            <button type="submit" class="prom-instrument-body ca-instrument-card w-100 text-start" <?= $enabled ? '' : 'disabled' ?>>
+                            <button type="submit" class="prom-instrument-body ca-instrument-card w-100 text-start">
                                 <span class="prem-hero-icon"><i class="bi bi-clipboard2-pulse" aria-hidden="true"></i></span>
                                 <strong class="prom-instrument-name"><?= esc($cardTitle) ?></strong>
                                 <span class="prom-respondent"><?= esc($item['name']) ?></span>
                                 <span class="prom-measurement">Isi sesuai kondisi dan riwayat kesehatan pasien.</span>
-                                <span class="prom-question-count"><i class="bi bi-list-check" aria-hidden="true"></i><?= $activeCount ?> pertanyaan</span>
-                                <?php if (!$enabled): ?>
-                                    <span class="text-muted"><?= (string) $item['active'] !== '1' ? 'Instrumen nonaktif' : 'Belum tersedia untuk pengisian' ?></span>
-                                <?php endif; ?>
+                                <span class="prom-question-count"><i class="bi bi-list-check" aria-hidden="true"></i><?= $item['questionCount'] ?> pertanyaan</span>
                             </button>
                         </form>
                     <?php endforeach; ?>
@@ -198,7 +204,7 @@
                                 <div class="prem-choices">
                                     <?php foreach ($options as $key => [$label]): ?>
                                         <label class="prem-choice">
-                                            <input type="radio" name="answers[<?= esc($id, 'attr') ?>]" value="<?= esc((string) $key, 'attr') ?>" <?= $selected === (string) $key ? 'checked' : '' ?> required>
+                                            <input type="radio" name="answers[<?= esc($id, 'attr') ?>]" value="<?= esc((string) $key, 'attr') ?>" <?= !empty($options[$key][2]) ? 'data-ca-warning="1"' : '' ?> <?= $selected === (string) $key ? 'checked' : '' ?> required>
                                             <span class="prem-choice-body"><span class="prem-choice-label"><?= esc($label) ?></span><i class="bi bi-check-circle-fill" aria-hidden="true"></i></span>
                                         </label>
                                     <?php endforeach; ?>

@@ -1,0 +1,9 @@
+#environment-page .form-check-input:checked {
+    background-color: var(--app-status-teal-text);
+    border-color: var(--app-status-teal-text);
+}
+
+#environment-page .form-check-input:focus {
+    border-color: var(--app-status-teal-text);
+    box-shadow: 0 0 0 .25rem rgb(8 126 130 / 15%);
+}

@@ -8,6 +8,7 @@ use Config\Database;
 use Modules\Ca\Database\AddPatientDomicile;
 use Modules\Ca\Database\AddScreeningScopes;
 use Modules\Ca\Database\AddInstrumentScoring;
+use Modules\Ca\Database\AddScreeningAnswerType;
 use Modules\Ca\Database\CreateScreeningMasters;
 use Modules\Ca\Database\CreateScreeningTransactions;
 
@@ -30,6 +31,7 @@ class SetupCaMasters extends BaseCommand
         (new AddScreeningScopes(Database::forge($db)))->up();
 
         (new \Modules\Ca\Database\AddPatientContact(Database::forge($db)))->up();
+        (new AddScreeningAnswerType(Database::forge($db)))->up();
 
         $db->resetDataCache();
         foreach (['dt01_ca_instrument_ms', 'dt01_ca_question_ms', CreateScreeningTransactions::HEADER, CreateScreeningTransactions::DETAIL] as $table) {

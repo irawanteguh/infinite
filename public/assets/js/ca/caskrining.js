@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (success) {
         success.focus();
         const countdown = document.getElementById('ca-result-countdown');
+        if (!countdown) return;
         const seconds = countdown.querySelector('[role="timer"]');
         const home = document.getElementById('ca-result-home');
         const deadline = Date.now() + 60_000;
@@ -107,6 +108,24 @@ document.addEventListener('DOMContentLoaded', () => {
     back.addEventListener('click', () => show(step - 1));
     next.addEventListener('click', advance);
     form.addEventListener('change', (event) => {
+        if (event.target.matches('input[data-ca-warning="1"]:checked') && window.Swal) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Tanda peringatan',
+                text: 'Perlu dievaluasi dokter sesegera mungkin.',
+                confirmButtonText: 'Tutup',
+                buttonsStyling: false,
+                customClass: {
+                    popup: 'ca-warning-dialog',
+                    icon: 'ca-warning-icon',
+                    title: 'ca-warning-title',
+                    htmlContainer: 'ca-warning-message',
+                    confirmButton: 'btn ca-warning-close',
+                },
+                showCloseButton: true,
+                allowOutsideClick: true,
+            });
+        }
         const question = event.target.closest('.prem-question');
         if (question) {
             question.classList.remove('is-invalid');

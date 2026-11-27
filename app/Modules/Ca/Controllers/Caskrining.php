@@ -60,18 +60,24 @@ class Caskrining extends BaseController
 
         try {
             $master = new MasterqusionerModel();
-            $instruments = array_column($master->masters($group_id, $org_id, $master->ready()), null, 'code');
+            $screening = new CaskriningModel();
+            foreach ($master->masters($group_id, $org_id, $master->ready(), true) as $item) {
+                if (!$item['initialized'] || (string) $item['active'] !== '1') {
+                    continue;
+                }
+                $item['questionCount'] = count(array_filter($item['questions'], static fn (array $question): bool => (string) $question['active'] === '1'));
+                if ($item['questionCount'] > 0) {
+                    $instruments[$item['code']] = $item;
+                }
+            }
             if ($code !== null || $submit || $start) {
                 $selected = is_string($code) ? ($instruments[$code] ?? null) : null;
-                if (!$selected || !$selected['writable']) {
+                if (!$selected) {
                     throw new \InvalidArgumentException('Instrumen skrining tidak tersedia untuk organisasi ini.');
                 }
 
                 if ($start) {
                     service('security')->verify(request());
-                    if (!$selected['initialized']) {
-                        throw new \InvalidArgumentException('Instrumen belum tersedia. Hubungi pengelola organisasi.');
-                    }
                     return redirect()->to($url . '&' . http_build_query(['code' => $code]), 303)->withCookies();
                 }
 
@@ -123,7 +129,7 @@ class Caskrining extends BaseController
                     if (!is_array($answers)) {
                         throw new \InvalidArgumentException('Lengkapi pilihan pada setiap pertanyaan.');
                     }
-                    $result = (new CaskriningModel())->store($instrument, $answers, $name === '' ? null : $name, $domicile === '' ? null : $domicile, $user, $phone === '' ? null : '62' . $phone, $consent === '1');
+                    $result = $screening->store($instrument, $answers, $name === '' ? null : $name, $domicile === '' ? null : $domicile, $user, $phone === '' ? null : '62' . $phone, $consent === '1');
                     unset($tokens[$postedToken]);
                     $session->set(self::TOKEN_KEY, $tokens);
                     $session->setFlashdata('ca_screening_result', ['scope' => $scope] + $result);

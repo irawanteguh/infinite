@@ -1,0 +1,36 @@
+#patient-table thead th,
+#patient-mother-table thead th {
+    background: var(--app-table-header-bg);
+    color: var(--app-table-header-text);
+}
+
+#patient-table :is(th, td),
+#patient-mother-table :is(th, td) {
+    white-space: nowrap;
+}
+
+#patient-page [hidden] {
+    display: none !important;
+}
+
+.patient-json {
+    display: flex;
+    max-height: 20rem;
+    overflow: auto;
+}
+
+.patient-json pre {
+    flex: none;
+    overflow: visible;
+    font: 13px/1.6 monospace;
+    white-space: pre;
+}
+
+.patient-json-lines {
+    position: sticky;
+    left: 0;
+    background: var(--app-table-header-bg);
+    color: var(--app-table-header-text);
+    text-align: right;
+    user-select: none;
+}

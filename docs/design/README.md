@@ -2,6 +2,10 @@
 
 [Developer → Testing Page](http://localhost/infinite/developer/testingpage) adalah acuan visual komponen. Halaman ini memakai data dummy lokal agar tampilan dan interaksi bisa ditinjau tanpa model data modul.
 
+Sebelum membuat atau mengubah tampilan, buka halaman tersebut dan periksa contoh komponen yang relevan beserta interaksinya. Cocokkan susunan kartu, judul dan deskripsi, palet, spacing, tabel, grafik, form, modal, serta status pemuatan dan beforeSend. Periksa perilaku desktop dan ponsel sesuai ruang lingkup perubahan.
+
+Telusuri view, CSS, dan JavaScript demo melalui tautan di bawah untuk menemukan markup, konfigurasi, dan helper bersama yang dipakai contoh. Untuk AJAX, ikuti pola pemuatan pada [panduan modal progres](report-progress.md). Jika halaman tidak dapat diakses, gunakan sumber demo sebagai rujukan dan cantumkan batas verifikasi browser dalam laporan pekerjaan.
+
 | Panduan | Cakupan |
 | --- | --- |
 | [Dasar tampilan](foundations.md) | Layout, palet, tipografi, input, select, button, ringkasan, status, dan modal |

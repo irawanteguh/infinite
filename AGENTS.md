@@ -109,6 +109,8 @@ Jangan memuat seluruh references secara otomatis.
   tinggi minimum 180 px mulai lebar 768 px dan 160 px pada ponsel.
   Tinggi bertambah mengikuti isi. Ikuti referensi tinggi banner di
   `docs/design/foundations.md`; gunakan definisi CSS bersama.
+- Banner header modul memakai rounded 16 px pada semua ukuran layar,
+  dikelola oleh `app-module-banner` di CSS bersama.
 - Judul dan deskripsi banner modul dibungkus `app-banner-heading`,
   diletakkan di kiri atas dan rata kiri sesuai panduan desain.
 - Font judul banner 32 px pada desktop/tablet dan 26 px pada ponsel,
@@ -124,9 +126,15 @@ Jangan memuat seluruh references secara otomatis.
 - Sebelum membuat atau mengubah tampilan, baca
   `docs/design/README.md`, panduan komponen yang relevan,
   dan stylesheet terkait di `public/assets/css/root/`.
-- Gunakan Testing Page sebagai acuan visual.
-- Baca view, CSS, atau JavaScript demo yang dirujuk
-  panduan bila diperlukan.
+- Sebelum membuat atau mengubah komponen UI, buka
+  [Developer → Testing Page](http://localhost/infinite/developer/testingpage)
+  dan periksa contoh komponen yang relevan, termasuk tampilan dan
+  interaksinya. Ikuti petunjuk pemeriksaan di `docs/design/README.md`.
+- Cocokkan kartu, judul/deskripsi, palet, tabel, grafik, form, modal,
+  serta loading/beforeSend dengan contoh yang sesuai. Telusuri view,
+  CSS, dan JavaScript demo untuk menerapkan pola yang sama.
+- Jika halaman tidak dapat diakses, gunakan sumber demo yang dirujuk
+  panduan dan laporkan batas verifikasi browser.
 - Gunakan kembali kelas dan variabel CSS bersama.
 - Simpan aturan khusus halaman di stylesheet modul.
 - Hindari menduplikasi aturan dari CSS bersama.

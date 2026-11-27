@@ -1,8 +1,7 @@
-<div class="summary-heading mb-6 app-page-heading">
-        <div>
-            
-            <h1 class="fw-bolder text-gray-900 mt-2 mb-2">Ringkasan indikator</h1>
-            <p class="text-muted mb-0">Pantau target, temukan keterlambatan, dan telusuri kinerja setiap departemen.</p>
-        </div>
-        <span class="summary-period"><i class="bi bi-calendar3 me-2"></i>Periode <strong data-summary-period><?= esc($selectedPeriod ?: '�') ?></strong></span>
+<header class="app-geometric-banner app-module-banner rounded-4 p-6 p-md-8 mb-6">
+    <div class="app-banner-heading">
+        <h1 class="mb-2">Ringkasan indikator</h1>
+        <p>Pantau ketercapaian target, pengisian bulanan, dan kinerja departemen pada periode terpilih.</p>
     </div>
+    <span class="badge badge-light-info mt-4"><i class="bi bi-calendar3 me-2" aria-hidden="true"></i>Periode <strong class="ms-1" data-summary-period><?= esc($selectedPeriod ?: '—') ?></strong></span>
+</header>

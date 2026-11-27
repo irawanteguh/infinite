@@ -23,6 +23,7 @@
     --app-module-banner-min-height: 180px;
     box-sizing: border-box;
     min-height: var(--app-module-banner-min-height);
+    border-radius: 16px !important;
 }
 
 .app-module-banner .app-banner-heading {

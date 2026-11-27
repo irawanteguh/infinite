@@ -183,22 +183,13 @@ function renderIndicatorTypeSummary(rows) {
 function loadQualitySummary() {
     const year = $("#selectsummaryperiode").val();
 
+    showDataLoading("Menyiapkan ringkasan indikator", "Memuat capaian dan status pengisian periode terpilih.");
     $.ajax({
         url: url + "qi/summary/summarydata",
         type: "POST",
         dataType: "JSON",
-        data: { tahun: year },
-        beforeSend: function () {
-            Swal.fire({
-                title: "Memuat ringkasan",
-                text: "Mengambil data penilaian indikator...",
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-                showConfirmButton: false,
-                didOpen: () => Swal.showLoading()
-            });
-        },
-        success: function (response) {
+        data: { tahun: year }
+    }).done(function (response) {
             if (response.responseCode !== "00") {
                 $("#qualitySummaryRows").empty();
                 renderQualitySummary([], []);
@@ -207,13 +198,8 @@ function loadQualitySummary() {
             }
 
             renderQualitySummary(response.responseResult || [], response.responseTrend || [], response.responseOverdue || []);
-        },
-        error: function () {
-            Swal.fire({ icon: "error", title: "Gagal memuat data", text: "Ringkasan indikator tidak dapat dimuat." });
-        },
-        complete: function () {
-            Swal.close();
-        }
+    }).fail(function () {
+        Swal.fire({ icon: "error", title: "Gagal memuat data", text: "Ringkasan indikator tidak dapat dimuat. Muat ulang halaman untuk mencoba kembali." });
     });
 }
 
@@ -268,22 +254,11 @@ function renderQualitySummary(rows, monthlyTrend, overdueRows = []) {
         const hasValues = dimensionValues.some(item => item.value !== null);
         $("#summaryDimensionRadarEmpty").toggleClass("d-none", hasValues);
         $(dimensionRadar).toggleClass("d-none", !hasValues);
-        if (hasValues) {
-            dimensionRadar.chart = new ApexCharts(dimensionRadar, {
-                chart: { type: "radar", height: 380, toolbar: { show: false }, fontFamily: "inherit" },
-                plotOptions: { radar: { size: 145 } },
-                series: [{ name: "Ketercapaian target", data: dimensionValues.map(item => item.value) }],
-                xaxis: { categories: dimensionValues.map(item => item.label), labels: { style: { fontSize: "12px" } } },
-                yaxis: { min: 0, max: 100, tickAmount: 5, labels: { formatter: value => `${Number(value).toLocaleString("id-ID", { maximumFractionDigits: 0 })}%` } },
-                colors: ["#009ef7"],
-                fill: { opacity: 0.22 },
-                stroke: { width: 3 },
-                markers: { size: 4 },
-                dataLabels: { enabled: true, formatter: value => `${Number(value).toLocaleString("id-ID", { maximumFractionDigits: 2 })}%` },
-                tooltip: { y: { formatter: value => `${Number(value).toLocaleString("id-ID", { maximumFractionDigits: 2 })}%` } }
-            });
-            dimensionRadar.chart.render();
-        }
+        renderSummaryRanking(dimensionRadar, dimensionValues
+            .filter(item => item.value !== null)
+            .sort((a, b) => b.value - a.value)
+            .map(item => ({label: item.label, value: item.value, description: "Penilaian yang memenuhi target pada dimensi ini"})));
+
     }
 
     const nationalRows = rows.filter(row => row.kategori === "Nasional Mutu");
@@ -343,20 +318,24 @@ function renderQualitySummary(rows, monthlyTrend, overdueRows = []) {
     if (trendChart) {
         if (trendChart.chart) trendChart.chart.destroy();
         trendChart.chart = new ApexCharts(trendChart, {
-            chart: { type: 'area', height: 380, toolbar: { show: false }, fontFamily: 'inherit' },
+            chart: { type: 'line', height: 320, toolbar: { show: false }, fontFamily: 'Poppins, sans-serif' },
             series: [
                 { name: 'Indikator Departemen', data: trendData.map(item => item.department) },
                 { name: 'Indikator Nasional Mutu', data: trendData.map(item => item.national) }
             ],
-            xaxis: { categories: qualitySummaryMonths, title: { text: 'Bulan' } },
+            xaxis: { type: 'category', categories: qualitySummaryMonths },
             yaxis: {
                 min: 0, max: 100, title: { text: 'Ketercapaian target (%)' },
                 labels: { formatter: value => Number(value).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%' }
             },
+            colors: ['#087e82', '#75bdb5'],
+            legend: { position: 'top', horizontalAlign: 'left' },
+            grid: { borderColor: '#edf2f4', strokeDashArray: 3 },
             stroke: { curve: 'straight', width: 3 },
             markers: { size: 4 },
             dataLabels: { enabled: false },
-            tooltip: { y: { formatter: value => value == null ? 'Belum dinilai' : value.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%' } }
+            noData: { text: 'Tidak ada data pada periode ini' },
+            tooltip: { shared: true, intersect: false, y: { formatter: value => value == null ? 'Belum dinilai' : value.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%' } }
         });
         trendChart.chart.render();
     }
@@ -384,41 +363,67 @@ function renderQualitySummary(rows, monthlyTrend, overdueRows = []) {
     drawQualitySummaryDepartmentChart();
 }
 
+function renderSummaryRanking(container, items) {
+    const list = document.createElement("ul");
+    list.className = "summary-ranking list-unstyled mb-0";
+    items.forEach(item => {
+        const row = document.createElement("li");
+        row.className = "mb-4";
+        const heading = document.createElement("div");
+        heading.className = "d-flex justify-content-between align-items-baseline gap-3 mb-2";
+        const label = document.createElement("span");
+        label.className = "text-muted";
+        label.textContent = item.label;
+        const value = document.createElement("strong");
+        value.className = "text-end";
+        value.textContent = item.value.toLocaleString("id-ID", {maximumFractionDigits: 2}) + "%";
+        heading.append(label, value);
+        const track = document.createElement("div");
+        track.className = "progress summary-ranking-progress";
+        track.setAttribute("aria-hidden", "true");
+        const bar = document.createElement("div");
+        bar.className = "progress-bar";
+        bar.style.width = Math.max(0, Math.min(100, item.value)) + "%";
+        track.append(bar);
+        const description = document.createElement("small");
+        description.className = "text-muted";
+        description.textContent = item.description;
+        row.append(heading, track, description);
+        list.append(row);
+    });
+    container.replaceChildren(list);
+}
+
 function drawQualitySummaryDepartmentChart() {
     const chartElement = document.getElementById("summaryDepartmentChart");
     if (!chartElement) return;
     if (chartElement.chart) chartElement.chart.destroy();
 
-    const visible = [...qualitySummaryDepartmentData].sort((a, b) => b.average - a.average);
+    const ranked = [...qualitySummaryDepartmentData].sort((a, b) => b.average - a.average);
+    const visible = ranked.slice(0, 6);
     const empty = visible.length === 0;
     $("#summaryDepartmentEmpty").toggleClass("d-none", !empty);
     $(chartElement).toggleClass("d-none", empty);
-    $("#summaryDepartmentCaption").text(`${visible.length} departemen · diurutkan dari capaian tertinggi`);
+    $("#summaryDepartmentCaption").text(`Menampilkan ${visible.length} dari ${ranked.length} departemen · capaian tertinggi. Seluruh unit tersedia pada tabel detail.`);
     if (empty) return;
 
-    chartElement.chart = new ApexCharts(chartElement, {
-        chart: { type: "bar", height: 380, toolbar: { show: false }, fontFamily: "inherit" },
-        series: [{ name: "Ketercapaian target", data: visible.map(item => item.average) }],
-        colors: visible.map(item => item.average < 50 ? "#f1416c" : (item.average < 80 ? "#ffc700" : "#50cd89")),
-        plotOptions: { bar: { horizontal: false, borderRadius: 4, columnWidth: "52%", distributed: true } },
-        dataLabels: { enabled: true, formatter: value => `${Number(value).toLocaleString("id-ID", { maximumFractionDigits: 2 })}%`, style: { fontSize: "11px" }, offsetY: -18 },
-        legend: { show: false },
-        xaxis: { categories: visible.map(item => item.department), labels: { rotate: -35, rotateAlways: visible.length > 5, trim: true, hideOverlappingLabels: true, style: { fontSize: "11px" } } },
-        yaxis: { min: 0, max: 100, tickAmount: 5, title: { text: "Ketercapaian target (%)" }, labels: { formatter: value => `${Number(value).toLocaleString("id-ID", { maximumFractionDigits: 0 })}%` } },
-        grid: { borderColor: "#eff2f5", strokeDashArray: 4 },
-        tooltip: { custom: ({ dataPointIndex }) => {
-            const item = visible[dataPointIndex];
-            if (!item) return "";
-            return `<div class="p-3"><div class="fw-bold mb-1">${qualitySummaryEscape(item.department)}</div><div>Ketercapaian target: ${item.average.toLocaleString("id-ID", { maximumFractionDigits: 2 })}%</div><div class="text-muted">Dinilai: ${item.assessed} dari ${item.indicators} indikator</div></div>`;
-        } },
-        noData: { text: "Tidak ada data capaian" }
-    });
-    chartElement.chart.render();
+    renderSummaryRanking(chartElement, visible.map(item => ({
+        label: item.department,
+        value: item.average,
+        description: item.assessed.toLocaleString("id-ID") + " dari " + item.indicators.toLocaleString("id-ID") + " indikator sudah dinilai"
+    })));
 }
 
 $(document).on("change", "#selectsummaryperiode", loadQualitySummary);
-$(document).on('shown.bs.tab', '.summary-aggregate-tabs [data-bs-toggle="tab"]', function () {
-    const panel = $(this.getAttribute('data-bs-target'));
+$(document).on('click', '.summary-aggregate-tabs [data-aggregate-target]', function () {
+    const buttons = $('.summary-aggregate-tabs [data-aggregate-target]');
+    buttons.attr('aria-pressed', 'false');
+    $(this).attr('aria-pressed', 'true');
+    buttons.each(function () {
+        $(this.getAttribute('data-aggregate-target')).removeClass('show active');
+    });
+    const panel = $(this.getAttribute('data-aggregate-target')).addClass('show active');
+    $('#summary-aggregate-filter-status').text('Menampilkan agregat ' + this.textContent.trim() + '.');
     const table = panel.find('table').first();
     if (table.length && $.fn.DataTable.isDataTable(table[0])) table.DataTable().columns.adjust();
 });

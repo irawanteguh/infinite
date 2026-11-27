@@ -82,6 +82,8 @@ Ukuran diterapkan pada judul dan deskripsi di dalam `app-banner-heading` melalui
 
 Banner header halaman modul memakai `app-geometric-banner app-module-banner`.
 
+Sudut banner header modul memakai rounded **16 px** pada desktop dan ponsel. Definisi berada pada `app-module-banner` di CSS bersama `geometric-banner.css` dan mendapat prioritas atas kelas rounded utilitas. Gunakan kelas banner bersama agar radius konsisten antar modul.
+
 | Lebar layar | Tinggi minimum termasuk padding |
 | --- | --- |
 | Desktop dan tablet, mulai 768 px | 180 px |

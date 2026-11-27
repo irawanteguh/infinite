@@ -13,7 +13,7 @@ $days = [1=>'Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu'];
 $months = [1=>'Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 ?>
 <main class="welcome-page">
-    <section class="welcome-banner app-geometric-banner" aria-label="Selamat datang di INFINITE">
+    <section class="welcome-banner app-geometric-banner app-module-banner" aria-label="Selamat datang di INFINITE">
         <div class="welcome-banner-content">
             <span class="welcome-kicker"><span class="welcome-status-dot" aria-hidden="true"></span> INFINITE WORKSPACE</span>
             <p class="welcome-greeting"><?= esc($greeting) ?>,</p>

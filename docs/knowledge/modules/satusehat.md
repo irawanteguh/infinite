@@ -1,0 +1,12 @@
+# SATUSEHAT — master lokal dan bridging
+
+| Route | Alur sumber |
+| --- | --- |
+| `satusehat/patient` | [Patient](../../../app/Modules/Satusehat/Controllers/Patient.php) menyediakan daftar, pencarian ibu, pilihan wilayah, preview dan create. [NewbornPatient::payload()](../../../app/Modules/Satusehat/Libraries/NewbornPatient.php) memetakan data bayi dan identitas ibu untuk POST Patient. [PatientRegions](../../../app/Modules/Satusehat/Libraries/PatientRegions.php) dan [RegionModel](../../../app/Modules/Satusehat/Models/RegionModel.php) menangani lookup wilayah. |
+| `satusehat/organization`, `satusehat/location` | [Organization](../../../app/Modules/Satusehat/Controllers/Organization.php) dan [Location](../../../app/Modules/Satusehat/Controllers/Location.php) menyediakan `data`, `sync`, `create`. Model master membatasi hasil berdasarkan group/org dan target. |
+| `satusehat/encounter` | [Encounter](../../../app/Modules/Satusehat/Controllers/Encounter.php) menangani draft lokal, pencarian, kirim Encounter, pembaruan lokasi/ruang, status pertukaran, dan rekonsiliasi. [EncounterRegistration](../../../app/Modules/Satusehat/Libraries/EncounterRegistration.php) merakit payload dan menjalankan bridging dengan log. |
+| `satusehat/datakelahiran` | [Datakelahiran](../../../app/Modules/Satusehat/Controllers/Datakelahiran.php) menampilkan aksi dari workspace Collections, menyimpan draft, mencari resource dan mengirim aksi. [BirthWorkspace](../../../app/Modules/Satusehat/Libraries/BirthWorkspace.php) memakai penyimpanan file dan membentuk payload dari template. |
+
+Model memakai koneksi CI4. [Migrasi](../../../app/Modules/Satusehat/Database/) mendefinisikan `dt01_satusehat_{patient,practitioner,region,organization,location}_ms`, `dt01_satusehat_encounter_tx`, dan `dt01_satusehat_bridging_log`. Pisahkan konteks tenant dari environment FHIR. Data referensi dan status transaksi diperiksa sesuai aksi. Lokasi dan orang terhubung melalui ID yang dipetakan dalam payload Encounter.
+
+Route mengikuti login/grant dan aksi tertentu memvalidasi POST/CSRF di controller. UI ada di [Views](../../../app/Modules/Satusehat/Views/) dan [aset SATUSEHAT](../../../public/assets/js/satusehat/). Environment dan Collections berasal dari [REST API](restapi.md). Transport, OAuth, dan batas retry dirujuk di [integrasi](../integrations.md). Konfigurasi aktif, penerimaan payload oleh server, dan transaksi bridging aktual belum diverifikasi.

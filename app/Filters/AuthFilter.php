@@ -19,6 +19,9 @@ class AuthFilter implements FilterInterface{
         $package = (string) ($segments[0] ?? '');
         $controller = (string) ($segments[1] ?? '');
         if (\App\Libraries\ModuleAccess::isWelcome($package,$controller)) return $request;
+        if ($segments === ['developer', 'faq'] && strtoupper($request->getMethod()) === 'GET') {
+            return $request;
+        }
         try {
             $model = new \Modules\Hr\Models\AccessModel();
             $state = $model->state((string)$session->get('groupid'),(string)$session->get('orgid'),(string)$session->get('userid'));

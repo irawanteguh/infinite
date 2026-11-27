@@ -1,5 +1,5 @@
 <main class="os-page">
-    <header class="app-geometric-banner rounded-4 p-6 p-lg-8 mb-7">
+    <header class="app-geometric-banner app-module-banner rounded-4 p-6 p-lg-8 mb-7">
         <h1 class="mb-2">Operasional Sistem</h1>
         <p class="mb-0">Kelola penyiapan dan pemeliharaan layanan Infinite.</p>
     </header>

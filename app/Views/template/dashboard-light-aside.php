@@ -16,7 +16,7 @@
             $menu             = $routingData['menu'] ?? '';
             $menunavbar       = $routingData['menunavbar'] ?? '';
             $menuorganization = $routingData['menuorganization'] ?? '';
-            $pageTitle        = $routingData['pageTitle'] ?? 'Infinite';
+            $pageTitle        = $pageTitle ?? $routingData['pageTitle'] ?? 'Infinite';
             $activeMenu       = $routingData['activeMenu'] ?? [];
         ?>
 

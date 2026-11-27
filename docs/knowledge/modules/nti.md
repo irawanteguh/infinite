@@ -1,0 +1,5 @@
+# NTI — monitoring sensor lingkungan
+
+[Nti](../../../app/Modules/Nti/Controllers/Nti.php) menangani halaman publik `nti/nti`, `snapshot`, dan pembacaan kelompok `sensorinternal`, `sensorexternal`, `sensordigital`. Daftar pengecualian berada di [Filters](../../../app/Config/Filters.php). [NtiClient::read()](../../../app/Modules/Nti/Services/NtiClient.php) login ke perangkat di sisi server dan membaca kelompok sensor terpilih. Snapshot menggabungkan tiga kelompok dan mempertahankan hasil kelompok lain bila satu gagal. Nama konfigurasi dan timeout didokumentasikan di sumber client dan [integrasi](../integrations.md).
+
+[View monitoring](../../../app/Modules/Nti/Views/monitoring.php) memakai layout blank dan [monitoring.js](../../../public/assets/js/nti/monitoring.js) untuk pembacaan berkala. Data berasal dari perangkat, tanpa koneksi database dari modul. [README NTI](../../../app/Modules/Nti/README.md) menjelaskan struktur kelompok sensor. Konektivitas perangkat dan hasil pembacaan deployment belum diuji.

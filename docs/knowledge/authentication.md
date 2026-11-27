@@ -1,0 +1,11 @@
+# Autentikasi, izin modul, dan cakupan data
+
+[Auth::signin()](../../app/Modules/Auth/Controllers/Auth.php) memakai [SignModel::login()](../../app/Modules/Auth/Models/SignModel.php) dan `datasession()` untuk mengambil akun dan organisasi. Session menyimpan `loggedin`, `userid`, `groupid`, `orgid`, dan `departmentid`. `changepassword()` memeriksa sesi, token CSRF, serta password lama dan policy di model. Perubahan password aktif dicakup oleh group, organisasi, dan user, dengan bcrypt untuk password baru. `logoutsystem()` mengakhiri sesi.
+
+[Session.php](../../app/Config/Session.php) mengonfigurasi `FileHandler`, `writable/session`, expiration 7.200 detik, dan regenerasi periodik 300 detik. [sessiontimeout.js](../../public/assets/js/root/sessiontimeout.js) menangani aktivitas browser dan logout pada layout yang memuatnya. Nilai konfigurasi deployment bisa berbeda.
+
+[AuthFilter::before()](../../app/Filters/AuthFilter.php) mengarahkan pengunjung tanpa sesi ke landing. Filter membaca pasangan package/controller dari URI, memuat katalog melalui [Modelrouting::allMenus()](../../app/Models/Modelrouting.php) dan grant dari [AccessModel::state()](../../app/Modules/Hr/Models/AccessModel.php). [ModuleAccess::routeAllowed() dan navigation()](../../app/Libraries/ModuleAccess.php) memakai kebijakan yang sama. Grant berlaku untuk entri controller aktif. Welcome tersedia setelah login, `hr/access` memerlukan pengelola, dan import bersama mengikuti grant package UR atau Klaim. Penolakan memberi HTTP 403 untuk AJAX/JSON atau redirect ke Welcome. Kegagalan lookup memberi 503.
+
+[Filters.php](../../app/Config/Filters.php) mengecualikan landing/auth, `api/*`, endpoint baca NTI tertentu, serta form dan submit publik CA/PE yang terdaftar. Sebagian alur memeriksa login atau CSRF di controller. Alias CSRF tersedia dan pemanggilan globalnya dikomentari pada konfigurasi sumber. Periksa alur per endpoint, termasuk route publik yang hanya dibatasi ke instrumen atau organisasi tertentu.
+
+Pemeriksaan grant modul memberi akses ke controller. Cakupan record ditentukan terpisah oleh query model dan validasi aksi. HR memakai group/org/user, QI memeriksa konteks unit dan penanggung jawab, dan sejumlah query klaim memakai kode rumah sakit. Peta tabel dan batas bukti ada di [database](database.md). Grant pengguna aktif dan konfigurasi session server belum diverifikasi.

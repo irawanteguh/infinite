@@ -65,6 +65,7 @@ $routes->group('api/v1', [
 $routes->post('ur/importtxteklaim', '\App\Controllers\Ur::importtxteklaim');
 $routes->post('bahv/importtxtbahv', '\App\Controllers\Bahv::importtxtbahv');
 $routes->post('developer/backupdb/delete/(:segment)', '\Modules\Developer\Controllers\Backupdb::delete/$1');
+$routes->get('developer/faq', '\Modules\Developer\Controllers\Faq::index');
 
 /*
 |--------------------------------------------------------------------------

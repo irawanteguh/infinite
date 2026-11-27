@@ -39,7 +39,7 @@
     <section class="card">
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table pe-master-table align-middle gy-2" data-datatable="false">
+                <table class="table pe-master-table align-middle gy-2 fs-8" data-datatable="false">
                     <thead><tr><th scope="col">Urutan</th><th scope="col">Pertanyaan</th><th scope="col">Pilihan dan skor</th><th scope="col">Status</th><th scope="col" class="text-end">Aksi</th></tr></thead>
                     <tbody id="ca-questions"><tr><td colspan="5" class="text-center text-muted">Memuat master pertanyaan…</td></tr></tbody>
                 </table>

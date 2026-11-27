@@ -115,7 +115,7 @@ $errorId = uniqid('error', true);
                                     <?php $argsId = $errorId . 'args' . $index ?>
                                     ( <a href="#" onclick="return toggle('<?= esc($argsId, 'attr') ?>');">arguments</a> )
                                     <div class="args" id="<?= esc($argsId, 'attr') ?>">
-                                        <table cellspacing="0">
+                                        <table class="fs-8 gy-2" cellspacing="0">
 
                                         <?php
                                         $params = null;
@@ -167,7 +167,7 @@ $errorId = uniqid('error', true);
 
                     <h3>$<?= esc($var) ?></h3>
 
-                    <table>
+                    <table class="fs-8 gy-2">
                         <thead>
                             <tr>
                                 <th>Key</th>
@@ -197,7 +197,7 @@ $errorId = uniqid('error', true);
                 <?php if (! empty($constants['user'])) : ?>
                     <h3>Constants</h3>
 
-                    <table>
+                    <table class="fs-8 gy-2">
                         <thead>
                             <tr>
                                 <th>Key</th>
@@ -226,7 +226,7 @@ $errorId = uniqid('error', true);
             <div class="content" id="request">
                 <?php $request = Services::request(); ?>
 
-                <table>
+                <table class="fs-8 gy-2">
                     <tbody>
                         <tr>
                             <td style="width: 10em">Path</td>
@@ -272,7 +272,7 @@ $errorId = uniqid('error', true);
 
                     <h3>$<?= esc($var) ?></h3>
 
-                    <table style="width: 100%">
+                    <table class="fs-8 gy-2" style="width: 100%">
                         <thead>
                             <tr>
                                 <th>Key</th>
@@ -310,7 +310,7 @@ $errorId = uniqid('error', true);
 
                     <h3>Headers</h3>
 
-                    <table>
+                    <table class="fs-8 gy-2">
                         <thead>
                             <tr>
                                 <th>Header</th>
@@ -336,7 +336,7 @@ $errorId = uniqid('error', true);
                 $response->setStatusCode(http_response_code());
             ?>
             <div class="content" id="response">
-                <table>
+                <table class="fs-8 gy-2">
                     <tr>
                         <td style="width: 15em">Response Status</td>
                         <td><?= esc($response->getStatusCode() . ' - ' . $response->getReasonPhrase()) ?></td>
@@ -349,7 +349,7 @@ $errorId = uniqid('error', true);
 
                     <h3>Headers</h3>
 
-                    <table>
+                    <table class="fs-8 gy-2">
                         <thead>
                             <tr>
                                 <th>Header</th>
@@ -383,7 +383,7 @@ $errorId = uniqid('error', true);
             <!-- Memory -->
             <div class="content" id="memory">
 
-                <table>
+                <table class="fs-8 gy-2">
                     <tbody>
                         <tr>
                             <td>Memory Usage</td>

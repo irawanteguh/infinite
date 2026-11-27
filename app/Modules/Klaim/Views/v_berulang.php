@@ -28,7 +28,7 @@
         <div class="app-table-heading"><div><h2 id="klaim-case-title" class="app-table-title">Daftar klaim</h2><p class="app-table-description">Telusuri pasien, nomor SEP, status klaim, dan catatan verifikasi.</p></div>
             <div class="app-table-search"><label for="searchtable" class="visually-hidden">Cari klaim</label><input id="searchtable" type="search" data-kt-customer-table-filter="search" class="form-control form-control-solid" placeholder="Cari klaim…" aria-label="Cari klaim"></div>
         </div>
-        <div class="klaim-case-scroll"><table class="table align-middle table-row-dashed klaim-case-table" id="dataraweklaim_table" data-datatable="manual">
+        <div class="klaim-case-scroll"><table class="table align-middle table-row-dashed klaim-case-table fs-8 gy-2" id="dataraweklaim_table" data-datatable="manual">
                 <thead><tr><th>No</th><th>Nomor SEP</th><th>Nama pasien</th><th>Layanan</th><th>Tanggal pulang</th><th>Nilai pengajuan</th><th>Status klaim</th><th>Aksi</th></tr></thead>
                 <tbody class="fw-bold text-gray-600" id="resultdataraweklaim"></tbody>
             </table></div>

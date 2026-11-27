@@ -132,12 +132,12 @@ table.measurements th,table.measurements td{font-size:9pt}
     <div class="small muted">INFINITE · LAPORAN KINERJA MUTU DAN KESELAMATAN PASIEN</div>
     <h1>Laporan Tahunan PMKP</h1>
     <div class="muted"><?= $esc($groupName) ?> · Tahun <?= $esc($periode->tahun ?? '-') ?></div>
-    <table class="meta">
+    <table class="meta fs-8 gy-2">
         <tr><td><b>Penanggung jawab</b></td><td><?= $esc($periode->pic_name ?? '-') ?></td><td><b>Status periode</b></td><td><?= $esc($periode->status_name ?? 'Aktif') ?></td></tr>
         <tr><td><b>Tim mutu</b></td><td><?= (int) ($periode->jumlah_tim ?? 0) ?> anggota</td><td><b>Waktu pembuatan</b></td><td><?= $esc($generatedAt) ?></td></tr>
     </table>
 </div>
-<table class="kpis"><tr>
+<table class="kpis fs-8 gy-2"><tr>
     <td><div class="kpi-value"><?= $indicatorCount ?></div><div class="kpi-label">Indikator mutu</div></td>
     <td><div class="kpi-value"><?= $scoredCount ?>/<?= $indicatorCount ?></div><div class="kpi-label">Indikator terukur</div></td>
     <td><div class="kpi-value"><?= $metPct === null ? '—' : $fmt($metPct, 1) . '%' ?></div><div class="kpi-label">Memenuhi target</div></td>
@@ -150,7 +150,7 @@ table.measurements th,table.measurements td{font-size:9pt}
 <?php if ($monthCount < 12): ?><div class="callout"><b>Cakupan data:</b> data tersedia pada <?= $monthCount ?> dari 12 bulan. Karena tahun pelaporan belum lengkap atau pencatatan belum penuh, simpulan tahunan perlu dibaca sebagai capaian sementara untuk bulan yang sudah tersedia.</div><?php endif; ?>
 
 <h2>2. Kinerja indikator mutu</h2>
-<table class="data"><thead><tr><th>No.</th><th>Kategori / Unit</th><th>Indikator dan analisis</th><th>Target</th><th>Rerata capaian</th><th>Data</th><th>Status</th><th>Numerator / denominator</th></tr></thead><tbody>
+<table class="data fs-8 gy-2"><thead><tr><th>No.</th><th>Kategori / Unit</th><th>Indikator dan analisis</th><th>Target</th><th>Rerata capaian</th><th>Data</th><th>Status</th><th>Numerator / denominator</th></tr></thead><tbody>
 <?php if (!$indicators): ?><tr><td colspan="8">Belum ada indikator aktif pada periode ini.</td></tr><?php endif; ?>
 <?php foreach ($indicators as $index => $row): $hasScore = $row->rata_pencapaian !== null && $row->rata_pencapaian !== ''; $met = $hasScore && $isMet($row); ?>
 <tr><td><?= $index + 1 ?></td><td><?= $esc($row->kategori) ?><br><span class="muted"><?= $esc($row->department) ?></span></td><td><b><?= $esc($row->indikator_code) ?></b><br><?= $esc($row->indikator) ?><div class="small muted" style="margin-top:4px"><b>Analisis:</b> <?php if (!$hasScore): ?>Belum ada capaian. Unit perlu melengkapi pengukuran dan memvalidasi sumber data.<?php elseif ($met): ?>Rerata memenuhi target. Pertahankan proses dan verifikasi konsistensi pencatatan selama <?= (int) $row->jumlah_bulan ?> bulan terukur.<?php else: ?>Rerata belum memenuhi target. Telaah penyebab bersama unit dan tetapkan uji perbaikan terukur melalui PDSA.<?php endif; ?><?= (int) $row->jumlah_bulan < 12 ? ' Data belum lengkap untuk 12 bulan sehingga interpretasi tahunan bersifat sementara.' : '' ?></div></td><td><?= $esc($row->target) ?> <?= $esc(trim((string) $row->satuan)) ?><br><span class="muted"><?= ($row->target_capaian ?? '') === 'L' ? 'Maksimal' : 'Minimal' ?></span></td><td><?= $hasScore ? $fmt($row->rata_pencapaian) . '%' : 'Belum dinilai' ?></td><td><?= (int) $row->jumlah_bulan ?>/12 bulan<br><?= (int) $row->jumlah_penilaian ?> rekaman</td><td><?= !$hasScore ? 'Belum ada data' : ($met ? 'Memenuhi' : 'Perlu perbaikan') ?></td><td><?= $fmt($row->total_numerator ?? 0, 0) ?> / <?= $fmt($row->total_denumerator ?? 0, 0) ?></td></tr>
@@ -163,7 +163,7 @@ table.measurements th,table.measurements td{font-size:9pt}
 <p class="small muted">Sumbu vertikal menunjukkan rerata persentase capaian semua indikator yang memiliki data pada bulan tersebut. Area yang kosong berarti tidak ada data pengukuran untuk bulan itu.</p>
 <?php if ($measurements): ?><pagebreak orientation="L" />
 <h3>Rincian pengukuran per bulan</h3>
-<table class="data measurements" autosize="1"><thead><tr><th width="5%">Bulan</th><th width="9%">Unit</th><th width="15%">Indikator</th><th width="11%">Numerator</th><th width="11%">Denominator</th><th width="7%">Capaian</th><th width="27%">Analisis / kendala</th><th width="15%">Rencana tindak lanjut</th></tr></thead><tbody>
+<table class="data measurements fs-8 gy-2" autosize="1"><thead><tr><th width="5%">Bulan</th><th width="9%">Unit</th><th width="15%">Indikator</th><th width="11%">Numerator</th><th width="11%">Denominator</th><th width="7%">Capaian</th><th width="27%">Analisis / kendala</th><th width="15%">Rencana tindak lanjut</th></tr></thead><tbody>
 <?php foreach ($measurements as $measurement):
     $cells = [
         $monthNames[(int) $measurement->bulan] ?? $measurement->bulan,
@@ -198,21 +198,21 @@ table.measurements th,table.measurements td{font-size:9pt}
 <h3>Analisis indikator prioritas</h3>
 <?php if (!$priorityIndicators): ?><div class="narrative"><?= $scoredCount ? 'Seluruh indikator yang memiliki data telah memenuhi target.' : 'Analisis prioritas belum dapat dibuat karena belum ada capaian terukur.' ?></div><?php else: ?>
 <p><?= count($priorityIndicators) ?> indikator terukur belum memenuhi target dan menjadi fokus tindak lanjut. Urutan berikut dimulai dari nilai rerata terendah; indikator dengan data bulan yang lebih sedikit perlu divalidasi sebelum penetapan intervensi.</p>
-<table class="data"><thead><tr><th>Indikator / Unit</th><th>Capaian dibanding target</th><th>Analisis dan fokus tindak lanjut</th></tr></thead><tbody>
+<table class="data fs-8 gy-2"><thead><tr><th>Indikator / Unit</th><th>Capaian dibanding target</th><th>Analisis dan fokus tindak lanjut</th></tr></thead><tbody>
 <?php foreach (array_slice($priorityIndicators, 0, 8) as $row): ?><tr><td><b><?= $esc($row->indikator_code) ?></b> · <?= $esc($row->indikator) ?><br><?= $esc($row->department) ?></td><td><?= $fmt($row->rata_pencapaian) ?>% · target <?= $esc($row->target) ?><?= ($row->target_capaian ?? '') === 'L' ? ' maks.' : ' min.' ?></td><td>Evaluasi variasi capaian per bulan dan validasi numerator/denominator. Telusuri penyebab bersama unit pemilik, tetapkan intervensi PDSA yang terukur, lalu pantau perubahan capaian.</td></tr><?php endforeach; ?>
 </tbody></table><?php endif; ?>
 
 <div class="page-break"></div>
 <h2>3. Analisis akar masalah — Fishbone</h2>
 <p><?= count($fishbones) ?> analisis fishbone memuat <?= $fishboneCauses ?> penyebab teridentifikasi. Sebaran penyebab menunjukkan kategori yang paling sering muncul sebagai area telaah lintas unit.</p>
-<?php if ($causeCounts): ?><table class="data"><thead><tr><th>Kategori sebab (6M)</th><th>Jumlah penyebab</th><th>Proporsi</th></tr></thead><tbody>
+<?php if ($causeCounts): ?><table class="data fs-8 gy-2"><thead><tr><th>Kategori sebab (6M)</th><th>Jumlah penyebab</th><th>Proporsi</th></tr></thead><tbody>
 <?php foreach ($causeCounts as $category => $count): ?><tr><td><?= $esc($category) ?></td><td><?= $count ?></td><td><?= $fishboneCauses ? $fmt($count / $fishboneCauses * 100, 1) : '0,0' ?>%</td></tr><?php endforeach; ?>
 </tbody></table><?php endif; ?>
 <?php if (!$fishbones): ?><div class="narrative">Belum ada analisis fishbone pada periode ini.</div><?php endif; ?>
 <?php foreach ($fishbones as $index => $analysis): ?>
 <h3>3.<?= $index + 1 ?> <?= $esc($analysis->problem) ?></h3>
 <p class="small"><b>Unit:</b> <?= $esc($analysis->department) ?> &nbsp; <b>Indikator:</b> <?= $esc($analysis->indikator ?: 'Tidak ditautkan') ?><?= $analysis->indikator_code ? ' (' . $esc($analysis->indikator_code) . ')' : '' ?></p>
-<table class="fishbone"><tr>
+<table class="fishbone fs-8 gy-2"><tr>
 <?php $categories = ['Man','Machine','Method','Material','Measurement','Environment']; foreach ($categories as $catIndex => $category): $items = array_values(array_filter($analysis->causes, static function ($cause) use ($category, $categoryMatches) { return $categoryMatches($cause->category ?? '', $category); })); ?>
 <td style="border-top:3px solid <?= $categoryColors[$category] ?>"><b style="color:<?= $categoryColors[$category] ?>"><?= $esc($category) ?></b><?php if (!$items): ?><div class="muted small">Belum ada penyebab</div><?php else: foreach (array_slice($items, 0, 4) as $cause): ?><div class="small">• <?= $esc($cause->cause) ?> <span class="muted">(<?= $esc($cause->priority ?? 'medium') ?>)</span></div><?php endforeach; if (count($items) > 4): ?><div class="muted small">+<?= count($items) - 4 ?> penyebab lain</div><?php endif; endif; ?></td>
 <?php if ($catIndex === 2): ?></tr><tr><td class="spine" colspan="3">◀ <?= $esc($analysis->problem) ?> · masalah utama</td></tr><tr><?php endif; endforeach; ?>
@@ -223,7 +223,7 @@ table.measurements th,table.measurements td{font-size:9pt}
 <div class="page-break"></div>
 <h2>4. Program perbaikan — PDSA</h2>
 <p><?= count($cycles) ?> item/header perbaikan PDSA tercatat dengan <?= $pdsaItems ?> butir aktivitas. <?= $pdsaItems ? $pdsaCompleted . ' (' . $fmt($pdsaCompletion, 1) . '%) ditandai selesai.' : 'Belum ada butir aktivitas PDSA.' ?></p>
-<table class="data"><thead><tr><th>Tahap</th><th>Butir aktivitas</th><th>Makna evaluasi</th></tr></thead><tbody>
+<table class="data fs-8 gy-2"><thead><tr><th>Tahap</th><th>Butir aktivitas</th><th>Makna evaluasi</th></tr></thead><tbody>
 <?php foreach (['Plan'=>'Rencana dan prediksi','Do'=>'Pelaksanaan uji perubahan','Study'=>'Analisis hasil','Act'=>'Keputusan tindak lanjut'] as $phase => $label): ?><tr><td><b><?= $phase ?></b> · <?= $label ?></td><td><?= $phaseCounts[$phase] ?> butir</td><td><?= $phaseCounts[$phase] ? 'Terdokumentasi pada siklus; tinjau kesesuaian rencana, bukti pelaksanaan, hasil, dan keputusan.' : 'Belum ada aktivitas pada tahap ini; lengkapi agar siklus perbaikan dapat dievaluasi secara utuh.' ?></td></tr><?php endforeach; ?>
 </tbody></table>
 <?php if (!$cycles): ?><div class="narrative">Belum ada PDSA pada periode ini.</div><?php endif; ?>
@@ -231,7 +231,7 @@ table.measurements th,table.measurements td{font-size:9pt}
 <h3>4.<?= $index + 1 ?> <?= $esc($cycle->title ?: 'PDSA') ?></h3>
 <p class="small"><b>Unit:</b> <?= $esc($cycle->department) ?> &nbsp; <b>Indikator:</b> <?= $esc($cycle->indikator ?: 'Tidak ditautkan') ?> &nbsp; <b>Status:</b> <?= $esc($cycle->status) ?></p>
 <p><b>Masalah:</b> <?= nl2br($esc($cycle->problem ?: 'Belum dirumuskan')) ?><br><b>Tujuan perbaikan:</b> <?= nl2br($esc($cycle->aim ?: 'Belum ditetapkan')) ?></p>
-<table width="100%" style="border-collapse:separate;border-spacing:5px 0;table-layout:fixed;text-align:center;margin:10px 0 5px"><tr>
+<table class="fs-8 gy-2" width="100%" style="border-collapse:separate;border-spacing:5px 0;table-layout:fixed;text-align:center;margin:10px 0 5px"><tr>
 <?php foreach (['Plan','Do','Study','Act'] as $phaseIndex => $phase): ?>
 <td style="width:22%;height:68px;vertical-align:middle;border:1px solid <?= $phaseStyle[$phase][0] ?>;border-top:4px solid <?= $phaseStyle[$phase][0] ?>;background:<?= $phaseStyle[$phase][1] ?>;padding:4px 2px">
 <div style="font-size:14pt;font-weight:bold;color:<?= $phaseStyle[$phase][0] ?>;line-height:1.2"><?= $phase ?></div>
@@ -239,7 +239,7 @@ table.measurements th,table.measurements td{font-size:9pt}
 </td>
 <?php if ($phaseIndex < 3): ?><td style="width:4%;vertical-align:middle;font-size:16pt;color:#8195a9">&#8250;</td><?php endif; endforeach; ?>
 </tr><tr><td colspan="7" style="text-align:right;padding:8px 4% 0;font-size:8pt;color:#728499">Act menjadi masukan untuk perencanaan berikutnya &#8635;</td></tr></table>
-<table class="phase-table"><tr><?php foreach (['Plan','Do','Study','Act'] as $phase): $items = array_values(array_filter($cycle->items, static function ($item) use ($phase) { return strcasecmp((string) $item->phase, $phase) === 0; })); ?>
+<table class="phase-table fs-8 gy-2"><tr><?php foreach (['Plan','Do','Study','Act'] as $phase): $items = array_values(array_filter($cycle->items, static function ($item) use ($phase) { return strcasecmp((string) $item->phase, $phase) === 0; })); ?>
 <td><div class="phase-title" style="background:<?= $phaseStyle[$phase][0] ?>"><?= $phase ?> · <?= count($items) ?> item</div><?php if (!$items): ?><span class="muted">Belum diisi</span><?php else: foreach ($items as $item): ?><div style="margin:4px 0"><span class="<?= (int) ($item->completed ?? 0) === 1 ? 'check' : 'pending' ?>"><?= (int) ($item->completed ?? 0) === 1 ? '☑' : '□' ?></span> <?= $esc($item->item_text) ?></div><?php endforeach; endif; ?></td>
 <?= $phase === 'Do' ? '</tr><tr>' : '' ?>
 <?php endforeach; ?></tr></table>

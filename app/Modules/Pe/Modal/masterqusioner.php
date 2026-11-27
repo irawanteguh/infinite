@@ -32,7 +32,7 @@
                 </div>
                 <div class="d-flex gap-2"><button type="submit" class="btn btn-sm btn-primary">Simpan domain</button><button type="button" id="pe-domain-reset" class="btn btn-sm btn-light">Batal / tambah baru</button></div>
             </form>
-            <div class="table-responsive"><table class="table table-row-dashed align-middle gy-2"><thead><tr class="fw-bold text-muted"><th>Domain</th><th>Status</th><th class="text-end">Aksi</th></tr></thead><tbody id="pe-domain-list"></tbody></table></div>
+            <div class="table-responsive"><table class="table table-row-dashed align-middle gy-2 fs-8"><thead><tr class="fw-bold text-muted"><th>Domain</th><th>Status</th><th class="text-end">Aksi</th></tr></thead><tbody id="pe-domain-list"></tbody></table></div>
         </div>
         <div class="modal-footer"><button type="button" class="btn btn-light" data-bs-dismiss="modal">Tutup</button></div>
     </div></div>

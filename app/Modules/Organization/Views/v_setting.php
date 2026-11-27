@@ -45,7 +45,7 @@
                 <i class="bi bi-search position-absolute ms-6 text-muted"></i>
                 <input type="search" class="form-control form-control-solid os-search ps-15" placeholder="Cari riwayat izin" aria-label="Cari riwayat izin" id="grant-history-search">
             </div>
-            <div class="table-responsive os-table-scroll" role="region" aria-label="Riwayat izin departemen" tabindex="0"><table class="table align-middle table-row-dashed gy-2" id="grant-history-table">
+            <div class="table-responsive os-table-scroll" role="region" aria-label="Riwayat izin departemen" tabindex="0"><table class="table align-middle table-row-dashed gy-2 fs-8" id="grant-history-table">
                 <thead><tr class="fw-bolder text-muted bg-light">
                     <th class="text-start ps-4 rounded-start">#</th>
                     <th>Departemen</th><th>Diberikan</th><th>Berakhir</th><th>Status</th><th>Aktivasi</th>

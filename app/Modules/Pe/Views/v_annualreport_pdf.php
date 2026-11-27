@@ -161,18 +161,18 @@ body{font-family:dejavusans;font-size:9pt;color:#243b53;line-height:1.55}h1{font
 <h2>1. Ringkasan eksekutif</h2>
 <p><b><?= $n($data['total'],0) ?> pengisian</b> tercatat pada <?= $activeMonths ?> bulan dalam tahun laporan. Jumlah pengisian bukan jumlah orang unik.</p>
 <h3>1.1 Ringkasan PREM dan PROM</h3>
-<table class="data"><thead><tr><th>Jenis penilaian</th><th>Pengisian</th><th>Hasil utama</th></tr></thead><tbody>
+<table class="data fs-8 gy-2"><thead><tr><th>Jenis penilaian</th><th>Pengisian</th><th>Hasil utama</th></tr></thead><tbody>
 <tr><td><b>PREM</b><br>Pengalaman pelayanan</td><td><?= $n($data['counts']['PREM'],0) ?></td><td><?php if($data['premAverage'] !== null): ?>Rerata <b><?= $n($data['premAverage']) ?> / 5</b><br><?= $n($data['positive'],1) ?>% jawaban bernilai 4-5<?php else: ?>Belum ada nilai PREM.<?php endif; ?></td></tr>
 <tr><td><b>PROM</b><br>Kondisi pasien sebelum dan sesudah perawatan</td><td><?= $n($data['counts']['T0']+$data['counts']['T1'],0) ?><br>T0: <?= $n($data['counts']['T0'],0) ?> | T1: <?= $n($data['counts']['T1'],0) ?></td><td><?php if($data['pairs']): ?><b><?= $n($data['pairs'],0) ?> pasangan</b> dapat dibandingkan<br>Perubahan rerata <b><?= $data['delta'] > 0 ? '+' : '' ?><?= $n($data['delta']) ?> poin</b><?php else: ?>Belum ada pasangan T0-T1 yang dapat dibandingkan.<?php endif; ?></td></tr>
 </tbody></table>
 <h3>1.2 Detail PREM - Patient-Reported Experience Measures</h3>
-<table class="data"><thead><tr><th>Ukuran</th><th>Hasil</th><th>Penjelasan</th></tr></thead><tbody>
+<table class="data fs-8 gy-2"><thead><tr><th>Ukuran</th><th>Hasil</th><th>Penjelasan</th></tr></thead><tbody>
 <tr><td>Jumlah pengisian</td><td><?= $n($data['counts']['PREM'],0) ?></td><td>Kuesioner PREM yang dikirim.</td></tr>
 <tr><td>Rerata skor</td><td><?= $n($data['premAverage']) ?> / 5</td><td>Rerata dari rerata skor setiap pengisian.</td></tr>
 <tr><td>Jawaban positif</td><td><?= $n($data['positive'],1) ?><?= $data['positive'] === null ? '' : '%' ?></td><td><?= $n($data['distribution'][4]+$data['distribution'][5],0) ?> dari <?= $n($data['answerCount'],0) ?> jawaban bernilai 4 atau 5.</td></tr>
 </tbody></table>
 <h3>1.3 Detail PROM - Patient-Reported Outcome Measures</h3>
-<table class="data"><thead><tr><th>Ukuran</th><th>Hasil</th><th>Penjelasan</th></tr></thead><tbody>
+<table class="data fs-8 gy-2"><thead><tr><th>Ukuran</th><th>Hasil</th><th>Penjelasan</th></tr></thead><tbody>
 <tr><td>Pengisian T0 / T1</td><td><?= $n($data['counts']['T0'],0) ?> / <?= $n($data['counts']['T1'],0) ?></td><td>T0: awal perawatan. T1: saat pulang.</td></tr>
 <tr><td>Pasangan yang dibandingkan</td><td><?= $n($data['pairs'],0) ?></td><td>Instrumen, pelayanan, dan nomor rekam medis yang sama.</td></tr>
 <tr><td>Rerata PRE menuju POST</td><td><?= $n($data['preAverage']) ?> → <?= $n($data['postAverage']) ?></td><td>Skala 1-5, dihitung dari pasangan yang sama.</td></tr>
@@ -185,7 +185,7 @@ body{font-family:dejavusans;font-size:9pt;color:#243b53;line-height:1.55}h1{font
 <h3>2.1 Tren nilai dan jumlah pengisian</h3>
 <div class="legend"><span style="color:#087e82">PREM</span> &nbsp; | &nbsp; <span style="color:#527fbc">PROM PRE / T0</span> &nbsp; | &nbsp; <span style="color:#cb8b37">PROM POST / T1</span></div>
 <?= $chart($data['monthlyAverages']) ?>
-<table class="data"><thead><tr><th>Bulan</th><th>n PREM</th><th>Nilai PREM</th><th>n T0</th><th>Nilai T0</th><th>n T1</th><th>Nilai T1</th></tr></thead><tbody><?php foreach ($data['monthly'] as $month=>$counts): ?><tr><td><?= $months[(int)substr($month,5,2)-1] ?></td><?php foreach ($phases as $phase=>$label): ?><td><?= $counts[$phase] ?></td><td><?= $n($data['monthlyAverages'][$month][$phase]) ?></td><?php endforeach; ?></tr><?php endforeach; ?></tbody></table>
+<table class="data fs-8 gy-2"><thead><tr><th>Bulan</th><th>n PREM</th><th>Nilai PREM</th><th>n T0</th><th>Nilai T0</th><th>n T1</th><th>Nilai T1</th></tr></thead><tbody><?php foreach ($data['monthly'] as $month=>$counts): ?><tr><td><?= $months[(int)substr($month,5,2)-1] ?></td><?php foreach ($phases as $phase=>$label): ?><td><?= $counts[$phase] ?></td><td><?= $n($data['monthlyAverages'][$month][$phase]) ?></td><?php endforeach; ?></tr><?php endforeach; ?></tbody></table>
 <p class="small muted">n adalah jumlah pengisian. Nilai adalah rerata dari rerata jawaban tiap respons yang memiliki skor. Tanda - berarti belum ada nilai; garis terputus pada bulan kosong.</p>
 <div class="break"></div><h3>2.2 Analisis perubahan nilai bulanan</h3>
 <p>Bagian ini menunjukkan arah perubahan rerata skor sepanjang tahun. Baca bersama jumlah pengisian pada tabel bulanan agar perubahan nilai memiliki konteks.</p>
@@ -208,7 +208,7 @@ body{font-family:dejavusans;font-size:9pt;color:#243b53;line-height:1.55}h1{font
     }
     $flat = abs($delta) < 0.005;
 ?>
-<table class="data"><thead><tr><th>Awal pengamatan</th><th>Akhir pengamatan</th><th>Perubahan</th></tr></thead><tbody><tr>
+<table class="data fs-8 gy-2"><thead><tr><th>Awal pengamatan</th><th>Akhir pengamatan</th><th>Perubahan</th></tr></thead><tbody><tr>
 <td><?= $firstMonth ?><br><b><?= $n($first) ?> / 5</b></td>
 <td><?= $lastMonth ?><br><b><?= $n($last) ?> / 5</b></td>
 <td><b><?= $flat ? 'Relatif tetap' : ($delta > 0 ? 'Naik ' : 'Turun ') . $n(abs($delta)) . ' poin' ?></b></td>
@@ -221,15 +221,15 @@ body{font-family:dejavusans;font-size:9pt;color:#243b53;line-height:1.55}h1{font
 <div class="break"></div><h2>3. Analisis instrumen dan domain</h2>
 <h3>3.1 Komposisi pelayanan</h3>
 <p class="small muted">Proporsi pengisian menurut jenis pelayanan, dari seluruh pengisian PREM dan PROM.</p>
-<table width="100%" style="border-collapse:collapse"><tr>
+<table class="fs-8 gy-2" width="100%" style="border-collapse:collapse"><tr>
 <td width="44%" style="vertical-align:middle;padding:0 10px 0 0"><?= $pieChart($data['services'], $serviceColors) ?></td>
 <td width="56%" style="vertical-align:middle;padding:0">
-<table class="data"><thead><tr><th>Pelayanan</th><th>Pengisian</th><th>Proporsi</th></tr></thead><tbody>
+<table class="data fs-8 gy-2"><thead><tr><th>Pelayanan</th><th>Pengisian</th><th>Proporsi</th></tr></thead><tbody>
 <?php foreach ($serviceLabels as $key=>$label): ?><tr><td><span style="color:<?= $serviceColors[$key] ?>">&#9632;</span> <?= $label ?></td><td><?= $n($data['services'][$key],0) ?></td><td><?= $n($data['total'] ? $data['services'][$key]/$data['total']*100 : null,1) ?><?= $data['total'] ? '%' : '' ?></td></tr><?php endforeach; ?>
 </tbody></table></td></tr></table>
 
 <h3>3.2 Ringkasan per instrumen</h3>
-<table class="data"><thead><tr><th>Instrumen</th><th>PREM n / nilai</th><th>T0 n / nilai</th><th>T1 n / nilai</th><th>Pasangan / selisih</th></tr></thead><tbody><?php foreach($data['instrumentStats'] as $item): ?><tr><td><?= $e($item['name']) ?><br><?= $e($item['type']) ?></td><?php foreach($phases as $phase=>$label): ?><td><?= $item['counts'][$phase] ?> / <?= $n($item['averages'][$phase]) ?></td><?php endforeach; ?><td><?= $item['pairs'] ?> / <?= $n($item['delta']) ?></td></tr><?php endforeach; ?><?php if(!$data['instrumentStats']): ?><tr><td colspan="5">Belum ada respons instrumen.</td></tr><?php endif; ?></tbody></table>
+<table class="data fs-8 gy-2"><thead><tr><th>Instrumen</th><th>PREM n / nilai</th><th>T0 n / nilai</th><th>T1 n / nilai</th><th>Pasangan / selisih</th></tr></thead><tbody><?php foreach($data['instrumentStats'] as $item): ?><tr><td><?= $e($item['name']) ?><br><?= $e($item['type']) ?></td><?php foreach($phases as $phase=>$label): ?><td><?= $item['counts'][$phase] ?> / <?= $n($item['averages'][$phase]) ?></td><?php endforeach; ?><td><?= $item['pairs'] ?> / <?= $n($item['delta']) ?></td></tr><?php endforeach; ?><?php if(!$data['instrumentStats']): ?><tr><td colspan="5">Belum ada respons instrumen.</td></tr><?php endif; ?></tbody></table>
 <p class="small muted">Setiap instrumen dibaca sesuai isi pertanyaannya. Selisih adalah rerata perubahan pasangan PROM, bukan selisih seluruh rerata T1 dan T0.</p>
 <?php if ($data['instrumentStats']): ?><h3>3.3 Tren bulanan per instrumen</h3><?php endif; ?>
 <?php foreach ($data['instrumentStats'] as $instrumentIndex => $item): $instrumentPhases = $item['type'] === 'PREM' ? ['PREM'=>'PREM'] : ['T0'=>'PROM PRE / T0', 'T1'=>'PROM POST / T1']; ?>
@@ -237,14 +237,14 @@ body{font-family:dejavusans;font-size:9pt;color:#243b53;line-height:1.55}h1{font
 <p class="small muted"><?= $e($item['type']) ?> | Rerata skor tiap pengisian menurut bulan pengiriman, skala 1-5.</p>
 <div class="legend"><?php if ($item['type'] === 'PREM'): ?><span style="color:#087e82">PREM</span><?php else: ?><span style="color:#527fbc">PROM PRE / T0</span> &nbsp; | &nbsp; <span style="color:#cb8b37">PROM POST / T1</span><?php endif; ?></div>
 <?= $chart($item['monthlyAverages']) ?>
-<table class="data"><thead><tr><th>Bulan</th><?php foreach ($instrumentPhases as $phase=>$label): ?><th><?= $e($label) ?> - pengisian</th><th>Rerata skor</th><?php endforeach; ?></tr></thead><tbody>
+<table class="data fs-8 gy-2"><thead><tr><th>Bulan</th><?php foreach ($instrumentPhases as $phase=>$label): ?><th><?= $e($label) ?> - pengisian</th><th>Rerata skor</th><?php endforeach; ?></tr></thead><tbody>
 <?php foreach ($item['monthlyAverages'] as $month=>$averages): ?><tr><td><?= $months[(int) substr($month,5,2)-1] ?></td><?php foreach ($instrumentPhases as $phase=>$label): ?><td><?= $n($item['monthlyCounts'][$month][$phase],0) ?></td><td><?= $n($averages[$phase]) ?></td><?php endforeach; ?></tr><?php endforeach; ?>
 </tbody></table>
 <p class="small muted">Tanda - berarti belum ada nilai. Garis terputus pada bulan tanpa nilai; titik tunggal tetap ditampilkan. Setiap pengisian bernilai memiliki bobot sama. Untuk PROM, grafik mencakup seluruh pengisian T0/T1, bukan hanya pasangan pasien yang sama.</p>
 <?php endforeach; ?>
 
 <h3>3.4 Penilaian per domain</h3>
-<table class="data"><thead><tr><th>Domain / instrumen</th><th>PREM</th><th>T0</th><th>T1</th><th>Jumlah pengisian</th></tr></thead><tbody><?php foreach($data['domains'] as $domain): ?><tr><td><?= $e($domain['name']) ?><br><span class="muted"><?= $e($domain['instrument']) ?></span></td><?php foreach($phases as $phase=>$label): ?><td><?= $n($domain['averages'][$phase]) ?></td><?php endforeach; ?><td><?= $domain['submissionCount'] ?></td></tr><?php endforeach; ?><?php if(!$data['domains']): ?><tr><td colspan="5">Belum ada jawaban domain.</td></tr><?php endif; ?></tbody></table>
+<table class="data fs-8 gy-2"><thead><tr><th>Domain / instrumen</th><th>PREM</th><th>T0</th><th>T1</th><th>Jumlah pengisian</th></tr></thead><tbody><?php foreach($data['domains'] as $domain): ?><tr><td><?= $e($domain['name']) ?><br><span class="muted"><?= $e($domain['instrument']) ?></span></td><?php foreach($phases as $phase=>$label): ?><td><?= $n($domain['averages'][$phase]) ?></td><?php endforeach; ?><td><?= $domain['submissionCount'] ?></td></tr><?php endforeach; ?><?php if(!$data['domains']): ?><tr><td colspan="5">Belum ada jawaban domain.</td></tr><?php endif; ?></tbody></table>
 <p>Jumlah pengisian dihitung satu kali per domain; T0 dan T1 terpisah, bukan orang unik. Rerata domain memakai seluruh jawaban. Kelompok pengisi T0/T1 dapat berbeda; verifikasi konteksnya bersama unit terkait.</p>
 <?php $domainGroupNumber = 0; foreach ($domainGroups as $group): $domainGroupNumber++; ?>
 <?php $domains = $group['domains'];
@@ -262,7 +262,7 @@ body{font-family:dejavusans;font-size:9pt;color:#243b53;line-height:1.55}h1{font
 <h4>3.5.<?= $domainGroupNumber ?> <?= $e($group['name']) ?></h4>
 <p class="small muted"><?php if ($group['type'] === 'PREM'): ?>Domain diurutkan dari rerata PREM terendah. Mulai telaah dari domain di bagian atas; urutan ini bukan penilaian gagal memenuhi target.<?php else: ?>Domain diurutkan dari rerata T1 terendah; domain tanpa T1 berada di akhir. Biru: T0, jingga: T1. Perbedaan skor belum menunjukkan perubahan pasien yang sama.<?php endif; ?></p>
 <?= $group['type'] === 'PROM' ? $groupedPhaseChart($domains) : $barChart($domainBars, 5, '/ 5', 260) ?>
-<table class="data"><thead><tr><th>Domain</th><?php foreach ($domainPhases as $phase=>$label): ?><th><?= $label ?></th><?php endforeach; ?><th>Pengisian</th></tr></thead><tbody>
+<table class="data fs-8 gy-2"><thead><tr><th>Domain</th><?php foreach ($domainPhases as $phase=>$label): ?><th><?= $label ?></th><?php endforeach; ?><th>Pengisian</th></tr></thead><tbody>
 <?php foreach ($domains as $index=>$domain): ?><tr><td><?= $e($domain['name']) ?></td><?php foreach ($domainPhases as $phase=>$label): ?><td><?= $n($domain['averages'][$phase]) ?></td><?php endforeach; ?><td><?= $n($domain['submissionCount'],0) ?></td></tr><?php endforeach; ?>
 </tbody></table>
 <p class="small muted">Skala jawaban 1-5; batang dimulai dari 0 untuk perbandingan visual. Tanda - berarti belum ada nilai. Rerata dihitung dari seluruh jawaban domain. Pertimbangkan jumlah pengisian dan makna skor instrumen saat menentukan tindak lanjut; tidak ada ambang prioritas yang ditetapkan otomatis.</p>
@@ -279,29 +279,29 @@ body{font-family:dejavusans;font-size:9pt;color:#243b53;line-height:1.55}h1{font
 <?php endif; ?>
 <h3>4.2 Arah perubahan pasangan</h3>
 <?php $directionColors = ['improved'=>'#087e82','unchanged'=>'#cbac55','declined'=>'#be6464']; ?>
-<table width="100%" style="border-collapse:collapse"><tr>
+<table class="fs-8 gy-2" width="100%" style="border-collapse:collapse"><tr>
 <td width="44%" style="vertical-align:middle;padding:0 10px 0 0"><?= $pieChart([
     'improved'=>$data['improved'], 'unchanged'=>$data['unchanged'], 'declined'=>$data['declined'],
 ], $directionColors, 'Belum ada pasangan') ?></td>
 <td width="56%" style="vertical-align:middle;padding:0">
-<table class="data"><thead><tr><th>Arah skor POST dibanding PRE</th><th>Pasangan</th><th>Proporsi</th></tr></thead><tbody><?php foreach(['improved'=>'Skor naik','unchanged'=>'Skor tetap','declined'=>'Skor turun'] as $key=>$label): ?><tr><td><span style="color:<?= $directionColors[$key] ?>">&#9632;</span> <?= $label ?></td><td><?= $data[$key] ?></td><td><?= $n($data['pairs'] ? $data[$key]/$data['pairs']*100 : null,1) ?><?= $data['pairs'] ? '%' : '' ?></td></tr><?php endforeach; ?></tbody></table>
+<table class="data fs-8 gy-2"><thead><tr><th>Arah skor POST dibanding PRE</th><th>Pasangan</th><th>Proporsi</th></tr></thead><tbody><?php foreach(['improved'=>'Skor naik','unchanged'=>'Skor tetap','declined'=>'Skor turun'] as $key=>$label): ?><tr><td><span style="color:<?= $directionColors[$key] ?>">&#9632;</span> <?= $label ?></td><td><?= $data[$key] ?></td><td><?= $n($data['pairs'] ? $data[$key]/$data['pairs']*100 : null,1) ?><?= $data['pairs'] ? '%' : '' ?></td></tr><?php endforeach; ?></tbody></table>
 </td></tr></table>
 <p class="small muted">Satu pasangan per instrumen, jenis pelayanan, dan nomor rekam medis: T0 terakhir dengan T1 pertama pada atau setelah waktu T0, keduanya dalam tahun laporan. Tanpa identitas episode perawatan, pasangan belum menjamin kunjungan yang sama. Arah skor perlu ditafsirkan sesuai instrumen; laporan ini tidak menetapkan ambang perubahan klinis.</p>
 <div class="break"></div><h2>5. Area PREM dan PROM yang perlu ditinjau</h2>
 <h3>5.1 Prioritas pertanyaan PREM</h3>
 <p>Lima pertanyaan PREM dengan rerata terendah. Peringkat bersifat relatif terhadap data tahun ini, bukan penilaian gagal memenuhi target.</p>
-<table class="data"><thead><tr><th>Pertanyaan / domain / instrumen</th><th>Rerata</th><th>Positif</th><th>Jawaban</th></tr></thead><tbody><?php foreach($data['priorities'] as $item): ?><tr><td><?= $e($item['question']) ?><br><span class="muted"><?= $e($item['domain']) ?> / <?= $e($item['instrument']) ?></span></td><td><?= $n($item['average']) ?></td><td><?= $n($item['positive'],1) ?>%</td><td><?= $item['count'] ?></td></tr><?php endforeach; ?><?php if(!$data['priorities']): ?><tr><td colspan="4">Belum ada jawaban PREM.</td></tr><?php endif; ?></tbody></table>
+<table class="data fs-8 gy-2"><thead><tr><th>Pertanyaan / domain / instrumen</th><th>Rerata</th><th>Positif</th><th>Jawaban</th></tr></thead><tbody><?php foreach($data['priorities'] as $item): ?><tr><td><?= $e($item['question']) ?><br><span class="muted"><?= $e($item['domain']) ?> / <?= $e($item['instrument']) ?></span></td><td><?= $n($item['average']) ?></td><td><?= $n($item['positive'],1) ?>%</td><td><?= $item['count'] ?></td></tr><?php endforeach; ?><?php if(!$data['priorities']): ?><tr><td colspan="4">Belum ada jawaban PREM.</td></tr><?php endif; ?></tbody></table>
 <h3>5.2 Distribusi jawaban PREM</h3>
 <?php if ($data['answerCount']): ?>
 <p class="small muted">Proporsi jawaban pada setiap skor. Skor 4-5 merupakan jawaban positif PREM.</p>
 <?= $barChart($distributionBars, 100, '%') ?>
 <?php endif; ?>
-<table class="data"><thead><tr><th>Pilihan jawaban</th><th>Jumlah jawaban</th><th>Proporsi</th></tr></thead><tbody><?php foreach($data['distribution'] as $score=>$count): ?><tr><td><?= $e(\Modules\Pe\Config\SkmQuestionnaire::defaultOptions()[$score]) ?></td><td><?= $count ?></td><td><?= $n($data['answerCount'] ? $count/$data['answerCount']*100 : null,1) ?><?= $data['answerCount'] ? '%' : '' ?></td></tr><?php endforeach; ?></tbody></table>
+<table class="data fs-8 gy-2"><thead><tr><th>Pilihan jawaban</th><th>Jumlah jawaban</th><th>Proporsi</th></tr></thead><tbody><?php foreach($data['distribution'] as $score=>$count): ?><tr><td><?= $e(\Modules\Pe\Config\SkmQuestionnaire::defaultOptions()[$score]) ?></td><td><?= $count ?></td><td><?= $n($data['answerCount'] ? $count/$data['answerCount']*100 : null,1) ?><?= $data['answerCount'] ? '%' : '' ?></td></tr><?php endforeach; ?></tbody></table>
 <div class="break"></div><h3>5.3 Area PROM yang perlu ditinjau</h3>
 <p>Untuk setiap instrumen, berikut maksimal lima pertanyaan dengan rerata T1 terendah. Nilai T0 ditampilkan sebagai konteks kondisi awal, bukan pembanding pasien yang sama.</p>
 <?php foreach ($data['promPriorities'] as $priorityIndex=>$instrument): ?>
 <h4>5.3.<?= $priorityIndex+1 ?> <?= $e($instrument['instrument']) ?></h4>
-<table class="data"><thead><tr><th>Pertanyaan / domain</th><th>Rerata T0</th><th>Pengisian T0</th><th>Rerata T1</th><th>Pengisian T1</th></tr></thead><tbody>
+<table class="data fs-8 gy-2"><thead><tr><th>Pertanyaan / domain</th><th>Rerata T0</th><th>Pengisian T0</th><th>Rerata T1</th><th>Pengisian T1</th></tr></thead><tbody>
 <?php foreach ($instrument['questions'] as $item): ?><tr><td><?= $e($item['question']) ?><br><span class="muted"><?= $e($item['domain']) ?></span></td><td><?= $n($item['averages']['T0']) ?></td><td><?= $n($item['counts']['T0'],0) ?></td><td><b><?= $n($item['averages']['T1']) ?></b></td><td><?= $n($item['counts']['T1'],0) ?></td></tr><?php endforeach; ?>
 <?php if (!$instrument['questions']): ?><tr><td colspan="5">Belum ada jawaban T1 untuk menentukan area tinjauan instrumen ini.</td></tr><?php endif; ?>
 </tbody></table>
@@ -325,7 +325,7 @@ body{font-family:dejavusans;font-size:9pt;color:#243b53;line-height:1.55}h1{font
 <h4>5.4.<?= $distributionIndex+1 ?> <?= $e($instrument['instrument']) ?></h4>
 <p>Grafik menunjukkan proporsi jawaban skor 1-5 pada T0 dan T1. Setiap persentase memakai total jawaban pada tahap yang bersangkutan.</p>
 <?= $groupedPhaseChart($scoreGroups, 100, '%') ?>
-<table class="data"><thead><tr><th>Pilihan jawaban</th><th>Jawaban T0</th><th>Proporsi T0</th><th>Jawaban T1</th><th>Proporsi T1</th></tr></thead><tbody>
+<table class="data fs-8 gy-2"><thead><tr><th>Pilihan jawaban</th><th>Jawaban T0</th><th>Proporsi T0</th><th>Jawaban T1</th><th>Proporsi T1</th></tr></thead><tbody>
 <?php foreach ($instrument['options'] as $score => $answerLabel): ?><tr><td><?= $e($instrument['options'][$score]) ?></td><?php foreach (['T0','T1'] as $phase): ?><td><?= $n($instrument['scores'][$phase][$score],0) ?></td><td><?= $n($totals[$phase] ? $instrument['scores'][$phase][$score]/$totals[$phase]*100 : null,1) ?><?= $totals[$phase] ? '%' : '' ?></td><?php endforeach; ?></tr><?php endforeach; ?>
 <tr><td><b>Total</b></td><?php foreach (['T0','T1'] as $phase): ?><td><b><?= $n($totals[$phase],0) ?></b></td><td><?= $totals[$phase] ? '100%' : '-' ?></td><?php endforeach; ?></tr>
 </tbody></table>
@@ -347,13 +347,13 @@ body{font-family:dejavusans;font-size:9pt;color:#243b53;line-height:1.55}h1{font
 <p>Artinya, pada kelompok yang dapat dipasangkan, <b><?= $data['delta'] > 0 ? 'skor rata-rata bergerak naik' : ($data['delta'] < 0 ? 'skor rata-rata bergerak turun' : 'skor rata-rata tidak berubah') ?></b>. Ini menggambarkan arah skor; manfaat klinis dan penyebab perubahan tetap harus dibaca sesuai instrumen serta kondisi pasien.</p>
 <?php else: ?><p>Terdapat <?= $n($data['counts']['T0'],0) ?> pengisian T0 dan <?= $n($data['counts']['T1'],0) ?> pengisian T1, tetapi belum ada pasangan yang dapat dibandingkan. Perubahan selama perawatan belum dapat dihitung; jumlah pengisian T0/T1 saja belum cukup untuk menyimpulkan perubahan pasien.</p><?php endif; ?>
 <?php if ($data['counts']['T0'] || $data['counts']['T1']): ?>
-<table class="data"><thead><tr><th>Instrumen PROM</th><th>Pengisian T0 / T1</th><th>Pasangan</th><th>Perubahan rerata</th></tr></thead><tbody>
+<table class="data fs-8 gy-2"><thead><tr><th>Instrumen PROM</th><th>Pengisian T0 / T1</th><th>Pasangan</th><th>Perubahan rerata</th></tr></thead><tbody>
 <?php foreach ($data['instrumentStats'] as $item): if ($item['type'] !== 'PROM') continue; ?><tr><td><?= $e($item['name']) ?></td><td><?= $n($item['counts']['T0'],0) ?> / <?= $n($item['counts']['T1'],0) ?></td><td><?= $n($item['pairs'],0) ?></td><td><?= $item['delta'] !== null && $item['delta'] > 0 ? '+' : '' ?><?= $n($item['delta']) ?> poin</td></tr><?php endforeach; ?>
 </tbody></table>
 <?php endif; ?>
 <div class="break"></div><h3>6.2 Usulan tindak lanjut berdasarkan temuan</h3>
 <p>Usulan berikut menghubungkan hasil pengukuran dengan langkah yang dapat dilakukan. Penanggung jawab, target, dan jadwal ditetapkan organisasi setelah temuan divalidasi.</p>
-<table class="data"><thead><tr><th>Temuan kuantitatif</th><th>Usulan tindakan</th><th>Yang dipantau saat evaluasi</th></tr></thead><tbody>
+<table class="data fs-8 gy-2"><thead><tr><th>Temuan kuantitatif</th><th>Usulan tindakan</th><th>Yang dipantau saat evaluasi</th></tr></thead><tbody>
 <tr><td><b>PREM</b><br><?php if ($data['answerCount']): ?><?= $n($data['positive'],1) ?>% jawaban bernilai 4-5; <?= $n($data['distribution'][1]+$data['distribution'][2],0) ?> jawaban bernilai 1-2.<?php else: ?>Belum ada jawaban PREM.<?php endif; ?></td><td><?= $data['answerCount'] ? 'Mulai dari domain dan pertanyaan dengan rerata terendah pada instrumen yang sama. Konfirmasi kendala melalui telaah proses dan diskusi pasien sebelum memilih perubahan pelayanan.' : 'Verifikasi ketersediaan instrumen dan proses pengumpulan jawaban PREM.' ?></td><td>Rerata domain/pertanyaan, persentase jawaban 4-5, dan jumlah pengisian pada instrumen serta pelayanan yang sama.</td></tr>
 <tr><td><b>PROM berpasangan</b><br><?= $n($data['pairs'],0) ?> pasangan; <?= $n($data['declined'],0) ?> memiliki skor POST lebih rendah.</td><td><?= $data['pairs'] ? 'Telaah pasangan dengan skor turun dan periksa makna skor instrumen serta konteks klinis. Pastikan T0 dan T1 terkait episode perawatan yang sesuai.' : 'Perkuat pengisian awal dan akhir perawatan serta konsistensi instrumen, jenis pelayanan, dan nomor rekam medis.' ?></td><td>Jumlah pasangan, rerata selisih POST-PRE, serta proporsi skor naik/tetap/turun per instrumen.</td></tr>
 <?php foreach ($data['promPriorities'] as $instrument): if (!$instrument['questions']) continue; $lowest = $instrument['questions'][0]; ?>

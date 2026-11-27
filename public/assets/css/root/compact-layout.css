@@ -25,6 +25,8 @@ body #kt_content :is(.mt-6,.mt-7,.mt-8,.mt-9,.mt-10){margin-top:18px!important}
 body #kt_content :is(.my-6,.my-7,.my-8,.my-9,.my-10){margin-block:18px!important}
 body #kt_content :is(.p-7,.p-8,.p-9,.p-10){padding:18px!important}
 body #kt_content .table :is(th,td){padding-block:8px!important}
+body #kt_content table.gy-2 :is(th,td),
+body .modal table.gy-2 :is(th,td){padding-block:.5rem!important}
 body #kt_content .btn:not(.btn-icon):not(.dropdown-item){padding:9px 14px;min-height:36px}
 body #kt_content .table .btn:not(.btn-icon):not(.dropdown-item){padding:6px 10px;min-height:32px}
 body .modal .modal-header{padding:16px 20px!important;min-height:0}

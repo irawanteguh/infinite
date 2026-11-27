@@ -58,6 +58,13 @@
             series,
             stroke:{width:3,curve:'straight'},
             markers:{size:4},
+            grid:{
+                borderColor:'#c5d8d9',
+                strokeDashArray:3,
+                xaxis:{lines:{show:false}},
+                yaxis:{lines:{show:true}},
+                padding:{left:8,right:12}
+            },
             xaxis:{categories:period.map(m=>months[m-1]),title:{text:'Bulan pulang'}},
             yaxis:{title:{text:'CMI'},labels:{formatter:value=>format.format(value)}},
             legend:{position:'top',horizontalAlign:'left',showForSingleSeries:true},

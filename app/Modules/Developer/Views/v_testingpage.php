@@ -20,6 +20,42 @@ $palette = [
         <p class="text-muted mb-0">Contoh komponen dan interaksi antarmuka dengan data dummy.</p>
     </header>
 
+    <section id="testing-controls" class="card mb-6" aria-labelledby="testing-controls-title">
+        <div class="card-header">
+            <div>
+                <h2 id="testing-controls-title">Input, select, dan button</h2>
+                <p class="text-muted mb-0">Padding 6px vertikal dan 10px horizontal, tinggi minimum 34px. Select menyediakan ruang 32px di kanan untuk panah.</p>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row g-4 align-items-end">
+                <div class="col-md-4">
+                    <label for="testing-control-input" class="form-label">Input</label>
+                    <input id="testing-control-input" type="text" class="form-control" placeholder="Masukkan nilai">
+                </div>
+                <div class="col-md-4">
+                    <label for="testing-control-select" class="form-label">Select</label>
+                    <select id="testing-control-select" class="form-select">
+                        <option>Text</option>
+                        <option>Secret</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="testing-control-select2" class="form-label">Select2</label>
+                    <select id="testing-control-select2" class="form-select" data-control="select2" data-hide-search="true" data-width="100%">
+                        <option>Text</option>
+                        <option>Secret</option>
+                    </select>
+                </div>
+                <div class="col-12 d-flex flex-wrap gap-2">
+                    <button type="button" class="btn btn-primary">Simpan</button>
+                    <button type="button" class="btn btn-light-primary">Tutup</button>
+                    <button type="button" class="btn btn-primary" disabled>Menyimpan…</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <div class="row g-5 mb-6">
         <?php foreach ([
             'chaotic' => 'Pola abstrak',
@@ -207,7 +243,7 @@ $palette = [
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table id="testing-table" class="table table-row-dashed align-middle w-100" data-datatable="manual">
+                <table id="testing-table" class="table table-row-dashed align-middle w-100 fs-8 gy-2" data-datatable="manual">
                     <thead>
                         <tr>
                             <th scope="col">Bulan</th>

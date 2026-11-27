@@ -154,7 +154,7 @@ function renderAggregateDepartments(rows) {
     return '<section class="department-detail my-3" aria-label="Rincian per departemen"><div class="department-detail-heading">'
         + '<div><span class="summary-eyebrow">KONTRIBUSI UNIT</span><h4>Rincian per departemen</h4><p>Capaian pengukuran dan pemenuhan target pada periode terpilih</p></div>'
         + '<span class="department-count"><i class="bi bi-buildings me-2"></i>' + departments.size + ' departemen</span></div>'
-        + '<div class="table-responsive"><table class="table align-middle department-detail-table mb-0">'
+        + '<div class="table-responsive"><table class="table fs-8 gy-2 align-middle department-detail-table mb-0">'
         + '<thead><tr class="fw-bolder text-muted"><th class="ps-4">#</th><th>Departemen</th><th class="text-center">Target</th>'
         + '<th class="text-center">Penilaian</th><th class="text-center">Total numerator</th><th class="text-center">Total denominator</th>'
         + '<th class="text-center">Capaian gabungan</th><th class="text-end pe-4">Ketercapaian target</th></tr></thead>'

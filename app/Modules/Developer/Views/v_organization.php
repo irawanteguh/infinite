@@ -46,7 +46,7 @@
 
     <div class="card-body pt-5">
         <div class="table-responsive do-table-scroll" role="region" tabindex="0" aria-label="Daftar organisasi, dapat digulir">
-            <table class="table align-middle table-row-dashed gy-2" id="masterorganization_table">
+            <table class="table align-middle table-row-dashed gy-2 fs-8" id="masterorganization_table">
                 <thead>
                     <tr class="fw-bolder text-muted bg-light">
                         <th class="text-start rounded-start ps-4">#</th>

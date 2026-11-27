@@ -6,10 +6,13 @@ use App\Controllers\BaseController;
 use CodeIgniter\Security\Exceptions\SecurityException;
 use Modules\Developer\Libraries\UserActivityMaintenance;
 use Modules\Developer\Models\UserActivityModel;
+use Modules\Developer\Models\MastermodulesModel;
+use Modules\Developer\Libraries\ModuleCatalogSync;
 
 class Os extends BaseController
 {
     private const PREVIEW_KEY = 'os_userlog_preview';
+    private const MODULE_PREVIEW_KEY = 'os_module_sync_preview';
 
     public function index()
     {
@@ -25,6 +28,14 @@ class Os extends BaseController
         }
         $logs = [];
         $logsError = '';
+        $canSyncModules = false;
+        try {
+            $canSyncModules = $this->canSyncModules();
+        } catch (\Throwable $e) {
+            log_message('error', 'Module sync permission check failed ({type}).', ['type' => get_class($e)]);
+        }
+        $modulePreview = session()->getTempdata(self::MODULE_PREVIEW_KEY);
+        if (!$canSyncModules || ($modulePreview['scope'] ?? null) !== $this->scope()) $modulePreview = null;
         if ($tableReady === true) {
             try {
                 $scope = $this->scope();
@@ -44,6 +55,8 @@ class Os extends BaseController
                     'logs' => $logs,
                     'logsError' => $logsError,
                     'retentionDays' => UserActivityModel::RETENTION_DAYS,
+                    'canSyncModules' => $canSyncModules,
+                    'modulePreview' => $modulePreview,
                 ]),
             ]));
     }
@@ -59,6 +72,67 @@ class Os extends BaseController
             \App\Libraries\UserActivity::setDetails(['Tabel' => 'dt01_gen_user_activity', 'Hasil' => 'Penyiapan selesai']);
             return 'Tabel aktivitas pengguna siap.';
         });
+    }
+
+    public function exportmodules()
+    {
+        if (strtoupper(request()->getMethod()) !== 'GET') return response()->setStatusCode(405)->setHeader('Allow', 'GET');
+        try {
+            if (!$this->canSyncModules()) return response()->setStatusCode(403)->setBody('Akses Master Modules diperlukan.');
+            $data = ModuleCatalogSync::export((new MastermodulesModel())->catalog());
+            \App\Libraries\UserActivity::setDetails(['Operasi' => 'Export Master Modules', 'Jumlah modul' => count($data['modules'])]);
+            return response()->download('infinite-modules-' . gmdate('Ymd-His') . '.json',
+                json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR))
+                ->setHeader('Cache-Control', 'private, no-store');
+        } catch (\Throwable $e) {
+            log_message('error', 'Module catalog export failed ({type}).', ['type' => get_class($e)]);
+            return redirect()->to(site_url('developer/os'), 303)->with('os_error', 'Export modul gagal. Periksa kesiapan katalog dan coba kembali.');
+        }
+    }
+
+    public function previewmodules()
+    {
+        return $this->runAction(function (array $scope): string {
+            if (!$this->canSyncModules()) throw new \DomainException('Akses Master Modules diperlukan untuk sinkronisasi.');
+            session()->removeTempdata(self::MODULE_PREVIEW_KEY);
+            $file = request()->getFile('module_file');
+            if (!$file || !$file->isValid() || strtolower($file->getClientExtension()) !== 'json'
+                || $file->getSize() > 2 * 1024 * 1024) {
+                throw new \DomainException('Pilih file JSON Export Master Modules, maksimal 2 MB.');
+            }
+            $source = ModuleCatalogSync::import((string) file_get_contents($file->getTempName()));
+            $plan = (new MastermodulesModel())->previewSync($source);
+            session()->setTempdata(self::MODULE_PREVIEW_KEY, [
+                'scope' => $scope, 'source' => $source, 'plan' => $plan,
+                'token' => bin2hex(random_bytes(24)), 'expires' => time() + 900,
+            ], 900);
+            \App\Libraries\UserActivity::setDetails(['Operasi' => 'Preview sinkronisasi Master Modules', 'Ringkasan' => $plan['summary']]);
+            return 'Preview sinkronisasi siap. Periksa perubahan sebelum diterapkan.';
+        });
+    }
+
+    public function applymodules()
+    {
+        return $this->runAction(function (array $scope): string {
+            if (!$this->canSyncModules()) throw new \DomainException('Akses Master Modules diperlukan untuk sinkronisasi.');
+            $preview = session()->getTempdata(self::MODULE_PREVIEW_KEY);
+            $token = request()->getPost('preview_token');
+            if (!$preview || ($preview['scope'] ?? null) !== $scope || !is_string($token)
+                || !hash_equals($preview['token'], $token) || $preview['expires'] < time()) {
+                throw new \DomainException('Preview tidak tersedia atau kedaluwarsa. Impor file kembali.');
+            }
+            $summary = (new MastermodulesModel())->applySync($preview['source'], $preview['plan']['revision'], $scope['user_id']);
+            session()->removeTempdata(self::MODULE_PREVIEW_KEY);
+            return sprintf('Sinkronisasi selesai. %d modul ditambahkan, %d diperbarui, %d sesuai.', $summary['add'], $summary['update'], $summary['unchanged']);
+        });
+    }
+
+    private function canSyncModules(): bool
+    {
+        $scope = $this->scope();
+        if (!session()->get('loggedin') || in_array('', $scope, true)) return false;
+        $state = (new \Modules\Hr\Models\AccessModel())->state($scope['group_id'], $scope['org_id'], $scope['user_id']);
+        return \App\Libraries\ModuleAccess::routeAllowed('developer', 'mastermodules', (new \App\Models\Modelrouting())->allMenus(), $state);
     }
 
     public function preview()

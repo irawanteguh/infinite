@@ -1,4 +1,38 @@
+/* Standard text input spacing across modules, toolbars, and dialogs. */
+:root {
+    --app-input-padding-y: 6px;
+    --app-input-padding-x: 10px;
+}
+body input:not([type]),
+body input:is([type="text"], [type="email"], [type="password"], [type="search"], [type="tel"], [type="url"], [type="number"], [type="date"], [type="datetime-local"], [type="month"], [type="week"], [type="time"]) {
+    padding-block: var(--app-input-padding-y) !important;
+    padding-inline: var(--app-input-padding-x);
+    min-height: 34px !important;
+}
+/* Select2 search fields use the same vertical spacing. */
+body input.select2-search__field {
+    padding-block: var(--app-input-padding-y) !important;
+}
 /* Application typography scale. Keep the framework root size to preserve rem-based layout. */
+body :is(#kt_content, #kt_toolbar, .modal, .swal2-popup, .prem-page, .login-card) :is(button.btn, a.btn, label.btn, input.btn):not(.btn-icon):not(.btn-close):not(.dropdown-item) {
+    padding: var(--app-input-padding-y) var(--app-input-padding-x) !important;
+    min-height: 34px !important;
+}
+body select.form-select:not(.select2-hidden-accessible),
+body select.form-control:not(.select2-hidden-accessible) {
+    padding: var(--app-input-padding-y) 32px var(--app-input-padding-y) var(--app-input-padding-x) !important;
+    min-height: 34px !important;
+}
+body .select2-container .select2-selection--single {
+    display: flex;
+    align-items: center;
+    padding: var(--app-input-padding-y) 32px var(--app-input-padding-y) var(--app-input-padding-x) !important;
+    min-height: 34px !important;
+}
+body .select2-container .select2-selection--single .select2-selection__rendered {
+    padding: 0 !important;
+    min-width: 0;
+}
 :root{
     --app-font-body:14px;--app-font-caption:12px;--app-font-table:13px;
     --app-font-control:14px;--app-font-button:13px;
@@ -17,6 +51,7 @@ body :is(.form-control,.form-select,.select2-selection__rendered,.select2-result
 body .btn:not(.btn-icon){font-size:var(--app-font-button)!important;line-height:1.5}
 body :is(.dropdown-item,.menu-sub .menu-link,.menu-title){font-size:var(--app-font-table)!important}
 body :is(.table th,.table td){font-size:var(--app-font-table)!important;line-height:1.6}
+body table.fs-8 :is(th,td){font-size:12px!important}
 body .table :is(p,span,strong,a:not(.btn),div){font-size:inherit!important}
 body .table :is(small,.text-muted){font-size:var(--app-font-caption)!important}
 body :is(.badge,.dataTables_info,.dataTables_length label,.page-link){font-size:var(--app-font-caption)!important}

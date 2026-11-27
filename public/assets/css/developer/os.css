@@ -87,6 +87,10 @@
 .os-page .os-status-ready i {
     color: inherit;
 }
+.os-page .os-module-actions { display: flex; align-items: end; flex-wrap: wrap; gap: 20px; width: 100%; }
+.os-page #os-modules-import { display: flex; align-items: end; flex-wrap: wrap; gap: 12px; flex: 1; min-width: min(100%, 280px); }
+.os-page .os-module-changes { min-width: 180px; }
+.os-page .os-module-changes summary { cursor: pointer; color: var(--app-status-teal-text); }
 .os-page .os-status-pending {
     color: var(--app-status-yellow-text);
     background: var(--app-status-yellow-bg);

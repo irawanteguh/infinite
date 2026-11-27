@@ -7,7 +7,7 @@
     <div class="card-header border-0 pt-5"><h3 class="card-title fw-bolder">Daftar Analisis</h3></div>
     <div class="card-body pt-0">
         <div class="table-responsive">
-            <table class="table align-middle table-row-dashed gy-3" id="fishboneTable">
+            <table class="table align-middle table-row-dashed gy-3 fs-8 gy-2" id="fishboneTable">
                 <thead><tr class="text-muted fw-bold"><th>Masalah</th><th>Indikator</th><th>Departemen</th><th>Periode</th><th class="text-end">Aksi</th></tr></thead>
                 <tbody id="fishboneRows" class="text-gray-700 fw-semibold"></tbody>
             </table>

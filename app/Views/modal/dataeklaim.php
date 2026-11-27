@@ -182,13 +182,20 @@ body .eklaim-alert .swal2-timer-progress-bar { background:#75bdb5; }#modal_uploa
                     </div>
 
                 </div>
-                <section class="card border" aria-labelledby="previewTxtEklaimTitle">
-                    <h3 class="fs-5 fw-bold m-0 px-5 py-4 border-bottom" id="previewTxtEklaimTitle">Pratinjau Data</h3>
-                    <div class="table-responsive px-5" tabindex="0" role="region" aria-labelledby="previewTxtEklaimTitle">
-                        <table class="table align-middle table-row-dashed gy-3 fs-7 mb-0 text-nowrap" id="tablePreviewEklaim">
+                <section class="card app-table-card" aria-labelledby="previewTxtEklaimTitle">
+                    <div class="card-header app-table-heading">
+                        <div>
+                            <h3 class="app-table-title" id="previewTxtEklaimTitle">Pratinjau data</h3>
+                            <p class="app-table-description">Periksa data E-Klaim sebelum diunggah.</p>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                    <div class="table-responsive" tabindex="0" role="region" aria-labelledby="previewTxtEklaimTitle">
+                        <table class="table align-middle table-row-dashed gy-3 fs-7 mb-0 text-nowrap fs-8 gy-2" id="tablePreviewEklaim">
                             <thead class="align-middle" id="headerPreviewtxtEklaim"></thead>
                             <tbody class="fw-bold text-gray-600" id="resultpreviewtxteklaim"></tbody>
                         </table>
+                    </div>
                     </div>
                 </section>
             </div>

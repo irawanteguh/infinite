@@ -68,3 +68,9 @@ body #kt_content .cm-page .ur-table-wrap{
 body #kt_content .cm-page .cm-table tbody tr:hover>td{background:#f0f8f5!important}
 
 .cm-page .cm-info-note{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;margin-bottom:18px;border:1px solid #dceae5;border-radius:12px;background:#f6faf9;color:#789095;line-height:1.7}.cm-page .cm-info-note[hidden]{display:none!important}.cm-info-note>i{flex-shrink:0;color:#087e82;font-size:18px;line-height:1.5}.cm-info-note>span{min-width:0}@media(max-width:575px){.cm-page .cm-info-note{padding:12px 14px}}
+.cm-page .cm-table :is(tbody,tfoot) tr > :first-child {
+    padding-inline-start: 1rem !important;
+}
+.cm-page .cm-table :is(tbody,tfoot) tr > :last-child {
+    padding-inline-end: 1rem !important;
+}

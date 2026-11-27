@@ -6,6 +6,14 @@
 
 Gunakan Poppins dari template, grid Bootstrap/Metronic, dan jarak dari layout bersama. Letakkan filter sebelum ringkasan dan grafik. Kartu grafik berpasangan pada layar lebar dan bertumpuk pada layar sempit. Judul menyebut fungsi komponen, misalnya **Grafik garis** atau **Tabel data**. Tambahkan deskripsi bila diperlukan untuk menjelaskan satuan atau cakupan.
 
+## Input, select, dan button
+
+Gunakan bagian **Input, select, dan button** pada [Testing Page](http://localhost/infinite/developer/testingpage#testing-controls) sebagai referensi visual ukuran kontrol.
+
+Input teks, angka, tanggal, pencarian, email, URL, telepon, dan password memakai padding standar 6px vertikal dan 10px horizontal, dengan tinggi minimum 34px melalui `typography.css`. Ruang horizontal tambahan untuk ikon atau tombol di dalam input ditetapkan pada stylesheet modul. Pencarian tabel mengikuti pembungkus `app-table-search`. Checkbox, radio, file, warna, range, dan input tersembunyi mengikuti ukuran komponen masing-masing.
+
+Select native dan Select2 single memakai padding 6px vertikal, 10px kiri, dan 32px kanan untuk panah, dengan tinggi minimum 34px. Tombol aksi berlabel memakai padding 6px vertikal dan 10px horizontal serta tinggi minimum 34px. Tombol ikon, tombol tutup modal, dan item menu mengikuti ukuran komponen masing-masing. Aturan bersama tersedia di `typography.css`.
+
 ## Palet
 
 | Pemakaian | Latar | Teks dan ikon |

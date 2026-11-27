@@ -13,7 +13,7 @@
 <section id="sl-kpis" class="ur-kpis" aria-label="Ringkasan severity"></section>
 <section class="card card-flush ur-panel app-table-card mb-5">
 <div class="ur-panel-head app-table-heading"><div><h2 class="app-table-title">Profil pelayanan per severity</h2><p class="app-table-description">Episode, lama rawat, dan tarif untuk severity I, II, dan III pada rawat inap.</p></div></div>
-<div class="ur-table-wrap"><table class="table table-row-dashed align-middle ur-table"><thead><tr><th>Severity</th><th>Episode</th><th>Proporsi</th><th>Rata-rata LOS</th><th>Tarif RS</th><th>Total INA-CBG</th><th>INA-CBG per episode</th><th>Selisih tarif</th></tr></thead><tbody id="sl-profile"></tbody></table></div>
+<div class="ur-table-wrap"><table class="table table-row-dashed align-middle ur-table fs-8 gy-2"><thead><tr><th>Severity</th><th>Episode</th><th>Proporsi</th><th>Rata-rata LOS</th><th>Tarif RS</th><th>Total INA-CBG</th><th>INA-CBG per episode</th><th>Selisih tarif</th></tr></thead><tbody id="sl-profile"></tbody></table></div>
 </section>
 <section class="card card-flush ur-panel mb-5"><div class="ur-panel-head"><div><h2>Perkembangan komposisi severity</h2><p>Jumlah episode per bulan berdasarkan hasil grouping.</p></div></div><div id="sl-chart" class="ur-chart"></div></section>
 <section class="card card-flush ur-panel mb-5"><div class="ur-panel-head"><div><h2>Analisis dan rekomendasi tindak lanjut</h2><p>Prioritas telaah berdasarkan lama rawat dan pemakaian sumber daya.</p></div></div><div id="sl-analysis"></div></section>

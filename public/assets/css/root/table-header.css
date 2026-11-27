@@ -90,3 +90,9 @@ body #ur-monthly-table thead th {
     background-color: var(--app-table-header-bg);
     color: var(--app-table-header-text);
 }
+#tablePreviewEklaim :is(thead,tbody,tfoot) tr > :first-child {
+    padding-inline-start: 1rem !important;
+}
+#tablePreviewEklaim :is(thead,tbody,tfoot) tr > :last-child {
+    padding-inline-end: 1rem !important;
+}

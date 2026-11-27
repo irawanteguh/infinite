@@ -31,7 +31,7 @@
         </div>
         <div class="card-body pt-0">
             <div class="table-responsive">
-                <table class="table align-middle table-row-dashed gy-2" id="dataindikatorunitsubmit_table">
+                <table class="table align-middle table-row-dashed gy-2 fs-8" id="dataindikatorunitsubmit_table">
                     <thead>
                         <tr class="fw-bolder text-muted bg-light">
                             <th class="text-start ps-4 rounded-start">#</th>

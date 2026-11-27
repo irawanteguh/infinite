@@ -103,6 +103,7 @@ function initDataTable(tableSelector, searchSelector = null, pageLength = 10, op
 
     const element = $(tableSelector)[0];
     if (!element) return null;
+    element.classList.add('fs-8', 'gy-2');
     searchSelector = prepareTableCard(element, searchSelector, options);
     automaticDataTables.delete(element);
 

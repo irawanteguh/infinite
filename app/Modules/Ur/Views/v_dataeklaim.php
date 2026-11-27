@@ -20,7 +20,7 @@
         <div class="ek-table-heading"><div><h2 id="ek-table-title">Daftar E-Klaim</h2><p>Ringkasan pasien dan tarif. Buka detail untuk melihat rincian episode.</p></div><div class="ek-search"><i class="bi bi-search" aria-hidden="true"></i><label for="searchtable" class="visually-hidden">Cari data e-klaim</label><input type="search" class="form-control form-control-solid" placeholder="Cari pasien, SEP, atau diagnosis…" id="searchtable"></div></div>
         <div id="ek-status" class="ek-status" role="status" aria-live="polite"></div>
         <div class="ek-table-container">
-            <table class="table align-middle table-row-dashed gy-2" id="dataraweklaim_table" data-datatable="manual">
+            <table class="table align-middle table-row-dashed gy-2 fs-8" id="dataraweklaim_table" data-datatable="manual">
                 <thead><tr><th scope="col">No.</th><th scope="col">Pasien</th><th scope="col">Nomor RM</th><th scope="col">No. SEP</th><th scope="col">Tgl masuk</th><th scope="col">Tgl pulang</th><th scope="col">DPJP</th><th scope="col">Layanan</th><th scope="col" class="text-end">Tarif RS</th><th scope="col" class="text-end">INA-CBG</th><th scope="col" class="text-end">iDRG</th><th scope="col" class="text-end">Detail</th></tr></thead>
                 <tbody id="resultdataraweklaim"></tbody>
             </table>

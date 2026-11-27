@@ -34,3 +34,10 @@ body .alert.alert-danger {
 body .alert:is(.alert-info, .alert-primary, .alert-success, .alert-warning, .alert-danger) .bi {
     color: inherit;
 }
+body .swal2-icon:is(.swal2-question, .swal2-info) {
+    border-color: var(--app-status-teal-text);
+    color: var(--app-status-teal-text);
+}
+body .swal2-icon:is(.swal2-question, .swal2-info) .swal2-icon-content {
+    color: inherit;
+}

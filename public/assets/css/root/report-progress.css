@@ -60,3 +60,15 @@
     text-align: center;
     margin: 12px 0 0;
 }
+.eklaim-alert.swal2-popup {
+    height: auto;
+    padding-bottom: 24px;
+}
+.eklaim-alert .swal2-html-container {
+    max-height: none;
+    height: auto;
+    overflow: visible;
+}
+.eklaim-alert .swal2-actions {
+    margin-top: 20px;
+}

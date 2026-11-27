@@ -11,6 +11,91 @@
         <div class="alert alert-warning" role="alert"><?= esc($message) ?></div>
     <?php endif ?>
 
+    <section class="card mb-6" aria-labelledby="os-modules-title">
+        <div class="card-body w-100">
+            <div class="os-card-heading">
+                <i class="bi bi-arrow-repeat os-action-icon" aria-hidden="true"></i>
+                <div class="os-action-description">
+                    <h2 class="fs-4 mb-1" id="os-modules-title">Sinkronisasi Master Modules</h2>
+                    <p class="text-muted mb-0">Export katalog dari development, lalu impor dan periksa preview di production.</p>
+                </div>
+            </div>
+            <p class="mb-0">Katalog menu berlaku untuk seluruh organisasi. ID dan status aktif modul yang sudah ada di target dipertahankan. Modul khusus target tetap tersedia.</p>
+            <?php if ($canSyncModules): ?>
+                <div class="os-module-actions">
+                    <a class="btn btn-light-primary" href="<?= esc(site_url('developer/os/exportmodules'), 'attr') ?>"><i class="bi bi-download me-1" aria-hidden="true"></i>Export Master Modules</a>
+                    <form id="os-modules-import" method="post" enctype="multipart/form-data" action="<?= esc(site_url('developer/os/previewmodules'), 'attr') ?>">
+                        <?= csrf_field() ?>
+                        <div class="flex-grow-1">
+                            <label for="os-module-file" class="form-label">File katalog JSON · maksimal 2 MB</label>
+                            <input id="os-module-file" class="form-control" type="file" name="module_file" accept=".json,application/json" required aria-describedby="os-module-file-help">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Import & Preview</button>
+                    </form>
+                </div>
+                <p id="os-module-file-help" class="text-muted mb-0">Gunakan file hasil export Infinite. Deploy kode controller yang diperlukan sebelum mengimpor modul aktif baru.</p>
+            <?php else: ?>
+                <div class="alert alert-warning w-100 mb-0" role="status">Akses Master Modules diperlukan untuk melakukan export dan sinkronisasi katalog.</div>
+            <?php endif ?>
+        </div>
+    </section>
+
+    <?php if ($modulePreview): ?>
+        <?php
+        $modulePlan = $modulePreview['plan'];
+        $moduleSummary = $modulePlan['summary'];
+        $moduleFieldLabels = ['modules_name' => 'Nama', 'modules_header_id' => 'ID induk', 'package' => 'Package', 'def_controller' => 'Controller', 'parent' => 'Jenis menu', 'icon' => 'Ikon', 'urut' => 'Urutan', 'active' => 'Aktif', 'status' => 'Status', 'version' => 'Versi'];
+        ?>
+        <section class="card app-table-card mb-6" id="os-module-preview" aria-labelledby="os-module-preview-title">
+            <div class="card-header app-table-heading">
+                <div><h2 class="app-table-title" id="os-module-preview-title">Preview sinkronisasi</h2><p class="app-table-description">Periksa perubahan metadata sebelum diterapkan pada katalog target.</p></div>
+                <div class="app-table-search"><input id="os-module-search" type="search" class="form-control" placeholder="Cari modul…" aria-label="Cari modul pada preview"></div>
+            </div>
+            <div class="card-body w-100">
+                <div class="d-flex flex-wrap gap-3" role="status">
+                    <span class="badge badge-light-success">Baru <?= $moduleSummary['add'] ?></span>
+                    <span class="badge badge-light-warning">Diperbarui <?= $moduleSummary['update'] ?></span>
+                    <span class="badge badge-light-primary">Sesuai <?= $moduleSummary['unchanged'] ?></span>
+                    <span class="badge badge-light">Khusus target <?= $moduleSummary['kept'] ?></span>
+                </div>
+                <?php if ($moduleSummary['activePreserved']): ?>
+                    <div class="alert alert-info w-100 mb-0"><?= $moduleSummary['activePreserved'] ?> modul memiliki perbedaan status aktif. Sinkronisasi menggunakan status aktif target.</div>
+                <?php endif ?>
+                <div class="table-responsive w-100">
+                    <table id="os-module-table" class="table table-row-dashed align-middle w-100 fs-8 gy-2" data-datatable="manual">
+                        <thead><tr><th>Modul</th><th>Route</th><th>Hasil</th><th>Perubahan</th></tr></thead>
+                        <tbody>
+                        <?php foreach ($modulePlan['entries'] as $entry): ?>
+                            <?php [$actionLabel, $actionColor] = ['add' => ['Tambah', 'success'], 'update' => ['Perbarui', 'warning'], 'unchanged' => ['Sesuai', 'primary']][$entry['action']]; ?>
+                            <tr>
+                                <td class="text-break"><?= esc($entry['name']) ?><br><code><?= esc($entry['id']) ?></code></td>
+                                <td class="text-break"><?= esc($entry['route'] ?: 'Folder menu') ?></td>
+                                <td><span class="badge badge-light-<?= $actionColor ?>"><?= $actionLabel ?></span></td>
+                                <td>
+                                    <?php if ($entry['changes']): ?>
+                                        <details class="os-module-changes"><summary><?= count($entry['changes']) ?> kolom</summary><dl class="mt-2 mb-0">
+                                            <?php foreach ($entry['changes'] as $field => $change): ?>
+                                                <dt><?= esc($moduleFieldLabels[$field] ?? $field) ?></dt>
+                                                <dd class="text-break"><span class="text-muted"><?= esc((string) ($change['before'] ?? '—')) ?></span> → <?= esc((string) ($change['after'] ?? '—')) ?></dd>
+                                            <?php endforeach ?>
+                                        </dl></details>
+                                    <?php else: ?>Sudah sesuai<?php endif ?>
+                                </td>
+                            </tr>
+                        <?php endforeach ?>
+                        </tbody>
+                    </table>
+                </div>
+                <form id="os-modules-apply" method="post" action="<?= esc(site_url('developer/os/applymodules'), 'attr') ?>" class="align-self-end">
+                    <?= csrf_field() ?>
+                    <input type="hidden" name="preview_token" value="<?= esc($modulePreview['token'], 'attr') ?>">
+                    <button type="submit" class="btn btn-primary" <?= $moduleSummary['add'] + $moduleSummary['update'] === 0 ? 'disabled' : '' ?>>Terapkan Sinkronisasi</button>
+                </form>
+                <p class="text-muted mb-0">Preview berlaku 15 menit. Perubahan katalog target setelah preview memerlukan pemeriksaan ulang.</p>
+            </div>
+        </section>
+    <?php endif ?>
+
     <section aria-label="Pemeliharaan aktivitas pengguna">
     <div class="row g-5">
         <div class="col-12 col-lg-6">
@@ -39,7 +124,7 @@
                                 </div>
                                 <div class="modal-body">
                     <div class="table-responsive w-100">
-                        <table class="table table-row-dashed align-middle w-100 mb-0" data-datatable="false" aria-label="Kolom tabel aktivitas pengguna">
+                        <table class="table table-row-dashed align-middle w-100 mb-0 fs-8 gy-2" data-datatable="false" aria-label="Kolom tabel aktivitas pengguna">
                             <thead>
                                 <tr><th scope="col">Nama kolom</th><th scope="col">Tipe data</th></tr>
                             </thead>
@@ -95,7 +180,7 @@
                         <p role="status"><strong><?= esc((string) $preview['count']) ?></strong> log kedaluwarsa.</p>
                     <?php endif ?>
                     <div class="table-responsive w-100">
-                        <table id="os-log-table" class="table table-row-dashed align-middle w-100 mb-0" data-datatable="manual" aria-label="Log aktivitas organisasi aktif">
+                        <table id="os-log-table" class="table table-row-dashed align-middle w-100 mb-0 fs-8 gy-2" data-datatable="manual" aria-label="Log aktivitas organisasi aktif">
                             <thead>
                                 <tr>
                                     <th scope="col">Waktu</th>

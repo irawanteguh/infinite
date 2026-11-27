@@ -20,6 +20,10 @@ Gunakan kelas bersama `alert alert-info` untuk informasi, `alert alert-success` 
 
 ## Penempatan
 
+Konfirmasi tindakan di dalam aplikasi menggunakan SweetAlert, termasuk penghapusan dan pengabaian perubahan. Gunakan judul singkat, keterangan dampak tindakan, ikon `question` teal, `showCancelButton: true`, `buttonsStyling: false`, tombol aksi `btn btn-primary`, dan tombol Cancel `btn btn-light ms-3`. Teks tombol aksi menjelaskan tindakannya, misalnya **Hapus environment**. Jalankan tindakan hanya jika `result.isConfirmed` bernilai true. Peringatan saat menutup atau memuat ulang tab tetap memakai mekanisme `beforeunload` bawaan browser.
+
+Ikon SweetAlert untuk konfirmasi (`question`) dan informasi (`info`) memakai teal #087E82 pada garis lingkaran dan simbol di dalamnya. Atur melalui CSS tema bersama `theme-palette.css` agar konsisten di semua modul, termasuk konfirmasi impor E-Klaim. Tombol konfirmasi memakai `btn btn-primary` sesuai tema tombol bersama.
+
 - Letakkan hasil tindakan dekat komponen terkait atau di atas isi halaman setelah formulir disimpan.
 - Gunakan alert Bootstrap dengan padding dan sudut membulat dari tema. Judul singkat boleh diikuti rincian jika diperlukan.
 - Gunakan `role="status"` untuk hasil berhasil dan informasi yang diperbarui. Gunakan `role="alert"` untuk kegagalan yang perlu segera diketahui. Ikon dekoratif memakai `aria-hidden="true"`.

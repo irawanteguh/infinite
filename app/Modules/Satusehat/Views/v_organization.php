@@ -12,7 +12,7 @@
             <div><h2 class="app-table-title">Organization</h2><p class="app-table-description">Suborganisasi dari Org_id pada environment terpilih.</p></div>
             <div class="app-table-search"><input id="organization-search" class="form-control" type="search" placeholder="Cari Organization" aria-label="Cari Organization"></div>
         </div>
-        <div class="card-body"><table id="organization-table" class="table table-row-dashed align-middle w-100" data-datatable="manual">
+        <div class="card-body"><table id="organization-table" class="table table-row-dashed align-middle w-100 fs-8 gy-2" data-datatable="manual">
             <thead><tr><th>ID Organization</th><th>Kode</th><th>Nama</th><th>Jenis</th><th>Induk</th><th>Status</th></tr></thead><tbody></tbody>
         </table></div>
     </section>

@@ -2,16 +2,17 @@
 <div id="collection-page" data-storage-url="<?= esc(site_url('restapi/collection/storage'), 'attr') ?>" data-csrf-name="<?= esc(csrf_token(), 'attr') ?>" data-csrf-hash="<?= esc(csrf_hash(), 'attr') ?>" data-scope="<?= esc($scope, 'attr') ?>">
     <header class="mb-6"><h1>Collections</h1><p class="text-muted">Susun dan jalankan request REST API dengan environment Anda.</p></header>
     <div id="collection-status" class="alert alert-warning" role="status" hidden></div>
-    <div class="row g-5">
-        <aside class="col-lg-4 col-xl-3"><div class="card collection-tree-card"><div class="card-body">
+    <div id="collection-workspace" class="collection-workspace">
+        <aside id="collection-tree-panel"><div class="card collection-tree-card"><div class="card-body">
             <div class="d-flex flex-wrap gap-2 mb-4">
-                <button id="collection-new" type="button" class="btn btn-sm btn-primary">Tambah</button>
+                <button id="collection-new" type="button" class="btn btn-sm btn-primary">New</button>
                 <label class="btn btn-sm btn-light-primary mb-0">Impor JSON<input id="collection-import" type="file" accept=".json,application/json" class="d-none"></label>
             </div>
             <input id="collection-search" class="form-control mb-4" placeholder="Cari request…" aria-label="Cari request">
             <div id="collection-tree"></div>
         </div></div></aside>
-        <section class="col-lg-8 col-xl-9" id="collection-request-panel"><div class="card"><div class="card-body">
+        <div id="collection-splitter" role="separator" aria-label="Atur lebar panel collection" aria-orientation="vertical" aria-controls="collection-tree-panel collection-request-panel" aria-valuemin="20" aria-valuemax="45" aria-valuenow="25" tabindex="0"></div>
+        <section id="collection-request-panel"><div class="card"><div class="card-body">
             <div id="collection-request-tabs" class="d-flex gap-2 overflow-auto pb-3 mb-4" role="tablist" aria-label="Request terbuka"></div>
             <div class="d-flex flex-wrap gap-2 mb-5">
                 <select id="request-method" class="form-select collection-method" aria-label="Method"><?php foreach (['GET','POST','PUT','PATCH','DELETE','HEAD','OPTIONS'] as $method): ?><option><?= esc($method) ?></option><?php endforeach ?></select>
@@ -21,17 +22,17 @@
                 </div>
                 <div class="btn-group" role="group" aria-label="Kirim dan simpan request">
                 <button id="request-send" type="button" class="btn btn-primary">
-                    <span id="request-send-label">Kirim</span>
+                    <span id="request-send-label">SEND</span>
                     <span id="request-send-progress" hidden><span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>Mengirim…</span>
                 </button>
                     <button id="request-save-toggle" type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Opsi request"></button>
                     <div class="dropdown-menu dropdown-menu-end">
                         <button id="request-save" type="button" class="dropdown-item"><i class="bi bi-floppy" aria-hidden="true"></i>Simpan</button>
                         <button id="request-format-json" type="button" class="dropdown-item"><i class="bi bi-code-slash" aria-hidden="true"></i>Formatter JSON</button>
+                        <button id="request-snippet" type="button" class="dropdown-item"><i class="bi bi-code-slash" aria-hidden="true"></i>PHP cURL</button>
                     </div>
                 </div>
-                <button id="request-cancel" type="button" class="btn btn-light-danger" disabled>Batalkan</button>
-                <button id="request-snippet" type="button" class="btn btn-light-primary"><i class="bi bi-code-slash me-1" aria-hidden="true"></i>PHP cURL</button>
+                <button id="request-cancel" type="button" class="btn btn-light-danger" disabled>Cancel</button>
             </div>
             <ul class="nav nav-tabs mb-5" role="tablist" aria-label="Konfigurasi request">
                 <?php foreach (['params' => 'Params', 'authorization' => 'Authorization', 'headers' => 'Headers', 'body' => 'Body', 'scripts' => 'Script'] as $tab => $label): ?>
@@ -89,7 +90,7 @@
                 </div>
                 <div id="response-panel-headers" class="tab-pane fade" role="tabpanel" aria-labelledby="response-tab-headers">
                     <div class="table-responsive collection-response-headers">
-                        <table class="table table-row-dashed align-middle mb-0" aria-label="Response headers" data-datatable="manual">
+                        <table class="table table-row-dashed align-middle mb-0 fs-8 gy-2" aria-label="Response headers" data-datatable="manual">
                             <tbody id="response-headers"></tbody>
                         </table>
                     </div>
@@ -109,7 +110,7 @@
             <div class="modal-body">
                 <div id="collection-environment-status" role="status"></div>
                 <div class="table-responsive">
-                    <table class="table table-row-dashed align-middle w-100 mb-0" data-datatable="manual" aria-label="Variabel environment">
+                    <table class="table table-row-dashed align-middle w-100 mb-0 fs-8 gy-2" data-datatable="manual" aria-label="Variabel environment">
                         <thead><tr><th>Aktif</th><th>Variable</th><th>Type</th><th>Value</th></tr></thead>
                         <tbody id="collection-environment-values"></tbody>
                     </table>
@@ -140,4 +141,54 @@
     </div>
 </div>
 
+<div class="modal fade" id="collection-item-modal" tabindex="-1" aria-labelledby="collection-item-title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <form class="modal-content" id="collection-item-form">
+            <div class="modal-header">
+                <h2 class="modal-title fs-4" id="collection-item-title">Add item</h2>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            </div>
+            <div class="modal-body">
+                <label class="form-label" for="collection-item-name" id="collection-item-label">Nama</label>
+                <input class="form-control form-control-solid" id="collection-item-name" maxlength="200" required>
+                <p class="text-danger mt-2 mb-0" id="collection-item-error" role="alert"></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" type="submit">Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade" id="bpjs-signature-modal" tabindex="-1" aria-labelledby="bpjs-signature-title" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <form id="bpjs-signature-form" class="modal-content">
+            <div class="modal-header">
+                <h2 id="bpjs-signature-title" class="modal-title fs-4">Generate Signature BPJS</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            </div>
+            <div class="modal-body">
+                <div id="bpjs-signature-error" class="alert alert-danger" role="alert" hidden></div>
+                <p id="bpjs-signature-environment" class="text-muted"></p>
+                <div id="bpjs-signature-progress" class="alert alert-info d-flex align-items-center gap-3" role="status" hidden>
+                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                    <span id="bpjs-signature-progress-text">Membuat signature BPJS…</span>
+                </div>
+                <div id="bpjs-signature-saved" class="alert alert-success" role="status" hidden>Signature berhasil disimpan ke token_bpjs pada environment ini.</div>
+                <section class="bpjs-signature-output">
+                <h3 class="fs-6">Result</h3>
+                <pre id="bpjs-signature-headers" class="text-break" role="status"></pre>
+                <h3 class="fs-6">Token · X-signature</h3>
+                <code id="bpjs-signature-result" class="d-block text-break" role="status"></code>
+                </section>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary" data-bs-dismiss="modal">Tutup</button>
+                <button id="bpjs-signature-generate" type="submit" class="btn btn-primary">Generate</button>
+            </div>
+        </form>
+    </div>
+</div>
 <script src="<?= base_url('assets/js/restapi/storage.js?v=' . filemtime(FCPATH . 'assets/js/restapi/storage.js')) ?>"></script>
+<script src="<?= base_url('assets/js/restapi/lz-string.js?v=' . filemtime(FCPATH . 'assets/js/restapi/lz-string.js')) ?>"></script>
+<script src="<?= base_url('assets/js/restapi/crypto-js.js?v=' . filemtime(FCPATH . 'assets/js/restapi/crypto-js.js')) ?>"></script>

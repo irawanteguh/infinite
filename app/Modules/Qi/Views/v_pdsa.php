@@ -4,7 +4,7 @@
 <div class="card">
     <div class="card-header border-0 pt-5"><h3 class="card-title fw-bolder">Daftar PDSA</h3></div>
     <div class="card-body pt-0">
-        <div class="table-responsive"><table class="table align-middle table-row-dashed gy-3"><thead><tr class="text-muted fw-bold"><th>Judul</th><th>Unit / periode</th><th>Item PDSA</th><th class="text-end">Aksi</th></tr></thead><tbody id="pdsaRows"></tbody></table></div>
+        <div class="table-responsive"><table class="table align-middle table-row-dashed gy-3 fs-8 gy-2"><thead><tr class="text-muted fw-bold"><th>Judul</th><th>Unit / periode</th><th>Item PDSA</th><th class="text-end">Aksi</th></tr></thead><tbody id="pdsaRows"></tbody></table></div>
         <div id="pdsaEmpty" class="text-muted text-center py-8">Belum ada header PDSA.</div>
     </div>
 </div>

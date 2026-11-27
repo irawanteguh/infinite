@@ -1,5 +1,5 @@
 <div class="table-responsive" tabindex="0" role="region" aria-labelledby="<?= esc($headingId, 'attr') ?>">
-    <table<?= isset($tableId) ? ' id="' . esc($tableId, 'attr') . '"' : '' ?> class="table table-row-dashed align-middle mb-0" data-datatable="false">
+    <table<?= isset($tableId) ? ' id="' . esc($tableId, 'attr') . '"' : '' ?> class="table table-row-dashed align-middle mb-0 fs-8 gy-2" data-datatable="false">
         <thead>
             <tr>
                 <th scope="col">Tanggal aktivitas</th>

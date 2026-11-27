@@ -6,7 +6,7 @@
             <div class="app-table-search"><input id="patient-search" class="form-control" type="search" placeholder="Cari nama, NIK, atau IHS" aria-label="Cari pasien"></div>
         </div>
         <div class="card-body">
-            <table id="patient-table" class="table table-row-dashed align-middle w-100" data-datatable="manual">
+            <table id="patient-table" class="table table-row-dashed align-middle w-100 fs-8 gy-2" data-datatable="manual">
                 <thead>
                     <tr>
                         <th scope="col">NIK pasien</th>
@@ -70,7 +70,7 @@
                 <div id="patient-mother-message" class="alert alert-danger" role="alert" hidden></div>
                 <section class="card app-table-card">
                     <div class="card-header app-table-heading"><div><h3 class="app-table-title">Master pasien</h3><p class="app-table-description">Pilih pasien untuk mengisi NIK ibu.</p></div><div class="app-table-search"><input id="patient-mother-search" type="search" class="form-control" placeholder="Cari nama, NIK, atau IHS" aria-label="Cari pasien ibu"></div></div>
-                    <div class="card-body"><table id="patient-mother-table" class="table table-row-dashed align-middle w-100" data-datatable="manual"><thead><tr><th scope="col">NIK</th><th scope="col">Nama pasien</th><th scope="col">Jenis kelamin</th><th scope="col">Tanggal lahir</th><th scope="col">Nomor IHS</th><th scope="col" class="text-end">Pilih</th></tr></thead><tbody></tbody></table></div>
+                    <div class="card-body"><table id="patient-mother-table" class="table table-row-dashed align-middle w-100 fs-8 gy-2" data-datatable="manual"><thead><tr><th scope="col">NIK</th><th scope="col">Nama pasien</th><th scope="col">Jenis kelamin</th><th scope="col">Tanggal lahir</th><th scope="col">Nomor IHS</th><th scope="col" class="text-end">Pilih</th></tr></thead><tbody></tbody></table></div>
                 </section>
             </div>
             <div class="modal-footer"><button type="button" class="btn btn-light" data-bs-dismiss="modal">Kembali</button></div>

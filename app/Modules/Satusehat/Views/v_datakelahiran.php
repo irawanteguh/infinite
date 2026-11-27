@@ -10,7 +10,7 @@
             <div class="d-flex flex-wrap gap-3"><div class="app-table-search"><input id="birth-search" type="search" class="form-control" placeholder="Cari registrasi atau pasien" aria-label="Cari transaksi"></div></div>
         </div>
         <div class="card-body">
-            <table id="birth-table" class="table table-row-dashed align-middle w-100" data-datatable="manual">
+            <table id="birth-table" class="table table-row-dashed align-middle w-100 fs-8 gy-2" data-datatable="manual">
                 <thead><tr><th>Registrasi</th><th>Ibu</th><th>Bayi</th><th>Diperbarui</th><th class="text-end">Tahap terkirim</th><th class="text-end">Actions</th></tr></thead><tbody></tbody>
             </table>
         </div>

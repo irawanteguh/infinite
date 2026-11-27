@@ -24,7 +24,7 @@
         <div class="card-body pt-0">
             <div id="summaryReportLoading" class="text-center text-muted py-10" role="status"><span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>Memuat periode pelaporan�</div>
             <div class="table-responsive">
-                <table class="table align-middle table-row-dashed gy-3" id="summaryReportTable">
+                <table class="table align-middle table-row-dashed gy-3 fs-8 gy-2" id="summaryReportTable">
                     <thead><tr class="text-muted fw-bolder bg-light">
                         <th class="ps-4">#</th><th>Periode pelaporan</th><th>Penanggung jawab</th><th>Tim mutu</th><th>Status</th><th>Terakhir diperbarui</th><th class="text-end pe-4">Aksi</th>
                     </tr></thead>

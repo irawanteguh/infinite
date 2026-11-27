@@ -4,7 +4,7 @@
 
 | Panduan | Cakupan |
 | --- | --- |
-| [Dasar tampilan](foundations.md) | Layout, palet, tipografi, ringkasan, status, dan modal |
+| [Dasar tampilan](foundations.md) | Layout, palet, tipografi, input, select, button, ringkasan, status, dan modal |
 | [Toolbar](toolbar.md) | Tahun, Impor, Perbarui, dan Cetak |
 | [Kartu filter](filter-card.md) | Select2, pemilih tanggal, filter status, dan pesan cakupan |
 | [Kartu tabel](table-card.md) | Header, pencarian, pagination, dan dropdown Actions |

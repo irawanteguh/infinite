@@ -12,7 +12,7 @@
             <div><h2 class="app-table-title">Location</h2><p class="app-table-description">Lokasi berdasarkan Org_id pada environment terpilih.</p></div>
             <div class="app-table-search"><input id="location-search" class="form-control" type="search" placeholder="Cari Location" aria-label="Cari Location"></div>
         </div>
-        <div class="card-body"><table id="location-table" class="table table-row-dashed align-middle w-100" data-datatable="manual">
+        <div class="card-body"><table id="location-table" class="table table-row-dashed align-middle w-100 fs-8 gy-2" data-datatable="manual">
             <thead><tr><th>ID Location</th><th>Kode</th><th>Nama</th><th>Jenis</th><th>Organisasi pengelola</th><th>Status</th></tr></thead><tbody></tbody>
         </table></div>
     </section>

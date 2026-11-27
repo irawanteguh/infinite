@@ -136,7 +136,7 @@ $chart = $data ? [
             <section class="prem-card pe-panel mb-6" aria-label="Informasi poli SKM Rawat Jalan">
                 <div class="pe-panel-heading"><div><span class="prem-eyebrow">POLI RAWAT JALAN</span><h2>Sebaran responden menurut poli</h2><p><?= $number($data['skm']['outpatientCount'], 0) ?> pengisian SKM Rawat Jalan sesuai filter aktif.</p></div></div>
                 <?php if ($data['skm']['clinics']): ?>
-                <div class="table-responsive pe-clinic-table" tabindex="0" role="region" aria-label="Tabel sebaran poli, dapat digulir"><table class="table pe-table"><thead><tr><th>Poli / layanan</th><th class="text-end">Respons</th><th class="text-end">Persentase</th><th class="pe-clinic-bar-column">Komposisi</th></tr></thead><tbody>
+                <div class="table-responsive pe-clinic-table" tabindex="0" role="region" aria-label="Tabel sebaran poli, dapat digulir"><table class="table pe-table fs-8 gy-2"><thead><tr><th>Poli / layanan</th><th class="text-end">Respons</th><th class="text-end">Persentase</th><th class="pe-clinic-bar-column">Komposisi</th></tr></thead><tbody>
                     <?php foreach ($data['skm']['clinics'] as $clinic): $share = $clinic['count'] / $data['skm']['outpatientCount'] * 100; ?>
                     <tr><td><?= esc($clinic['name']) ?></td><td class="text-end"><?= $number($clinic['count'], 0) ?></td><td class="text-end"><?= $number($share) ?>%</td><td class="pe-clinic-bar-column"><div class="pe-profile-track" aria-hidden="true"><span style="width:<?= $share ?>%"></span></div></td></tr>
                     <?php endforeach; ?>
@@ -200,7 +200,7 @@ $chart = $data ? [
                 <details class="pe-chart-table pe-monthly-responses">
                     <summary>Lihat nilai bulanan</summary>
                     <div class="table-responsive pe-monthly-scroll" tabindex="0" role="region" aria-label="Tabel rerata nilai bulanan">
-                        <table class="table align-middle gy-2 pe-monthly-table" id="pe-monthly-score-table" data-datatable="manual">
+                        <table class="table align-middle gy-2 pe-monthly-table fs-8" id="pe-monthly-score-table" data-datatable="manual">
                             <caption class="visually-hidden">Rerata skor PREM dan PROM per bulan, skala 1–5, sesuai filter aktif</caption>
                             <thead><tr><th scope="col">Bulan</th><th scope="col" class="text-end">PREM</th><th scope="col" class="text-end">PROM PRE <span>(T0)</span></th><th scope="col" class="text-end">PROM POST <span>(T1)</span></th></tr></thead>
                             <tbody>
@@ -222,7 +222,7 @@ $chart = $data ? [
                     <details class="pe-chart-table pe-monthly-responses">
                         <summary>Lihat data bulanan</summary>
                         <div class="table-responsive pe-monthly-scroll" tabindex="0" role="region" aria-label="Tabel jumlah respons bulanan">
-                            <table class="table align-middle gy-2 pe-monthly-table" id="pe-monthly-response-table" data-datatable="manual">
+                            <table class="table align-middle gy-2 pe-monthly-table fs-8" id="pe-monthly-response-table" data-datatable="manual">
                                 <caption class="visually-hidden">Jumlah respons PREM dan PROM per bulan sesuai filter aktif</caption>
                                 <thead><tr><th scope="col">Bulan</th><th scope="col" class="text-end">PREM</th><th scope="col" class="text-end">PROM PRE <span>(T0)</span></th><th scope="col" class="text-end">PROM POST <span>(T1)</span></th></tr></thead>
                                 <tbody>
@@ -261,7 +261,7 @@ $chart = $data ? [
             <div class="row g-6 pe-insight-row"><div class="col-12 col-lg-6"><section class="prem-card pe-panel pe-domain-panel">
                 <div class="pe-panel-heading"><div><span class="prem-eyebrow">TELUSURI LEBIH DALAM</span><h2>Penilaian per domain</h2><p>Rerata skor jawaban menurut instrumen dan domain, skala 1–5.</p></div></div>
                 <div class="table-responsive pe-insight-scroll" tabindex="0" role="region" aria-label="Tabel penilaian domain, dapat digulir">
-                    <table class="table pe-table pe-insight-table pe-domain-table align-middle gy-2" id="pe-domain-table">
+                    <table class="table pe-table pe-insight-table pe-domain-table align-middle gy-2 fs-8" id="pe-domain-table">
                         <caption class="visually-hidden">Rerata penilaian per domain dan instrumen pada skala 1–5</caption>
                         <colgroup><col style="width:36%"><col style="width:10%"><col style="width:12%"><col style="width:14%"><col style="width:14%"><col style="width:14%"></colgroup>
                         <thead><tr><th scope="col">Domain / instrumen</th><th scope="col">Jenis</th><th scope="col" class="text-end">PREM</th><th scope="col" class="text-end">PROM PRE<br><span>(T0)</span></th><th scope="col" class="text-end">PROM POST<br><span>(T1)</span></th><th scope="col" class="text-end">Jumlah<br>pengisian</th></tr></thead>
@@ -279,7 +279,7 @@ $chart = $data ? [
             </div><div class="col-12 col-lg-6"><section class="prem-card pe-panel pe-priorities">
                 <div class="pe-panel-heading"><div><span class="prem-eyebrow">FOKUS PERBAIKAN</span><h2>Area pengalaman yang perlu ditinjau</h2><p>Lima pertanyaan PREM dengan rerata terendah pada periode terpilih.</p></div></div>
                 <div class="table-responsive pe-insight-scroll" tabindex="0" role="region" aria-label="Tabel area pengalaman yang perlu ditinjau">
-                    <table class="table pe-table pe-insight-table pe-priority-table align-middle gy-2" id="pe-priority-table">
+                    <table class="table pe-table pe-insight-table pe-priority-table align-middle gy-2 fs-8" id="pe-priority-table">
                         <caption class="visually-hidden">Lima pertanyaan PREM dengan rerata terendah; positif adalah jawaban skor 4–5</caption>
                         <colgroup><col style="width:7%"><col style="width:51%"><col style="width:14%"><col style="width:14%"><col style="width:14%"></colgroup>
                         <thead><tr><th scope="col">#</th><th scope="col">Pertanyaan / domain</th><th scope="col" class="text-end">Rerata<br><span>/ 5</span></th><th scope="col" class="text-end">Positif</th><th scope="col" class="text-end">Jawaban</th></tr></thead>

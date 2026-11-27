@@ -56,7 +56,7 @@
         </div>
         <div id="tp-cases-status" class="ur-status mb-3" role="status" aria-live="polite" hidden></div>
         <div class="ur-table-wrap">
-            <table id="tp-cases-table" data-datatable="manual" class="table table-row-dashed align-middle ur-table tp-cases-table">
+            <table id="tp-cases-table" data-datatable="manual" class="table table-row-dashed align-middle ur-table tp-cases-table fs-8 gy-2">
                 <thead><tr>
                     <th scope="col">No.</th><th scope="col">Pasien</th><th scope="col">SEP / MRN</th>
                     <th scope="col">DPJP</th><th scope="col">Layanan</th><th scope="col">Tanggal pulang</th>

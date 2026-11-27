@@ -96,7 +96,7 @@
         <div class="card-toolbar"><input type="search" class="form-control form-control-solid w-250px" id="summary-overdue-search" placeholder="Cari indikator atau departemen" aria-label="Cari indikator terlambat"></div>
     </div>
     <div class="card-body pt-0"><div class="table-responsive">
-        <table class="table align-middle table-row-dashed gy-3" id="summary-overdue-table">
+        <table class="table align-middle table-row-dashed gy-3 fs-8 gy-2" id="summary-overdue-table">
             <thead><tr class="fw-bolder text-muted bg-light">
                 <th class="ps-4 rounded-start">#</th><th>Departemen</th><th>Indikator</th><th>Jenis</th>
                 <th>Bulan belum diisi</th><th class="text-center">Jumlah bulan</th><th class="text-end pe-4 rounded-end">Status</th>
@@ -128,7 +128,7 @@
         <div class="card-toolbar"><input type="search" class="form-control form-control-solid w-250px" id="aggregate-<?= esc($aggregateKey, 'attr') ?>-search" placeholder="Cari indikator" aria-label="Cari <?= esc($aggregateTitle, 'attr') ?>"></div>
     </div>
     <div class="card-body pt-0"><div class="table-responsive">
-        <table class="table align-middle table-row-dashed gy-3" id="aggregate-<?= esc($aggregateKey, 'attr') ?>-table">
+        <table class="table align-middle table-row-dashed gy-3 fs-8 gy-2" id="aggregate-<?= esc($aggregateKey, 'attr') ?>-table">
             <thead><tr class="fw-bolder text-muted bg-light">
                 <th class="ps-4 rounded-start">#</th><th>Indikator</th><th class="text-center">Departemen</th>
                 <th class="text-center">Target</th><th class="text-center">Penilaian</th>
@@ -156,7 +156,7 @@
     </div>
     <div class="card-body pt-0">
         <div class="table-responsive">
-            <table class="table align-middle table-row-dashed gy-3" id="qualitySummaryTable">
+            <table class="table align-middle table-row-dashed gy-3 fs-8 gy-2" id="qualitySummaryTable">
                 <thead>
                     <tr class="fw-bolder text-muted bg-light">
                         <th class="ps-4">#</th>

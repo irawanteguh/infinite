@@ -39,7 +39,7 @@
         <div class="card-body">
             <div id="backup-status" class="alert alert-danger" role="alert" hidden></div>
             <div class="table-responsive">
-                <table class="table table-row-dashed align-middle w-100" id="backup_table" data-datatable="manual">
+                <table class="table table-row-dashed align-middle w-100 fs-8 gy-2" id="backup_table" data-datatable="manual">
                     <thead>
                         <tr>
                             <th scope="col" class="text-end">#</th>

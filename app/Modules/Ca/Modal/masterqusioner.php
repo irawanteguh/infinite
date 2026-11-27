@@ -30,7 +30,7 @@
                                     <p class="text-muted">Atur batas total skor untuk setiap kategori. Rentang harus berurutan. Kosongkan batas bawah pertama untuk mencakup semua skor di bawah batas atasnya.</p>
                                     <p id="ca-optional-risks" class="text-muted d-none">Kosongkan seluruh batas skor jika penilaian belum ditetapkan untuk instrumen ini.</p>
                                     <div class="table-responsive">
-                                        <table class="table align-middle" data-datatable="false">
+                                        <table class="table align-middle fs-8 gy-2" data-datatable="false">
                                             <thead><tr><th>Kategori</th><th>Skor minimum</th><th>Skor maksimum</th></tr></thead>
                                             <tbody>
                                                 <?php foreach (['success', 'warning', 'danger'] as $index => $color): ?>

@@ -15,7 +15,7 @@
 
     <div class="card-body pt-0">
         <div class="table-responsive od-table-scroll" role="region" aria-label="Daftar departemen organisasi" tabindex="0">
-            <table class="table align-middle table-row-dashed gy-2" id="datamasterdepartment_table">
+            <table class="table align-middle table-row-dashed gy-2 fs-8" id="datamasterdepartment_table">
                 <thead>
                     <tr class="fw-bolder text-muted bg-light">
                         <th class="text-start ps-4 rounded-start">#</th>

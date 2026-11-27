@@ -10,7 +10,7 @@
             <div class="app-table-search"><input id="encounter-search" type="search" class="form-control" placeholder="Cari registrasi, pasien, atau IHS" aria-label="Cari kunjungan"></div>
         </div>
         <div class="card-body">
-            <table id="encounter-table" class="table table-row-dashed align-middle w-100" data-datatable="manual">
+            <table id="encounter-table" class="table table-row-dashed align-middle w-100 fs-8 gy-2" data-datatable="manual">
                 <thead><tr><th>Registrasi</th><th>Pasien</th><th>Jenis kunjungan</th><th>Environment</th><th>Status</th><th>ID Encounter</th><th class="text-end">Actions</th></tr></thead><tbody></tbody>
             </table>
         </div>
@@ -78,7 +78,7 @@
                     <div><h2 id="encounter-results-title" class="app-table-title">Hasil pencarian</h2><p id="encounter-results-description" class="app-table-description"></p></div>
                     <div class="app-table-search"><input id="encounter-results-search" type="search" class="form-control" placeholder="Cari hasil" aria-label="Cari hasil pencarian"></div>
                 </div>
-                <div class="card-body"><table id="encounter-results-table" class="table table-row-dashed align-middle w-100" data-datatable="manual"><thead></thead><tbody></tbody></table></div>
+                <div class="card-body"><table id="encounter-results-table" class="table table-row-dashed align-middle w-100 fs-8 gy-2" data-datatable="manual"><thead></thead><tbody></tbody></table></div>
             </section>
                 </div>
                 <div class="modal-footer"><button type="button" class="btn btn-light-primary" data-bs-dismiss="modal">Tutup</button></div>
@@ -101,7 +101,7 @@
                             <div class="app-table-search"><input id="encounter-room-episodes-search" class="form-control" type="search" placeholder="Cari episode ANC" aria-label="Cari episode ANC"></div>
                         </div>
                         <div class="card-body">
-                            <table id="encounter-room-episodes" class="table table-row-dashed align-middle w-100" data-datatable="manual">
+                            <table id="encounter-room-episodes" class="table table-row-dashed align-middle w-100 fs-8 gy-2" data-datatable="manual">
                                 <thead><tr><th>Pilih</th><th>ID episode ANC</th><th>Status</th><th>Mulai</th><th>Selesai</th></tr></thead><tbody></tbody>
                             </table>
                         </div>

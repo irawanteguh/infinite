@@ -60,7 +60,7 @@
                                         <?php if (!$details['changes']): ?>
                                             <p class="mb-0 mt-2">Urutan modul tetap sama.</p>
                                         <?php else: ?>
-                                            <table class="table table-sm align-middle mb-0 mt-2">
+                                            <table class="table table-sm align-middle mb-0 mt-2 fs-8 gy-2">
                                                 <thead>
                                                     <tr>
                                                         <th scope="col">Modul</th>

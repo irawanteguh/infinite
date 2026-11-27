@@ -4,6 +4,8 @@
 
 Gunakan **app-table-card**, **app-table-heading**, **app-table-title**, **app-table-description**, dan **app-table-search**. Letakkan judul dan deskripsi di kiri serta pencarian di kanan. Pada ponsel, pencarian dapat memenuhi lebar kartu.
 
+Semua tabel memakai kelas **fs-8 gy-2** pada tag `<table>` untuk ukuran teks dan jarak vertikal yang konsisten, termasuk tabel di modal dan tabel yang dibuat melalui JavaScript. Contoh tersedia pada tabel Testing Page. Helper `initDataTable()` juga menambahkan kedua kelas tersebut.
+
 Header kartu memakai padding atas dan samping 24px, dengan jarak 20px menuju isi tabel. Isi kartu memakai padding samping dan bawah 24px. Pada layar hingga 575px, padding menjadi 16px. Judul dan deskripsi berada dalam satu pembungkus, dengan jarak 5px di atas deskripsi dan tanpa margin bawah. Gunakan aturan bersama di `table-card.css` agar header dan isi tabel sejajar.
 
 - Header tabel memakai latar #EFF7F5 dan teks #62858B. Header dan sel angka serta kolom **Actions** rata kanan dengan **text-end**.

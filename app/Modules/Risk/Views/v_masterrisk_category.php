@@ -12,7 +12,7 @@
     </div>
     <div class="card-body pt-5">
         <?php if (!$categoriesReady): ?><div class="alert alert-warning">Master kategori risiko belum tersedia. Hubungi administrator untuk menyiapkannya.</div><?php endif ?>
-        <div class="table-responsive"><table id="datamasterriskcategory_table" class="table align-middle table-row-dashed gy-2"><thead><tr class="fw-bolder text-muted bg-light"><th class="text-start ps-4 rounded-start w-75px">#</th><th class="min-w-200px">Kategori risiko</th><th class="min-w-200px rounded-end">Keterangan</th></tr></thead><tbody class="fw-bold text-gray-600">
+        <div class="table-responsive"><table id="datamasterriskcategory_table" class="table align-middle table-row-dashed gy-2 fs-8"><thead><tr class="fw-bolder text-muted bg-light"><th class="text-start ps-4 rounded-start w-75px">#</th><th class="min-w-200px">Kategori risiko</th><th class="min-w-200px rounded-end">Keterangan</th></tr></thead><tbody class="fw-bold text-gray-600">
         <?php foreach ($categories as $index => $category): ?><tr><td class="ps-4"><?= $index + 1 ?></td><td><span class="badge badge-light-primary text-wrap text-start lh-base"><?= esc($category['name']) ?></span></td><td class="lh-lg"><?php if (!empty($category['description'])): ?><?= nl2br(esc($category['description'])) ?><?php else: ?><span class="text-muted fw-normal">Belum ada keterangan.</span><?php endif ?></td></tr><?php endforeach ?>
         </tbody></table></div>
     </div>

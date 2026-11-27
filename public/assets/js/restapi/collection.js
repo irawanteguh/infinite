@@ -2,6 +2,62 @@
     const page = document.getElementById('collection-page');
     if (!page) return;
     const element = id => document.getElementById(id);
+    const workspace = element('collection-workspace');
+    const splitter = element('collection-splitter');
+    const widthStorageKey = 'infinite.collection.panel-width.' + page.dataset.scope;
+    let treeWidth = 25;
+    try {
+        const saved = Number(localStorage.getItem(widthStorageKey));
+        if (saved >= 20 && saved <= 45) treeWidth = saved;
+    } catch {}
+    function setTreeWidth(value) {
+        treeWidth = Math.min(45, Math.max(20, value));
+        workspace.style.setProperty('--collection-tree-width', treeWidth + '%');
+        splitter.setAttribute('aria-valuenow', String(Math.round(treeWidth)));
+    }
+    function saveTreeWidth() {
+        try { localStorage.setItem(widthStorageKey, String(treeWidth)); } catch {}
+    }
+    setTreeWidth(treeWidth);
+    splitter.addEventListener('pointerdown', event => {
+        if (event.button !== 0) return;
+        event.preventDefault();
+        splitter.setPointerCapture(event.pointerId);
+        workspace.classList.add('is-resizing');
+    });
+    splitter.addEventListener('pointermove', event => {
+        if (!splitter.hasPointerCapture(event.pointerId)) return;
+        const rect = workspace.getBoundingClientRect();
+        setTreeWidth((event.clientX - rect.left - 8) / rect.width * 100);
+    });
+    function finishResize() {
+        workspace.classList.remove('is-resizing');
+        saveTreeWidth();
+    }
+    splitter.addEventListener('pointerup', event => {
+        if (splitter.hasPointerCapture(event.pointerId)) splitter.releasePointerCapture(event.pointerId);
+    });
+    splitter.addEventListener('lostpointercapture', finishResize);
+    splitter.addEventListener('keydown', event => {
+        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+        event.preventDefault();
+        if (event.key === 'Home') setTreeWidth(20);
+        else if (event.key === 'End') setTreeWidth(45);
+        else setTreeWidth(treeWidth + (event.key === 'ArrowRight' ? 2 : -2));
+        saveTreeWidth();
+    });
+    const collectionSelects = $('#request-method, #request-body-mode, #request-environment');
+    collectionSelects.each(function () {
+        const control = $(this);
+        if (!control.hasClass('select2-hidden-accessible')) {
+            control.select2({
+                minimumResultsForSearch: this.id === 'request-environment' ? 0 : Infinity,
+                width: this.id === 'request-method' ? '125px' : this.id === 'request-environment' ? '200px' : '100%',
+            });
+        }
+    }).on('select2:select select2:clear', function () {
+        this.dispatchEvent(new Event('change', {bubbles: true}));
+    });
     let environmentData = {};
     const urlInput = element('request-url');
     const urlHighlight = element('request-url-highlight');
@@ -22,10 +78,17 @@
         urlHighlight.replaceChildren();
         const value = urlInput.value;
         let offset = 0;
-        for (const match of value.matchAll(/{{[^{}]+}}/g)) {
+        for (const match of value.matchAll(/{{[^{}]+}}|:[A-Za-z_][\w-]*(?=\/|[?#]|$)/g)) {
+            const isEnvironment = match[0].startsWith('{{');
+            if (!isEnvironment && (
+                match.index > 0 && value[match.index - 1] !== '/' ||
+                /[?#]/.test(value.slice(0, match.index))
+            )) continue;
             urlHighlight.append(document.createTextNode(value.slice(offset, match.index)));
             const variable = document.createElement('span');
-            variable.className = 'collection-url-variable' + (variableAvailable(match[0].slice(2, -2)) ? '' : ' is-missing');
+            variable.className = isEnvironment
+                ? 'collection-url-variable' + (variableAvailable(match[0].slice(2, -2)) ? '' : ' is-missing')
+                : 'collection-url-parameter';
             variable.textContent = match[0];
             urlHighlight.append(variable);
             offset = match.index + match[0].length;
@@ -119,16 +182,16 @@
         environmentData = (await response.json()).data || {};
     } catch (error) { notify(error.message); }
     let modalEnvironmentStorage, modalEnvironmentData, modalEnvironmentId;
-    element('collection-environment-modal').addEventListener('show.bs.modal', async () => {
+    async function reloadEnvironmentTable(environmentId = element('request-environment').value) {
         const body = element('collection-environment-values');
         const status = element('collection-environment-status');
+        $(body).find('select.select2-hidden-accessible').select2('destroy');
         body.replaceChildren();
         element('save-modal-environment').disabled = true;
         element('add-modal-environment-variable').disabled = true;
         status.className = 'alert alert-warning';
         status.hidden = false;
         status.textContent = 'Memuat environment…';
-        const environmentId = element('request-environment').value;
         try {
             modalEnvironmentStorage = await createRestStorage({dataset: {...page.dataset, storageUrl: page.dataset.storageUrl.replace('/collection/', '/environment/')}});
             modalEnvironmentData = modalEnvironmentStorage.data;
@@ -167,7 +230,10 @@
                 value.autocomplete = 'off';
                 value.setAttribute('aria-label', 'Nilai ' + variable.key);
                 row.environmentValue = value;
-                cell.append(value);
+                const valueControls = document.createElement('div');
+                valueControls.className = 'd-flex align-items-center gap-2';
+                valueControls.append(value);
+                cell.append(valueControls);
                 if (variable.type === 'secret') {
                     const toggle = document.createElement('button');
                     toggle.type = 'button'; toggle.className = 'btn btn-sm btn-light-primary ms-2';
@@ -178,14 +244,17 @@
                         value.type = visible ? 'text' : 'password';
                         toggle.textContent = visible ? 'Sembunyikan' : 'Lihat';
                     };
-                    cell.append(toggle);
+                    valueControls.append(toggle);
                 }
                 row.append(cell); body.append(row);
             }
+            return true;
         } catch (error) {
             status.hidden = false; status.className = 'alert alert-danger'; status.textContent = error.message;
+            return false;
         }
-    });
+    }
+    element('collection-environment-modal').addEventListener('show.bs.modal', () => reloadEnvironmentTable());
     element('add-modal-environment-variable').onclick = () => {
         const row = document.createElement('tr');
         const activeCell = document.createElement('td');
@@ -206,14 +275,25 @@
         const value = document.createElement('input');
         value.className = 'form-control'; value.autocomplete = 'off'; value.setAttribute('aria-label', 'Nilai variabel baru');
         const remove = document.createElement('button');
-        remove.type = 'button'; remove.className = 'btn btn-sm btn-light-danger mt-2'; remove.textContent = 'Hapus';
-        remove.onclick = () => row.remove();
-        type.onchange = () => { value.type = type.value === 'secret' ? 'password' : 'text'; };
-        valueCell.append(value, remove);
+        remove.type = 'button'; remove.className = 'btn btn-sm btn-light-danger'; remove.textContent = 'Hapus';
+        remove.onclick = () => {
+            $(type).select2('destroy');
+            row.remove();
+        };
+        const updateType = () => { value.type = type.value === 'secret' ? 'password' : 'text'; };
+        const valueControls = document.createElement('div');
+        valueControls.className = 'd-flex align-items-center gap-2';
+        valueControls.append(value, remove);
+        valueCell.append(valueControls);
         row.append(activeCell, keyCell, typeCell, valueCell);
         row.environmentValue = value;
         row.newVariable = {key, type, active};
         element('collection-environment-values').append(row);
+        $(type).select2({
+            width: '100%',
+            minimumResultsForSearch: Infinity,
+            dropdownParent: $('#collection-environment-modal'),
+        }).on('change', updateType);
         key.focus();
     };
     element('save-modal-environment').onclick = async () => {
@@ -237,18 +317,10 @@
                 }
             });
             await modalEnvironmentStorage.save(data);
-            element('collection-environment-values').querySelectorAll('tr').forEach(row => {
-                if (row.newVariable) {
-                    row.newVariable.key.disabled = true;
-                    row.newVariable.type.disabled = true;
-                    row.newVariable.active.disabled = true;
-                    row.querySelector('button')?.remove();
-                }
-                delete row.newVariable;
-            });
             modalEnvironmentData = data;
             environmentData = data;
             refreshVariableColors();
+            if (!await reloadEnvironmentTable(modalEnvironmentId)) return;
             status.className = 'alert alert-success';
             status.textContent = 'Environment berhasil disimpan.';
             status.hidden = false;
@@ -306,6 +378,94 @@
         hideVariableTooltip();
         refreshVariableColors();
     });
+    const suggestions = document.createElement('div');
+    suggestions.className = 'collection-env-suggestions';
+    suggestions.id = 'collection-env-suggestions';
+    suggestions.setAttribute('role', 'listbox');
+    suggestions.setAttribute('aria-label', 'Variabel environment');
+    suggestions.hidden = true;
+    document.body.append(suggestions);
+    let completion = null;
+    let suggestionIndex = 0;
+    function closeSuggestions() {
+        if (completion) {
+            completion.input.removeAttribute('aria-controls');
+            completion.input.removeAttribute('aria-activedescendant');
+            completion.input.removeAttribute('aria-expanded');
+        }
+        completion = null;
+        suggestions.hidden = true;
+    }
+    function selectSuggestion(index) {
+        suggestionIndex = index;
+        Array.from(suggestions.children).forEach((option, position) => {
+            option.setAttribute('aria-selected', String(position === index));
+        });
+        const option = suggestions.children[index];
+        completion.input.setAttribute('aria-activedescendant', option.id);
+        option.scrollIntoView({block: 'nearest'});
+    }
+    function insertSuggestion(index) {
+        const {input, start, end, keys} = completion;
+        const trailing = input.value.slice(end).match(/^[^{}\r\n]*}}/);
+        input.setRangeText('{{' + keys[index] + '}}', start, trailing ? end + trailing[0].length : end, 'end');
+        closeSuggestions();
+        input.dispatchEvent(new Event('input', {bubbles: true}));
+        input.focus();
+    }
+    function updateSuggestions(event) {
+        const input = event.target;
+        if (!input.matches('input, textarea') || input.readOnly || input.disabled ||
+            !input.closest('.collection-url, .collection-variable-editor') && input.id !== 'request-token') {
+            closeSuggestions();
+            return;
+        }
+        const end = input.selectionStart;
+        const match = end !== null && input.selectionEnd === end && input.value.slice(0, end).match(/{{([^{}\r\n]*)$/);
+        if (!match) { closeSuggestions(); return; }
+        const env = (environmentData.environments || []).find(item => item.id === element('request-environment').value);
+        const keys = [...new Set((env?.values || []).filter(item => item.enabled !== false)
+            .map(item => item.key))].filter(key => key.toLowerCase().includes(match[1].toLowerCase()));
+        closeSuggestions();
+        if (!keys.length) return;
+        completion = {input, start: end - match[0].length, end, keys};
+        suggestions.replaceChildren();
+        keys.forEach((key, index) => {
+            const option = document.createElement('div');
+            option.id = 'collection-env-option-' + index;
+            option.setAttribute('role', 'option');
+            option.textContent = '{{' + key + '}}';
+            option.addEventListener('mousedown', event => {
+                event.preventDefault();
+                insertSuggestion(index);
+            });
+            suggestions.append(option);
+        });
+        input.setAttribute('aria-controls', suggestions.id);
+        input.setAttribute('aria-expanded', 'true');
+        suggestions.hidden = false;
+        const rect = input.getBoundingClientRect();
+        suggestions.style.left = Math.max(8, Math.min(rect.left, window.innerWidth - suggestions.offsetWidth - 8)) + 'px';
+        suggestions.style.top = Math.max(8, Math.min(rect.bottom + 4, window.innerHeight - suggestions.offsetHeight - 8)) + 'px';
+        selectSuggestion(0);
+    }
+    page.addEventListener('input', updateSuggestions);
+    page.addEventListener('click', updateSuggestions);
+    page.addEventListener('keydown', event => {
+        if (!completion || event.target !== completion.input) return;
+        if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(event.key)) {
+            event.preventDefault();
+            if (event.key === 'Escape') closeSuggestions();
+            else if (event.key === 'Enter') insertSuggestion(suggestionIndex);
+            else selectSuggestion((suggestionIndex + (event.key === 'ArrowDown' ? 1 : -1) + completion.keys.length) % completion.keys.length);
+        } else if (['ArrowLeft', 'ArrowRight', 'Home', 'End', 'Tab'].includes(event.key)) closeSuggestions();
+    });
+    page.addEventListener('focusout', closeSuggestions);
+    element('request-environment').addEventListener('change', closeSuggestions);
+    window.addEventListener('resize', closeSuggestions);
+    document.addEventListener('scroll', event => {
+        if (!suggestions.contains(event.target)) closeSuggestions();
+    }, true);
     function normalize(items) {
         if (!Array.isArray(items)) throw Error('Daftar item collection tidak valid.');
         items.forEach(item => {
@@ -315,6 +475,7 @@
         });
     }
     const expandedFolders = new WeakMap();
+    const collapsedCollections = new WeakSet();
     function render() {
         for (let index = requestTabs.length - 1; index >= 0; index--) {
             const tab = requestTabs[index];
@@ -344,17 +505,46 @@
                     const child = document.createElement('div');
                     child.className = 'collection-tree-children';
                     nodes(item.item, child, owner, matches);
-                    if (!child.childElementCount) return;
+                    if (search && !matches && !child.childElementCount) return;
                     const details = document.createElement('details');
                     details.className = 'collection-tree-folder';
                     details.open = Boolean(search) || expandedFolders.get(item) === true;
                     const summary = document.createElement('summary');
                     summary.append(icon('bi-chevron-right collection-tree-chevron'), icon('bi-folder2'), label(item.name, 'collection-tree-label'));
+                    const actions = document.createElement('div');
+                    actions.className = 'btn-group collection-folder-actions';
+                    const toggle = document.createElement('button');
+                    toggle.type = 'button';
+                    toggle.className = 'btn btn-sm btn-icon btn-light-primary';
+                    toggle.dataset.bsToggle = 'dropdown';
+                    toggle.setAttribute('aria-expanded', 'false');
+                    toggle.setAttribute('aria-label', 'Pengaturan ' + item.name);
+                    toggle.append(icon('bi-three-dots-vertical'));
+                    const menu = document.createElement('div');
+                    menu.className = 'dropdown-menu dropdown-menu-end';
+                    const addRequest = document.createElement('button');
+                    addRequest.type = 'button';
+                    addRequest.className = 'dropdown-item';
+                    addRequest.title = 'Add request';
+                    addRequest.setAttribute('aria-label', 'Add request ke ' + item.name);
+                    addRequest.append(icon('bi-plus-lg'), document.createTextNode('Add request'));
+                    addRequest.onclick = event => {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        bootstrap.Dropdown.getInstance(toggle)?.hide();
+                        addCollectionItem(owner, false, item);
+                    };
+                    menu.append(addRequest);
+                    actions.append(toggle, menu);
                     details.append(summary, child);
+                    const folderRow = document.createElement('div');
+                    folderRow.className = 'collection-folder-row';
+                    folderRow.append(details, actions);
+                    new bootstrap.Dropdown(toggle, {popperConfig: options => ({...options, strategy: 'fixed'})});
                     details.addEventListener('toggle', () => {
                         if (!search) expandedFolders.set(item, details.open);
                     });
-                    container.append(details);
+                    container.append(folderRow);
                 } else if (!search || matches) {
                     const button = document.createElement('button');
                     button.type = 'button';
@@ -382,6 +572,44 @@
                     toggle.append(icon('bi-three-dots-vertical'));
                     const menu = document.createElement('div');
                     menu.className = 'dropdown-menu dropdown-menu-end';
+                    const modeLabel = document.createElement('label');
+                    modeLabel.className = 'form-check form-switch d-flex align-items-center gap-3 px-4 py-2';
+                    const mode = document.createElement('input');
+                    mode.type = 'checkbox';
+                    mode.className = 'form-check-input m-0';
+                    mode.setAttribute('role', 'switch');
+                    mode.setAttribute('aria-label', 'Mode BPJS untuk ' + item.name);
+                    mode.checked = item.apiMode === 'bpjs';
+                    const modeText = document.createElement('span');
+                    modeText.textContent = mode.checked ? 'BPJS' : 'Non-BPJS';
+                    modeLabel.append(mode, modeText);
+                    modeLabel.addEventListener('click', event => event.stopPropagation());
+                    mode.onchange = async () => {
+                        if (requestMutationBusy) { mode.checked = item.apiMode === 'bpjs'; return; }
+                        requestMutationBusy = true;
+                        mode.disabled = true;
+                        try {
+                            const snapshot = structuredClone(collections);
+                            function updateMode(originals, copies) {
+                                originals.forEach((original, index) => {
+                                    if (original === item) copies[index].apiMode = mode.checked ? 'bpjs' : 'standard';
+                                    else if (original.item) updateMode(original.item, copies[index].item);
+                                });
+                            }
+                            updateMode(owner.item, snapshot[collections.indexOf(owner)].item);
+                            await storage.save(snapshot);
+                            item.apiMode = mode.checked ? 'bpjs' : 'standard';
+                            modeText.textContent = mode.checked ? 'BPJS' : 'Non-BPJS';
+                            notify('Mode request disimpan: ' + modeText.textContent + '.');
+                        } catch (error) {
+                            mode.checked = item.apiMode === 'bpjs';
+                            notify('Mode request belum tersimpan. ' + error.message);
+                        } finally {
+                            mode.disabled = false;
+                            requestMutationBusy = false;
+                        }
+                    };
+                    menu.append(modeLabel);
                     const duplicate = document.createElement('button');
                     duplicate.type = 'button'; duplicate.className = 'dropdown-item';
                     duplicate.append(icon('bi-copy'), document.createTextNode('Duplicate'));
@@ -406,17 +634,23 @@
             const section = document.createElement('div');
             section.className = 'collection-tree-group';
             const child = document.createElement('div');
+            child.className = 'collection-tree-children';
             nodes(owner.item, child, owner, Boolean(search && owner.info.name.toLowerCase().includes(search)));
             if (search && !child.childElementCount) return;
             const title = document.createElement('button');
             title.type = 'button';
             title.className = 'collection-tree-title' + (collection === owner ? ' is-active' : '');
-            title.append(icon('bi-collection'), label(owner.info.name, 'collection-tree-label'));
+            const expanded = Boolean(search) || !collapsedCollections.has(owner);
+            child.hidden = !expanded;
+            title.setAttribute('aria-expanded', String(expanded));
+            title.append(icon(expanded ? 'bi-chevron-down' : 'bi-chevron-right'), icon('bi-collection'), label(owner.info.name, 'collection-tree-label'));
             title.onclick = () => {
-                collection = owner; selected = null; parent = null; fill(); render();
+                if (collapsedCollections.has(owner)) collapsedCollections.delete(owner);
+                else collapsedCollections.add(owner);
+                render();
             };
             const heading = document.createElement('div');
-            heading.className = 'd-flex align-items-center gap-1 mb-2';
+            heading.className = 'collection-tree-heading d-flex align-items-center gap-1 mb-2';
             title.classList.add('mb-0');
             const group = document.createElement('div');
             group.className = 'btn-group flex-shrink-0';
@@ -429,12 +663,27 @@
             settings.append(icon('bi-gear'));
             const menu = document.createElement('div');
             menu.className = 'dropdown-menu dropdown-menu-end';
+            const renameCollectionButton = document.createElement('button');
+            renameCollectionButton.type = 'button';
+            renameCollectionButton.className = 'dropdown-item';
+            renameCollectionButton.append(icon('bi-pencil'), document.createTextNode('Rename'));
+            renameCollectionButton.onclick = () => renameCollection(owner, settings);
             const remove = document.createElement('button');
             remove.type = 'button';
             remove.className = 'dropdown-item text-danger';
             remove.append(icon('bi-trash'), document.createTextNode('Delete'));
             remove.onclick = () => deleteCollection(owner, settings);
-            menu.append(remove);
+            const addFolder = document.createElement('button');
+            addFolder.type = 'button';
+            addFolder.className = 'dropdown-item';
+            addFolder.append(icon('bi-folder-plus'), document.createTextNode('Add folder'));
+            addFolder.onclick = () => addCollectionItem(owner, true);
+            const addRequest = document.createElement('button');
+            addRequest.type = 'button';
+            addRequest.className = 'dropdown-item';
+            addRequest.append(icon('bi-plus-lg'), document.createTextNode('Add request'));
+            addRequest.onclick = () => addCollectionItem(owner, false);
+            menu.append(addFolder, addRequest, renameCollectionButton, remove);
             group.append(settings, menu);
             heading.append(title, group);
             section.append(heading, child);
@@ -461,7 +710,7 @@
         mirror.setAttribute('aria-hidden', 'true');
         wrapper.append(mirror, input);
         let gutter, lineNumbers;
-        if (input.id === 'request-body') {
+        if (input.id === 'request-body' || input.id === 'request-headers') {
             wrapper.classList.add('has-line-numbers');
             input.wrap = 'off';
             gutter = document.createElement('div');
@@ -472,7 +721,7 @@
             wrapper.append(gutter);
         }
         function sync() {
-            if (input.tagName === 'TEXTAREA') {
+            if (input.tagName === 'TEXTAREA' || input.tagName === 'INPUT') {
                 const style = getComputedStyle(input);
                 for (const property of ['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'lineHeight', 'letterSpacing', 'wordSpacing', 'tabSize', 'paddingTop', 'paddingBottom', 'paddingLeft', 'paddingRight', 'textIndent', 'textAlign']) {
                     mirror.style[property] = style[property];
@@ -501,7 +750,7 @@
                 }
                 parent.append(document.createTextNode(text.slice(offset)));
             }
-            if (input.id === 'request-body') {
+            if (input.id === 'request-body' || input.id === 'request-headers') {
                 const tokens = /"(?:\\.|[^"\\])*"(?:\s*:)?|\b(?:true|false|null)\b|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?/g;
                 let offset = 0;
                 for (const match of input.value.matchAll(tokens)) {
@@ -525,13 +774,89 @@
         }
         input.addEventListener('input', sync);
         input.addEventListener('scroll', sync);
-        if (input.tagName === 'TEXTAREA') {
-            new ResizeObserver(sync).observe(input);
-        }
+        new ResizeObserver(sync).observe(input);
         sync();
         return {wrapper, sync};
     }
     const rawBodyEditor = highlightBodyField(element('request-body'));
+    const headersEditor = highlightBodyField(element('request-headers'));
+    const signatureModal = element('bpjs-signature-modal');
+    function bpjsSignatureToken(consId, secret, timestamp) {
+        return CryptoJS.HmacSHA256(consId + '&' + timestamp, secret).toString(CryptoJS.enc.Base64);
+    }
+    element('request-signature-bpjs').onclick = () => {
+        element('bpjs-signature-error').hidden = true;
+        bootstrap.Modal.getOrCreateInstance(signatureModal).show();
+    };
+    let signatureGeneration = 0;
+    let signatureBusy = false;
+    signatureModal.addEventListener('hide.bs.modal', event => {
+        if (signatureBusy) event.preventDefault();
+    });
+    signatureModal.addEventListener('hidden.bs.modal', () => {
+        signatureGeneration++;
+        element('bpjs-signature-result').textContent = '';
+        element('bpjs-signature-headers').textContent = '';
+    });
+    async function generateBpjsSignature() {
+        if (signatureBusy) return;
+        signatureBusy = true;
+        const generation = ++signatureGeneration;
+        const button = element('bpjs-signature-generate');
+        const error = element('bpjs-signature-error');
+        button.disabled = true;
+        signatureModal.setAttribute('aria-busy', 'true');
+        signatureModal.querySelectorAll('[data-bs-dismiss="modal"]').forEach(control => control.disabled = true);
+        element('bpjs-signature-progress').hidden = false;
+        element('bpjs-signature-progress-text').textContent = 'Memuat environment dan membuat signature BPJS…';
+        element('bpjs-signature-saved').hidden = true;
+        error.hidden = true;
+        element('bpjs-signature-result').textContent = '';
+        element('bpjs-signature-headers').textContent = '';
+        const environmentId = element('request-environment').value;
+        try {
+            const context = {dataset: {...page.dataset, storageUrl: page.dataset.storageUrl.replace('/collection/', '/environment/')}};
+            const envStorage = await createRestStorage(context);
+            const data = envStorage.data;
+            const env = data?.environments?.find(item => item.id === environmentId);
+            element('bpjs-signature-environment').textContent = env ? 'Environment · ' + env.name : 'Pilih environment pada toolbar.';
+            const variables = new Map((env?.values || []).filter(item => item.enabled !== false).map(item => [item.key, item.value]));
+            if (!variables.get('cons_id') || !variables.get('consumer_secret')) {
+                throw Error('Isi dan aktifkan cons_id serta consumer_secret pada master environment yang dipilih.');
+            }
+            const timestamp = String(Math.floor(Date.now() / 1000));
+            const token = bpjsSignatureToken(variables.get('cons_id'), variables.get('consumer_secret'), timestamp);
+            if (generation !== signatureGeneration) return;
+            const headers = {'X-cons-id': variables.get('cons_id'), 'X-timestamp': timestamp, 'X-signature': token};
+            if (variables.get('user_key')) headers.user_key = variables.get('user_key');
+            element('bpjs-signature-headers').textContent = JSON.stringify(headers, null, 2);
+            element('bpjs-signature-result').textContent = token;
+            element('bpjs-signature-progress-text').textContent = 'Menyimpan token_bpjs ke environment…';
+            const existing = env.values.find(item => item.key === 'token_bpjs');
+            if (existing) Object.assign(existing, {value: token, enabled: true});
+            else env.values.push({key: 'token_bpjs', value: token, type: 'secret', enabled: true});
+            await envStorage.save(data);
+            page.dataset.csrfHash = context.dataset.csrfHash;
+            environmentData = data;
+            refreshVariableColors();
+            element('bpjs-signature-saved').hidden = false;
+        } catch (failure) {
+            if (generation !== signatureGeneration) return;
+            error.textContent = failure.message || 'Signature belum dapat dibuat. Coba kembali melalui localhost atau HTTPS.';
+            error.hidden = false;
+        } finally {
+            signatureBusy = false;
+            button.disabled = false;
+            signatureModal.removeAttribute('aria-busy');
+            signatureModal.querySelectorAll('[data-bs-dismiss="modal"]').forEach(control => control.disabled = false);
+            element('bpjs-signature-progress').hidden = true;
+        }
+    }
+    signatureModal.addEventListener('shown.bs.modal', generateBpjsSignature);
+    element('bpjs-signature-form').onsubmit = event => {
+        event.preventDefault();
+        generateBpjsSignature();
+    };
     function addBodyField(field = {key: '', value: '', disabled: false}, containerId = 'request-body-fields') {
         const row = document.createElement('div');
         row.className = 'd-flex gap-2 align-items-center mb-2';
@@ -595,6 +920,7 @@
         }
         const request = selected?.request || {};
         element('request-method').value = request.method || 'GET';
+        $('#request-method').trigger('change.select2');
         let url = typeof request.url === 'string' ? request.url : request.url?.raw || '';
         element('request-url').value = url;
         highlightUrl();
@@ -611,10 +937,29 @@
         const headers = {};
         (request.header || []).filter(header => !header.disabled).forEach(header => { headers[header.key] = header.value; });
         element('request-headers').value = JSON.stringify(headers, null, 2);
+        const usesBpjsSignature = selected?.apiMode === 'bpjs';
+        if (usesBpjsSignature) {
+            Object.assign(headers, {
+                'X-cons-id': '{{cons_id}}',
+                'X-timestamp': '{{bpjs_timestamp}}',
+                'X-signature': '{{token_bpjs}}',
+                user_key: '{{user_key}}',
+            });
+            element('request-headers').value = JSON.stringify(headers, null, 2);
+            element('request-prerequest').value = [
+                '// BPJS · dijalankan otomatis sebelum pengiriman.',
+                'const bpjs_timestamp = Math.floor(Date.now() / 1000).toString();',
+                'pm.variables.set("bpjs_timestamp", bpjs_timestamp);',
+                '',
+                element('request-prerequest').value,
+            ].join('\n').trim();
+        }
+        headersEditor.sync();
         const body = request.body || {};
         element('request-body').value = body.raw || '';
         rawBodyEditor.sync();
         element('request-body-mode').value = body.mode || 'none';
+        $('#request-body-mode').trigger('change.select2');
         element('request-body-fields').replaceChildren();
         (body.urlencoded || []).forEach(field => addBodyField(field));
         updateBodyMode();
@@ -684,7 +1029,7 @@
             syncParams(draft.query); syncPathVariables(draft.path);
             element('request-body-fields').replaceChildren();
             draft.body.forEach(field => addBodyField(field));
-            updateBodyMode(); highlightUrl(); rawBodyEditor.sync();
+            updateBodyMode(); highlightUrl(); rawBodyEditor.sync(); headersEditor.sync();
             element('response-body').replaceChildren(...draft.response.map(node => node.cloneNode(true)));
             element('response-headers').replaceChildren(...draft.headers.map(node => node.cloneNode(true)));
             element('response-meta').textContent = draft.meta;
@@ -695,11 +1040,107 @@
     function environments() { return environmentData; }
     function loadEnvironments() {
         const data = environments(), select = element('request-environment');
-        select.replaceChildren(new Option('Tanpa environment', ''));
+        select.replaceChildren();
         (data.environments || []).forEach(item => select.add(new Option(item.name, item.id)));
-        select.value = data.active || '';
+        select.value = (data.environments || []).some(item => item.id === data.active)
+            ? data.active : data.environments?.[0]?.id || '';
+        $(select).trigger('change.select2');
     }
     element('collection-search').oninput = render;
+    function itemNameModal(title, label, validate) {
+        return new Promise(resolve => {
+            const modal = element('collection-item-modal');
+            const form = element('collection-item-form');
+            const input = element('collection-item-name');
+            const instance = bootstrap.Modal.getOrCreateInstance(modal);
+            element('collection-item-title').textContent = title;
+            element('collection-item-label').textContent = label;
+            element('collection-item-error').textContent = '';
+            input.value = '';
+            form.onsubmit = event => {
+                event.preventDefault();
+                const error = !input.value.trim() ? 'Isi nama terlebih dahulu.' : validate(input.value.trim());
+                element('collection-item-error').textContent = error || '';
+                if (error) return;
+                resolve({isConfirmed: true, value: input.value.trim()});
+                instance.hide();
+            };
+            modal.addEventListener('shown.bs.modal', () => input.focus(), {once: true});
+            modal.addEventListener('hidden.bs.modal', () => {
+                form.onsubmit = null;
+                resolve({isConfirmed: false});
+            }, {once: true});
+            instance.show();
+        });
+    }
+    async function addCollectionItem(owner, folder, targetFolder = null) {
+        if (requestMutationBusy) return;
+        const siblings = targetFolder ? targetFolder.item : owner.item;
+        const answer = await itemNameModal(folder ? 'Add folder' : 'Add request',
+            folder ? 'Nama folder' : 'Nama request',
+            name => siblings.some(item => item.name === name) ? 'Nama sudah digunakan dalam lokasi ini.' : '');
+        if (!answer.isConfirmed || requestMutationBusy) return;
+        requestMutationBusy = true;
+        try {
+            const item = folder ? {name: answer.value.trim(), item: []}
+                : {name: answer.value.trim(), request: {method: 'GET', header: [], url: ''}};
+            normalize([item]);
+            const snapshot = structuredClone(collections);
+            function appendItem(original, copy) {
+                if (original === siblings) { copy.push(item); return; }
+                original.forEach((entry, index) => {
+                    if (entry.item) appendItem(entry.item, copy[index].item);
+                });
+            }
+            appendItem(owner.item, snapshot[collections.indexOf(owner)].item);
+            await storage.save(snapshot);
+            siblings.push(item);
+            collapsedCollections.delete(owner);
+            if (targetFolder) expandedFolders.set(targetFolder, true);
+            element('collection-search').value = '';
+            if (!folder) open(owner, item, siblings);
+            render();
+            notify(folder ? 'Folder berhasil ditambahkan.' : 'Request berhasil ditambahkan.');
+        } catch (error) {
+            notify('Item belum ditambahkan. ' + error.message);
+        } finally {
+            requestMutationBusy = false;
+        }
+    }
+    async function renameCollection(target, button) {
+        if (requestMutationBusy) return;
+        const answer = await Swal.fire({
+            title: 'Rename collection',
+            input: 'text',
+            inputLabel: 'Nama collection',
+            inputValue: target.info.name,
+            showCancelButton: true,
+            confirmButtonText: 'Simpan',
+            cancelButtonText: 'Cancel',
+            buttonsStyling: false,
+            customClass: {confirmButton: 'btn btn-primary', cancelButton: 'btn btn-light ms-3'},
+            inputValidator: value => {
+                if (!value.trim()) return 'Isi nama collection.';
+                if (collections.some(item => item !== target && item.info.name === value.trim())) return 'Nama collection sudah digunakan.';
+            }
+        });
+        if (!answer.isConfirmed || requestMutationBusy) return;
+        requestMutationBusy = true;
+        button.disabled = true;
+        try {
+            const snapshot = structuredClone(collections);
+            snapshot[collections.indexOf(target)].info.name = answer.value.trim();
+            await storage.save(snapshot);
+            target.info.name = answer.value.trim();
+            render();
+            notify('Nama collection berhasil disimpan.');
+        } catch (error) {
+            notify('Nama collection belum disimpan. ' + error.message);
+        } finally {
+            requestMutationBusy = false;
+            button.disabled = false;
+        }
+    }
     async function deleteCollection(target, button) {
         if (!target) return;
         const answer = await Swal.fire({
@@ -735,7 +1176,10 @@
         }
     };
     element('collection-new').onclick = async () => {
-        const name = prompt('Nama collection'); if (!name?.trim()) return;
+        const answer = await itemNameModal('New collection', 'Nama collection',
+            name => collections.some(item => item.info.name === name) ? 'Nama collection sudah digunakan.' : '');
+        if (!answer.isConfirmed) return;
+        const name = answer.value;
         const owner = {info: {name: name.trim(), schema: 'https://schema.getpostman.com/json/collection/v2.1.0/collection.json'}, item: []};
         collections.push(owner);
         try { await persist(); collection = owner; selected = null; fill(); render(); } catch (error) { collections.pop(); notify(error.message); }
@@ -818,10 +1262,57 @@
         environmentData = data;
         refreshVariableColors();
     }
-    function buildRequest() {
+    function readRequestHeaders() {
+        // Allow an unquoted environment token as a string value while retaining JSON validation.
+        const source = (element('request-headers').value || '{}').replace(
+            /"(?:\\.|[^"\\])*"|{{[^{}]+}}/g,
+            token => token.startsWith('"') ? token : JSON.stringify(token)
+        );
+        let headers;
+        try { headers = JSON.parse(source); }
+        catch { throw Error('Format Headers tidak valid. Gunakan JSON object, misalnya {"X-Token": "{{token_bpjs}}"}.'); }
+        if (!headers || Array.isArray(headers) || typeof headers !== 'object' ||
+            Object.values(headers).some(value => typeof value !== 'string')) {
+            throw Error('Headers harus berupa JSON object dengan nilai teks.');
+        }
+        return headers;
+    }
+    async function buildRequest() {
     const variables = new Map((collection.variable || []).map(value => [value.key, value.value]));
     const env = (environments().environments || []).find(item => item.id === element('request-environment').value);
     (env?.values || []).filter(value => value.enabled !== false).forEach(value => variables.set(value.key, value.value));
+    const dateParts = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'Asia/Jakarta', year: 'numeric', month: '2-digit', day: '2-digit',
+    }).formatToParts(new Date());
+    const datePart = type => dateParts.find(part => part.type === type).value;
+    const sysdate = datePart('year') + '-' + datePart('month') + '-' + datePart('day');
+    for (const [name, value] of variables) {
+        if (value === 'sysdate' || value === '{{sysdate}}') variables.set(name, sysdate);
+    }
+    if (!variables.has('sysdate')) variables.set('sysdate', sysdate);
+    const requestHeaders = readRequestHeaders();
+    const bpjsSignature = selected?.apiMode === 'bpjs';
+    if (bpjsSignature) {
+        for (const name of ['cons_id', 'consumer_secret', 'user_key']) {
+            const value = env?.values?.find(item => item.key === name && item.enabled !== false)?.value;
+            if (!value) throw Error('Isi dan aktifkan ' + name + ' pada environment untuk request BPJS.');
+            variables.set(name, value);
+        }
+        const timestamp = String(Math.floor(Date.now() / 1000));
+        const encoded = bpjsSignatureToken(variables.get('cons_id'), variables.get('consumer_secret'), timestamp);
+        variables.set('token_bpjs', encoded);
+        variables.set('bpjs_signature', encoded);
+        variables.set('bpjs_timestamp', timestamp);
+        for (const name of Object.keys(requestHeaders)) {
+            if (['x-cons-id', 'x-timestamp', 'x-signature', 'user_key'].includes(name.toLowerCase())) delete requestHeaders[name];
+        }
+        Object.assign(requestHeaders, {
+            'X-cons-id': variables.get('cons_id'),
+            'X-timestamp': timestamp,
+            'X-signature': encoded,
+            user_key: variables.get('user_key'),
+        });
+    }
     const resolve = text => String(text).replace(/{{([^{}]+)}}/g, (_, key) => {
         if (!variables.has(key)) throw Error('Variabel belum tersedia: ' + key + '. Pilih environment dan periksa nama variabel, termasuk huruf besar/kecil.');
         return variables.get(key);
@@ -834,7 +1325,7 @@
     });
     const url = new URL(resolve(pathUrl));
     if (!['https:', 'http:'].includes(url.protocol)) throw Error('Gunakan URL HTTP atau HTTPS.');
-    const headers = new Headers(JSON.parse(resolve(element('request-headers').value || '{}')));
+    const headers = new Headers(Object.entries(requestHeaders).map(([key, value]) => [resolve(key), resolve(value)]));
     const token = element('request-token').value;
     if (token) headers.set('Authorization', 'Bearer ' + resolve(token));
     const method = element('request-method').value;
@@ -850,12 +1341,29 @@
         body = resolve(bodyConfig.raw);
         if (!headers.has('Content-Type') && bodyConfig.options?.raw?.language === 'json') headers.set('Content-Type', 'application/json');
     }
-        return {url, headers, method, body};
+        const bpjsContext = bpjsSignature && headers.has('X-cons-id') && headers.has('X-timestamp') && headers.has('X-signature')
+            ? {consId: headers.get('X-cons-id'), timestamp: headers.get('X-timestamp'), secret: variables.get('consumer_secret')}
+            : null;
+        return {url, headers, method, body, bpjsContext};
     }
-    element('request-snippet').onclick = () => {
+    async function decryptBpjsResponse(text, context) {
+        if (!context) return text;
+        let payload;
+        try { payload = JSON.parse(text); } catch { return text; }
+        if (!payload || typeof payload.response !== 'string' || !payload.response) return text;
+        if (!context.secret) throw Error('consumer_secret belum tersedia untuk dekripsi response BPJS.');
+        const key = CryptoJS.SHA256(context.consId + context.secret + context.timestamp);
+        const iv = CryptoJS.lib.WordArray.create(key.words.slice(0, 4), 16);
+        const decrypted = CryptoJS.AES.decrypt(payload.response, key, {iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7});
+        const json = LZString.decompressFromEncodedURIComponent(decrypted.toString(CryptoJS.enc.Utf8));
+        if (!json) throw Error('Dekompresi response BPJS gagal.');
+        payload.response = JSON.parse(json);
+        return JSON.stringify(payload);
+    }
+    element('request-snippet').onclick = async () => {
         if (!selected) { notify('Pilih request terlebih dahulu.'); return; }
         try {
-            const {url, headers, method, body} = buildRequest();
+            const {url, headers, method, body} = await buildRequest();
             const quote = value => {
                 const slash = String.fromCharCode(92);
                 return "'" + String(value).split(slash).join(slash + slash).split("'").join(slash + "'") + "'";
@@ -1023,6 +1531,21 @@
             bootstrap.Tab.getOrCreateInstance(element('request-tab-body')).show();
         }
     };
+    document.addEventListener('keydown', event => {
+        if (!(event.ctrlKey || event.metaKey) || event.key.toLowerCase() !== 's' || event.altKey) return;
+        event.preventDefault();
+        if (event.repeat) return;
+        const modal = document.querySelector('.modal.show, .swal2-container');
+        if (modal) {
+            if (modal.id === 'collection-environment-modal') {
+                const save = element('save-modal-environment');
+                if (!save.disabled) save.click();
+            }
+            return;
+        }
+        const save = element('request-save');
+        if (selected && !save.disabled) save.click();
+    });
     element('request-save').onclick = async () => {
         if (!selected || requestMutationBusy) return;
         requestMutationBusy = true;
@@ -1031,7 +1554,7 @@
         const button = element('request-save');
         button.disabled = true;
         try {
-            const headers = JSON.parse(element('request-headers').value || '{}');
+            const headers = readRequestHeaders();
             if (!headers || Array.isArray(headers) || typeof headers !== 'object' || Object.values(headers).some(value => typeof value !== 'string')) {
                 throw Error('Headers harus berupa JSON object dengan nilai teks.');
             }
@@ -1070,11 +1593,14 @@
         }
     };
     element('request-cancel').onclick = () => sending?.abort();
+    let preparingRequest = false;
     element('request-send').onclick = async () => {
-        if (sending || !selected) return;
+        if (sending || preparingRequest || !selected) return;
+        preparingRequest = true;
         const generation = requestGeneration;
         try {
-            const {url, headers, method, body} = buildRequest();
+            const {url, headers, method, body, bpjsContext} = await buildRequest();
+            if (generation !== requestGeneration) return;
             sending = new AbortController();
             element('request-send').disabled = true; element('request-cancel').disabled = false;
             element('request-send').setAttribute('aria-busy', 'true');
@@ -1096,7 +1622,11 @@
             if (!transport.ok) throw Error(payload.error || 'Pengiriman server gagal.');
             if (payload.csrfHash) page.dataset.csrfHash = payload.csrfHash;
             const response = {status: payload.status, statusText: '', ok: payload.status >= 200 && payload.status < 300, headers: new Headers(payload.headers)};
-            const text = payload.body;
+            let text = payload.body;
+            try { text = await decryptBpjsResponse(text, bpjsContext); }
+            catch (error) {
+                if (generation === requestGeneration) notify('Response BPJS belum dapat didekripsi. Periksa consumer_secret dan timestamp request. ' + error.message);
+            }
             if (generation !== requestGeneration) return;
             element('response-meta').textContent = response.status + ' ' + response.statusText + ' · ' + Math.round(performance.now() - start) + ' ms';
             element('response-meta').dataset.tone = response.ok ? 'success' : 'error';
@@ -1125,6 +1655,7 @@
             element('response-meta').dataset.tone = error.name === 'AbortError' ? 'waiting' : 'error';
         }
         finally {
+            preparingRequest = false;
             if (generation !== requestGeneration) return;
             sending = null;
             element('request-send').disabled = !selected;

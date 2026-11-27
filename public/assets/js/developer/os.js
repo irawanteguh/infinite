@@ -2,6 +2,35 @@ document.addEventListener('DOMContentLoaded', () => {
     initDataTable('#os-log-table', '#os-log-search', 10, {
         order: [],
     });
+    initDataTable('#os-module-table', '#os-module-search', 10, {order: []});
+    const importForm = document.getElementById('os-modules-import');
+    importForm?.addEventListener('submit', event => {
+        const file = document.getElementById('os-module-file').files[0];
+        if (file && file.size > 2 * 1024 * 1024) {
+            event.preventDefault();
+            Swal.fire({icon: 'error', title: 'File terlalu besar', text: 'Ukuran file maksimal 2 MB.'});
+            return;
+        }
+        importForm.querySelector('[type="submit"]').disabled = true;
+    });
+    const applyForm = document.getElementById('os-modules-apply');
+    let applying = false;
+    applyForm?.addEventListener('submit', async event => {
+        event.preventDefault();
+        if (applying) return;
+        applying = true;
+        const answer = await Swal.fire({
+            icon: 'question', title: 'Terapkan sinkronisasi?',
+            text: 'Perubahan pada preview akan diterapkan ke katalog menu seluruh organisasi.',
+            showCancelButton: true, confirmButtonText: 'Terapkan Sinkronisasi', cancelButtonText: 'Cancel',
+            buttonsStyling: false,
+            customClass: {confirmButton: 'btn btn-primary', cancelButton: 'btn btn-light ms-3'},
+            focusCancel: true,
+        });
+        if (!answer.isConfirmed) { applying = false; return; }
+        applyForm.querySelector('[type="submit"]').disabled = true;
+        HTMLFormElement.prototype.submit.call(applyForm);
+    });
 
     document.querySelectorAll('.os-page .modal form, .os-page [data-setup-table]').forEach(form => {
         const setup = form.hasAttribute('data-setup-table');

@@ -34,7 +34,7 @@
             </ul>
             <div class="tab-content">
                 <?php foreach (['cg', 'sl', 'cmg'] as $index => $group): ?>
-                <div class="tab-pane fade <?= $index === 0 ? 'show active' : '' ?>" id="cm-detail-<?= $group ?>" role="tabpanel" aria-labelledby="cm-tab-<?= $group ?>"><div class="ur-table-wrap" tabindex="0" role="region" aria-label="Tabel rekap casemix, dapat digulir"><table class="table table-row-dashed align-middle ur-table cm-table"><thead id="cm-head-<?= $group ?>"></thead><tbody id="cm-body-<?= $group ?>"></tbody><tfoot id="cm-foot-<?= $group ?>"></tfoot></table></div></div>
+                <div class="tab-pane fade <?= $index === 0 ? 'show active' : '' ?>" id="cm-detail-<?= $group ?>" role="tabpanel" aria-labelledby="cm-tab-<?= $group ?>"><div class="ur-table-wrap" tabindex="0" role="region" aria-label="Tabel rekap casemix, dapat digulir"><table class="table table-row-dashed align-middle ur-table cm-table fs-8 gy-2"><thead id="cm-head-<?= $group ?>"></thead><tbody id="cm-body-<?= $group ?>"></tbody><tfoot id="cm-foot-<?= $group ?>"></tfoot></table></div></div>
                 <?php endforeach; ?>
             </div>
         </section>

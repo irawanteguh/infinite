@@ -10,6 +10,7 @@ class UserActivity
 {
     private const REQUEST_DESCRIPTIONS = [
         'POST /auth/changepassword' => 'Mengajukan perubahan password',
+        'POST /restapi/collection/send' => 'Mengirim request REST API melalui Collection',
         'POST /developer/mastermodules/reorder' => 'Mengajukan perubahan urutan modul',
         'POST /developer/mastermodules/update' => 'Mengajukan perubahan detail modul',
         'POST /developer/mastermodules/addchild' => 'Mengajukan penambahan submodul',
@@ -17,6 +18,8 @@ class UserActivity
         'POST /developer/os/setup' => 'Menjalankan penyiapan tabel aktivitas pengguna',
         'POST /developer/os/preview' => 'Memeriksa log aktivitas kedaluwarsa',
         'POST /developer/os/prune' => 'Menjalankan pembersihan log aktivitas kedaluwarsa',
+        'POST /developer/os/previewmodules' => 'Memeriksa preview sinkronisasi Master Modules',
+        'POST /developer/os/applymodules' => 'Menerapkan sinkronisasi Master Modules',
     ];
 
     private static ?array $reorderDetails = null;

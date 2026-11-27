@@ -88,7 +88,7 @@ $chart = $data ? [
             <section id="ca-instrument-summary" class="prem-card ca-table-card mt-5">
                 <div class="card-header app-table-heading"><div><h2 class="app-table-title">Ringkasan instrumen dan kategori risiko</h2><p class="app-table-description">Kategori dihitung dari skor menggunakan rentang penilaian instrumen saat ini. Rata-rata dihitung dari pengisian yang memiliki skor.</p></div></div>
                 <div class="card-body">
-                <div class="table-responsive"><table class="table table-row-dashed align-middle"><thead><tr><th>Instrumen</th><th>Pengisian</th><th>Memiliki skor</th><th>Rata-rata skor</th><th>Kategori risiko</th></tr></thead><tbody>
+                <div class="table-responsive"><table class="table table-row-dashed align-middle fs-8 gy-2"><thead><tr><th>Instrumen</th><th>Pengisian</th><th>Memiliki skor</th><th>Rata-rata skor</th><th>Kategori risiko</th></tr></thead><tbody>
                     <?php foreach ($data['summaries'] as $summary): ?>
                         <tr><td><?= esc($summary['name']) ?></td><td><?= $number($summary['total']) ?></td><td><?= $number($summary['scored']) ?></td><td><?= $number($summary['average'], 1) ?></td><td>
                             <?php foreach ($data['risks'] as $risk): if ($risk['code'] !== $summary['code']) continue; ?>
@@ -104,14 +104,14 @@ $chart = $data ? [
             <section class="prem-card ca-table-card mt-5">
                 <div class="card-header app-table-heading"><div><h2 class="app-table-title">Jumlah pengisian per bulan</h2><p class="app-table-description">Jumlah pengisian setiap instrumen pada setiap bulan dalam tahun terpilih.</p></div></div>
                 <div class="card-body">
-                <div class="table-responsive"><table class="table table-row-dashed" data-datatable="false"><thead><tr><th>Bulan</th><?php foreach ($data['instrumentNames'] as $name): ?><th><?= esc($name) ?></th><?php endforeach; ?><th>Total</th></tr></thead><tbody><?php foreach ($data['monthly'] as $month => $counts): ?><tr><td><?= esc($monthNames[(int) substr($month, 5, 2)]) ?></td><?php foreach ($data['instrumentNames'] as $code => $name): ?><td><?= $number($counts[$code]) ?></td><?php endforeach; ?><td><?= $number(array_sum($counts)) ?></td></tr><?php endforeach; ?></tbody></table></div>
+                <div class="table-responsive"><table class="table table-row-dashed fs-8 gy-2" data-datatable="false"><thead><tr><th>Bulan</th><?php foreach ($data['instrumentNames'] as $name): ?><th><?= esc($name) ?></th><?php endforeach; ?><th>Total</th></tr></thead><tbody><?php foreach ($data['monthly'] as $month => $counts): ?><tr><td><?= esc($monthNames[(int) substr($month, 5, 2)]) ?></td><?php foreach ($data['instrumentNames'] as $code => $name): ?><td><?= $number($counts[$code]) ?></td><?php endforeach; ?><td><?= $number(array_sum($counts)) ?></td></tr><?php endforeach; ?></tbody></table></div>
                 </div>
             </section>
 
             <section id="ca-response-history" class="prem-card ca-table-card mt-5">
                 <div class="card-header app-table-heading"><div><h2 class="app-table-title">Riwayat pengisian</h2><p class="app-table-description">Rincian waktu pengisian, instrumen, pasien, skor, dan kategori risiko sesuai filter aktif.</p></div></div>
                 <div class="card-body">
-                <div class="table-responsive"><table class="table table-row-dashed align-middle"><thead><tr><th>Tanggal</th><th>Instrumen</th><th>Nama pasien</th><th>Domisili</th><th>Skor</th><th>Kategori risiko</th></tr></thead><tbody>
+                <div class="table-responsive"><table class="table table-row-dashed align-middle fs-8 gy-2"><thead><tr><th>Tanggal</th><th>Instrumen</th><th>Nama pasien</th><th>Domisili</th><th>Skor</th><th>Kategori risiko</th></tr></thead><tbody>
                     <?php foreach ($data['details'] as $row): ?><tr>
                         <td><?= esc(date('d.m.Y H:i:s', strtotime($row['screened_at']))) ?></td><td><?= esc($row['instrument_name']) ?></td><td><?= esc($row['respondent_name'] ?: '—') ?></td><td><?= esc($domicileLabels[$row['domicile']] ?? 'Tidak diketahui') ?></td><td><?= $number($row['total_score']) ?></td>
                         <td><span class="badge badge-light-<?= $colors[$row['risk_level']] ?? 'secondary' ?>"><?= esc($row['risk_level'] ?: 'Belum ditentukan') ?></span></td>

@@ -8,6 +8,8 @@
     let environments = [];
     let active = '';
     let dirty = false;
+    let variableTable;
+    const environmentSelect = $(select).select2({width: '100%', placeholder: 'Pilih environment'});
     const message = (text, error = false) => {
         status.hidden = false;
         status.className = 'alert ' + (error ? 'alert-danger' : 'alert-info');
@@ -50,25 +52,52 @@
             inputs[2].type = inputs[2].type === 'password' ? 'text' : 'password';
             toggle.textContent = inputs[2].type === 'password' ? 'Lihat' : 'Sembunyikan';
         });
-        row.lastElementChild.firstElementChild.addEventListener('click', () => { row.remove(); dirty = true; });
+        row.cells[1].dataset.search = value.key;
+        inputs[1].addEventListener('input', () => {
+            row.cells[1].dataset.search = inputs[1].value;
+            variableTable?.row(row).invalidate('dom');
+        });
+        row.lastElementChild.firstElementChild.addEventListener('click', () => {
+            $(type).select2('destroy');
+            variableTable.row(row).remove().draw(false);
+            dirty = true;
+        });
         updateType();
-        rows.append(row);
+        if (variableTable) {
+            variableTable.search('');
+            document.getElementById('env-search').value = '';
+            variableTable.row.add(row).draw(false);
+            variableTable.page('last').draw(false);
+        } else rows.append(row);
+        $(type).select2({width: '100%', minimumResultsForSearch: Infinity})
+            .on('select2:select', () => { updateType(); dirty = true; });
     }
     function render() {
+        if (variableTable) {
+            $(variableTable.rows().nodes()).find('select.select2-hidden-accessible').select2('destroy');
+            variableTable.destroy();
+            variableTable = null;
+        }
         select.replaceChildren();
         environments.forEach(item => select.add(new Option(item.name, item.id)));
         if (!current()) active = environments[0]?.id || '';
         select.value = active;
+        environmentSelect.trigger('change.select2');
+        document.getElementById('env-title').textContent = current()?.name || 'Variabel environment';
         name.value = current()?.name || '';
+        $(rows).find('select.select2-hidden-accessible').select2('destroy');
         rows.replaceChildren();
         (current()?.values || []).forEach(addRow);
+        variableTable = initDataTable('#env-table', '#env-search', 10, {
+            columnDefs: [{targets: [0, 2, 3, 4], searchable: false}],
+        });
         ['env-save', 'env-add', 'env-export', 'env-delete'].forEach(id => document.getElementById(id).disabled = !current());
-        name.disabled = !current();
+        document.getElementById('env-edit').disabled = !current();
         dirty = false;
     }
     async function save() {
         if (!current()) return false;
-        const values = Array.from(rows.children, row => {
+        const values = Array.from(variableTable.rows().nodes(), row => {
             const inputs = row.querySelectorAll('input');
             return {key: inputs[1].value.trim(), value: inputs[2].value, type: row.querySelector('select').value, enabled: inputs[0].checked};
         });
@@ -81,23 +110,84 @@
         try { await persist(); render(); message('Environment berhasil disimpan.'); return true; }
         catch { Object.assign(current(), previous); message('Penyimpanan gagal. Muat ulang halaman sebelum mencoba kembali.', true); return false; }
     }
-    function canLeave() { return !dirty || window.confirm('Abaikan perubahan yang belum disimpan?'); }
+    async function confirmAction(title, text, confirmButtonText) {
+        const result = await Swal.fire({
+            title, text, icon: 'question', showCancelButton: true,
+            confirmButtonText, cancelButtonText: 'Cancel',
+            buttonsStyling: false,
+            customClass: {confirmButton: 'btn btn-primary', cancelButton: 'btn btn-light ms-3'},
+            focusCancel: true
+        });
+        return result.isConfirmed;
+    }
+    async function canLeave() {
+        return !dirty || await confirmAction('Abaikan perubahan?', 'Perubahan yang belum disimpan akan hilang.', 'Abaikan perubahan');
+    }
     page.addEventListener('input', event => { if (event.target.closest('#env-rows') || event.target === name) dirty = true; });
     document.getElementById('env-save').onclick = save;
     document.getElementById('env-add').onclick = () => { addRow(); dirty = true; };
-    select.onchange = async () => {
-        if (!canLeave()) { select.value = active; return; }
-        active = select.value;
+    // Keep Select2 display updates separate from changes that save the active environment.
+    environmentSelect.on('change.environment', async () => {
+        const nextActive = select.value;
+        if (nextActive === active) return;
+        if (!await canLeave()) { select.value = active; environmentSelect.trigger('change.select2'); return; }
+        active = nextActive;
         render();
         try { await persist(); } catch { message('Pilihan environment belum tersimpan.', true); }
-    };
-    document.getElementById('env-new').onclick = () => {
-        if (!canLeave()) return;
-        const item = {id: crypto.randomUUID(), name: 'Environment baru', values: []};
-        environments.push(item); active = item.id; render(); dirty = true; name.focus();
+    });
+    const nameModal = document.getElementById('env-name-modal');
+    const nameDialog = bootstrap.Modal.getOrCreateInstance(nameModal);
+    let creating = false;
+    async function openNameModal(create) {
+        if (create && !await canLeave()) return;
+        creating = create;
+        name.value = create ? '' : current()?.name || '';
+        document.getElementById('env-name-title').textContent = create ? 'Tambah environment' : 'Edit environment';
+        document.getElementById('env-name-error').textContent = '';
+        nameDialog.show();
+    }
+    nameModal.addEventListener('shown.bs.modal', () => name.focus());
+    nameModal.addEventListener('hidden.bs.modal', () => { name.value = current()?.name || ''; });
+    document.getElementById('env-new').onclick = () => openNameModal(true);
+    document.getElementById('env-edit').onclick = () => openNameModal(false);
+    document.getElementById('env-name-form').onsubmit = async event => {
+        event.preventDefault();
+        const value = name.value.trim();
+        const error = document.getElementById('env-name-error');
+        if (!value || environments.some(item => (creating || item !== current()) && item.name === value)) {
+            error.textContent = 'Isi nama environment yang unik.';
+            return;
+        }
+        const submit = event.currentTarget.querySelector('[type="submit"]');
+        submit.disabled = true;
+        const previous = structuredClone(environments);
+        const previousActive = active;
+        try {
+            if (creating) {
+                const item = {id: crypto.randomUUID(), name: value, values: []};
+                environments.push(item);
+                active = item.id;
+            } else current().name = value;
+            await persist();
+            if (creating) render();
+            else {
+                document.getElementById('env-title').textContent = value;
+                const option = select.selectedOptions[0];
+                if (option) option.textContent = value;
+                environmentSelect.trigger('change.select2');
+            }
+            nameDialog.hide();
+        } catch {
+            environments = previous;
+            active = previousActive;
+            error.textContent = 'Nama environment belum dapat disimpan.';
+        } finally { submit.disabled = false; }
     };
     document.getElementById('env-delete').onclick = async () => {
-        if (!current() || !window.confirm('Hapus environment ' + current().name + '?')) return;
+        if (!current()) return;
+        const target = current();
+        if (!await confirmAction('Hapus environment?', 'Environment ' + target.name + ' beserta variabelnya akan dihapus.', 'Hapus environment')) return;
+        if (current() !== target) return;
         const previous = environments;
         environments = environments.filter(item => item.id !== active);
         try { await persist(); render(); message('Environment dihapus.'); }
@@ -114,7 +204,7 @@
     };
     document.getElementById('env-import').onchange = async event => {
         const file = event.target.files[0];
-        if (!file || !canLeave()) return;
+        if (!file || !await canLeave()) { event.target.value = ''; return; }
         try {
             if (file.size > 5 * 1024 * 1024) throw new Error('Ukuran file maksimal 5 MB.');
             const item = JSON.parse(await file.text());

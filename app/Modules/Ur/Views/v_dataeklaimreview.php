@@ -60,7 +60,7 @@ $tones = ['data' => 'danger', 'koding' => 'warning', 'topup' => 'success', 'klin
             <div class="ek-table-info mt-0" role="status"><i class="bi bi-info-circle" aria-hidden="true"></i><div><?= $next !== '' || $filters['after'] !== '' ? 'Tidak ada temuan pada bagian ini.' : 'Tidak ada episode yang perlu direview untuk filter ini.' ?></div></div>
         <?php else: ?>
             <div class="table-responsive ek-datatable-scroll" tabindex="0" role="region" aria-label="Tabel antrean temuan">
-                <table class="table table-row-dashed align-middle gy-2 mb-0" data-datatable="manual">
+                <table class="table table-row-dashed align-middle gy-2 mb-0 fs-8" data-datatable="manual">
                     <thead>
                         <tr>
                             <th scope="col">SEP / Pasien</th>

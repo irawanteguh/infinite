@@ -15,7 +15,7 @@
 
     <div class="card-body pt-0">
         <div class="table-responsive hu-table-scroll" role="region" aria-label="Daftar pengguna organisasi" tabindex="0">
-            <table class="table align-middle table-row-dashed gy-2" id="datamasterusers_table">
+            <table class="table align-middle table-row-dashed gy-2 fs-8" id="datamasterusers_table">
                 <thead>
                     <tr class="fw-bolder text-muted bg-light">
                         <th class="text-start ps-4 rounded-start">#</th>

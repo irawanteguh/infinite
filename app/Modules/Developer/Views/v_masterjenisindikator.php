@@ -15,7 +15,7 @@
 
     <div class="card-body pt-0">
         <div class="table-responsive it-table-scroll" role="region" tabindex="0" aria-label="Daftar jenis indikator, dapat digulir">
-            <table class="table align-middle table-row-dashed gy-2" id="datamasterjenisindikator_table">
+            <table class="table align-middle table-row-dashed gy-2 fs-8" id="datamasterjenisindikator_table">
                 <thead>
                     <tr class="fw-bolder text-muted bg-light">
                         <th class="text-start ps-4 rounded-start">#</th>

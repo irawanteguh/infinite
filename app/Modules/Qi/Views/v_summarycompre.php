@@ -38,7 +38,7 @@
             <div class="card">
                 <div class="card-header border-0 pt-6"><div class="card-title"><h3 class="fw-bolder text-gray-900 mb-0">Rincian setiap periode</h3></div></div>
                 <div class="card-body pt-0 table-responsive">
-                    <table class="table align-middle table-row-dashed gy-3">
+                    <table class="table align-middle table-row-dashed gy-3 fs-8 gy-2">
                         <thead><tr class="fw-bolder text-muted bg-light"><th class="rounded-start">Periode</th><th>Target</th><th class="text-center">Bulan terisi</th><th class="text-end">Numerator</th><th class="text-end">Denominator</th><th class="text-center rounded-end">Rata-rata capaian</th></tr></thead>
                         <tbody>
                             <?php foreach ($periodRows as $row): ?>

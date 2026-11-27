@@ -328,7 +328,7 @@
         const patients = entries.map(entry => entry.resource).filter(person => person?.resourceType === resource);
         const table = document.createElement('table');
         table.id = 'birth-patient-results';
-        table.className = 'table table-row-dashed align-middle w-100';
+        table.className = 'table fs-8 gy-2 table-row-dashed align-middle w-100';
         table.dataset.datatable = 'manual';
         const head = table.createTHead().insertRow();
         for (const label of ['NIK', 'Nama', 'Gender', 'birthDate', 'Nomor IHS', 'Actions']) {

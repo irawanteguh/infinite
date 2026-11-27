@@ -3,12 +3,49 @@
 namespace Modules\Developer\Models;
 
 use App\Models\Modelrouting;
+use Modules\Developer\Libraries\ModuleCatalogSync;
 
 class MastermodulesModel extends Modelrouting
 {
     public function catalog(): array
     {
         return $this->menuRows(false);
+    }
+
+    public function previewSync(array $source): array
+    {
+        return ModuleCatalogSync::plan($source, $this->catalog());
+    }
+
+    public function applySync(array $source, string $revision, string $actor): array
+    {
+        $result = $this->mutateCatalog(function (array $catalog) use ($source, $revision, $actor): array {
+            if (!hash_equals(ModuleCatalogSync::fingerprint($catalog), $revision)) {
+                throw new \DomainException('Katalog target berubah setelah preview. Impor dan periksa kembali file.');
+            }
+            $plan = ModuleCatalogSync::plan($source, $catalog);
+            foreach ($plan['entries'] as $entry) {
+                if ($entry['action'] === 'unchanged') continue;
+                $data = $entry['data'];
+                $data['modules_header_id'] = $data['modules_header_id'] === '' ? null : $data['modules_header_id'];
+                if ($entry['action'] === 'add') {
+                    $saved = $this->db->table('dt01_gen_modules_ms')->insert($data + ['created_by' => $actor]);
+                } else {
+                    unset($data['modules_id']);
+                    $saved = $this->db->table('dt01_gen_modules_ms')->where('modules_id', $entry['id'])->update($data);
+                }
+                if (!$saved) throw new \RuntimeException('Could not save synchronized module.');
+            }
+            return $plan;
+        });
+        \App\Libraries\UserActivity::setDetails([
+            'Operasi' => 'Sinkronisasi Master Modules',
+            'Ringkasan' => $result['summary'],
+            'Perubahan' => array_values(array_map(static function (array $entry): array {
+                return ['ID target' => $entry['id'], 'Modul' => $entry['name'], 'Aksi' => $entry['action'], 'Kolom' => $entry['changes']];
+            }, array_filter($result['entries'], static fn(array $entry): bool => $entry['action'] !== 'unchanged'))),
+        ]);
+        return $result['summary'];
     }
 
     public static function editRevision(array $module): string

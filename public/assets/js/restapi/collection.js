@@ -159,6 +159,7 @@
                 const request = indexedDB.open('infinite-restapi', 1);
                 request.onupgradeneeded = () => request.result.createObjectStore('collections');
                 request.onerror = () => reject(request.error);
+                request.onblocked = () => reject(Error('Penyimpanan browser lama sedang terkunci.'));
                 request.onsuccess = () => {
                     const db = request.result;
                     const tx = db.transaction('collections', 'readonly');
@@ -166,7 +167,7 @@
                     tx.oncomplete = () => { db.close(); resolve(read.result); };
                     tx.onerror = () => { db.close(); reject(tx.error); };
                 };
-            });
+            }).catch(() => null);
             collections = legacy || JSON.parse(localStorage.getItem(key) || '[]');
             if (collections.length) await persist();
         }
@@ -304,7 +305,7 @@
         button.disabled = true;
         button.textContent = 'Menyimpan…';
         try {
-            const data = structuredClone(modalEnvironmentData);
+            const data = cloneRestData(modalEnvironmentData);
             const target = data.environments.find(item => item.id === modalEnvironmentId);
             Array.from(element('collection-environment-values').rows).forEach((row, index) => {
                 if (row.newVariable) {
@@ -589,7 +590,7 @@
                         requestMutationBusy = true;
                         mode.disabled = true;
                         try {
-                            const snapshot = structuredClone(collections);
+                            const snapshot = cloneRestData(collections);
                             function updateMode(originals, copies) {
                                 originals.forEach((original, index) => {
                                     if (original === item) copies[index].apiMode = mode.checked ? 'bpjs' : 'standard';
@@ -1085,7 +1086,7 @@
             const item = folder ? {name: answer.value.trim(), item: []}
                 : {name: answer.value.trim(), request: {method: 'GET', header: [], url: ''}};
             normalize([item]);
-            const snapshot = structuredClone(collections);
+            const snapshot = cloneRestData(collections);
             function appendItem(original, copy) {
                 if (original === siblings) { copy.push(item); return; }
                 original.forEach((entry, index) => {
@@ -1128,7 +1129,7 @@
         requestMutationBusy = true;
         button.disabled = true;
         try {
-            const snapshot = structuredClone(collections);
+            const snapshot = cloneRestData(collections);
             snapshot[collections.indexOf(target)].info.name = answer.value.trim();
             await storage.save(snapshot);
             target.info.name = answer.value.trim();
@@ -1408,7 +1409,7 @@
         requestMutationBusy = true;
         button.disabled = true;
         try {
-            const snapshot = structuredClone(collections);
+            const snapshot = cloneRestData(collections);
             function remove(items, copies) {
                 const index = items.indexOf(target);
                 if (index >= 0) {
@@ -1453,7 +1454,7 @@
         button.disabled = true;
         try {
             const name = answer.value.trim();
-            const snapshot = structuredClone(collections);
+            const snapshot = cloneRestData(collections);
             function rename(items, copies) {
                 items.forEach((item, index) => {
                     if (item === target) copies[index].name = name;
@@ -1478,7 +1479,7 @@
         button.disabled = true;
         element('request-save').disabled = true;
         try {
-            const duplicate = structuredClone(target);
+            const duplicate = cloneRestData(target);
             let suffix = 1;
             let name = target.name + ' (Copy)';
             while (siblings.some(item => item.name === name)) {
@@ -1486,8 +1487,8 @@
                 name = target.name + ' (Copy ' + suffix + ')';
             }
             duplicate.name = name;
-            if (duplicate.id) duplicate.id = crypto.randomUUID();
-            const snapshot = structuredClone(collections);
+            if (duplicate.id) duplicate.id = createRestUUID();
+            const snapshot = cloneRestData(collections);
             function insert(items, copies) {
                 const index = items.indexOf(target);
                 if (index >= 0) {
@@ -1573,7 +1574,7 @@
             const token = element('request-token').value;
             if (token) request.auth = {type: 'bearer', bearer: [{key: 'token', value: token, type: 'string'}]};
             else request.auth = {type: 'noauth'};
-            const snapshot = structuredClone(collections);
+            const snapshot = cloneRestData(collections);
             function replace(items, copies) {
                 items.forEach((item, index) => {
                     if (item === target) copies[index].request = request;
@@ -1667,4 +1668,12 @@
     };
     window.addEventListener('focus', loadEnvironments);
     loadEnvironments(); fill(); render();
-})();
+})().catch(error => {
+    console.error('Collection initialization failed', error);
+    const status = document.getElementById('collection-status');
+    if (status) {
+        status.hidden = false;
+        status.textContent = 'Collection belum dapat dimuat. ' + error.message;
+    }
+});
+

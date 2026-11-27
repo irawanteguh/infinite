@@ -1,3 +1,18 @@
+// getRandomValues remains available on HTTP origins where randomUUID is unavailable.
+window.createRestUUID = function () {
+    if (typeof window.crypto?.randomUUID === 'function') return window.crypto.randomUUID();
+    const bytes = window.crypto.getRandomValues(new Uint8Array(16));
+    bytes[6] = (bytes[6] & 0x0f) | 0x40;
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+    const hex = Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('');
+    return [hex.slice(0, 8), hex.slice(8, 12), hex.slice(12, 16), hex.slice(16, 20), hex.slice(20)].join('-');
+};
+
+window.cloneRestData = function (value) {
+    return typeof window.structuredClone === 'function'
+        ? window.structuredClone(value) : JSON.parse(JSON.stringify(value));
+};
+
 window.createRestStorage = async function (page) {
     let revision = '';
     async function request(data) {
@@ -27,7 +42,7 @@ window.createRestStorage = async function (page) {
     const data = await request();
     let pending = Promise.resolve();
     return {data, save(value) {
-        const snapshot = structuredClone(value);
+        const snapshot = cloneRestData(value);
         const operation = pending.then(() => request(snapshot));
         pending = operation.catch(() => {});
         return operation;

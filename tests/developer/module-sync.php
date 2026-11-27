@@ -16,6 +16,13 @@ function row($id, $name, $parent = '', $controller = '') {
     return ['modules_id'=>$id,'modules_name'=>$name,'modules_header_id'=>$parent,'package'=>$controller ? 'qi' : '',
         'def_controller'=>$controller,'parent'=>$controller ? 'N' : 'H','icon'=>'bi bi-house','urut'=>1,'active'=>'1','status'=>'0','version'=>null];
 }
+check(Sync::routeAvailable('restapi','environment'), 'RestAPI environment deployed namespace');
+check(Sync::routeAvailable('restapi','collection'), 'RestAPI collection deployed namespace');
+check(!Sync::routeAvailable('restapi','missing_controller'), 'missing controller rejected');
+check(!Sync::routeAvailable('../RestAPI','environment'), 'invalid package rejected');
+$restapi = row('restapi-environment', 'Environment', '', 'environment');
+$restapi['package'] = 'restapi';
+check(Sync::plan([$restapi], [])['summary']['add'] === 1, 'new RestAPI route preview');
 $target = [row('prod-root','Quality'), row('prod-page','Summary','prod-root','summary'), row('local','Local')];
 $source = [row('dev-root','Quality'), row('dev-page','Updated','dev-root','summary'), row('new','New','dev-root')];
 $target[1]['active'] = '0';
@@ -35,7 +42,14 @@ $bad=$source; $bad[0]['modules_header_id']='new';
 rejects(fn()=>Sync::normalize($bad),'cycle');
 $bad=$source; $bad[0]['icon']='"><script>';
 rejects(fn()=>Sync::normalize($bad),'icon injection');
-rejects(fn()=>Sync::plan($source,[],fn()=>false),'unavailable controller');
+$unavailable = Sync::plan($source,[],fn()=>false);
+check($unavailable['entries'][1]['data']['active']==='0' && $unavailable['entries'][1]['warning']!=='','unavailable new controller imported inactive with warning');
+$eoc=row('eoc','Episode Of Care','','eoc'); $eoc['package']='satusehat';
+$eocPlan=Sync::plan([$eoc],[]);
+check($eocPlan['entries'][0]['data']['active']==='0' && $eocPlan['entries'][0]['warning']!=='','missing EOC preview');
+$routeChange=$target; $routeChange[1]['active']='1';
+$changed=row('prod-page','Changed','prod-root','missing_controller');
+rejects(fn()=>Sync::plan([$target[0],$changed],$routeChange),'existing active route cannot become unavailable');
 $ambiguous=$target; $ambiguous[]=row('other','Quality');
 rejects(fn()=>Sync::plan($source,$ambiguous,fn()=>true),'ambiguous folder');
 $bad=$source; $bad[1]['modules_id']='local';

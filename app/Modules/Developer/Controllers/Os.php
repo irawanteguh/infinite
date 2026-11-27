@@ -78,7 +78,7 @@ class Os extends BaseController
     {
         if (strtoupper(request()->getMethod()) !== 'GET') return response()->setStatusCode(405)->setHeader('Allow', 'GET');
         try {
-            if (!$this->canSyncModules()) return response()->setStatusCode(403)->setBody('Akses Master Modules diperlukan.');
+            if (!$this->canSyncModules()) return response()->setStatusCode(403)->setBody('Akses Operasional Sistem diperlukan.');
             $data = ModuleCatalogSync::export((new MastermodulesModel())->catalog());
             \App\Libraries\UserActivity::setDetails(['Operasi' => 'Export Master Modules', 'Jumlah modul' => count($data['modules'])]);
             return response()->download('infinite-modules-' . gmdate('Ymd-His') . '.json',
@@ -93,7 +93,7 @@ class Os extends BaseController
     public function previewmodules()
     {
         return $this->runAction(function (array $scope): string {
-            if (!$this->canSyncModules()) throw new \DomainException('Akses Master Modules diperlukan untuk sinkronisasi.');
+            if (!$this->canSyncModules()) throw new \DomainException('Akses Operasional Sistem diperlukan untuk sinkronisasi.');
             session()->removeTempdata(self::MODULE_PREVIEW_KEY);
             $file = request()->getFile('module_file');
             if (!$file || !$file->isValid() || strtolower($file->getClientExtension()) !== 'json'
@@ -114,7 +114,7 @@ class Os extends BaseController
     public function applymodules()
     {
         return $this->runAction(function (array $scope): string {
-            if (!$this->canSyncModules()) throw new \DomainException('Akses Master Modules diperlukan untuk sinkronisasi.');
+            if (!$this->canSyncModules()) throw new \DomainException('Akses Operasional Sistem diperlukan untuk sinkronisasi.');
             $preview = session()->getTempdata(self::MODULE_PREVIEW_KEY);
             $token = request()->getPost('preview_token');
             if (!$preview || ($preview['scope'] ?? null) !== $scope || !is_string($token)
@@ -132,7 +132,7 @@ class Os extends BaseController
         $scope = $this->scope();
         if (!session()->get('loggedin') || in_array('', $scope, true)) return false;
         $state = (new \Modules\Hr\Models\AccessModel())->state($scope['group_id'], $scope['org_id'], $scope['user_id']);
-        return \App\Libraries\ModuleAccess::routeAllowed('developer', 'mastermodules', (new \App\Models\Modelrouting())->allMenus(), $state);
+        return \App\Libraries\ModuleAccess::routeAllowed('developer', 'os', (new \App\Models\Modelrouting())->allMenus(), $state);
     }
 
     public function preview()

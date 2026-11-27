@@ -117,7 +117,28 @@ class ModuleCatalogSync
 
     public static function routeAvailable(string $package, string $controller): bool
     {
-        $class = 'Modules\\' . ucfirst($package) . '\\Controllers\\' . ucfirst($controller);
+        if (!preg_match('/\A[a-z][a-z0-9_]*\z/iD', $package)
+            || !preg_match('/\A[a-z][a-z0-9_]*\z/iD', $controller)) return false;
+        // Match the deployed spelling for PSR-4, including names such as RestAPI.
+        $moduleName = null;
+        foreach (scandir(APPPATH . 'Modules') ?: [] as $name) {
+            if (strcasecmp($name, $package) === 0 && is_dir(APPPATH . 'Modules/' . $name)) {
+                $moduleName = $name;
+                break;
+            }
+        }
+        if ($moduleName === null) return false;
+        $directory = APPPATH . 'Modules/' . $moduleName . '/Controllers';
+        if (!is_dir($directory)) return false;
+        $controllerName = null;
+        foreach (scandir($directory) ?: [] as $name) {
+            if (strcasecmp($name, $controller . '.php') === 0 && is_file($directory . '/' . $name)) {
+                $controllerName = substr($name, 0, -4);
+                break;
+            }
+        }
+        if ($controllerName === null) return false;
+        $class = 'Modules\\' . $moduleName . '\\Controllers\\' . $controllerName;
         return class_exists($class) && method_exists($class, 'index')
             && (new \ReflectionMethod($class, 'index'))->isPublic();
     }
@@ -171,9 +192,14 @@ class ModuleCatalogSync
                 if ($data['active'] !== $current['active']) $summary['activePreserved']++;
                 $data['active'] = $current['active'];
             }
+            $warning = '';
             if ($route !== '' && $data['active'] === '1' && (!$current || self::route($current) !== $route)
                 && !$routeAvailable($data['package'], $data['def_controller'])) {
-                throw new \DomainException('Controller belum tersedia di target untuk ' . $route . '. Deploy kode modul terlebih dahulu.');
+                if ($current) {
+                    throw new \DomainException('Controller belum tersedia di target untuk ' . $route . '. Deploy kode modul terlebih dahulu.');
+                }
+                $data['active'] = '0';
+                $warning = 'Controller belum tersedia. Modul baru disimpan nonaktif sampai kode controller tersedia dan modul diaktifkan melalui Master Modules.';
             }
             $changes = [];
             foreach ($data as $field => $value) {
@@ -183,7 +209,7 @@ class ModuleCatalogSync
             }
             $action = !$current ? 'add' : ($changes ? 'update' : 'unchanged');
             $summary[$action]++;
-            $entries[] = compact('action', 'id', 'route', 'data', 'changes') + ['name' => $row['modules_name']];
+            $entries[] = compact('action', 'id', 'route', 'data', 'changes', 'warning') + ['name' => $row['modules_name']];
             $effective[$id] = $data;
         }
         // Catch route collisions and cycles introduced by moves, including target-only modules.

@@ -2,16 +2,44 @@ document.addEventListener('DOMContentLoaded', () => {
     initDataTable('#os-log-table', '#os-log-search', 10, {
         order: [],
     });
-    initDataTable('#os-module-table', '#os-module-search', 10, {order: []});
+    const previewModal = document.getElementById('os-module-preview');
+    if (previewModal) {
+        let previewTable;
+        previewModal.addEventListener('shown.bs.modal', () => {
+            if (!previewTable) previewTable = initDataTable('#os-module-table', '#os-module-search', 10, {order: []});
+            previewTable?.columns.adjust();
+        });
+        bootstrap.Modal.getOrCreateInstance(previewModal).show();
+    }
     const importForm = document.getElementById('os-modules-import');
+    let importing = false;
     importForm?.addEventListener('submit', event => {
+        event.preventDefault();
+        if (importing) return;
         const file = document.getElementById('os-module-file').files[0];
         if (file && file.size > 2 * 1024 * 1024) {
-            event.preventDefault();
             Swal.fire({icon: 'error', title: 'File terlalu besar', text: 'Ukuran file maksimal 2 MB.'});
             return;
         }
+        importing = true;
         importForm.querySelector('[type="submit"]').disabled = true;
+        Swal.fire({
+            title: 'Import & Preview Master Modules',
+            html: '<div class="report-progress" role="status" aria-live="polite">' +
+                '<p class="app-loading-description">Mengunggah katalog, memvalidasi modul, dan menyiapkan preview perubahan.</p>' +
+                '<div class="progress report-progress-meter app-loading-meter" aria-label="Memproses import dan preview">' +
+                '<div class="progress-bar progress-bar-striped progress-bar-animated"></div></div>' +
+                '<p class="app-loading-caption">Sedang memproses file…</p></div>',
+            customClass: {popup: 'report-progress-popup app-loading-popup'},
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: false,
+            didOpen: () => {
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => HTMLFormElement.prototype.submit.call(importForm));
+                });
+            },
+        });
     });
     const applyForm = document.getElementById('os-modules-apply');
     let applying = false;
@@ -32,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         HTMLFormElement.prototype.submit.call(applyForm);
     });
 
-    document.querySelectorAll('.os-page .modal form, .os-page [data-setup-table]').forEach(form => {
+    document.querySelectorAll('.os-page .modal form:not(#os-modules-apply), .os-page [data-setup-table]').forEach(form => {
         const setup = form.hasAttribute('data-setup-table');
         const title = setup ? 'Menyiapkan tabel aktivitas' : 'Menghapus log aktivitas';
         const prepared = setup ? 'Permintaan penyiapan tabel diterima' : 'Organisasi dan pilihan penghapusan dipilih';

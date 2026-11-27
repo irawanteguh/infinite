@@ -79,7 +79,7 @@ $routes->get(
     static function ($module, $controller) {
 
         $class = ucfirst($controller);
-        $namespace = 'Modules\\' . ucfirst((string) $module) . '\\Controllers\\' . $class;
+        $namespace = 'Modules\\' . (strtolower((string) $module) === 'restapi' ? 'RestAPI' : ucfirst((string) $module)) . '\\Controllers\\' . $class;
 
         if (!class_exists($namespace)) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
@@ -106,7 +106,7 @@ $routes->get(
     static function ($module, $controller, $method) {
 
         $class = ucfirst($controller);
-        $namespace = 'Modules\\' . ucfirst((string) $module) . '\\Controllers\\' . $class;
+        $namespace = 'Modules\\' . (strtolower((string) $module) === 'restapi' ? 'RestAPI' : ucfirst((string) $module)) . '\\Controllers\\' . $class;
 
         if (!class_exists($namespace)) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
@@ -133,7 +133,7 @@ $routes->get(
     static function ($module, $controller, $method, $parameter) {
 
         $class = ucfirst($controller);
-        $namespace = 'Modules\\' . ucfirst((string) $module) . '\\Controllers\\' . $class;
+        $namespace = 'Modules\\' . (strtolower((string) $module) === 'restapi' ? 'RestAPI' : ucfirst((string) $module)) . '\\Controllers\\' . $class;
 
         if (!class_exists($namespace)) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
@@ -160,7 +160,7 @@ $routes->post(
     static function ($module, $controller, $method) {
 
         $class = ucfirst($controller);
-        $namespace = 'Modules\\' . ucfirst((string) $module) . '\\Controllers\\' . $class;
+        $namespace = 'Modules\\' . (strtolower((string) $module) === 'restapi' ? 'RestAPI' : ucfirst((string) $module)) . '\\Controllers\\' . $class;
 
         if (!class_exists($namespace)) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
@@ -187,7 +187,7 @@ $routes->delete(
     static function ($module, $controller, $method) {
 
         $class = ucfirst($controller);
-        $namespace = 'Modules\\' . ucfirst((string) $module) . '\\Controllers\\' . $class;
+        $namespace = 'Modules\\' . (strtolower((string) $module) === 'restapi' ? 'RestAPI' : ucfirst((string) $module)) . '\\Controllers\\' . $class;
 
         if (!class_exists($namespace)) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
@@ -214,7 +214,7 @@ $routes->delete(
     static function ($module, $controller, $method, $parameter) {
 
         $class = ucfirst($controller);
-        $namespace = 'Modules\\' . ucfirst((string) $module) . '\\Controllers\\' . $class;
+        $namespace = 'Modules\\' . (strtolower((string) $module) === 'restapi' ? 'RestAPI' : ucfirst((string) $module)) . '\\Controllers\\' . $class;
 
         if (!class_exists($namespace)) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();

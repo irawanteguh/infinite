@@ -23,7 +23,6 @@
             <p class="mb-0">Katalog menu berlaku untuk seluruh organisasi. ID dan status aktif modul yang sudah ada di target dipertahankan. Modul khusus target tetap tersedia.</p>
             <?php if ($canSyncModules): ?>
                 <div class="os-module-actions">
-                    <a class="btn btn-light-primary" href="<?= esc(site_url('developer/os/exportmodules'), 'attr') ?>"><i class="bi bi-download me-1" aria-hidden="true"></i>Export Master Modules</a>
                     <form id="os-modules-import" method="post" enctype="multipart/form-data" action="<?= esc(site_url('developer/os/previewmodules'), 'attr') ?>">
                         <?= csrf_field() ?>
                         <div class="flex-grow-1">
@@ -31,11 +30,15 @@
                             <input id="os-module-file" class="form-control" type="file" name="module_file" accept=".json,application/json" required aria-describedby="os-module-file-help">
                         </div>
                         <button type="submit" class="btn btn-primary">Import & Preview</button>
+                        <a class="btn btn-light-primary" href="<?= esc(site_url('developer/os/exportmodules'), 'attr') ?>"><i class="bi bi-download me-1" aria-hidden="true"></i>Export Master Modules</a>
                     </form>
                 </div>
-                <p id="os-module-file-help" class="text-muted mb-0">Gunakan file hasil export Infinite. Deploy kode controller yang diperlukan sebelum mengimpor modul aktif baru.</p>
+                <p id="os-module-file-help" class="text-muted mb-0">Gunakan file hasil export Infinite. Modul baru yang controllernya belum tersedia akan disimpan nonaktif dan ditandai pada preview.</p>
+                <?php if ($modulePreview): ?>
+                    <button type="button" class="btn btn-light-primary" data-bs-toggle="modal" data-bs-target="#os-module-preview">Lihat Preview Sinkronisasi</button>
+                <?php endif ?>
             <?php else: ?>
-                <div class="alert alert-warning w-100 mb-0" role="status">Akses Master Modules diperlukan untuk melakukan export dan sinkronisasi katalog.</div>
+                <div class="alert alert-warning w-100 mb-0" role="status">Akses Operasional Sistem belum tersedia atau belum dapat diperiksa. Muat ulang halaman atau hubungi pengelola akses.</div>
             <?php endif ?>
         </div>
     </section>
@@ -46,9 +49,17 @@
         $moduleSummary = $modulePlan['summary'];
         $moduleFieldLabels = ['modules_name' => 'Nama', 'modules_header_id' => 'ID induk', 'package' => 'Package', 'def_controller' => 'Controller', 'parent' => 'Jenis menu', 'icon' => 'Ikon', 'urut' => 'Urutan', 'active' => 'Aktif', 'status' => 'Status', 'version' => 'Versi'];
         ?>
-        <section class="card app-table-card mb-6" id="os-module-preview" aria-labelledby="os-module-preview-title">
+        <div class="modal fade" id="os-module-preview" tabindex="-1" aria-labelledby="os-module-preview-title" aria-hidden="true">
+          <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h2 class="modal-title fs-4" id="os-module-preview-title">Preview sinkronisasi</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+              </div>
+              <div class="modal-body">
+        <section class="card app-table-card">
             <div class="card-header app-table-heading">
-                <div><h2 class="app-table-title" id="os-module-preview-title">Preview sinkronisasi</h2><p class="app-table-description">Periksa perubahan metadata sebelum diterapkan pada katalog target.</p></div>
+                <div><h3 class="app-table-title">Daftar perubahan modul</h3><p class="app-table-description">Periksa perubahan metadata sebelum diterapkan pada katalog target.</p></div>
                 <div class="app-table-search"><input id="os-module-search" type="search" class="form-control" placeholder="Cari modul…" aria-label="Cari modul pada preview"></div>
             </div>
             <div class="card-body w-100">
@@ -70,7 +81,11 @@
                             <tr>
                                 <td class="text-break"><?= esc($entry['name']) ?><br><code><?= esc($entry['id']) ?></code></td>
                                 <td class="text-break"><?= esc($entry['route'] ?: 'Folder menu') ?></td>
-                                <td><span class="badge badge-light-<?= $actionColor ?>"><?= $actionLabel ?></span></td>
+                                <td><span class="badge badge-light-<?= $actionColor ?>"><?= $actionLabel ?></span>
+                                    <?php if (!empty($entry['warning'])): ?>
+                                        <p class="text-warning mt-2 mb-0"><?= esc($entry['warning']) ?></p>
+                                    <?php endif ?>
+                                </td>
                                 <td>
                                     <?php if ($entry['changes']): ?>
                                         <details class="os-module-changes"><summary><?= count($entry['changes']) ?> kolom</summary><dl class="mt-2 mb-0">
@@ -89,11 +104,16 @@
                 <form id="os-modules-apply" method="post" action="<?= esc(site_url('developer/os/applymodules'), 'attr') ?>" class="align-self-end">
                     <?= csrf_field() ?>
                     <input type="hidden" name="preview_token" value="<?= esc($modulePreview['token'], 'attr') ?>">
+                    <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal">Tutup</button>
                     <button type="submit" class="btn btn-primary" <?= $moduleSummary['add'] + $moduleSummary['update'] === 0 ? 'disabled' : '' ?>>Terapkan Sinkronisasi</button>
                 </form>
                 <p class="text-muted mb-0">Preview berlaku 15 menit. Perubahan katalog target setelah preview memerlukan pemeriksaan ulang.</p>
             </div>
         </section>
+              </div>
+            </div>
+          </div>
+        </div>
     <?php endif ?>
 
     <section aria-label="Pemeliharaan aktivitas pengguna">

@@ -164,7 +164,7 @@
         const previousActive = active;
         try {
             if (creating) {
-                const item = {id: crypto.randomUUID(), name: value, values: []};
+                const item = {id: createRestUUID(), name: value, values: []};
                 environments.push(item);
                 active = item.id;
             } else current().name = value;
@@ -211,7 +211,7 @@
             if (typeof item.name !== 'string' || !item.name.trim() || !Array.isArray(item.values) ||
                 item.values.some(value => typeof value.key !== 'string' || !value.key.trim() || typeof value.value !== 'string') ||
                 new Set(item.values.map(value => value.key.trim())).size !== item.values.length) throw new Error('Format environment Postman tidak valid.');
-            const imported = {id: crypto.randomUUID(), name: item.name, values: item.values.map(value => ({key: value.key.trim(), value: value.value, type: value.type === 'secret' ? 'secret' : 'default', enabled: value.enabled !== false}))};
+            const imported = {id: createRestUUID(), name: item.name, values: item.values.map(value => ({key: value.key.trim(), value: value.value, type: value.type === 'secret' ? 'secret' : 'default', enabled: value.enabled !== false}))};
             environments.push(imported);
             active = imported.id;
             try { await persist(); } catch (error) { environments.pop(); throw error; }

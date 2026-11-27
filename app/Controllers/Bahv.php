@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 namespace App\Controllers;
 
@@ -97,14 +97,14 @@ class Bahv extends BaseController{
 
                 if ($result === false) {
                     $failed++;
-                    log_message('error','IMPORT BAHV GAGAL | NOSEP: ' .$nosep.' | DATA: ' . json_encode($data, JSON_UNESCAPED_UNICODE).' | DB ERROR: ' . json_encode($dbError, JSON_UNESCAPED_UNICODE));
+                    log_message('error', 'IMPORT BAHV: penyimpanan baris gagal.');
                     continue;
                 }
 
                 $success++;
             } catch (\Throwable $e) {
                 $failed++;
-                log_message('error','IMPORT BAHV EXCEPTION | NOSEP: '.$nosep.' | PESAN: '.$e->getMessage().' | FILE: ' . $e->getFile().' | LINE: ' . $e->getLine());
+                log_message('error', 'IMPORT BAHV: pemrosesan baris gagal ({type}).', ['type' => get_class($e)]);
             }
         }
 
@@ -152,7 +152,7 @@ class Bahv extends BaseController{
             }
         }
 
-        log_message('error', 'FORMAT TANGGAL BAHV TIDAK COCOK: [' . $date . ']');
+        log_message('error', 'IMPORT BAHV: format tanggal tidak cocok.');
 
         return null;
     }

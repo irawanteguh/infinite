@@ -25,3 +25,5 @@ Untuk perubahan fitur, cek sintaks PHP terkait, kontrak view/JS, serta flow HTTP
 ## Pemeliharaan knowledge base
 
 Perbarui halaman modul jika controller, field, sumber data, atau workflow berubah. Perbarui halaman lintas modul ketika mekanisme bersama ikut berubah. Simpan rumus dan detail alur di satu rujukan pemilik, tambahkan tautan dari indeks, dan catat batas verifikasi. Setelah rename atau penambahan modul, periksa tautan serta daftar cakupan.
+
+Jika pengguna meminta menambahkan atau memperbarui referensi proyek, sinkronkan [AGENTS.md proyek](../../AGENTS.md) dan dokumen terkait di `docs/` dalam satu perubahan. Gunakan halaman rujukan yang sudah ada jika cakupannya sesuai. Jika perlu membuat halaman baru, tambahkan tautannya ke indeks yang relevan.

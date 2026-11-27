@@ -13,12 +13,12 @@ class DepartmentModel extends Model{
                     select a.user_id, name
                     from dt01_gen_user_data a
                     where a.active='1'
-                    and   a.group_id='".$groupid."'
-                    and   a.org_id='".$orgid."'
+                    and   a.group_id = ?
+                    and   a.org_id = ?
                     order by name asc
                 ";
 
-        $recordset = $this->db->query($query);
+        $recordset = $this->db->query($query, [$groupid, $orgid]);
         return $recordset->getResult();
     }
     
@@ -43,12 +43,12 @@ class DepartmentModel extends Model{
                         ) as memberdepartment
 
                     from dt01_gen_department_ms a
-                    where a.group_id='".$groupid."'
-                    and   a.org_id='".$orgid."'
+                    where a.group_id = ?
+                    and   a.org_id = ?
                     order by last_update_date desc
                 ";
 
-        $recordset = $this->db->query($query);
+        $recordset = $this->db->query($query, [$groupid, $orgid]);
         return $recordset->getResult();
     }
 

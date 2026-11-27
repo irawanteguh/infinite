@@ -9,3 +9,5 @@
 Model memakai koneksi CI4. Route mengikuti login/grant. [IndicatorDeadline](../../../app/Modules/Organization/Services/IndicatorDeadline.php) digunakan oleh workflow indikator [QI](qi.md). Master organisasi global berada di [Developer](developer.md). UI ada di [Views](../../../app/Modules/Organization/Views/) dan [aset Organization](../../../public/assets/js/organization/).
 
 Status dan batas efektif di deployment serta cakupan per aksi persetujuan perlu dicek pada data dan controller terkait.
+
+Query daftar Department dan pilihan kepala unit membind group dan organisasi dari sesi. Cakupan baca dirinci pada DepartmentModel.

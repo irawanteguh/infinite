@@ -5,3 +5,7 @@
 [ViewMDC::index() dan datamastermdc()](../../../app/Modules/Additional/Controllers/ViewMDC.php) memakai template blank dan [ViewMDCModel](../../../app/Modules/Additional/Models/ViewMDCModel.php) untuk membaca `dt01_ics_mdc` melalui koneksi default. Master yang bisa diedit berada di [ICS](ics.md). Akses pembaca mengikuti grant route modul. Cocokkan kapitalisasi class dan aset pada filesystem target.
 
 Tampilan ada di [Views](../../../app/Modules/Additional/Views/), dengan [aset ViewMDC](../../../public/assets/js/additional/). Aktivitas Welcome dan akses ViewMDC belum diuji melalui HTTP.
+
+Heading dan deskripsi Welcome memakai tipografi dan ukuran minimum banner bersama. Panel tanggal tetap berada di sisi kanan pada layar lebar dan di bawah teks pada ponsel.
+
+Referensi MDC menggunakan modal pemuatan bersama. Jika permintaan gagal, pesan menyarankan memuat ulang halaman.

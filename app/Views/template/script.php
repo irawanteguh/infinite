@@ -47,9 +47,6 @@
         if ($segment1 === 'ur' && $segment2 === 'severity1' && $segment3 === 'detail') {
             $jsPage = 'severity1detail';
         }
-        if ($segment1 === 'ur' && $segment2 === 'severity1' && $segment3 === 'detail') {
-            $jsPage = 'severity1detail';
-        }
         if ($segment1 === 'ur' && $segment2 === 'severity3' && $segment3 === 'detail') {
             $jsPage = 'severity3detail';
         }

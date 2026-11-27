@@ -5,3 +5,5 @@
 [MasterobatModel::masterobat()](../../../app/Modules/Farmasi/Models/MasterobatModel.php) menggunakan koneksi default. Query mengambil obat aktif dari `dt01_frm_obat_ms` dan menggabungkan `dt01_frm_harga_modal_obat_hd`, `dt01_frm_harga_jual_obat_hd`, serta hasil agregasi `dt01_frm_stock_out_dt` memakai `obat_id`. Aktivitas stok difilter ke tahun berjalan menurut database. Nama pembuat dibaca dari `dt01_gen_user_data`.
 
 Query yang diperiksa tidak memiliki kondisi group/org. Kardinalitas tabel harga, pemisahan data di deployment, dan transaksi stok di luar modul ini belum diverifikasi.
+
+Master Obat memakai kartu tabel bersama dengan pencarian Cari obat. DataTables diinisialisasi oleh aset halaman setelah respons AJAX. Tabel menampilkan total pemakaian tahun berjalan. Jika permintaan gagal, muat ulang halaman.

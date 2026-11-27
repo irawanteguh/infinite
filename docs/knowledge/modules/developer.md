@@ -15,3 +15,5 @@ Halaman di [Views](../../../app/Modules/Developer/Views/) dan [aset Developer](.
 [Faq::index()](../../../app/Modules/Developer/Controllers/Faq.php) merender [panduan penggunaan dan FAQ](../../../app/Modules/Developer/Views/v_faq.php) dari tombol sidebar bersama. GET `developer/faq` tersedia untuk pengguna dengan sesi login melalui [AuthFilter](../../../app/Filters/AuthFilter.php).
 
 Agent memperbarui konten halaman bantuan dalam pekerjaan yang sama saat menambah atau mengubah fitur modul, mengikuti [aturan pemeliharaan FAQ](../../../AGENTS.md#pemeliharaan-faq--documentation). Panduan mencakup perilaku pengguna yang terverifikasi dan disesuaikan ketika fitur berubah atau dihapus.
+
+Banner Backup Database menggunakan markup dan tipografi banner modul bersama. Daftar backup dan akses tindakan dijelaskan pada controller Backupdb.

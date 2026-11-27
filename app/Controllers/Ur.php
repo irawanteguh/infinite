@@ -180,15 +180,15 @@ class Ur extends BaseController{
 
                 if ($result === false) {
                     $failed++;
-                    log_message("error","IMPORT E-KLAIM GAGAL SEP " . $sep);
+                    log_message('error', 'IMPORT E-KLAIM: penyimpanan baris gagal.');
                     continue;
                 }
 
                 $success++;
 
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $failed++;
-                log_message("error","IMPORT E-KLAIM SEP ".$sep ." : " .$e->getMessage());
+                log_message('error', 'IMPORT E-KLAIM: pemrosesan baris gagal ({type}).', ['type' => get_class($e)]);
             }
         }
 

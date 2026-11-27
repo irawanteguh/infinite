@@ -14,9 +14,9 @@ $months = [1=>'Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus'
 ?>
 <main class="welcome-page">
     <section class="welcome-banner app-geometric-banner app-module-banner" aria-label="Selamat datang di INFINITE">
-        <div class="welcome-banner-content">
+        <div class="welcome-banner-content app-banner-heading">
             <span class="welcome-kicker"><span class="welcome-status-dot" aria-hidden="true"></span> INFINITE WORKSPACE</span>
-            <p class="welcome-greeting"><?= esc($greeting) ?>,</p>
+            <span class="welcome-greeting d-block"><?= esc($greeting) ?>,</span>
             <h1 class="welcome-title"><?= esc($displayName) ?></h1>
             <p class="welcome-subtitle">Selamat datang kembali. Mulai aktivitas Anda dan akses informasi yang dibutuhkan dalam satu ruang kerja.</p>
         </div>

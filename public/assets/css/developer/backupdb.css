@@ -1,24 +1,5 @@
-.backup-heading {
-    border-radius: 20px;
-    padding: 24px;
-}
-
-.backup-heading h1 {
-    color: var(--app-banner-heading);
-}
-
-.backup-heading p {
-    color: var(--app-banner-copy);
-}
-
 .backup-page #backup_table :is(th, td):not(.dataTables_empty) {
     white-space: nowrap;
-}
-
-@media (max-width: 575px) {
-    .backup-heading {
-        padding: 20px;
-    }
 }
 
 #backup_table thead th {

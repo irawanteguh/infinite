@@ -10,3 +10,5 @@
 [Ur::importtxteklaim()](../../../app/Controllers/Ur.php) adalah handler impor legacy, di luar namespace modul. Tabel utama adalah `dt01_bpjs_ur_dt`; review juga membaca `dt01_bpjs_pending_klaim`, yang dipakai [Klaim](klaim.md). Analisis case mix memakai master `dt01_inacbg_casegroup_ms`, `dt01_inacbg_cmg_ms`, dan cost weight ranap/rajal. Model memakai koneksi default. Analisis umum memakai kode rumah sakit dan periode sesuai model. Formula CMI dan batas interpretasi temuan ada di [aturan bisnis](../business-rules.md).
 
 Route `ur/<controller>` mengikuti login/grant. Impor bersama mengikuti izin package UR. [Views](../../../app/Modules/Ur/Views/) dan [aset UR](../../../public/assets/js/ur/) memuat dashboard, tabel, detail, dan grafik. Cakupan episode yang cocok master, kualitas impor, dan kinerja query pada dataset deployment belum diverifikasi.
+
+Impor e-Klaim menghitung exception per baris sebagai gagal dan melanjutkan ke baris berikutnya. Log kegagalan menyimpan jenis kegagalan tanpa identifier klaim atau pesan exception mentah.

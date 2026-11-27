@@ -31,6 +31,10 @@
 - Verifikasi perilaku pada kode sumber terkini sebelum implementasi.
 - Perbarui dokumentasi terdampak ketika arsitektur, alur kerja, atau
   aturan bisnis terverifikasi berubah.
+- Jika pengguna meminta menambahkan atau memperbarui referensi proyek,
+  perbarui `AGENTS.md` proyek dan dokumen terkait di `docs/` dalam
+  pekerjaan yang sama. Ringkas instruksi atau tautan rujukan di
+  `AGENTS.md` dan simpan rincian pada dokumen yang dirujuk.
 
 ## Pemeliharaan FAQ & Documentation
 

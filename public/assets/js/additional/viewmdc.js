@@ -1,29 +1,18 @@
 datamastermdc();
 
 function datamastermdc(){
+    showDataLoading('Memuat referensi MDC', 'Daftar kategori MDC sedang disiapkan.');
+    $("#viewdetailmdc").empty();
     $.ajax({
-        url      : url + "additional/viewmdc/datamastermdc",
-        type     : "POST",
-        dataType : "JSON",
-        beforeSend: function () {
-            Swal.fire({
-                title            : 'Processing',
-                html             : 'Please wait while the system displays the requested data.',
-                allowOutsideClick: false,
-                allowEscapeKey   : false,
-                showConfirmButton: false,
-                didOpen          : () => Swal.showLoading()
-            });
-
-            $("#viewdetailmdc").empty();
-        },
-        success: function (response) {
-
+        url: url + "additional/viewmdc/datamastermdc",
+        type: "POST",
+        dataType: "JSON"
+    }).done(function (response) {
             if (!response || response.responseCode !== "00") {
                 Swal.fire({
                     icon             : 'warning',
-                    title            : 'No Records Found',
-                    text             : 'No records are available for the selected period.',
+                    title            : 'Referensi MDC belum tersedia',
+                    text             : 'Belum ada kategori pada daftar MDC.',
                     showConfirmButton: false,
                     timer            : 2000
                 });
@@ -311,18 +300,13 @@ $("#searchMasterMdc")
         }, 250);
     });
 
-        },
-        error: function () {
-            Swal.fire({
-                icon             : "error",
-                title            : "Request Failed",
-                text             : "An error occurred while processing your request.",
-                confirmButtonText: "OK"
-            });
-        },
-        complete: function () {
-            Swal.close();
-        }
+    }).fail(function () {
+        Swal.fire({
+            icon: "error",
+            title: "Referensi MDC gagal dimuat",
+            text: "Muat ulang halaman untuk mencoba kembali.",
+            confirmButtonText: "OK"
+        });
     });
 };
 
